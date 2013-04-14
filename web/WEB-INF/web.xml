@@ -3,7 +3,7 @@
 
   <display-name>EasyMark</display-name>
   <welcome-file-list>
-    <welcome-file>views/membership/index.jsp</welcome-file>
+    <welcome-file>/WEB-INF/view/index.jsp</welcome-file>
   </welcome-file-list>
   
   <filter>
