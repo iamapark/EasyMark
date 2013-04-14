@@ -24,11 +24,13 @@
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  
   <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>*.membership</url-pattern>
     <url-pattern>*.individualpage</url-pattern>
     <url-pattern>*.friendship</url-pattern>
     <url-pattern>*.admin</url-pattern>
+    <url-pattern>*.do</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -89,5 +89,9 @@
 	</section>
   </div>
 </div>
+
+<div>
+	<a href="go.do?page=main">메인 페이지</a>
+</div>
 </body>
 </html>

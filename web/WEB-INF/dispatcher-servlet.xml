@@ -1,47 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="urlMapping"
-		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="mappings">
-			<props>
-				<prop key="**/.jsp">staticViewController</prop>
-				
-				<!-- <prop key="*.membership">memberController</prop>
-				<prop key="*.friendship">friendController</prop>
-				<prop key="*.individualpage">individualController</prop>
-				
-				<prop key="**/membership/*.membership">memberController</prop>
-				<prop key="**/friendship/*.friendship">friendController</prop>
-				<prop key="**/individualPage/*.individualpage">individualController</prop>
-				<prop key="**/admin/*.admin">adminController</prop> -->
-			</props>
-		</property>
-	</bean>
+	<bean id="testController"
+		class="controller.TestController"></bean>
 
-	<bean id="staticViewController"
-		class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
-	<!-- <bean name="memberController" class="controller.MembershipAction"/>
-	<bean name="friendController" class="controller.FriendshipAction"/>
-	<bean name="individualController" class="controller.IndividualPageAction"/>
-	<bean name="adminController" class="admin.AdminAction"></bean>
-	
-	<bean name="adminDAO" class="dao.AdminDAO" />
-	<bean name="bookMarkDAO" class="dao.BookMarkDAO" />
-	<bean name="friendDAO" class="dao.FriendDAO" />
-	<bean name="loginDAO" class="dao.LoginDAO" />
-	<bean name="mainDesignDAO" class="dao.MainDesignDAO" />
-	<bean name="messageDAO" class="dao.MessageDAO" />
-	<bean name="myInfoDAO" class="dao.MyInfoDAO" />
-	<bean name="registerDAO" class="dao.RegisterDAO" />
-	<bean name="webPageDAO" class="dao.WebPageDAO" /> -->
-
- <context:annotation-config />
+ 	<bean id="viewResolver"
+ 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+ 			<property name="prefix" value="/WEB-INF/view/" />
+ 			<property name="suffix" value=".jsp" />
+ 	</bean>
+ 
 </beans>
