@@ -1,14 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>    
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>메인 페이지</title>
+	<link rel="stylesheet" href="css/footer.css" type="text/css" />
 </head>
 <body>
-<% request.setAttribute("greeting", "안녕하세요!!"); %>
-<tiles:insertDefinition name="hello"></tiles:insertDefinition>
+	
+	<footer id="footer">
+		<div id="footer_menu">
+			<li class="homeButton"><a href="">
+				<img src="images/home_grey.png">
+			</a></li>
+			<li><a href="">Account</a></li>
+			<li><a href="">Profile</a></li>
+			<li><a href="">Two Columns</a></li>
+			<li><a href="">Programs</a></li>
+		</div>
+	</footer>
+	
 </body>
 </html>

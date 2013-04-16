@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메인 페이지4</title>
+<title>메인 페이지</title>
 <script type="text/javascript" src="js/jquery.1.1.2.js"></script>
 <script type="text/javascript" src="js/interface.js"></script>
 
