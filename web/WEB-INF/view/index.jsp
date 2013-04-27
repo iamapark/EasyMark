@@ -91,7 +91,10 @@
 </div>
 
 <div>
-	<a href="go.do?page=main">메인 페이지</a>
+	<ul>
+		<li><a href="go.do?page=main">메인 페이지</a></li>
+		<li><a href="go.do?page=main2">메인 페이지2</a></li>
+	</ul>
 </div>
 </body>
 </html>

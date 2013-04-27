@@ -13,37 +13,8 @@
 		<ul id="footer_menu">
 			<li class="homeButton"><a href="#"></a></li>
 			
-			<li><a href="#">Account</a>
-				<div class="one_column_layout">
-					<div class="col_1">
-						<a class="headerLinks">Messages</a>
-						<a class="listLinks" style="font-weight:bold;color:white;">Inbox (5)</a>
-						<a class="listLinks">Send</a>
-						<a class="listLinks">Trash</a>
-						<a class="listLinks">Compose</a>
-						
-						<a class="headerLinks">Pictures</a>
-						<a class="listLinks">Manage Albums</a>
-						<a class="listLinks">Manage Photos</a>
-						<a class="listLinks">View All</a>
-						
-						<a class="headerLinks">Information</a>
-						<a class="listLinks">Basic Info</a>
-						<a class="listLinks">Contact</a>
-						<a class="listLinks">Education</a>
-						<a class="listLinks">Employment</a>
-						<a class="listLinks">Links</a>
-						
-						<a class="headerLinks">Friends</a>
-						<a class="listLinks">All</a>
-						<a class="listLinks" style="font-weight:bold;color:white;">Requested(13)</a>
-						<a class="listLinks">Pending</a>
-					</div>
-				</div>
-			</li>
-			
 			<!-- Profile Button -->
-			<li> <a href="#">Profile</a>
+			<li> <a href="#">iamapark89@me2day</a>
 				<div class="three_column_layout">
 					<div class="col_3">
 						<h2>Example of Three Columns</h2>
@@ -91,7 +62,36 @@
 				</div>
 			</li>
 			
-			<li><a href="#">Programs</a>
+			<li><a href="#">Messages</a>
+				<div class="one_column_layout">
+					<div class="col_1">
+						<a class="headerLinks">Messages</a>
+						<a class="listLinks" style="font-weight:bold;color:white;">Inbox (5)</a>
+						<a class="listLinks">Send</a>
+						<a class="listLinks">Trash</a>
+						<a class="listLinks">Compose</a>
+						
+						<a class="headerLinks">Pictures</a>
+						<a class="listLinks">Manage Albums</a>
+						<a class="listLinks">Manage Photos</a>
+						<a class="listLinks">View All</a>
+						
+						<a class="headerLinks">Information</a>
+						<a class="listLinks">Basic Info</a>
+						<a class="listLinks">Contact</a>
+						<a class="listLinks">Education</a>
+						<a class="listLinks">Employment</a>
+						<a class="listLinks">Links</a>
+						
+						<a class="headerLinks">Friends</a>
+						<a class="listLinks">All</a>
+						<a class="listLinks" style="font-weight:bold;color:white;">Requested(13)</a>
+						<a class="listLinks">Pending</a>
+					</div>
+				</div>
+			</li>
+			
+			<li><a href="#">Friends</a>
 				<ul class="dropup">
 					<li><a href="#">Group Chat</a></li>
 					<li><a href="#">Instant Messenger</a></li>
@@ -122,7 +122,8 @@
 						<img src="images/defaultProfile.jpg" style="float:left;width:24px;margin-right:5px;" />
 						<div style="display:inline;color:#CC0000;font-weight:bold;">J.H.Koo</div> JaHoon like your post
 						<hr style="border:none;border-bottom:1px solid #777777;" />
-																		<img src="images/defaultProfile.jpg" style="float:left;width:24px;margin-right:5px;" />
+						
+						<img src="images/defaultProfile.jpg" style="float:left;width:24px;margin-right:5px;" />
 						<div style="display:inline;color:#CC0000;font-weight:bold;">이말년</div> 말년님이 당신의 사진을 좋아합니다.
 						<hr style="border:none;border-bottom:1px solid #777777;" />
 					</span>

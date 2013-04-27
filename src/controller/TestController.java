@@ -19,7 +19,7 @@ public class TestController {
 		System.out.println(page);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("main"); // /WEB-INF/view/main.jsp 페이지로 이동
+		mav.setViewName(page); // /WEB-INF/view/main.jsp 페이지로 이동
 		return mav;
 	}
 }
