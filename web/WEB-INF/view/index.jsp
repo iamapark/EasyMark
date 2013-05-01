@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>로그인 페이지</title>
-<link href="css/index.css" rel="stylesheet" media="screen">
+	<meta charset="UTF-8">
+	<title>EasyMark</title>
+	<link href="css/index.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <div id="wrapper">
@@ -25,56 +25,65 @@
 		<div class="clear-shadow"></div>
 		
 		<div id="content">
+			<!-- 회원가입 양식 -->
 			<div class="content-2">
 				<p>
 					<a href="#" class="media tw">Twitter</a><a href="#" class="media fb">Facebook</a>
 				</p>	
-				<form  action="" autocomplete="on">
+				<form action="register" autocomplete="on" name="registerForm" method="POST">
 				  <p>
-					<label for="usernamesignup" class="uname" data-icon="u">Your username</label>
-					<input class="field" name="usernamesignup" required="required" type="text" placeholder="myusername" />
+					<label for="usernamesignup" class="uname" data-icon="i">Your ID</label> <label id="userIdCheck" style="float:right"></label>
+					<input class="field" name="userId" id="userId" required="required" type="text" placeholder="사용자 아이디" />
+				  </p>
+				  <p>
+					<label for="usernamesignup" class="uname" data-icon="u">Your name</label>
+					<input class="field" name="name" id="name" required="required" type="text" placeholder="사용자 이름" />
 				  </p>
 				  <p>
 					<label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
-					<input class="field" name="emailsignup" required="required" type="email" placeholder="myusername@gmail.com"/>
+					<input class="field" name="email" id="email" required="required" type="email" placeholder="이메일 주소"/>
 				  </p>
 				  <p>
 					<label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
-					<input class="field" name="passwordsignup" required="required" type="password" placeholder="mypassword"/>
+					<input class="field" name="password" id="password" required="required" type="password" placeholder="비밀번호"/>
 				  </p>
 				  <p>
 					<label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
-					<input class="field" name="passwordsignup_confirm" required="required" type="password" placeholder="mypassword"/>
+					<input class="field" name="passwordsignup_confirm" id="confirmPassword" required="required" type="password" placeholder="비밀번호 확인"/>
 				  </p>
 				  <p class="signin button">
-					<input type="checkbox" required="required" /> I agree with terms and conditions 
-					<input type="submit" value="Sign up"/>
+					<input type="checkbox" value="registerCheck" required="required" name="registerCheck"/> 회원가입에 동의합니다.
+					<input type="button" value="Sign up" id="registerButton" />
 				  </p>
 				</form>
 			</div>
+			
+			<!-- 로그인 양식 -->
 			<div class="content-1">
 				<p>
 					<a href="#" class="media tw">Facebook</a>
 					<a href="#" class="media fb">Twitter</a>
 					<a href="#" class="media me">Me2Day</a>
 				</p>
-				<form  action="" autocomplete="on">
+				<form  action="login" autocomplete="on" method="POST" name="loginForm">
 				  <p>
 					<label for="username" class="uname" data-icon="u" > Your email or username </label>
-					<input class="field" name="username" required="required" type="text" placeholder="myusername or myusername@gmail.com"/>
+					<input class="field" name="loginId" required="required" type="text" placeholder="사용자 아이디" id="loginId"/>
 				  </p>
-				  <p>
+				  <p>	
 					<label for="password" class="youpasswd" data-icon="p"> Your password </label>
-					<input class="field" name="password" required="required" type="password" placeholder="mypassword" />
+					<input class="field" name="loginPassword" required="required" type="password" placeholder="비밀번호" id="loginPassword" />
 				  </p>
 				  <p class="keeplogin">
 					<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> Keep me logged in
-					<input type="submit" value="Login" />
+					<input type="button" value="Login" id="loginButton" />
 				  </p>
 				</form>
 			</div>
+			
+			<!-- 비밀번호 찾기 양식 -->
 			<div class="content-3">
-				<form  action="" autocomplete="on">
+				<form  action="password" autocomplete="on">
 				  <p>
 					<label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
 					<input class="field" name="emailsignup" required="required" type="email" placeholder="myusername@gmail.com"/>
@@ -90,11 +99,8 @@
   </div>
 </div>
 
-<div>
-	<ul>
-		<li><a href="go.do?page=main">메인 페이지</a></li>
-		<li><a href="go.do?page=main2">메인 페이지2</a></li>
-	</ul>
-</div>
+<script src="js/jquery.js"></script>
+<script src="js/membership/index.js"></script>
+
 </body>
 </html>

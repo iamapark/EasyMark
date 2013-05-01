@@ -1,5 +1,5 @@
 body{
-	background-image:url("../images/wood_wallpaper3.jpg"); 
+	background-image:url("../../images/wood_wallpaper3.jpg"); 
 }
 
 #footer{
@@ -153,7 +153,7 @@ a.notificationIcons:hover span{
 }
 
 #footer_menu .homeButton a{
-	background: url("../images/home_grey.png") top left no-repeat;
+	background: url("../../images/home_grey.png") top left no-repeat;
 	width: 36px;
 	height: 30px;
 }
@@ -163,7 +163,7 @@ a.notificationIcons:hover span{
 }
 
 #footer_menu .homeButton a:hover{
-	background: url("../images/home.png") top left no-repeat;
+	background: url("../../images/home.png") top left no-repeat;
 }
 
 /*  Programs menu drop up  */

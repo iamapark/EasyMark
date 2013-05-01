@@ -178,7 +178,7 @@ margin: 0 0 10px;
     position: relative;
 }
 
-#content input[type="submit"] {
+#content input[type="submit"], #content input[type="button"] {
     background: none repeat scroll 0 0 #039bfc;
     border: 1px solid #1C6C7A;
     border-radius: 3px 3px 3px 3px;

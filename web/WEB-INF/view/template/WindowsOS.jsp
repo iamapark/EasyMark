@@ -1,15 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>메인 페이지 디자인2</title>
-	<link rel="stylesheet" href="css/footer.css" type="text/css" />
-</head>
-<body>
-	
-	<footer id="footer">
+<div id="designMain2Container" style="display:none;">
+ 	<footer id="footer">
 		<ul id="footer_menu">
 			<li class="homeButton"><a href="#"></a></li>
 			
@@ -132,6 +122,4 @@
 		</ul>
 		
 	</footer>
-	
-</body>
-</html>
+	</div>
