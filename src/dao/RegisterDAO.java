@@ -87,4 +87,24 @@ public class RegisterDAO {
 		return type;
 	}
 
+	public Member getMemberInfo(String userId) {
+		Member m = null;
+		
+		try{
+			m = (Member)sqlMapper.queryForObject("getMemberInfo", userId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return m;
+	}
+
+	public void updateMemberInfo(Member m) {
+		try{
+			sqlMapper.update("updateMemberInfo", m);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
 }

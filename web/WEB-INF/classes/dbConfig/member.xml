@@ -10,6 +10,7 @@
 		<result property="password" column="password" />
 		<result property="name" column="name" />
 		<result property="me2DayKey" column="me2day_key" />
+		<result property="imgUrl" column="img_url" />
 	</resultMap>
     
     <insert id="registerMember" parameterClass="Member">
@@ -55,5 +56,22 @@
         WHERE
         	user_id=#userId#
     </select>
+    
+    <select id="getMemberInfo" parameterClass="String" resultClass="Member">
+		SELECT user_id userId, email email, name name, img_url imgUrl
+		FROM
+			member_info
+		WHERE
+			user_id=#userId#        
+    </select>
+    
+    <update id="updateMemberInfo" parameterClass="Member">
+		update 
+			member_info 
+		set 
+			name=#name#, email=#email#, img_url=#imgUrl# 
+		where 
+			user_id=#userId#;        
+    </update>
     
 </sqlMap>

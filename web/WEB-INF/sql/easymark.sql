@@ -67,13 +67,19 @@ CREATE TABLE "message"
 
 //2013-04-30 추가분
 /**MySQL 버전
- * CREATE  TABLE `nhneasymark`.`member_infi` (
-  `user_id` VARCHAR(30) NOT NULL ,
-  `name` VARCHAR(30) NULL ,
-  `email` VARCHAR(30) NULL ,
-  `me2day_key` VARCHAR(15) NULL ,
-  `status` VARCHAR(30) NULL DEFAULT '회원' ,
-  PRIMARY KEY (`user_id`) );*/
+ *
+CREATE TABLE `member_info` (
+  `user_id` varchar(30) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `me2day_key` varchar(15) DEFAULT NULL,
+  `status` varchar(30) DEFAULT '회원',
+  `img_url` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$$
+
+*/
+
 CREATE TABLE "member_info" 
 (
    "user_id" CHARACTER VARYING(30), 

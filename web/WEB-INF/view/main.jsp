@@ -82,6 +82,22 @@
 				$("#designMain2Container").show();
 			}
 		}
+		
+		/**
+		<!-- setting 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. -->*/
+		$('a[href="#setting"]').click(function(){
+			$.ajax({
+				url: 'getMemberInfo',
+				dataType:'json'
+			}).done(function(data){
+				$('#setting_userId').val(data.userId);
+				$('#setting_name').val(data.name);
+				$('#setting_email').val(data.email);
+				$('#inputPersonalImg').attr('src', data.imgUrl);
+				kaka = data;
+			});
+		});
+		
 	</script>
 </body>
 </html>

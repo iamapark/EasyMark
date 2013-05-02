@@ -1,11 +1,12 @@
 package dto;
 
 public class Member {
-	String userId = null;
-	String email = null;
-	String password = null;
-	String name = null;
-	String me2DayKey = null;
+	private String userId = null;
+	private String email = null;
+	private String password = null;
+	private String name = null;
+	private String me2DayKey = null;
+	private String imgUrl = null;
 	
 	public Member() {
 		super();
@@ -20,8 +21,6 @@ public class Member {
 		this.name = name;
 	}
 
-
-
 	public Member(String userId, String email, String password,
 			String name, String me2DayKey) {
 		super();
@@ -30,6 +29,17 @@ public class Member {
 		this.password = password;
 		this.name = name;
 		this.me2DayKey = me2DayKey;
+	}
+	
+	public Member(String userId, String email, String password,
+			String name, String me2DayKey, String imgUrl) {
+		super();
+		this.userId = userId;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.me2DayKey = me2DayKey;
+		this.imgUrl = imgUrl;
 	}
 
 	public String getUserId() {
@@ -70,6 +80,14 @@ public class Member {
 
 	public void setMe2DayKey(String me2DayKey) {
 		this.me2DayKey = me2DayKey;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 
 	@Override

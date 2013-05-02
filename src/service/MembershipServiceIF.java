@@ -15,4 +15,6 @@ public interface MembershipServiceIF {
 	public boolean login(Login login);
 	
 	public String getDesignType(String userId);
+	
+	public Member getMemberInfo(String userId);
 }

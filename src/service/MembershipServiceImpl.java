@@ -36,4 +36,12 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 		return RegisterDAO.getInstance().getDesignType(userId);
 	}
 
+	public Member getMemberInfo(String userId) {
+		return RegisterDAO.getInstance().getMemberInfo(userId);
+	}
+
+	public void updateMemberInfo(Member m) {
+		RegisterDAO.getInstance().updateMemberInfo(m);
+	}
+
 }
