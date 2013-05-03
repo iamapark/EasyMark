@@ -17,11 +17,11 @@ public class FileWriter {
             
             File dir = new File(path);
             if(!dir.exists()){
-            	System.out.println("디렉토리가 존재하지 않습니다.");
-            	dir.mkdir();
+            	if(dir.mkdirs())
+            		System.out.println("디렉토리를 생성했습니다 : " + dir.getPath());
         	}
             
-            fos = new FileOutputStream(path + "\\" + fileName, true);
+            fos = new FileOutputStream(path + "/" + fileName, true);
              
             fos.write(fileData);
          

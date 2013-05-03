@@ -15,7 +15,5 @@ function addPrevClass (e) {
 	}
 }
 if (window.addEventListener) {
-	document.getElementById('dock').addEventListener('mouseover', addPrevClass, false);
+	//document.getElementById('dock').addEventListener('mouseover', addPrevClass, false);
 }
-
-console.log('main.js');

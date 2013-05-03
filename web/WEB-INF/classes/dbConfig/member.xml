@@ -74,4 +74,12 @@
 			user_id=#userId#;        
     </update>
     
+    <update id="changeDesign" parameterClass="Design">
+   		update 
+   			design 
+ 		set 
+ 			type=#type# 
+ 		where 
+ 			user_id=#userId#
+    </update>
 </sqlMap>

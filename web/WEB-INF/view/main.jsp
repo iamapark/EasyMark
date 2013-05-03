@@ -1,3 +1,4 @@
+<%@page import="ch.qos.logback.core.joran.action.IncludeAction"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -5,48 +6,62 @@
 <head>
 	<meta charset="UTF-8">
 	<title>${MEMBERID}/${designType} - EasyMark</title>
+	<link rel="stylesheet" type="text/css" href="css/bookmark/gridster/jquery.gridster.css">
+	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
 	
 	<!-- design:main -->
-	<link href="css/main/MacOS.css" rel="stylesheet" type="text/css" id="designSelectedCss">
+	<%
+		String designType = (String)session.getAttribute("designType");
+		if(designType.equals("MacOS")){
+			%>
+			<link href="css/main/MacOS.css" rel="stylesheet" type="text/css" id="designSelectedCss">
+			<%
+		}else{
+			%>
+			<link href="css/main/WindowsOS.css" rel="stylesheet" type="text/css" id="designSelectedCss">
+			<%
+		}
+	%>
+	
 </head>
 <body>
-	<div>
-		<a href="#designModal" role="button" class="btn" data-toggle="modal">디자인 변경</a>
- 	</div>
  	
- 	<!-- design:main2(MacOS) -->
- 	<jsp:include page="template/MacOS.jsp"></jsp:include>
- 	
- 	<!-- design:main2(WindowsOS) -->
- 	<jsp:include page="template/WindowsOS.jsp"></jsp:include>
- 	
- 	
- 	
- 	
- 	<!-- 디자인 유형을 선택하는 modal -->
- 	<div>
-		<!-- Modal -->
-		<div id="designModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <h3 id="myModalLabel">디자인 선택</h3>
-		  </div>
-		  <div class="modal-body">
-		  	<select id="designSelect" name="style">
-				<option value="MacOS">디자인 1: MacOS</option>
-				<option value="WindowsOS">디자인 2: WindowsOS</option>
-			</select>
-		  </div>
-		  <div class="modal-footer">
-		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		    <button id="designSelectButton" class="btn btn-primary">Save changes</button>
-		  </div>
-		</div>
-	</div>
+ 	<jsp:include page="template/MacOS.jsp">
+ 		<jsp:param value="${designType}" name="flag"/>
+	</jsp:include>	
+	
+	<jsp:include page="template/WindowsOS.jsp">
+		<jsp:param value="${designType}" name="flag"/>
+	</jsp:include>
+	
+	
+	<!-- BookMark List -->
+	<div id="gridster" class="gridster">
+    	<ul>
+			<li style= "vertical-align: middle; "data-toggle="tooltip" title="TEST" data-row="1" data-col="${bookMark.posY}" data-id="1" data-sizex="1" data-sizey="1"  class="bookmarkIcon">
+	           	<a id='info' data-id="${bookMark.bookMarkId}" role="button" data-toggle="modal"  class='close' href=#bookMarkInfo  data-dismiss='modal' aria-hidden='true'><img id='wheel' src='images/wheel.png'></a>
+	           	<img id="img" href="http://www.naver.com" src="http://static.naver.net/www/u/2010/0611/nmms_215646753.gif" style="width:80%; height:100%;">
+	           	<!--   <p>${bookMark.bookMarkName}</p>-->
+        	</li> 
+    	</ul>
+    </div>
+	<!-- BookMark List END -->
+	
+	
+
+	
+	<!-- MODAL -->
+	<!-- setting 메뉴를 클릭했을 때 MODAL -->
+		<jsp:include page="modal/setting.jsp" />
+ 	<!-- MODAL END -->
+	
 	
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
+	<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bookmark/bookmark.js"></script>
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
 	<script>
@@ -55,6 +70,16 @@
 			changeCSS(styleSelected);
 			changeElement(styleSelected);
 			changeJS(styleSelected);
+			
+			$.ajax({
+				url:'changeDesign',
+				dataType:'json',
+				data:{
+					design:styleSelected
+				}
+			}).done(function(data){
+				$('#designSelectNoti').text('디자인이 변경되었습니다.');
+			});
 		});
 		
 		$('#designSelectButton').click(function(){
@@ -93,11 +118,47 @@
 				$('#setting_userId').val(data.userId);
 				$('#setting_name').val(data.name);
 				$('#setting_email').val(data.email);
-				$('#inputPersonalImg').attr('src', data.imgUrl);
+				if(data.imgUrl != ""){
+					$('#inputPersonalImg').attr('src', 'users/img/' + data.userId + "/" + data.imgUrl);
+				}
 				kaka = data;
 			});
 		});
 		
+	</script>
+	<script type="text/javascript">
+	  var gridster;
+	
+	  $(function(){
+	
+	    gridster = $(".gridster > ul").gridster({
+	        widget_margins: [10, 10],
+	        widget_base_dimensions: [140, 140],
+	        min_cols: 6,
+	        avoid_overlapped_widgets: true,
+	       serialize_params: function($w, wgd) { return { col: wgd.col, row: wgd.row }; },
+	    }).data('gridster');
+	
+	  });
+	</script>
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-33489625-1']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	  
+	  var img;
+	  $('img').dblclick(function(){
+		 var openwindow = window.open('about:blank');
+		 openwindow.location.href = $(this).attr('href');
+	  });
+	 
+	  
 	</script>
 </body>
 </html>

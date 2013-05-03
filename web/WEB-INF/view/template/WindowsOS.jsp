@@ -1,25 +1,41 @@
-<div id="designMain2Container" style="display:none;">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="dto.Member" %>    
+<% 
+	Member m = (Member)session.getAttribute("MEMBERINFO");
+	String imgUrl = m.getImgUrl(); 
+	String flag = request.getParameter("flag");
+	String display = null;
+	
+	if(imgUrl != null && !imgUrl.equals("")){
+		imgUrl = "users/img/" + m.getUserId() + "/" + imgUrl;
+	}else{
+		imgUrl = "images/settings.png";
+	}
+	
+	if(flag.equals("WindowsOS")){
+		display = "inline";
+	}else
+		display = "none";
+%>
+
+<!-- Footer -->
+<div id="designMain2Container" style="display:<%=display%>;">
  	<footer id="footer">
 		<ul id="footer_menu">
 			<li class="homeButton"><a href="#"></a></li>
 			
 			<!-- Profile Button -->
-			<li> <a href="#">iamapark89@me2day</a>
+			<li> <a href="#">${MEMBERID}</a>
 				<div class="three_column_layout">
 					<div class="col_3">
-						<h2>Example of Three Columns</h2>
+						<h2>Setting</h2>
 					</div>
 					
 					<div class="clear"></div>
 					
 					<div class="col_1">
-						<p>I love tuna so much</p>
-					</div>
-					<div class="col_1">
-						<p>I love tuna so much</p>
-					</div>
-					<div class="col_1">
-						<p>I love tuna so much</p>
+						<a href="#setting" role="button" data-toggle="modal">setting</a>
 					</div>
 					
 					<div class="clear"></div>
@@ -42,9 +58,9 @@
 					
 					<div class="col_3">
 						<p>
-							<img src="http://25.media.tumblr.com/tumblr_m97py1jnbI1rpxdleo1_500.png" class="img_left whiteBorder" />
+							<img src=<%=imgUrl%> class="img_left whiteBorder" style="width:100px;" />
 							<div style="margin-top:10px;">
-								<a style="font-weight:bold;color:white;">J.Y.Park</a>
+								<a style="font-weight:bold;color:white;">${MEMBERINFO.name}</a>
 								<a  href="#">Read more...</a>
 							</div>
 						</p>
@@ -114,7 +130,7 @@
 						<hr style="border:none;border-bottom:1px solid #777777;" />
 						
 						<img src="images/defaultProfile.jpg" style="float:left;width:24px;margin-right:5px;" />
-						<div style="display:inline;color:#CC0000;font-weight:bold;">이말년</div> 말년님이 당신의 사진을 좋아합니다.
+						<div style="display:inline;color:#CC0000;font-weight:bold;">ì´ë§ë</div> ë§ëëì´ ë¹ì ì ì¬ì§ì ì¢ìí©ëë¤.
 						<hr style="border:none;border-bottom:1px solid #777777;" />
 					</span>
 				</a>
@@ -123,3 +139,4 @@
 		
 	</footer>
 	</div>
+<!-- Footer END -->

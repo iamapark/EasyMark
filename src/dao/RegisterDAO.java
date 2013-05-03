@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import dto.Design;
 import dto.Login;
 import dto.Member;
 
@@ -102,6 +103,14 @@ public class RegisterDAO {
 	public void updateMemberInfo(Member m) {
 		try{
 			sqlMapper.update("updateMemberInfo", m);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	public void changeDesign(Design design) {
+		try{
+			sqlMapper.update("changeDesign", design);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}

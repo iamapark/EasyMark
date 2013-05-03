@@ -1,5 +1,6 @@
 package service;
 
+import dto.Design;
 import dto.Login;
 import dto.Member;
 
@@ -17,4 +18,6 @@ public interface MembershipServiceIF {
 	public String getDesignType(String userId);
 	
 	public Member getMemberInfo(String userId);
+	
+	public void changeDesign(Design design);
 }

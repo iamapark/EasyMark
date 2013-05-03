@@ -14,10 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import service.MembershipServiceImpl;
 import util.FileWriter;
+import dto.Design;
 import dto.Img;
 import dto.Login;
 import dto.Member;
-
 
 @Controller
 public class MembershipAction {
@@ -58,10 +58,13 @@ public class MembershipAction {
 		Login login = new Login(userId, password);
 		
 		boolean flag = new MembershipServiceImpl().login(login);
+		Member m = new MembershipServiceImpl().getMemberInfo(userId);
+
 		if(flag){
 			HttpSession session = request.getSession();
 			session.setAttribute("MEMBERID", userId);
 			session.setAttribute("designType", new MembershipServiceImpl().getDesignType(userId));
+			session.setAttribute("MEMBERINFO", m);
 			mav.setViewName("main");
 		}else{
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");
@@ -88,16 +91,33 @@ public class MembershipAction {
 																			  @RequestParam(value="setting_email")String email){
 		ModelAndView mav = new ModelAndView();
 		
-		new FileWriter().writeFile(file, request.getSession().getServletContext().getRealPath("/WEB-INF/users/img")+"/"+request.getSession().getAttribute("MEMBERID"), file.getOriginalFilename());
+		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/"+(String)request.getSession().getAttribute("MEMBERID")+"/";
+		
+		if(!file.getOriginalFilename().equals(""))
+			new FileWriter().writeFile(file, path, file.getOriginalFilename());
+		
+		/*String imgUrl = path + file.getOriginalFilename();
+		System.out.println("이미지 저장 경로2: " + imgUrl);
+		System.out.println("파일 이름: " + file.getOriginalFilename());*/
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		String imgUrl = request.getSession().getServletContext().getRealPath("/WEB-INF/users/img")+"/"+request.getSession().getAttribute("MEMBERID")+"/"+file.getOriginalFilename();
-		
-		Member m = new Member(userId, email, null, name, null, imgUrl);
+		Member m = new Member(userId, email, null, name, null, file.getOriginalFilename());
 		new MembershipServiceImpl().updateMemberInfo(m);
 		
-		boolean flag = true; 
-		request.setAttribute("result", Boolean.toString(flag));
+		request.getSession().setAttribute("MEMBERINFO", m);
+		mav.setViewName("main");
+		return mav;
+	}
+	
+	@RequestMapping("/changeDesign")
+	public ModelAndView changeDesign(HttpServletRequest request, @RequestParam("design")String design){
+		ModelAndView mav = new ModelAndView();
+		
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+
+		new MembershipServiceImpl().changeDesign(new Design(userId, design));
+		
+		request.setAttribute("result", "true");
 		mav.setViewName("result");
 		return mav;
 	}

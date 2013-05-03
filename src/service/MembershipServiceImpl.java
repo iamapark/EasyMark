@@ -1,6 +1,7 @@
 package service;
 
 import dao.RegisterDAO;
+import dto.Design;
 import dto.Login;
 import dto.Member;
 
@@ -42,6 +43,10 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 
 	public void updateMemberInfo(Member m) {
 		RegisterDAO.getInstance().updateMemberInfo(m);
+	}
+
+	public void changeDesign(Design design) {
+		RegisterDAO.getInstance().changeDesign(design);
 	}
 
 }
