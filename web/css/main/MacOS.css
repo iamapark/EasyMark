@@ -1,32 +1,33 @@
 html {
 		height: 100% !important;
 		color: #fff;
-		background: #222;
-		background-image: -webkit-gradient(radial,
+		/* background: #222; */
+		/* background-image: -webkit-gradient(radial,
 	                            50% 0, 10,
 	                            50% 0, 400,
 	                            from(rgba(255, 255, 255, 0.3)),
 	                            to(rgba(255, 255, 255, 0))
-								); /* Safari 5 */
+								); Safari 5
 		-webkit-background-image: radial-gradient(
 								center top, 
 								circle, 
 								rgba(255, 255, 255, 0.3) 0%, 
 								rgba(255, 255, 255, 0) 50%
 								);
-								/* Chrome, WK Nightly */
+								Chrome, WK Nightly
 		background-image: -moz-radial-gradient(
 								center top, 
 								circle, 
 								rgba(255, 255, 255, 0.3) 0%, 
 								rgba(255, 255, 255, 0) 50%
-								);
+								); */
 		/* Gradient not supported on Opera */
 	    background-repeat: no-repeat;
 	}
 	body {
 		font-family: 'Helvetica Neue', Helvetica, arial, sans-serif;
 		margin: 1em 1em 0;
+		background-image:url("../../images/wood_wallpaper3.jpg"); 
 	}
 	h1 {
 		text-shadow: rgba(255,255,255, .7) 0px 0px 10px;
