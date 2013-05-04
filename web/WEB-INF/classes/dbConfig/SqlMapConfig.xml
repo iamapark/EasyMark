@@ -10,6 +10,7 @@
 	<typeAlias alias="Member" type="dto.Member"/>
 	<typeAlias alias="Login" type="dto.Login"/>
 	<typeAlias alias="Design" type="dto.Design"/>
+	<typeAlias alias="BookMark" type="dto.BookMark"/>
 
 
   <!-- Configure a built-in transaction manager.  If you're using an 
@@ -49,5 +50,6 @@
        classpath, as they are here (com.domain.data...) -->
        
   <sqlMap resource="dbConfig/member.xml"/>
+  <sqlMap resource="dbConfig/bookmark.xml"/>
 
 </sqlMapConfig>

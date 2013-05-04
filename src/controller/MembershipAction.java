@@ -93,16 +93,14 @@ public class MembershipAction {
 		
 		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/"+(String)request.getSession().getAttribute("MEMBERID")+"/";
 		
-		if(!file.getOriginalFilename().equals(""))
+		if(!file.getOriginalFilename().equals("")){
 			new FileWriter().writeFile(file, path, file.getOriginalFilename());
-		
-		/*String imgUrl = path + file.getOriginalFilename();
-		System.out.println("이미지 저장 경로2: " + imgUrl);
-		System.out.println("파일 이름: " + file.getOriginalFilename());*/
+		}
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		Member m = new Member(userId, email, null, name, null, file.getOriginalFilename());
 		new MembershipServiceImpl().updateMemberInfo(m);
+		m = new MembershipServiceImpl().getMemberInfo(userId);
 		
 		request.getSession().setAttribute("MEMBERINFO", m);
 		mav.setViewName("main");

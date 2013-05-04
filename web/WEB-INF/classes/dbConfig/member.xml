@@ -69,9 +69,12 @@
 		update 
 			member_info 
 		set 
-			name=#name#, email=#email#, img_url=#imgUrl# 
+			name=#name#, email=#email#
+			<isNotEmpty property="imgUrl">
+				, img_url=#imgUrl# 
+			</isNotEmpty>
 		where 
-			user_id=#userId#;        
+			user_id=#userId#       
     </update>
     
     <update id="changeDesign" parameterClass="Design">

@@ -1,12 +1,18 @@
 <%@page import="ch.qos.logback.core.joran.action.IncludeAction"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<c:if test="${sessionScope.MEMBERID == null}">
+	<%
+		response.sendRedirect("/EasyMark/");
+	%>
+</c:if>  
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>${MEMBERID}/${designType} - EasyMark</title>
-<link rel="stylesheet" type="text/css" href="css/bookmark/gridster/jquery.gridster.css">
+	<link rel="stylesheet" type="text/css" href="css/bookmark/gridster/jquery.gridster.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
 	<!-- design:main -->
@@ -40,23 +46,14 @@
 	<div>
 	<div id="gridster" class="gridster">
     	<ul>
-			<li style= "vertical-align: middle; "data-toggle="tooltip" title="TEST" data-row="1" data-col="1" data-id="1" data-sizex="1" data-sizey="1"  class="bookmarkIcon">
-	           	<a id='info' data-id="${bookMark.bookMarkId}" role="button" data-toggle="modal"  class='close' href=#bookMarkInfo  data-dismiss='modal' aria-hidden='true'><img id='wheel' src='images/wheel.png'></a>
-	           	<img id="img" href="http://www.naver.com" src="http://static.naver.net/www/u/2010/0611/nmms_215646753.gif" style="width:80%; height:100%;">
-	           	<!--   <p>${bookMark.bookMarkName}</p>-->
-        	</li>
-        	
-        	<li style= "vertical-align: middle; "data-toggle="tooltip" title="TEST" data-row="1" data-col="2" data-id="2" data-sizex="1" data-sizey="1"  class="bookmarkIcon">
-	           	<a id='info' data-id="${bookMark.bookMarkId}" role="button" data-toggle="modal"  class='close' href=#bookMarkInfo  data-dismiss='modal' aria-hidden='true'><img id='wheel' src='images/wheel.png'></a>
-	           	<img id="img" href="http://www.naver.com" src="http://static.naver.net/www/u/2010/0611/nmms_215646753.gif" style="width:80%; height:100%;">
-	           	<!--   <p>${bookMark.bookMarkName}</p>-->
-        	</li> 
-        	
-        	<li style= "vertical-align: middle; "data-toggle="tooltip" title="TEST" data-row="1" data-col="3" data-id="3" data-sizex="1" data-sizey="1"  class="bookmarkIcon">
-	           	<a id='info' data-id="${bookMark.bookMarkId}" role="button" data-toggle="modal"  class='close' href=#bookMarkInfo  data-dismiss='modal' aria-hidden='true'><img id='wheel' src='images/wheel.png'></a>
-	           	<img id="img" href="http://www.naver.com" src="http://static.naver.net/www/u/2010/0611/nmms_215646753.gif" style="width:80%; height:100%;">
-	           	<!--   <p>${bookMark.bookMarkName}</p>-->
-        	</li>  
+			<c:forEach items="${sessionScope.bookMarkList}"	var="bookMark">
+			<li style= "vertical-align: middle;" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" class="bookmarkIcon">
+            	<a id='info' data-id="${bookMark.bookMarkId}" role="button" data-toggle="modal"  class='close' href=#bookMarkInfo  data-dismiss='modal' aria-hidden='true'>
+            		<img id='wheel' src='images/wheel.png'>
+           		</a>
+            	<img id="img" href="http://${bookMark.bookMarkUrl}" src="http://static.naver.net/www/u/2010/0611/nmms_215646753.gif" style="width:80%; height:100%;">
+            </li> 
+			</c:forEach>
     	</ul>
     </div>
     </div>
@@ -68,6 +65,8 @@
 	<!-- MODAL -->
 	<!-- setting 메뉴를 클릭했을 때 MODAL -->
 		<jsp:include page="modal/setting.jsp" />
+	<!-- 북마크 추가 메뉴룰 클릭했을 때 MODAL -->
+		<jsp:include page="modal/bookmarkAdd.jsp" />
  	<!-- MODAL END -->
 	
 	
@@ -159,8 +158,6 @@
 		 var openwindow = window.open('about:blank');
 		 openwindow.location.href = $(this).attr('href');
 	  });
-	 
-	  
 	</script>
 </body>
 </html>

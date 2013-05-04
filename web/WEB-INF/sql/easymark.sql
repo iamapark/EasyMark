@@ -20,6 +20,19 @@ CREATE TABLE "admin"
    CONSTRAINT pk_admin_admin_id PRIMARY KEY("admin_id") 
 );
 
+/***
+ * MySQL 버전
+ * CREATE  TABLE `nhneasymark`.`bookmark` (
+  `bookmark_id` INT NOT NULL AUTO_INCREMENT ,
+  `bookmark_name` VARCHAR(255) NULL ,
+  `bookmark_url` VARCHAR(255) NULL ,
+  `bookmark_descript` VARCHAR(4096) NULL ,
+  `user_id` VARCHAR(30) NULL ,
+  `status` VARCHAR(30) NULL ,
+  `pos_x` INT NULL ,
+  `pos_y` INT NULL ,
+  `img_url` VARCHAR(100) NULL ,
+  PRIMARY KEY (`bookmark_id`) );/
 CREATE TABLE "bookmark" 
 (
    "bookmark_id" INTEGER AUTO_INCREMENT(1, 1) NOT NULL, 
