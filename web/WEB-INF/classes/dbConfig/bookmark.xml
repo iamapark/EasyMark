@@ -12,27 +12,44 @@
 		<result property="status" column="status" />
 		<result property="posX" column="pos_x" />
 		<result property="posY" column="pos_y" />
-		<!-- <result property="frequency" cloumn="frequency" /> -->
-
+		<result property="imgUrl" column="img_url" />
+		<result property="frequency" column="frequency" />
 	</resultMap>
+	
 	<insert id="addBookMark" parameterClass="BookMark">
 		insert into bookmark
-		(bookMark_name,bookmark_url,bookmark_descript,user_id,status,pos_x,pos_y)
+		(bookMark_name,bookmark_url,bookmark_descript,user_id,status,pos_x,pos_y,img_url,frequency)
 		values (#bookMarkName#, #bookMarkUrl#, #bookMarkDescript#, #userId#,
-		#status#, #posX#, #posY#)
+		#status#, #posX#, #posY#, #imgUrl#, #frequency#)
 	</insert>
+	
 	<!-- Select with no parameters using the result map for Account class. -->
 	<select id="bookMarkList" parameterClass="String" resultMap="BookMarkList">
-		SELECT * FROM bookmark where user_id=#userId#
+		SELECT 
+			bookmark_id,
+			bookmark_name,
+			bookmark_url,
+			bookmark_descript,
+			user_id,
+			status,
+			pos_x,
+			pos_y,
+			img_url,
+			frequency frequency
+		FROM bookmark 
+		WHERE user_id=#userId#
 	</select>
+	
 	<select id="bookMarkPosx" parameterClass="String" resultClass="Integer">
 		SELECT MAX(pos_x) from bookmark WHERE user_id=#userId#
 	</select>
+	
 	<select id="bookMarkPosy" parameterClass="java.util.HashMap"
 		resultClass="Integer">
 		SELECT MAX(pos_y) from bookmark WHERE user_id=#userId# AND
 		pos_x=#posX#
 	</select>
+	
 	<update id="arrangeIcon" parameterClass="BookMark">
 		UPDATE bookmark
 		SET
@@ -40,22 +57,27 @@
 		pos_y=#posY#
 		WHERE bookmark_id=#bookMarkId#
 	</update>
+	
 	<delete id="deleteIcon" parameterClass="Integer">
 		DELETE FROM bookmark WHERE bookmark_id=#bookMarkId#
 
 	</delete>
+	
 	<select id="getBookMark" parameterClass="Integer" resultClass="BookMark">
 		SELECT 
-		bookmark_id bookMarkId,
-		bookmark_name bookMarkName,
-		bookmark_url bookMarkUrl,
-		bookmark_descript bookMarkDescript,
-		user_id userId,
-		status status,
-		pos_x posX,
-		pos_y posY
-		 from bookmark WHERE bookmark_id=#bookMarkId#
+			bookmark_id bookMarkId,
+			bookmark_name bookMarkName,
+			bookmark_url bookMarkUrl,
+			bookmark_descript bookMarkDescript,
+			user_id userId,
+			status status,
+			pos_x posX,
+			pos_y posY,
+			img_url imgUrl,
+			frequency frequency
+		from bookmark WHERE bookmark_id=#bookMarkId#
 	</select>
+	
 	<update id="modifyMark" parameterClass="BookMark">
 		UPDATE bookmark
 		SET
@@ -74,6 +96,7 @@
 
 
 	</select>
+	
 	<!--남기윤 updateBookMarkList 셀렉트 구문 -->
 	<update id="updateBookMarkList" parameterClass="BookMark">
 
@@ -84,20 +107,15 @@
 		status=#status#, pos_x=#posX#,
 		pos_y=#posY# where user_id=#userId#
 	</update>
+	
 	<delete id="deleteBookMarkList" parameterClass="Integer">
 		delete from
 		bookmark where bookmark_id=#bookMarkId#
 	</delete>
+	
 	<select id="bookMarkByFrequency" parameterClass="Integer" resultMap="BookMarkList">
 		SELECT bookmark_id, bookmark_name, bookmark_url,
 		bookmark_descript FROM bookmark bookmark_id=#bookMarkId#
 		order by frequency
-
-
 	</select>
-
-
-
-
-
 </sqlMap>

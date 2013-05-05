@@ -122,3 +122,12 @@ html {
 		-o-transform: scale(1.4);
 		margin: 0 1.4em 10px;
 	}
+	
+	.clear{
+		clear: both;
+		display: block;
+		overflow: hidden;
+		visibility: hidden;
+		width: 0px;
+		height: 0px;
+	}

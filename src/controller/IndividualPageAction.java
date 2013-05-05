@@ -12,31 +12,49 @@ import net.sf.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import service.IndividualPageServiceImpl;
+import service.MembershipServiceImpl;
+import util.FileWriter;
 import dto.BookMark;
+import dto.Img;
+import dto.Member;
 
 
 @Controller
 public class IndividualPageAction {
 	
 	@RequestMapping("/addMark")
-	public ModelAndView addBookMark(HttpServletRequest request, HttpServletResponse response, @RequestParam(value="name") String name,
-																							  @RequestParam(value="url") String url,
-																							  @RequestParam("description")String description){
+	public ModelAndView addBookMark(HttpServletRequest request, Img img, @RequestParam(value="name") String name,
+																									   @RequestParam(value="url") String url,
+																									   @RequestParam(value="description")String description,
+																									   @RequestParam(value="category")String category,
+																									   @RequestParam(value="bookmarkImgFile")MultipartFile file){
 		ModelAndView nextPage = new ModelAndView();
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		String imgUrl = null;
+		
+		//이미지가 저장되는 경로
+		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/" + userId + "/bookmark/";
+		System.out.println(path);
+		
+		if(!file.getOriginalFilename().equals("")){
+			new FileWriter().writeFile(file, path, file.getOriginalFilename());
+			imgUrl = "users/img/" + userId + "/bookmark/" + file.getOriginalFilename();
+		}else{
+			imgUrl = "images/Bookmark.png";
+		}
 		
 		//사용자ID 가져오기
-		HttpSession session = request.getSession();
-		String userId=(String)session.getAttribute("MEMBERID");
 		String status="false";
 		int posx=0;
 		int posy=0;
 		
 		ArrayList<BookMark> bookMarkList = null;
 		//현재 사용자의 북마크 리스트 가져오기
-		bookMarkList=new IndividualPageServiceImpl().bookMarkList(userId);
+		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
 		
 		//만약 처음 북마크 추가이면 1,1 위치 삽입
 		if(bookMarkList.size()==0){
@@ -61,12 +79,14 @@ public class IndividualPageAction {
 			
 		}
 		
-		//위치가 여기 저기 떨어져 있으면 북마크 추가할때 어디다 배치해야되나??
-		BookMark bookMark=new BookMark(0,name, url, description, userId, status, posx, posy);
+		BookMark bookMark = new BookMark(0,name, url, description, userId, status, posx, posy, imgUrl, 0);
 		new IndividualPageServiceImpl().addBookMark(bookMark);
-		bookMarkList=new IndividualPageServiceImpl().bookMarkList(userId);
+		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
+		request.getSession().setAttribute("bookMarkList", bookMarkList);
 		
-		session.setAttribute("bookMarkList", bookMarkList);
+		Member m = new MembershipServiceImpl().getMemberInfo(userId);
+		request.getSession().setAttribute("MEMBERINFO", m);
+		
 		nextPage.setViewName("main");
 		
 		return nextPage;

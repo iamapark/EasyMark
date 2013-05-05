@@ -47,11 +47,11 @@
 	<div id="gridster" class="gridster">
     	<ul>
 			<c:forEach items="${sessionScope.bookMarkList}"	var="bookMark">
-			<li style= "vertical-align: middle;" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" class="bookmarkIcon">
-            	<a id='info' data-id="${bookMark.bookMarkId}" role="button" data-toggle="modal"  class='close' href=#bookMarkInfo  data-dismiss='modal' aria-hidden='true'>
+			<li style= "vertical-align: middle;border-radius:20px;" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" class="bookmarkIcon">
+            	<a id='info' data-id="${bookMark.bookMarkId}" role="button" data-toggle="modal"  class='close' href=#bookMarkInfo  data-dismiss='modal' aria-hidden='true' style="position:absolute; right:4px;top:4px;">
             		<img id='wheel' src='images/wheel.png'>
            		</a>
-            	<img id="img" href="http://${bookMark.bookMarkUrl}" src="http://static.naver.net/www/u/2010/0611/nmms_215646753.gif" style="width:80%; height:100%;">
+            	<img id="img" href="http://${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
             </li> 
 			</c:forEach>
     	</ul>

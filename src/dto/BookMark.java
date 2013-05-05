@@ -13,13 +13,15 @@ public class BookMark implements Serializable {
 	private String status;
 	private int posX;
 	private int posY;
+	private String imgUrl;
 	private int frequency;
+	
 	
 	public BookMark() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public BookMark(int bookMarkId, String bookMarkName, String bookMarkUrl,
+	/*public BookMark(int bookMarkId, String bookMarkName, String bookMarkUrl,
 			String bookMarkDescript, String userId, String status, int posX,
 			int posY) {
 		super();
@@ -31,6 +33,22 @@ public class BookMark implements Serializable {
 		this.status = status;
 		this.posX = posX;
 		this.posY = posY;
+	}*/
+	
+	public BookMark(int bookMarkId, String bookMarkName, String bookMarkUrl,
+			String bookMarkDescript, String userId, String status, int posX,
+			int posY, String imgUrl, int frequency) {
+		super();
+		this.bookMarkId = bookMarkId;
+		this.bookMarkName = bookMarkName;
+		this.bookMarkUrl = bookMarkUrl;
+		this.bookMarkDescript = bookMarkDescript;
+		this.userId = userId;
+		this.status = status;
+		this.posX = posX;
+		this.posY = posY;
+		this.imgUrl = imgUrl;
+		this.frequency = frequency;
 	}
 	@Override
 	public int hashCode() {
@@ -104,10 +122,18 @@ public class BookMark implements Serializable {
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
-	public int getFrequency(){
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public int getFrequency() {
 		return frequency;
 	}
-	public void setFrequency(int frequency){
+
+	public void setFrequency(int frequency) {
 		this.frequency = frequency;
 	}
 	
