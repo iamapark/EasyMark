@@ -81,6 +81,7 @@ public class MembershipAction {
 		
 		HttpSession session = request.getSession();
 		Member m = new MembershipServiceImpl().getMemberInfo((String)session.getAttribute("MEMBERID"));
+
 		JSONObject dataJ = JSONObject.fromObject(m);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
@@ -88,24 +89,28 @@ public class MembershipAction {
 	}
 	
 	@RequestMapping("/updateMemberInfo")
-	public ModelAndView updateMemberInfo(HttpServletRequest request, Img img, @RequestParam("file")MultipartFile file,
+	public ModelAndView updateMemberInfo(HttpServletRequest request, Img img, @RequestParam(value="file",required=false)MultipartFile file,
 																			  @RequestParam(value="setting_name")String name,
 																			  @RequestParam(value="setting_email")String email){
 		ModelAndView mav = new ModelAndView();
 		
 		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/"+(String)request.getSession().getAttribute("MEMBERID")+"/";
-		
-		if(!file.getOriginalFilename().equals("")){
-			new FileWriter().writeFile(file, path, file.getOriginalFilename());
+		String imgUrl = null;
+		if(file != null){
+			if(!file.getOriginalFilename().equals("")){
+				new FileWriter().writeFile(file, path, file.getOriginalFilename());
+				imgUrl = file.getOriginalFilename();
+			}
 		}
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		Member m = new Member(userId, email, null, name, null, file.getOriginalFilename());
+		Member m = new Member(userId, email, null, name, null, imgUrl);
 		new MembershipServiceImpl().updateMemberInfo(m);
 		m = new MembershipServiceImpl().getMemberInfo(userId);
 		
-		request.getSession().setAttribute("MEMBERINFO", m);
-		mav.setViewName("main");
+		JSONObject dataJ = JSONObject.fromObject(m);
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
 		return mav;
 	}
 	
@@ -118,6 +123,32 @@ public class MembershipAction {
 		new MembershipServiceImpl().changeDesign(new Design(userId, design));
 		
 		request.setAttribute("result", "true");
+		mav.setViewName("result");
+		return mav;
+	}
+
+	
+	
+	@RequestMapping("/updateBgImg")
+	public ModelAndView updateBgImg(HttpServletRequest request, Img img, @RequestParam("backgroundImgFile")MultipartFile file){
+		ModelAndView mav = new ModelAndView();
+		
+		System.out.println(file.getOriginalFilename());
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/"+userId+"/bgImg/";
+		String imgUrl = null;
+		
+		if(!file.getOriginalFilename().equals("")){
+			new FileWriter().writeFile(file, path, file.getOriginalFilename());
+			imgUrl = "users/img/" + userId + "/bgImg/" + file.getOriginalFilename();
+		}
+		
+		Member m = new Member(userId, imgUrl);
+		
+		new MembershipServiceImpl().updateBgImg(m);
+		
+		JSONObject dataJ = JSONObject.fromObject(m);
+		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 		return mav;
 	}

@@ -20,4 +20,6 @@ public interface MembershipServiceIF {
 	public Member getMemberInfo(String userId);
 	
 	public void changeDesign(Design design);
+	
+	public void updateBgImg(Member m);
 }

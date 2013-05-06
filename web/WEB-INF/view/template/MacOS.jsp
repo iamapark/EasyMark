@@ -24,7 +24,7 @@
  	<div id="dock-container">
 		<div id="dock">
 		<ul>
-			<li><span style="color:white;">${MEMBERID}</span><a href="#setting" role="button" data-toggle="modal"><img src="<%=imgUrl%>" style="border-radius: 20px;"/></a></li>
+			<li><span style="color:white;">${MEMBERID}</span><a href="#setting" role="button" data-toggle="modal"><img src="<%=imgUrl%>" id="settingImg" style="border-radius: 20px;"/></a></li>
 			<li><span style="color:white;">북마크 추가</span><a href="#bookmarkAdd" role="button" data-toggle="modal"><img src="images/link.png"/></a></li>
 			<li><span style="color:white;">Friends</span><a href="#friends" role="button" data-toggle="modal"><img src="images/music.png"/></a></li>
 		</ul>

@@ -83,9 +83,11 @@ CREATE TABLE "message"
 
 
 
-//2013-04-30 추가분
+//2013-05-06 추가분
 /**MySQL 버전
  *
+delimiter $$
+
 CREATE TABLE `member_info` (
   `user_id` varchar(30) NOT NULL,
   `name` varchar(30) DEFAULT NULL,
@@ -93,8 +95,9 @@ CREATE TABLE `member_info` (
   `me2day_key` varchar(15) DEFAULT NULL,
   `status` varchar(30) DEFAULT '회원',
   `img_url` varchar(500) DEFAULT NULL,
+  `bg_img_url` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8$$
+);
 
 */
 

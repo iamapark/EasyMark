@@ -7,6 +7,7 @@ public class Member {
 	private String name = null;
 	private String me2DayKey = null;
 	private String imgUrl = null;
+	private String bgImgUrl = null;
 	
 	public Member() {
 		super();
@@ -40,6 +41,23 @@ public class Member {
 		this.name = name;
 		this.me2DayKey = me2DayKey;
 		this.imgUrl = imgUrl;
+	}
+	
+	public Member(String userId, String email, String password,
+			String name, String me2DayKey, String imgUrl, String bgImgUrl) {
+		super();
+		this.userId = userId;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.me2DayKey = me2DayKey;
+		this.imgUrl = imgUrl;
+		this.bgImgUrl = bgImgUrl;
+	}
+	
+	public Member(String userId, String bgImgUrl){
+		this.userId = userId;
+		this.bgImgUrl = bgImgUrl;
 	}
 
 	public String getUserId() {
@@ -90,10 +108,19 @@ public class Member {
 		this.imgUrl = imgUrl;
 	}
 
+	public String getBgImgUrl() {
+		return bgImgUrl;
+	}
+
+	public void setBgImgUrl(String bgImgUrl) {
+		this.bgImgUrl = bgImgUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "Member [userId=" + userId + ", email=" + email + ", password="
-				+ password + ", name=" + name + ", me2DayKey=" + me2DayKey + "]";
+				+ password + ", name=" + name + ", me2DayKey=" + me2DayKey
+				+ "imgUrl= " + imgUrl + " bgImgUrl= " + bgImgUrl + "]";
 	}
 	
 	

@@ -31,7 +31,7 @@
 	
 	
 </head>
-<body>
+<body style="background:url(${MEMBERINFO.bgImgUrl});background-position: 100% 100%;">
  	
  	<jsp:include page="template/MacOS.jsp">
  		<jsp:param value="${designType}" name="flag"/>
@@ -144,6 +144,7 @@ display:none;">${bookMark.bookMarkName}</div>
 				if(data.imgUrl != ""){
 					$('#inputPersonalImg').attr('src', 'users/img/' + data.userId + "/" + data.imgUrl);
 				}
+				$('#bgImg').attr('src', data.bgImgUrl);
 				kaka = data;
 			});
 		});
@@ -167,6 +168,21 @@ display:none;">${bookMark.bookMarkName}</div>
 	  $('img').dblclick(function(){
 		 var openwindow = window.open('about:blank');
 		 openwindow.location.href = $(this).attr('href');
+	  });
+	  
+	  $('#backgroundImgFile').change(function(){
+		 
+		 kaka = $(this);
+		 
+		 $("#bgImgForm").ajaxSubmit({
+        	dataType:'html',
+        	success:function(data,rst){
+        		$('#backgroundImgNoti').text('배경 이미지를 교체했습니다.');
+        		pData = JSON.parse(data);
+        		$('#bgImg').attr('src', pData.bgImgUrl);
+        		$('body').css('background-image','url('+ pData.bgImgUrl+ ')');
+			}
+	     });
 	  });
 	</script>
 </body>

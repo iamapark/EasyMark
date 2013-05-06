@@ -116,4 +116,12 @@ public class RegisterDAO {
 		}
 	}
 
+	public void updateBgImg(Member m) {
+		try{
+			sqlMapper.update("updateBgImg", m);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
 }

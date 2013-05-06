@@ -19,7 +19,7 @@
 				  	<div class="tab-pane active" id="setting_memberInfo">
 					    <!-- 회원 개인 정보  & 탈퇴 신청<--></-->
 					  	<h4>회원정보</h4>
-					  	<form class="form-horizontal" action="updateMemberInfo" method="POST" enctype="multipart/form-data">
+					  	<form class="form-horizontal" action="updateMemberInfo" id="updateMemberInfoForm" method="POST" enctype="multipart/form-data">
 						  <div class="control-group">
 						    <label class="control-label" for="inputId">아이디</label>
 						    <div class="controls">
@@ -42,10 +42,10 @@
 						    <label class="control-label" for="inputPersonalImg">개인 이미지</label>
 						    <div class="controls">
 						    	<img id="inputPersonalImg" src="images/defaultProfile.jpg" style="width:100px;">
-						    	<div><input type="file" name="file"></div>
+						    	<div><input type="file" name="file" id="personalImg"></div>
 						    </div>
 						  </div>
-						  <input type="submit" class="btn btn-primary" value="회원정보 수정" />
+						  <button type="submit" class="btn btn-primary" id="updateMemberButton" >회원정보 수정</button>
 						</form>
 			  	  	</div>
 				  	<div class="tab-pane" id="setting_bookmarkInfo">
@@ -62,6 +62,15 @@
 								<option value="WindowsOS">디자인 2: WindowsOS</option>
 							</select>
 							<span id="designSelectNoti"></span>
+					 	</div>
+					 	<div>
+					  		<!-- 배경화면 변경 -->
+					  		<h5>배경화면 변경</h5>
+							<img id="bgImg" src="images/calendar.png" style="width:15%;"/><br>
+							<form action="updateBgImg" name="bgImgForm" id="bgImgForm" method="post" enctype="multipart/form-data">
+								<input type="file" id="backgroundImgFile" name="backgroundImgFile">
+							</form>
+							<span id="backgroundImgNoti"></span>
 					 	</div>
 				  	</div>
 				</div>

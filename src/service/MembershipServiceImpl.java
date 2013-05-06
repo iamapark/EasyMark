@@ -49,4 +49,8 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 		RegisterDAO.getInstance().changeDesign(design);
 	}
 
+	public void updateBgImg(Member m) {
+		RegisterDAO.getInstance().updateBgImg(m);
+	}
+
 }
