@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
 
@@ -106,5 +105,61 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 
+	@RequestMapping("/getBookmarkInfo")
+	public ModelAndView getBookmarkInfo(HttpServletRequest request,
+			HttpServletResponse response){
+		ModelAndView nextPage = new ModelAndView();
+		BookMark bookMark=new BookMark();
+		int bookMarkId = Integer.parseInt(request.getParameter("bookMarkId"));
+		
+		bookMark=new IndividualPageServiceImpl().getBookMark(bookMarkId);
 	
+		JSONArray bookMarkJ = JSONArray.fromObject(bookMark);
+		request.setAttribute("result", bookMarkJ.toString());
+		nextPage.setViewName("result");
+		
+		return nextPage;
+	}
+
+	@RequestMapping("/modifyMark")
+	public ModelAndView modifymark(HttpServletRequest request,
+			HttpServletResponse response, Img img, @RequestParam(value="modifyBookmarkImage",required=false)MultipartFile file,
+												   @RequestParam(value="modifyBookmarkName")String name,
+												   @RequestParam(value="modifyBookmarkUrl")String url,
+												   @RequestParam(value="modifyBookmarkDescription")String desc,
+												   @RequestParam(value="bookmarkId")int bookMarkId){
+		ModelAndView nextPage = new ModelAndView();
+		
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		String imgUrl = null;
+
+		if(file != null){
+			if(!file.getOriginalFilename().equals("")){
+				String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/" + userId + "/bookmark/";
+				new FileWriter().writeFile(file, path, file.getOriginalFilename());
+				imgUrl = "users/img/" + userId + "/bookmark/" + file.getOriginalFilename();
+			}
+		}
+		
+		BookMark bookMark = new BookMark(bookMarkId, name, url, desc, "", "", 0, 0, imgUrl, 0);
+		new IndividualPageServiceImpl().modifyMark(bookMark);
+		
+		request.setAttribute("result", "수정되었습니다.");
+		nextPage.setViewName("result");
+		return nextPage;
+	}
+
+	@RequestMapping("/deleteMark")
+	public ModelAndView modifymark(HttpServletRequest request,
+			HttpServletResponse response, Img img, @RequestParam(value="bookmarkId")int bookMarkId){
+		ModelAndView nextPage = new ModelAndView();
+		
+		new IndividualPageServiceImpl().deleteIcon(bookMarkId);
+		
+		request.setAttribute("result", "삭제 성공");
+		nextPage.setViewName("result");
+		return nextPage;
+	}
+	
+
 }

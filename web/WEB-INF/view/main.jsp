@@ -52,6 +52,14 @@
             		<img id='wheel' src='images/wheel.png'>
            		</a>
             	<img id="img" href="http://${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
+            	<div class="bookmarkIconInfo" style="position:absolute; background-color: #838B8B;
+width: 100%;
+color: white;
+text-align: center;
+bottom: 0px;
+-webkit-border-bottom-right-radius: 20px;
+-webkit-border-bottom-left-radius:20px;
+display:none;">${bookMark.bookMarkName}</div>
             </li> 
 			</c:forEach>
     	</ul>
@@ -67,12 +75,14 @@
 		<jsp:include page="modal/setting.jsp" />
 	<!-- 북마크 추가 메뉴룰 클릭했을 때 MODAL -->
 		<jsp:include page="modal/bookmarkAdd.jsp" />
+	<!-- 북마크 아이콘 우측 상단의 톱니바퀴를 클릭했을 때 MODAL -->
+		<jsp:include page="modal/bookmarkInfo.jsp"></jsp:include>
  	<!-- MODAL END -->
 	
 	
 	<script src="js/jquery.js"></script>
+	<script src="js/jquery.form.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
-	<!-- <script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script> -->
 	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/bookmark/bookmark.js"></script>
 	<!-- design:main -->

@@ -21,7 +21,7 @@ public class BookMark implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	/*public BookMark(int bookMarkId, String bookMarkName, String bookMarkUrl,
+	public BookMark(int bookMarkId, String bookMarkName, String bookMarkUrl,
 			String bookMarkDescript, String userId, String status, int posX,
 			int posY) {
 		super();
@@ -33,7 +33,7 @@ public class BookMark implements Serializable {
 		this.status = status;
 		this.posX = posX;
 		this.posY = posY;
-	}*/
+	}
 	
 	public BookMark(int bookMarkId, String bookMarkName, String bookMarkUrl,
 			String bookMarkDescript, String userId, String status, int posX,

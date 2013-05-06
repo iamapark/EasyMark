@@ -84,6 +84,9 @@
 		bookmark_name=#bookMarkName#,
 		bookmark_url=#bookMarkUrl#,
 		bookmark_descript=#bookMarkDescript#
+		<isNotNull property="imgUrl">
+			, img_url=#imgUrl# 
+		</isNotNull>
 		WHERE bookmark_id=#bookMarkId#
 	</update>
 	

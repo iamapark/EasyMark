@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.FileWriter;
 import dto.Design;
@@ -65,6 +66,7 @@ public class MembershipAction {
 			session.setAttribute("MEMBERID", userId);
 			session.setAttribute("designType", new MembershipServiceImpl().getDesignType(userId));
 			session.setAttribute("MEMBERINFO", m);
+			request.getSession().setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
 			mav.setViewName("main");
 		}else{
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");

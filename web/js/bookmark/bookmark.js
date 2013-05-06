@@ -1,24 +1,9 @@
 var $id;
 $(document).ready(function(){
-	//좌표 타이밍 맞추기 어렵다 !!!!!!!!! 
-	//$('.bookmarkIcon').bind('mouseup',function(e){
-		//var up=jQuery.Event('mouseup');
-		//up.row=$(this).attr('data-row');
-		//up.col=$(this).attr('data-col');
-		//console.log('up.row: ' + up.row);
-		//console.log('up.col: ' + up.col);
-		
-//	});
-	
-	
-	
-	//오른쪽 상단 아이콘
-	//$('.bookmarkIcon').mouseover(bookMarkOver).mouseout(bookMarkOut);
-	
 	//삭제
-	$('.bookmarkIcon').mouseover(bookMarkDelete);
-	
-	
+	$('.bookmarkIcon').mouseover(bookMarkDelete).mouseout(bookMarkOut);
+
+	$('#modifyBookMarkForm').ajaxForm();
 	 
 });
 
@@ -90,6 +75,7 @@ var bookMarkOver = function(e){
 var bookMarkOut = function(e){
 	$('#x').remove();
 	//$('#desc').remove();
+	$(this).find('.bookmarkIconInfo').hide();
 	
 };
 var bookMarkInfor = function(e){
@@ -99,69 +85,68 @@ var bookMarkInfor = function(e){
 };
 var bookMarkDelete = function(e){
 	$id=$(this).attr('data-id');
-	console.log("id : "+$id);
-	
+	$(this).find('.bookmarkIconInfo').show();
 };
 //delete 버튼 눌렀을 때
 $('#delete').bind('click',function(e){
 	var $bookId=$id;
 	console.log("delete id :"+$bookId);
 	$.ajax({
-		url: 'deleteMark', //// javascript same origin policy를 해결하기 위한 프록시
+		url: 'deleteMark',
 		dataType:'json',
 		data: {	
-				bookMarkId:$bookId,
+				bookmarkId:$bookId,
 				
 	   		  }
 	}).done(function(data){
 		console.log("resetMarkList");
-		 location.href ="resetMarkList";
+		location.href ="resetMarkList";
 	});
 });
 
 //modify 눌렀을 때 북마크 정보 수정
 $('#modify').bind('click',function(e){
-	var $bookId=$id;
-	console.log($bookId);
-	$.ajax({
-		url: 'modifyMark', //// javascript same origin policy를 해결하기 위한 프록시
-		dataType:'json',
-		data: {	
-				bookMarkId:$bookId,
-				bookMarkName:escape($('#name').val()),
-				bookMarkUrl:escape($('#url').val()),
-				bookMarkDesc:escape($('#description').val())
-				
-	   		  }
+	var filename = $('#modifyBookMarkForm').find('#bookmarkIconImageFile').val();
 	
-	}).done(function(data){
-		 console.log("resetMark");
-		 location.href ="resetMark";
-	});
-	console.log("bookId :"+$bookId);
-	console.log("bookname :"+$('#name').val());
-	console.log("bookurl :"+$('#url').val());
-	console.log("bookdesc :"+$('#description').val());
+	if(filename == ''){
+		console.log('파일을 선택하지 않았습니다.');
+		$.ajax({
+			url:'modifyMark',
+			dataType:'json',
+			type:'POST',
+			data:{
+				modifyBookmarkName: $('#name').val(),
+				modifyBookmarkUrl: escape($('#url').val()),
+				modifyBookmarkDescription: escape($('#description').val()),
+				bookmarkId: escape($('#modifyBookMarkId').val())
+			}
+		}).done(function(data){
+			alert(data);
+		});
+	}else{
+		$("#modifyBookMarkForm").ajaxSubmit({
+        	dataType:'html',
+        	success:function(data,rst){alert(data);}
+    	});
+	}
 });
+
 //톱니바퀴 눌렀을 때 북마크 정보 가져온다
 $('a[data-id]').bind('click',function(e){
 	var $bookid=$(this).attr('data-id');
 	$.ajax({
-		url: 'getBookmarkInfo', //// javascript same origin policy를 해결하기 위한 프록시
+		url: 'getBookmarkInfo',
 		dataType:'json',
 		async: false,
-		data: {	
+		data: {
 				bookMarkId:$bookid,
-	   		  }
+	   	}
 	}).done(function(data){
 		$('#name').attr('value',$(data).attr('bookMarkName'));
 	    $('#url').attr('value',$(data).attr('bookMarkUrl'));
 	    $('#description').val($(data).attr('bookMarkDescript'));
-	    
-	    console.log("name"+$(data).attr('bookMarkName'));
-		console.log("url"+$(data).attr('bookMarkUrl'));
-		console.log("desc"+$(data).attr('bookMarkDescript'));
+	    $('#bookmarkIconImage').attr('src',$(data).attr('imgUrl'));
+	    $('#modifyBookMarkId').val($bookid);
 	});
-	console.log($(this));
 	e.preventDefault();
 });
