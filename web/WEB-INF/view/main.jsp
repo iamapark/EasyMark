@@ -11,7 +11,8 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>${MEMBERID}/${designType} - EasyMark</title>
+	<title>EasyMark-${MEMBERID}</title>
+	<LINK REL="SHORTCUT ICON" HREF="http://sciactive.github.io/pnotify/includes/github-icon.png" />
 	<link rel="stylesheet" type="text/css" href="css/bookmark/gridster/jquery.gridster.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
