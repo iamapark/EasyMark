@@ -26,11 +26,11 @@ import dto.Member;
 public class IndividualPageAction {
 	
 	@RequestMapping("/addMark")
-	public ModelAndView addBookMark(HttpServletRequest request, Img img, @RequestParam(value="name") String name,
-																									   @RequestParam(value="url") String url,
-																									   @RequestParam(value="description")String description,
-																									   @RequestParam(value="category")String category,
-																									   @RequestParam(value="bookmarkImgFile")MultipartFile file){
+	public ModelAndView addBookMark(HttpServletRequest request, Img img, @RequestParam(value="addBookMarkImage",required=false)MultipartFile file,
+																		 @RequestParam(value="name") String name,
+																		 @RequestParam(value="url") String url,
+																		 @RequestParam(value="description")String description,
+																		 @RequestParam(value="category")String category){
 		ModelAndView nextPage = new ModelAndView();
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		String imgUrl = null;
@@ -39,9 +39,13 @@ public class IndividualPageAction {
 		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/" + userId + "/bookmark/";
 		System.out.println(path);
 		
-		if(!file.getOriginalFilename().equals("")){
-			new FileWriter().writeFile(file, path, file.getOriginalFilename());
-			imgUrl = "users/img/" + userId + "/bookmark/" + file.getOriginalFilename();
+		if(file != null){
+			if(!file.getOriginalFilename().equals("")){
+				new FileWriter().writeFile(file, path, file.getOriginalFilename());
+				imgUrl = "users/img/" + userId + "/bookmark/" + file.getOriginalFilename();
+			}else{
+				imgUrl = "images/Bookmark.png";
+			}
 		}else{
 			imgUrl = "images/Bookmark.png";
 		}
@@ -86,7 +90,8 @@ public class IndividualPageAction {
 		Member m = new MembershipServiceImpl().getMemberInfo(userId);
 		request.getSession().setAttribute("MEMBERINFO", m);
 		
-		nextPage.setViewName("main");
+		request.setAttribute("result", "북마크가 추가되었습니다.");
+		nextPage.setViewName("result");
 		
 		return nextPage;
 	}
@@ -128,6 +133,12 @@ public class IndividualPageAction {
 												   @RequestParam(value="modifyBookmarkUrl")String url,
 												   @RequestParam(value="modifyBookmarkDescription")String desc,
 												   @RequestParam(value="bookmarkId")int bookMarkId){
+		
+		System.out.println("name: " + name);
+		System.out.println("url: " + url);
+		System.out.println("desc: " + desc);
+		
+		
 		ModelAndView nextPage = new ModelAndView();
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
@@ -150,7 +161,7 @@ public class IndividualPageAction {
 	}
 
 	@RequestMapping("/deleteMark")
-	public ModelAndView modifymark(HttpServletRequest request,
+	public ModelAndView deleteMark(HttpServletRequest request,
 			HttpServletResponse response, Img img, @RequestParam(value="bookmarkId")int bookMarkId){
 		ModelAndView nextPage = new ModelAndView();
 		

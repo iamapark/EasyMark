@@ -16,19 +16,19 @@
          <div class="control-group">
            <label class="control-label" for="name">name</label>
            <div class="controls">
-             <input type="text" id="name" name="modifyBookmarkName" >
+             <input type="text" id="modifyBookmarkName" name="modifyBookmarkName" >
            </div>
          </div>
          <div class="control-group">
            <label class="control-label" for="url">url</label>
            <div class="controls">
-             <input type="text" id="url" name="modifyBookmarkUrl"  >
+             <input type="text" id="modifyBookmarkUrl" name="modifyBookmarkUrl"  >
            </div>
          </div>
          <div class="control-group">
          <label class="textarea" for="description">desc</label>
            <div class="controls">
-              <textarea rows="4" cols="10" id="description"  name="modifyBookmarkDescription"></textarea>
+              <textarea rows="4" cols="10" id="modifyBookmarkDescription"  name="modifyBookmarkDescription"></textarea>
            </div>
          </div>
          <div class="control-group">

@@ -6,7 +6,7 @@
 	<%
 		response.sendRedirect("/EasyMark/");
 	%>
-</c:if>  
+</c:if>
 <!DOCTYPE html>
 <html>
 <head>

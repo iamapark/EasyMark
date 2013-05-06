@@ -4,7 +4,7 @@ $(document).ready(function(){
 	$('.bookmarkIcon').mouseover(bookMarkDelete).mouseout(bookMarkOut);
 
 	$('#modifyBookMarkForm').ajaxForm();
-	 
+	/*$('#addMarkForm').ajaxForm();*/
 });
 
 var bookMarkArrange = function(e){
@@ -109,15 +109,14 @@ $('#modify').bind('click',function(e){
 	var filename = $('#modifyBookMarkForm').find('#bookmarkIconImageFile').val();
 	
 	if(filename == ''){
-		console.log('파일을 선택하지 않았습니다.');
 		$.ajax({
 			url:'modifyMark',
 			dataType:'json',
 			type:'POST',
 			data:{
-				modifyBookmarkName: $('#name').val(),
-				modifyBookmarkUrl: escape($('#url').val()),
-				modifyBookmarkDescription: escape($('#description').val()),
+				modifyBookmarkName: $('#modifyBookmarkName').val(),
+				modifyBookmarkUrl: escape($('#modifyBookmarkUrl').val()),
+				modifyBookmarkDescription: $('#modifyBookmarkDescription').val(),
 				bookmarkId: escape($('#modifyBookMarkId').val())
 			}
 		}).done(function(data){
@@ -127,6 +126,38 @@ $('#modify').bind('click',function(e){
 		$("#modifyBookMarkForm").ajaxSubmit({
         	dataType:'html',
         	success:function(data,rst){alert(data);}
+    	});
+	}
+});
+
+//add 눌렀을 때 북마크 정보 추가
+$('#add').bind('click',function(e){
+	e.preventDefault();
+	console.log('add');
+	var filename = $('#addMarkForm').find('#addBookMarkImage').val();
+	
+	if(filename == ''){
+		console.log('no image');
+		$.ajax({
+			url:'addMark',
+			dataType:'json',
+			type:'POST',
+			data:{
+				name:       $('#addBookMarkName').val(),
+				url: escape($('#addBookMarkUrl').val()),
+				description:$('#addBookMarkDescription').val(),
+				category:   $('#addBookMarkCategory').val()
+			}
+		}).done(function(data){
+			alert(data);
+		});
+	}else{
+		console.log('image3');
+		$("#addMarkForm").ajaxSubmit({
+        	dataType:'html',
+        	success:function(data,rst){
+        		console.log(data);
+			}
     	});
 	}
 });
@@ -142,9 +173,10 @@ $('a[data-id]').bind('click',function(e){
 				bookMarkId:$bookid,
 	   	}
 	}).done(function(data){
-		$('#name').attr('value',$(data).attr('bookMarkName'));
-	    $('#url').attr('value',$(data).attr('bookMarkUrl'));
-	    $('#description').val($(data).attr('bookMarkDescript'));
+		kaka = data;
+		$('#modifyBookmarkName').val($(data).attr('bookMarkName'));
+	    $('#modifyBookmarkUrl').val($(data).attr('bookMarkUrl'));
+	    $('#modifyBookmarkDescription').val($(data).attr('bookMarkDescript'));
 	    $('#bookmarkIconImage').attr('src',$(data).attr('imgUrl'));
 	    $('#modifyBookMarkId').val($bookid);
 	});
