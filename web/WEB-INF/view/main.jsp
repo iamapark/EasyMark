@@ -53,14 +53,7 @@
             		<img id='wheel' src='images/wheel.png'>
            		</a>
             	<img id="img" href="http://${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
-            	<div class="bookmarkIconInfo" style="position:absolute; background-color: #838B8B;
-width: 100%;
-color: white;
-text-align: center;
-bottom: 0px;
--webkit-border-bottom-right-radius: 20px;
--webkit-border-bottom-left-radius:20px;
-display:none;">${bookMark.bookMarkName}</div>
+            	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
             </li> 
 			</c:forEach>
     	</ul>
@@ -68,8 +61,6 @@ display:none;">${bookMark.bookMarkName}</div>
     </div>
 	<!-- BookMark List END -->
 	
-	
-
 	
 	<!-- MODAL -->
 	<!-- setting 메뉴를 클릭했을 때 MODAL -->
@@ -86,71 +77,9 @@ display:none;">${bookMark.bookMarkName}</div>
 	<script src="js/bootstrap/bootstrap.js"></script>
 	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/bookmark/bookmark.js"></script>
+	<script src="js/membership/membership.js"></script>
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
-	<script>
-		$('#designSelect').change(function(){
-			var styleSelected = $('#designSelect option:selected').val();
-			changeCSS(styleSelected);
-			changeElement(styleSelected);
-			changeJS(styleSelected);
-			
-			$.ajax({
-				url:'changeDesign',
-				dataType:'json',
-				data:{
-					design:styleSelected
-				}
-			}).done(function(data){
-				$('#designSelectNoti').text('디자인이 변경되었습니다.');
-			});
-		});
-		
-		$('#designSelectButton').click(function(){
-			var styleSelected = $('#designSelect option:selected').val();
-		});
-		
-		function changeCSS(fname)
-        {
-            var tg = document.getElementById('designSelectedCss');
-            if(tg) { tg.href=('css/main/'+fname+'.css'); }
-        }
-		
-		function changeJS(fname){
-			var tg = document.getElementById('designSelectedJs');
-			if(tg) {tg.src=('js/main/' + fname + '.js');}
-		}
-		
-		function changeElement(fname){
-			if(fname == 'MacOS'){ //MacOS 선택
-				$("#designMainContainer").show();
-				$("#designMain2Container").hide();
-				
-			}else if(fname == 'WindowsOS'){ //WindowsOS 선택
-				$("#designMainContainer").hide();
-				$("#designMain2Container").show();
-			}
-		}
-		
-		/**
-		<!-- setting 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. -->*/
-		$('a[href="#setting"]').click(function(){
-			$.ajax({
-				url: 'getMemberInfo',
-				dataType:'json'
-			}).done(function(data){
-				$('#setting_userId').val(data.userId);
-				$('#setting_name').val(data.name);
-				$('#setting_email').val(data.email);
-				if(data.imgUrl != ""){
-					$('#inputPersonalImg').attr('src', 'users/img/' + data.userId + "/" + data.imgUrl);
-				}
-				$('#bgImg').attr('src', data.bgImgUrl);
-				kaka = data;
-			});
-		});
-		
-	</script>
 	<script type="text/javascript">
 	  var gridster;
 	
@@ -163,27 +92,6 @@ display:none;">${bookMark.bookMarkName}</div>
 	       serialize_params: function($w, wgd) { return { col: wgd.col, row: wgd.row }; },
 	    }).data('gridster');
 	
-	  });
-	</script>
-	<script type="text/javascript">
-	  $('img').dblclick(function(){
-		 var openwindow = window.open('about:blank');
-		 openwindow.location.href = $(this).attr('href');
-	  });
-	  
-	  $('#backgroundImgFile').change(function(){
-		 
-		 kaka = $(this);
-		 
-		 $("#bgImgForm").ajaxSubmit({
-        	dataType:'html',
-        	success:function(data,rst){
-        		$('#backgroundImgNoti').text('배경 이미지를 교체했습니다.');
-        		pData = JSON.parse(data);
-        		$('#bgImg').attr('src', pData.bgImgUrl);
-        		$('body').css('background-image','url('+ pData.bgImgUrl+ ')');
-			}
-	     });
 	  });
 	</script>
 </body>

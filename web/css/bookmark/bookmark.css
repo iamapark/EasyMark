@@ -438,4 +438,16 @@ article:not(:last-child),
 #intro > div:last-child{
     width: 32%;
     float: right;
-} */
+}
+
+.bookmarkIconInfo{
+	position:absolute; 
+	background-color: #838B8B;
+	width: 100%;
+	color: white;
+	text-align: center;
+	bottom: 0px;
+	-webkit-border-bottom-right-radius: 20px;
+	-webkit-border-bottom-left-radius:20px;
+	display:none;
+}

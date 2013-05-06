@@ -162,39 +162,6 @@ $('#add').bind('click',function(e){
 	}
 });
 
-//회원정보 수정 버튼을 눌렀을 때 호출
-$('#updateMemberButton').click(function(e){
-	e.preventDefault();
-	console.log('회원정보 수정');
-	
-	var filename = $('#personalImg').val();
-	
-	if(filename == ''){
-		$.ajax({
-			url:'updateMemberInfo',
-			dataType:'json',
-			type:'POST',
-			data:{
-				userId:       $('#setting_userId').val(),
-				setting_name: $('#setting_name').val(),
-				setting_email:$('#setting_email').val()
-			}
-		}).done(function(data){
-			alert(data);
-		});
-	}else{
-		$("#updateMemberInfoForm").ajaxSubmit({
-        	dataType:'html',
-        	success:function(data,rst){
-        		var imgUrl = JSON.parse(data).imgUrl;
-        		var userId = JSON.parse(data).userId;
-        		$('#settingImg').attr('src', 'users/img/'+userId+'/'+imgUrl);
-        		$('#inputPersonalImg').attr('src', 'users/img/'+userId+'/'+imgUrl);
-			}
-    	});
-	}
-});
-
 //톱니바퀴 눌렀을 때 북마크 정보 가져온다
 $('a[data-id]').bind('click',function(e){
 	var $bookid=$(this).attr('data-id');
@@ -215,13 +182,3 @@ $('a[data-id]').bind('click',function(e){
 	});
 	e.preventDefault();
 });
-
-// 배경화면에서 MODAL을 불러오는 a태그를 클릭했을 때 호출
-$('a[data-toggle="modal"]').click(function(){
-	clearForm();
-});
-
-//여러가지 폼들을 초기화한다. 이전 데이터들을 지운다.
-var clearForm = function(){
-	$('#backgroundImgNoti').text('');
-};
