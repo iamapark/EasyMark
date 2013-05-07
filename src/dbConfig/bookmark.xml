@@ -17,6 +17,11 @@
 	</resultMap>
 	
 	<insert id="addBookMark" parameterClass="BookMark">
+	
+		<selectKey keyProperty="bookMarkId" resultClass="int">
+			(SELECT IFNULL(MAX(bookmark_id),0)+1 FROM bookmark)
+		</selectKey>
+	
 		insert into bookmark
 		(bookMark_name,bookmark_url,bookmark_descript,user_id,status,pos_x,pos_y,img_url,frequency)
 		values (#bookMarkName#, #bookMarkUrl#, #bookMarkDescript#, #userId#,

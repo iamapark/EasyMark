@@ -16,6 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="css/bookmark/gridster/jquery.gridster.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
+	<link rel="stylesheet" href="css/bookmark/jquery.contextmenu.css" type="text/css" >
 	<!-- design:main -->
 	<%
 		String designType = (String)session.getAttribute("designType");
@@ -48,10 +49,7 @@
 	<div id="gridster" class="gridster">
     	<ul>
 			<c:forEach items="${sessionScope.bookMarkList}"	var="bookMark">
-			<li style= "vertical-align: middle;border-radius:20px;" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" class="bookmarkIcon">
-            	<a id='info' data-id="${bookMark.bookMarkId}" role="button" data-toggle="modal"  class='close' href=#bookMarkInfo  data-dismiss='modal' aria-hidden='true' style="position:absolute; right:4px;top:4px;">
-            		<img id='wheel' src='images/wheel.png'>
-           		</a>
+			<li data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" class="bookmarkIcon">
             	<img id="img" href="http://${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
             	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
             </li> 
@@ -78,20 +76,16 @@
 	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/bookmark/bookmark.js"></script>
 	<script src="js/membership/membership.js"></script>
+	<script src="js/bookmark/jquery.contextmenu.js"></script>
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
 	<script type="text/javascript">
-	  var gridster;
-	
-	  $(function(){
-	    gridster = $(".gridster > ul").gridster({
-	        widget_margins: [10, 10],
-	        widget_base_dimensions: [140, 140],
-	        min_cols: 6,
-	        avoid_overlapped_widgets: true,
-	       serialize_params: function($w, wgd) { return { col: wgd.col, row: wgd.row }; },
-	    }).data('gridster');
-	
+	  $('.bookmarkIcon').contextPopup({
+		  title:'북마크',
+		  items:[
+			{label:'북마크 변경', icon:'', action:function(){bookmarkUpdate();}},
+			{label:'북마크 삭제', icon:'', action:function(){bookmarkDelete();}}
+		  ]
 	  });
 	</script>
 </body>

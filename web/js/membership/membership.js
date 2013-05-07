@@ -100,16 +100,9 @@ $('a[href="#setting"]').click(function(){
 			$('#inputPersonalImg').attr('src', 'users/img/' + data.userId + "/" + data.imgUrl);
 		}
 		$('#bgImg').attr('src', data.bgImgUrl);
-		kaka = data;
 	});
 });
 
-// 북마크 아이콘을 더블 클릭했을 때 호출
-$('img').dblclick(function(){
-	var openwindow = window.open('about:blank');
-	openwindow.location.href = $(this).attr('href');
-});
- 
 // 배경화면 파일을 선택했을 때 호출
 $('#backgroundImgFile').change(function(){
 	$("#bgImgForm").ajaxSubmit({

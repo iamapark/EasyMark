@@ -21,14 +21,15 @@ public class BookMarkDAO {
 	private BookMarkDAO(){
 		sqlMapper = DAOParser.getParser();
 	}
-	public void addBookMark(BookMark bookMark) {
+	public int addBookMark(BookMark bookMark) {
+		int maxBookmarkId = 0;
 		try {
-			sqlMapper.insert("addBookMark", bookMark);
+			maxBookmarkId = (Integer)sqlMapper.insert("addBookMark", bookMark);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return maxBookmarkId;
 	}
 	public ArrayList<BookMark> bookMarkList(String userId){
 		ArrayList<BookMark> bookMarkList=null;

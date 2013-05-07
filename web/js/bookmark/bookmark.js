@@ -1,26 +1,35 @@
 var $id;
+var gridster;
+
 $(document).ready(function(){
+	init();
+});
+
+var init = function(){
 	//삭제
 	$('.bookmarkIcon').mouseover(bookMarkDelete).mouseout(bookMarkOut);
-
-	$('#modifyBookMarkForm').ajaxForm();
-	$('#bgImg').ajaxForm();
-	/*$('#addMarkForm').ajaxForm();*/
 	
-});
+	//그리드스터 초기화
+	gridsterInitial();
+	
+	// 북마크 아이콘을 더블 클릭했을 때 호출
+	$('img').dblclick(function(){
+		var openwindow = window.open('about:blank');
+		openwindow.location.href = $(this).attr('href');
+	});
+};
 
 var bookMarkArrange = function(e){
 	
-	var wgd=new Array();
+	wgd=new Array();
 	wgd=gridster.serialize_changed( );
 	wgd2=gridster.serialize( );
-	console.log('serialize_changed( )'+toJSONString(wgd));
-	console.log('serialize( )'+toJSONString(wgd2));
+	console.log(toJSONString(wgd));
+	console.log($(this).attr('data-id'));
+	//console.log('serialize( )'+toJSONString(wgd2));
 	
 	
-	function toJSONString(json)
-	{
-		
+	function toJSONString(json){
 	    var ary = new Array();
 	    for(var key in json)
 	    {
@@ -30,13 +39,10 @@ var bookMarkArrange = function(e){
 	        ary.push(key+':'+val);
 	    }
 	    return '{'+ary.join()+'}';
-	   
-		
-		
 	}
 	
 	$.ajax({
-		url: 'arrange/arrange.jsp', //// javascript same origin policy를 해결하기 위한 프록시
+		url: 'arrange', //// javascript same origin policy를 해결하기 위한 프록시
 		dataType:'json',
 		data: {
 				//posX:$x,
@@ -47,6 +53,7 @@ var bookMarkArrange = function(e){
 				//wgd:wgd,
 	   		  }
 	});
+	
 	//console.log('wgd'+wgd);
 	
 	//console.log('data-row: ' + $(this).attr('data-row'));
@@ -59,6 +66,7 @@ var bookMarkArrange = function(e){
 	//console.log("/");
 	
 };
+
 var bookMarkOver = function(e){
 	
 	var $li = $(this);
@@ -89,6 +97,7 @@ var bookMarkDelete = function(e){
 	$id=$(this).attr('data-id');
 	$(this).find('.bookmarkIconInfo').show();
 };
+
 //delete 버튼 눌렀을 때
 $('#delete').bind('click',function(e){
 	var $bookId=$id;
@@ -107,8 +116,9 @@ $('#delete').bind('click',function(e){
 });
 
 //modify 눌렀을 때 북마크 정보 수정
-$('#modify').bind('click',function(e){
-	var filename = $('#modifyBookMarkForm').find('#bookmarkIconImageFile').val();
+$('#modify').click(function(e){
+	e.preventDefault();
+	var filename = $('#bookmarkIconImageFile').val();
 	
 	if(filename == ''){
 		$.ajax({
@@ -117,17 +127,23 @@ $('#modify').bind('click',function(e){
 			type:'POST',
 			data:{
 				modifyBookmarkName: $('#modifyBookmarkName').val(),
-				modifyBookmarkUrl: escape($('#modifyBookmarkUrl').val()),
+				modifyBookmarkUrl: $('#modifyBookmarkUrl').val(),
 				modifyBookmarkDescription: $('#modifyBookmarkDescription').val(),
-				bookmarkId: escape($('#modifyBookMarkId').val())
+				bookmarkId: $('#modifyBookMarkId').val()
 			}
 		}).done(function(data){
 			alert(data);
+		}).always(function(){
+			alert('수정되었습니다.');
+			$('#bookMarkInfo').modal('hide');
 		});
 	}else{
 		$("#modifyBookMarkForm").ajaxSubmit({
         	dataType:'html',
-        	success:function(data,rst){alert(data);}
+        	success:function(data,rst){
+        		alert(data);
+        		$('#bookMarkInfo').modal('hide');
+    		}
     	});
 	}
 });
@@ -135,50 +151,114 @@ $('#modify').bind('click',function(e){
 //add 눌렀을 때 북마크 정보 추가
 $('#add').bind('click',function(e){
 	e.preventDefault();
-	console.log('add');
 	var filename = $('#addMarkForm').find('#addBookMarkImage').val();
+	var newLi;
+	var id, x, y;
 	
+	dataInfo = {
+		name:       $('#addBookMarkName').val(),
+		url: escape($('#addBookMarkUrl').val()),
+		description:$('#addBookMarkDescription').val(),
+		category:   $('#addBookMarkCategory').val()
+	};
 	if(filename == ''){
 		$.ajax({
 			url:'addMark',
 			dataType:'json',
 			type:'POST',
-			data:{
-				name:       $('#addBookMarkName').val(),
-				url: escape($('#addBookMarkUrl').val()),
-				description:$('#addBookMarkDescription').val(),
-				category:   $('#addBookMarkCategory').val()
-			}
+			data: dataInfo
+			
 		}).done(function(data){
-			alert(data);
+			id = data.id; x = data.x; y = data.y;
+			$('#bookmarkAdd').modal('hide');
+			alert('북마크가 추가되었습니다!!');
+			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+				newLi += '<img id="img" href="http://'+dataInfo.url+'" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
+				newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
+			newLi += '</li>';
+			gridster.add_widget(newLi, 1, 1);
+			init();
 		});
 	}else{
 		$("#addMarkForm").ajaxSubmit({
         	dataType:'html',
         	success:function(data,rst){
-        		console.log(data);
+        		id = JSON.parse(data).id; x = JSON.parse(data).x; y = JSON.parse(data).y;
+        		alert('북마크가 추가되었습니다.');
+        		$('#bookmarkAdd').modal('hide');
+        		newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+					newLi += '<img id="img" href="http://'+dataInfo.url+'" src="'+JSON.parse(data).imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
+					newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
+				newLi += '</li>';
+				gridster.add_widget(newLi, 1, 1);
+				init();
 			}
     	});
 	}
+	
+	
+	
+	
+	/*<li data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" class="bookmarkIcon">
+    	<img id="img" href="http://${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
+    	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
+    </li>*/
+	
+	
 });
 
-//톱니바퀴 눌렀을 때 북마크 정보 가져온다
-$('a[data-id]').bind('click',function(e){
-	var $bookid=$(this).attr('data-id');
-	$.ajax({
-		url: 'getBookmarkInfo',
-		dataType:'json',
-		async: false,
-		data: {
-				bookMarkId:$bookid,
-	   	}
-	}).done(function(data){
-		kaka = data;
-		$('#modifyBookmarkName').val($(data).attr('bookMarkName'));
-	    $('#modifyBookmarkUrl').val($(data).attr('bookMarkUrl'));
-	    $('#modifyBookmarkDescription').val($(data).attr('bookMarkDescript'));
-	    $('#bookmarkIconImage').attr('src',$(data).attr('imgUrl'));
-	    $('#modifyBookMarkId').val($bookid);
-	});
-	e.preventDefault();
-});
+//북마크에서 마우스 오른쪽 버튼을 누르고 북마크 변경 탭을 클릭했을 때
+var bookmarkUpdate = function(){
+	  console.log($(this));
+	  keke = $(this);
+	  $bookid = $(this).attr('$id');
+	  $.ajax({
+			url: 'getBookmarkInfo',
+			dataType:'json',
+			async: false,
+			data: {
+					bookMarkId: $bookid
+		   	}
+		}).done(function(data){
+			kaka = data;
+			$('#modifyBookmarkName').val($(data).attr('bookMarkName'));
+		    $('#modifyBookmarkUrl').val($(data).attr('bookMarkUrl'));
+		    $('#modifyBookmarkDescription').val($(data).attr('bookMarkDescript'));
+		    $('#bookmarkIconImage').attr('src',$(data).attr('imgUrl'));
+		    $('#modifyBookMarkId').val($bookid);
+		});
+	  $('#bookMarkInfo').modal('show');  
+};
+  
+//북마크에서 마우스 오른쪽 버튼을 누르고 북마크 삭제 탭을 클릭했을 때
+var bookmarkDelete = function(){
+  	var $bookId = $(this).attr('$id');
+	
+	var flag = confirm('정말 삭제하시겠습니까??');
+	if(flag == true){
+		$.ajax({
+			url: 'deleteMark',
+			dataType:'json',
+			data: {	
+					bookmarkId:$bookId,
+					
+		   		  }
+		}).done(function(data){
+			$('li[data-id="'+ $bookId +'"]').remove();
+		});
+	}
+};
+
+// 그리드 스터 아이콘 초기화
+var gridsterInitial = function(){
+  gridster = $(".gridster > ul").gridster({
+        widget_margins: [10, 10],
+        widget_base_dimensions: [140, 140],
+        min_cols: 6,
+        avoid_overlapped_widgets: true,
+        serialize_params: function($w, wgd) {
+       		//console.log('col: ' + wgd.col + ', row: ' + wgd.row); 
+       		return { col: wgd.col, row: wgd.row }; 
+   		}
+    }).data('gridster');
+};

@@ -19,7 +19,7 @@ public interface IndividualPageServiceIF {
 	 * @param BookMark 즐겨찾기 페이지에 추가하려는 웹 페이지 정보
 	 * @return void
 	 */
-	public void addBookMark(BookMark bookMark);	
+	public int addBookMark(BookMark bookMark);	
 	public ArrayList<BookMark> bookMarkList(String userId);
 	public BookMark getBookMark(int bookMarkId);
 	public int bookMarkPosx(String userId);

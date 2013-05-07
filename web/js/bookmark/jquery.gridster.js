@@ -1309,7 +1309,7 @@
     */
     fn.add_to_gridmap = function(grid_data, value) {
         this.update_widget_position(grid_data, value || grid_data.el);
-
+		
         if (grid_data.el) {
             var $widgets = this.widgets_below(grid_data.el);
             $widgets.each($.proxy(function(i, widget) {
@@ -1375,7 +1375,7 @@
         //set new grid height along the dragging period
         this.$el.css('height', this.$el.height() +
           (this.player_grid_data.size_y * this.min_widget_height));
-
+		
         var colliders = this.faux_grid;
         var coords = this.$player.data('coords').coords;
 
@@ -1487,8 +1487,8 @@
             });
         //this.$target.data('id');
        // console.log('id:'+this.$target.data('id'));
-        console.log('col:'+this.placeholder_grid_data.col);
-        console.log('row:'+this.placeholder_grid_data.row);
+        //console.log('col:'+this.placeholder_grid_data.col);
+        //console.log('row:'+this.placeholder_grid_data.row);
        
        // bookMarkArrange(this.placeholder_grid_data.col,this.placeholder_grid_data.row,this.$target.data('id'));
         

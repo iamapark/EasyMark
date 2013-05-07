@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,14 +84,20 @@ public class IndividualPageAction {
 		}
 		
 		BookMark bookMark = new BookMark(0,name, url, description, userId, status, posx, posy, imgUrl, 0);
-		new IndividualPageServiceImpl().addBookMark(bookMark);
+		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
 		request.getSession().setAttribute("bookMarkList", bookMarkList);
 		
 		Member m = new MembershipServiceImpl().getMemberInfo(userId);
 		request.getSession().setAttribute("MEMBERINFO", m);
 		
-		request.setAttribute("result", "북마크가 추가되었습니다.");
+		JSONObject jobj = new JSONObject();
+		jobj.put("x", posx);
+		jobj.put("y", posy);
+		jobj.put("id", maxBookmarkId);
+		jobj.put("imgUrl", imgUrl);
+		
+		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
 		
 		return nextPage;
@@ -127,8 +134,8 @@ public class IndividualPageAction {
 	}
 
 	@RequestMapping("/modifyMark")
-	public ModelAndView modifymark(HttpServletRequest request,
-			HttpServletResponse response, Img img, @RequestParam(value="modifyBookmarkImage",required=false)MultipartFile file,
+	public ModelAndView modifymark(HttpServletRequest request, Img img,
+										   		   @RequestParam(value="modifyBookmarkImage",required=false)MultipartFile file,
 												   @RequestParam(value="modifyBookmarkName")String name,
 												   @RequestParam(value="modifyBookmarkUrl")String url,
 												   @RequestParam(value="modifyBookmarkDescription")String desc,
@@ -167,10 +174,19 @@ public class IndividualPageAction {
 		
 		new IndividualPageServiceImpl().deleteIcon(bookMarkId);
 		
-		request.setAttribute("result", "삭제 성공");
+		request.setAttribute("result", Boolean.toString(true));
 		nextPage.setViewName("result");
 		return nextPage;
 	}
 	
+	@RequestMapping("/arrange")
+	public ModelAndView arrange(HttpServletRequest request, Img img,
+										   		   @RequestParam(value="modifyBookmarkImage",required=false)MultipartFile file){
+		ModelAndView nextPage = new ModelAndView();
+		
+		
+		
+		return nextPage;
+	}
 
 }

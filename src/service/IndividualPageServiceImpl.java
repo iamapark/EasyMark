@@ -16,9 +16,8 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 
 	
 	@Override
-	public void addBookMark(BookMark bookMark) {
-		BookMarkDAO.getInstance().addBookMark(bookMark);
-		
+	public int addBookMark(BookMark bookMark) {
+		return BookMarkDAO.getInstance().addBookMark(bookMark);
 	}
 	
 	@Override
