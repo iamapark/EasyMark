@@ -79,14 +79,5 @@
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
-	<script type="text/javascript">
-	  $('.bookmarkIcon').contextPopup({
-		  title:'북마크',
-		  items:[
-			{label:'북마크 변경', icon:'', action:function(){bookmarkUpdate();}},
-			{label:'북마크 삭제', icon:'', action:function(){bookmarkDelete();}}
-		  ]
-	  });
-	</script>
 </body>
 </html>

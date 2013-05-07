@@ -85,6 +85,7 @@ public class IndividualPageAction {
 		
 		BookMark bookMark = new BookMark(0,name, url, description, userId, status, posx, posy, imgUrl, 0);
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
+		System.out.println("maxBookmarkId: " + maxBookmarkId);
 		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
 		request.getSession().setAttribute("bookMarkList", bookMarkList);
 		
@@ -162,7 +163,9 @@ public class IndividualPageAction {
 		BookMark bookMark = new BookMark(bookMarkId, name, url, desc, "", "", 0, 0, imgUrl, 0);
 		new IndividualPageServiceImpl().modifyMark(bookMark);
 		
-		request.setAttribute("result", "수정되었습니다.");
+		JSONObject jobj = new JSONObject();
+		jobj.put("imgUrl", imgUrl);
+		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
 		return nextPage;
 	}

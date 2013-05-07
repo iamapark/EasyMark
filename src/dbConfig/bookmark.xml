@@ -19,7 +19,7 @@
 	<insert id="addBookMark" parameterClass="BookMark">
 	
 		<selectKey keyProperty="bookMarkId" resultClass="int">
-			(SELECT IFNULL(MAX(bookmark_id),0)+1 FROM bookmark)
+			select LAST_INSERT_ID()+1
 		</selectKey>
 	
 		insert into bookmark

@@ -17,6 +17,14 @@ var init = function(){
 		var openwindow = window.open('about:blank');
 		openwindow.location.href = $(this).attr('href');
 	});
+	
+	$('.bookmarkIcon').contextPopup({
+	  	title:'북마크',
+	  	items:[
+			{label:'북마크 변경', icon:'', action:function(){bookmarkUpdate();}},
+			{label:'북마크 삭제', icon:'', action:function(){bookmarkDelete();}}
+	  	]
+	});
 };
 
 var bookMarkArrange = function(e){
@@ -98,27 +106,19 @@ var bookMarkDelete = function(e){
 	$(this).find('.bookmarkIconInfo').show();
 };
 
-//delete 버튼 눌렀을 때
-$('#delete').bind('click',function(e){
-	var $bookId=$id;
-	console.log("delete id :"+$bookId);
-	$.ajax({
-		url: 'deleteMark',
-		dataType:'json',
-		data: {	
-				bookmarkId:$bookId,
-				
-	   		  }
-	}).done(function(data){
-		console.log("resetMarkList");
-		location.href ="resetMarkList";
-	});
-});
-
 //modify 눌렀을 때 북마크 정보 수정
 $('#modify').click(function(e){
 	e.preventDefault();
 	var filename = $('#bookmarkIconImageFile').val();
+	var name = $('#modifyBookmarkName').val();
+	var url = $('#modifyBookmarkUrl').val();
+	var desc = $('#modifyBookmarkDescription').val();
+	var bookmarkId = $('#modifyBookMarkId').val();
+	
+	/*변경한 url의 앞부분이 http://로 시작할 경우 그 부분을 삭제한다.*/
+	if(url.match('^http://')){
+		url = url.replace('http://', '');
+	}
 	
 	if(filename == ''){
 		$.ajax({
@@ -126,22 +126,25 @@ $('#modify').click(function(e){
 			dataType:'json',
 			type:'POST',
 			data:{
-				modifyBookmarkName: $('#modifyBookmarkName').val(),
-				modifyBookmarkUrl: $('#modifyBookmarkUrl').val(),
-				modifyBookmarkDescription: $('#modifyBookmarkDescription').val(),
-				bookmarkId: $('#modifyBookMarkId').val()
+				modifyBookmarkName: name,
+				modifyBookmarkUrl: url,
+				modifyBookmarkDescription: desc,
+				bookmarkId: bookmarkId
 			}
 		}).done(function(data){
-			alert(data);
-		}).always(function(){
-			alert('수정되었습니다.');
+			$('li[data-id="'+bookmarkId+'"]').find('.bookmarkIconInfo').text($('#modifyBookmarkName').val());
+			$('li[data-id="'+bookmarkId+'"]').find('img').attr('href', 'http://'+url);
+			alert('북마크 정보를 변경하였습니다.');
 			$('#bookMarkInfo').modal('hide');
 		});
 	}else{
 		$("#modifyBookMarkForm").ajaxSubmit({
         	dataType:'html',
         	success:function(data,rst){
-        		alert(data);
+        		$('li[data-id="'+bookmarkId+'"]').find('.bookmarkIconInfo').text(name);
+        		$('li[data-id="'+bookmarkId+'"]').find('img').attr('src', JSON.parse(data).imgUrl);
+        		$('li[data-id="'+bookmarkId+'"]').find('img').attr('href', 'http://'+url);
+        		alert('북마크 정보를 변경하였습니다.');
         		$('#bookMarkInfo').modal('hide');
     		}
     	});
@@ -169,6 +172,7 @@ $('#add').bind('click',function(e){
 			data: dataInfo
 			
 		}).done(function(data){
+			kaka = data;
 			id = data.id; x = data.x; y = data.y;
 			$('#bookmarkAdd').modal('hide');
 			alert('북마크가 추가되었습니다!!');
@@ -209,7 +213,6 @@ $('#add').bind('click',function(e){
 
 //북마크에서 마우스 오른쪽 버튼을 누르고 북마크 변경 탭을 클릭했을 때
 var bookmarkUpdate = function(){
-	  console.log($(this));
 	  keke = $(this);
 	  $bookid = $(this).attr('$id');
 	  $.ajax({
@@ -233,6 +236,7 @@ var bookmarkUpdate = function(){
 //북마크에서 마우스 오른쪽 버튼을 누르고 북마크 삭제 탭을 클릭했을 때
 var bookmarkDelete = function(){
   	var $bookId = $(this).attr('$id');
+  	console.log($bookId);
 	
 	var flag = confirm('정말 삭제하시겠습니까??');
 	if(flag == true){
