@@ -456,3 +456,8 @@ article:not(:last-child),
 	vertical-align: middle;
 	border-radius:20px;
 }
+
+.addBookmarkNameLoading{
+	background-image:url(http://www.thomaserben.com/wp-content/themes/thomaserben/images/loading.gif);
+	background-repeat: no-repeat;
+}

@@ -1,7 +1,15 @@
 package controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +18,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
-import org.json.simple.JSONValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -205,6 +212,55 @@ public class IndividualPageAction {
 		
 		JSONObject jobj = new JSONObject();
 		jobj.put("location", location);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+		return nextPage;
+	}
+
+	@RequestMapping("/getAddBookMarkInfo")
+	public ModelAndView getAddBookMarkInfo(HttpServletRequest request,
+								@RequestParam(value="url")String url){
+		ModelAndView nextPage = new ModelAndView();
+		
+		boolean flag = false;
+		String title = null;
+		URL addBookmarkUrl = null;
+		
+		try{
+			addBookmarkUrl = new URL(url);
+			
+			InputStream inn = addBookmarkUrl.openConnection().getInputStream(); // ★URL객체에서 커넥션을 열고 스트림 객체를 반환받는다
+            BufferedReader br = new BufferedReader(new InputStreamReader(inn) ); 
+			
+            String temp = null;
+            String html = null;
+            while ((temp=br.readLine()) != null) {
+               html += temp; 
+            }
+            br.close();
+            
+            Pattern p = Pattern.compile("<title>(.*?)</title>");
+            Matcher m = p.matcher(html);
+            
+            while(m.find()){
+            	title = m.group();
+            }
+            
+            title = title.replace("<title>", "");
+            title = title.replace("</title>", "");
+            
+            flag = true;
+		}catch(MalformedURLException  e){
+			System.out.println("url이 잘못되었습니다.");
+		}catch(IOException e){
+			System.out.println("IOException");
+		}
+		
+		System.out.println("끝");
+		JSONObject jobj = new JSONObject();
+		jobj.put("title", title);
+		jobj.put("flag", Boolean.toString(flag));
 		
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");

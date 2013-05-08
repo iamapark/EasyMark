@@ -25,6 +25,8 @@ var init = function(){
 			{label:'북마크 삭제', icon:'', action:function(){bookmarkDelete();}}
 	  	]
 	});
+	
+	$('#addBookMarkUrl').focusout(bookmarkUrlFocusOut);
 };
 
 var bookMarkArrange = function(e){
@@ -140,7 +142,7 @@ $('#add').bind('click',function(e){
 	
 	dataInfo = {
 		name:       $('#addBookMarkName').val(),
-		url: escape($('#addBookMarkUrl').val()),
+		url: 		$('#addBookMarkUrl').val(),
 		description:$('#addBookMarkDescription').val(),
 		category:   $('#addBookMarkCategory').val()
 	};
@@ -237,4 +239,32 @@ var gridsterInitial = function(){
        		}; 
    		}
     }).data('gridster');
+};
+
+// 사용자가 북마크 추가시 URL을 입력하고 다음 input으로 커서를 옮겼을 때
+// 입력한 URL 페이지의 title 값을 읽어와서 name input에 삽입한다.
+var bookmarkUrlFocusOut = function(){
+	var url = this.value;
+	
+	$('#addBookMarkName').addClass('addBookmarkNameLoading');
+	$('#addBookMarkName').val('       URL 분석 중');
+	
+	if(url){
+		$.ajax({
+			url:'getAddBookMarkInfo',
+			dataType:'json',
+			data:{
+				url:url
+			}
+		}).done(function(data){
+			//$('#addBookMarkName').css('background-image', '');
+			if(data.flag == 'true'){
+				$('#addBookMarkName').removeClass('addBookmarkNameLoading');
+				$('#addBookMarkName').val(data.title);
+			}else{
+				$('#addBookMarkName').removeClass('addBookmarkNameLoading');
+				$('#addBookMarkName').val('');
+			}
+		});
+	}
 };
