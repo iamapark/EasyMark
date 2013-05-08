@@ -717,7 +717,7 @@
         avoid_overlapped_widgets: true,
         serialize_params: function($w, wgd) {
             return {
-                col: wgd.col,
+            	col: wgd.col,
                 row: wgd.row,
                 size_x: wgd.size_x,
                 size_y: wgd.size_y

@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 
+import org.json.simple.JSONValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -183,12 +185,29 @@ public class IndividualPageAction {
 	}
 	
 	@RequestMapping("/arrange")
-	public ModelAndView arrange(HttpServletRequest request, Img img,
-										   		   @RequestParam(value="modifyBookmarkImage",required=false)MultipartFile file){
+	public ModelAndView arrange(HttpServletRequest request,
+								@RequestParam(value="location")String location){
 		ModelAndView nextPage = new ModelAndView();
 		
+		JSONObject json = (JSONObject)JSONSerializer.toJSON(location);
+
+		JSONObject result=null;
 		
+		for(int i=0;i<json.size();i++){
+			result=(JSONObject)json.get(String.valueOf(i));
+
+			int bookMarkId=Integer.parseInt(result.get("id").toString());
+			int posX=Integer.parseInt(result.get("row").toString());
+			int posY=Integer.parseInt(result.get("col").toString());
+			BookMark bookMark=new BookMark(bookMarkId,"","","","","",posX,posY);
+			new IndividualPageServiceImpl().arrangeIcon(bookMark);
+		}
 		
+		JSONObject jobj = new JSONObject();
+		jobj.put("location", location);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
 		return nextPage;
 	}
 

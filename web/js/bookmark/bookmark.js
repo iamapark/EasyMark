@@ -6,7 +6,7 @@ $(document).ready(function(){
 });
 
 var init = function(){
-	//삭제
+	//북마크 아이콘에 마우스를 올릴 때와 벗어날 때 이벤트 핸들러 등록
 	$('.bookmarkIcon').mouseover(bookMarkDelete).mouseout(bookMarkOut);
 	
 	//그리드스터 초기화
@@ -29,13 +29,8 @@ var init = function(){
 
 var bookMarkArrange = function(e){
 	
-	wgd=new Array();
-	wgd=gridster.serialize_changed( );
-	wgd2=gridster.serialize( );
-	console.log(toJSONString(wgd));
-	console.log($(this).attr('data-id'));
-	//console.log('serialize( )'+toJSONString(wgd2));
-	
+	var wgd = gridster.serialize_changed( );
+	var location = toJSONString(wgd);
 	
 	function toJSONString(json){
 	    var ary = new Array();
@@ -53,26 +48,11 @@ var bookMarkArrange = function(e){
 		url: 'arrange', //// javascript same origin policy를 해결하기 위한 프록시
 		dataType:'json',
 		data: {
-				//posX:$x,
-				//posY:$y,
-				//posX:$(this).attr('data-row'),
-				//posY:$(this).attr('data-col'),
-				//bookMarkId:$(this).attr('data-id'),
-				//wgd:wgd,
-	   		  }
+				location: location
+	   	}
+	}).done(function(data){
+		//console.log(data);
 	});
-	
-	//console.log('wgd'+wgd);
-	
-	//console.log('data-row: ' + $(this).attr('data-row'));
-//	console.log('data-col: ' + $(this).attr('data-col'));
-	//console.log('data-id: ' + $(this).attr('data-id'));
-	//console.log("/");
-	//console.log('x :'+x);
-	//console.log('y :'+y);
-	//console.log('id :'+id);
-	//console.log("/");
-	
 };
 
 var bookMarkOver = function(e){
@@ -199,16 +179,6 @@ $('#add').bind('click',function(e){
 			}
     	});
 	}
-	
-	
-	
-	
-	/*<li data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" class="bookmarkIcon">
-    	<img id="img" href="http://${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
-    	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
-    </li>*/
-	
-	
 });
 
 //북마크에서 마우스 오른쪽 버튼을 누르고 북마크 변경 탭을 클릭했을 때
@@ -236,7 +206,6 @@ var bookmarkUpdate = function(){
 //북마크에서 마우스 오른쪽 버튼을 누르고 북마크 삭제 탭을 클릭했을 때
 var bookmarkDelete = function(){
   	var $bookId = $(this).attr('$id');
-  	console.log($bookId);
 	
 	var flag = confirm('정말 삭제하시겠습니까??');
 	if(flag == true){
@@ -245,8 +214,7 @@ var bookmarkDelete = function(){
 			dataType:'json',
 			data: {	
 					bookmarkId:$bookId,
-					
-		   		  }
+			}
 		}).done(function(data){
 			gridster.remove_widget($('li[data-id="'+ $bookId +'"]'));
 			init();
@@ -262,8 +230,11 @@ var gridsterInitial = function(){
         min_cols: 6,
         avoid_overlapped_widgets: true,
         serialize_params: function($w, wgd) {
-       		//console.log('col: ' + wgd.col + ', row: ' + wgd.row); 
-       		return { col: wgd.col, row: wgd.row }; 
+       		return { 
+       			col: wgd.col,
+       			row: wgd.row,
+       			id: $w.data('id') 
+       		}; 
    		}
     }).data('gridster');
 };
