@@ -30,11 +30,11 @@
 			<%
 		}
 	%>
-	
-	
+
 </head>
 <body style="background:url(${MEMBERINFO.bgImgUrl});background-position: 100% 100%;">
  	
+ 	<!-- Main Design Template -->
  	<jsp:include page="template/MacOS.jsp">
  		<jsp:param value="${designType}" name="flag"/>
 	</jsp:include>	
@@ -42,7 +42,7 @@
 	<jsp:include page="template/WindowsOS.jsp">
 		<jsp:param value="${designType}" name="flag"/>
 	</jsp:include>
-	
+	<!-- Main Design Template End-->
 	
 	<!-- BookMark List -->
 	<div>
