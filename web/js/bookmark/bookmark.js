@@ -97,10 +97,10 @@ $('#modify').click(function(e){
 	var desc = $('#modifyBookmarkDescription').val();
 	var bookmarkId = $('#modifyBookMarkId').val();
 	
-	/*변경한 url의 앞부분이 http://로 시작할 경우 그 부분을 삭제한다.*/
+	/*변경한 url의 앞부분이 http://로 시작할 경우 그 부분을 삭제한다.
 	if(url.match('^http://')){
 		url = url.replace('http://', '');
-	}
+	}*/
 	
 	if(filename == ''){
 		$.ajax({
@@ -115,7 +115,7 @@ $('#modify').click(function(e){
 			}
 		}).done(function(data){
 			$('li[data-id="'+bookmarkId+'"]').find('.bookmarkIconInfo').text($('#modifyBookmarkName').val());
-			$('li[data-id="'+bookmarkId+'"]').find('img').attr('href', 'http://'+url);
+			$('li[data-id="'+bookmarkId+'"]').find('img').attr('href', url);
 			alert('북마크 정보를 변경하였습니다.');
 			$('#bookMarkInfo').modal('hide');
 		});
@@ -125,7 +125,7 @@ $('#modify').click(function(e){
         	success:function(data,rst){
         		$('li[data-id="'+bookmarkId+'"]').find('.bookmarkIconInfo').text(name);
         		$('li[data-id="'+bookmarkId+'"]').find('img').attr('src', JSON.parse(data).imgUrl);
-        		$('li[data-id="'+bookmarkId+'"]').find('img').attr('href', 'http://'+url);
+        		$('li[data-id="'+bookmarkId+'"]').find('img').attr('href', url);
         		alert('북마크 정보를 변경하였습니다.');
         		$('#bookMarkInfo').modal('hide');
     		}
@@ -159,7 +159,7 @@ $('#add').bind('click',function(e){
 			$('#bookmarkAdd').modal('hide');
 			alert('북마크가 추가되었습니다!!');
 			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-				newLi += '<img id="img" href="http://'+dataInfo.url+'" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
+				newLi += '<img id="img" href="'+dataInfo.url+'" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
@@ -173,7 +173,7 @@ $('#add').bind('click',function(e){
         		alert('북마크가 추가되었습니다.');
         		$('#bookmarkAdd').modal('hide');
         		newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-					newLi += '<img id="img" href="http://'+dataInfo.url+'" src="'+JSON.parse(data).imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
+					newLi += '<img id="img" href="'+dataInfo.url+'" src="'+JSON.parse(data).imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
 					newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
 				newLi += '</li>';
 				gridster.add_widget(newLi, 1, 1);
