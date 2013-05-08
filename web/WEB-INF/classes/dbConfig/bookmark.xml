@@ -17,15 +17,14 @@
 	</resultMap>
 	
 	<insert id="addBookMark" parameterClass="BookMark">
-	
-		<selectKey keyProperty="bookMarkId" resultClass="int">
-			select LAST_INSERT_ID()+1
-		</selectKey>
-	
 		insert into bookmark
 		(bookMark_name,bookmark_url,bookmark_descript,user_id,status,pos_x,pos_y,img_url,frequency)
 		values (#bookMarkName#, #bookMarkUrl#, #bookMarkDescript#, #userId#,
 		#status#, #posX#, #posY#, #imgUrl#, #frequency#)
+		
+		<selectKey keyProperty="bookMarkId" resultClass="int">
+			select LAST_INSERT_ID()
+		</selectKey>
 	</insert>
 	
 	<!-- Select with no parameters using the result map for Account class. -->

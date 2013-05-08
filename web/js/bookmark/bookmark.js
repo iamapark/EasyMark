@@ -248,7 +248,8 @@ var bookmarkDelete = function(){
 					
 		   		  }
 		}).done(function(data){
-			$('li[data-id="'+ $bookId +'"]').remove();
+			gridster.remove_widget($('li[data-id="'+ $bookId +'"]'));
+			init();
 		});
 	}
 };

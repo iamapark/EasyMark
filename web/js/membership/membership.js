@@ -6,6 +6,11 @@ $('a[data-toggle="modal"]').click(function(){
 //여러가지 폼들을 초기화한다. 이전 데이터들을 지운다.
 var clearForm = function(){
 	$('#backgroundImgNoti').text('');
+	$('#addBookMarkUrl').val('');
+	$('#addBookMarkName').val('');
+	$('#addBookMarkDescription').val('');
+	$('#addBookMarkImage').val('');
+	$('#bookmarkIconImageFile').val('');
 };
 
 //회원정보 수정 버튼을 눌렀을 때 호출
