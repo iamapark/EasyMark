@@ -17,24 +17,24 @@
        app server, you probably want to use its transaction manager 
        and a managed datasource -->
   <!-- CUBRID Setting -->
-  <!-- <transactionManager type="JDBC" commitRequired="false">
+  <transactionManager type="JDBC" commitRequired="false">
     <dataSource type="SIMPLE">
       <property name="JDBC.Driver" value="cubrid.jdbc.driver.CUBRIDDriver"/>
-      <property name="JDBC.ConnectionURL" value="jdbc:cubrid:localhost:33000:easymark:::?charSet=utf-8"/>
+      <property name="JDBC.ConnectionURL" value="jdbc:cubrid:localhost:33000:nhneasymark:::?charSet=utf-8"/>
       <property name="JDBC.Username" value="dba"/>
       <property name="JDBC.Password" value="password"/>
     </dataSource>
-  </transactionManager> -->
+  </transactionManager>
   
 	<!-- MySQL Setting notebook -->
-	<transactionManager type="JDBC">
+	<!-- <transactionManager type="JDBC">
     	<dataSource type="SIMPLE">
       		<property name="JDBC.Driver"        value="com.mysql.jdbc.Driver"/>
       		<property name="JDBC.ConnectionURL" value="jdbc:mysql://localhost:3306/nhneasymark"/>
       		<property name="JDBC.Username"      value="root"/>
       		<property name="JDBC.Password"      value=""/>
     	</dataSource>
-  	</transactionManager>  
+  	</transactionManager> -->  
   
   	<!-- MySQL Setting cafe24.com -->
 	<!-- <transactionManager type="JDBC">

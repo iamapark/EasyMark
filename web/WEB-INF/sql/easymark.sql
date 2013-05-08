@@ -1,4 +1,4 @@
-    CREATE TABLE "member" 
+CREATE TABLE "member" 
 (
    "user_id" CHARACTER VARYING(30) NOT NULL, 
    "password" CHARACTER VARYING(30), 
@@ -49,6 +49,7 @@ CREATE TABLE "bookmark"
    "pos_x" INTEGER, 
    "pos_y" INTEGER, 
    "img_url" CHARACTER VARYING(100), 
+   "frequency" INTEGER,
    CONSTRAINT pk_bookmark_bookmark_id PRIMARY KEY("bookmark_id"), 
    FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT 
 );
@@ -108,6 +109,8 @@ CREATE TABLE "member_info"
    "email" CHARACTER VARYING(30), 
    "me2day_key" CHARACTER VARYING(15), 
    "status" CHARACTER VARYING(30) DEFAULT '회원', 
+   "img_url" CHARACTER VARYING(500), 
+   "bg_img_url" CHARACTER VARYING(500), 
    FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT 
 );
 
@@ -167,8 +170,8 @@ CREATE TABLE "design"
 (
    "user_id" CHARACTER VARYING(30) NOT NULL, 
    "type" CHARACTER VARYING(100) DEFAULT 'MacOS', 
-   CONSTRAINT "design_userid__member_userid" FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT, 
-   CONSTRAINT pk_design_user_id PRIMARY KEY("user_id") 
+   CONSTRAINT pk_design_user_id PRIMARY KEY("user_id"),
+   CONSTRAINT "design_userid__member_userid" FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 
