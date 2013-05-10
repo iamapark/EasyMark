@@ -32,7 +32,8 @@
 	%>
 
 </head>
-<body style="background:url(${MEMBERINFO.bgImgUrl});background-position: 100% 100%;">
+<body style="background:url(${MEMBERINFO.bgImgUrl}) no-repeat center center fixed;
+             -webkit-background-size:cover; background-size:cover">
  	
  	<!-- Main Design Template -->
  	<jsp:include page="template/MacOS.jsp">
