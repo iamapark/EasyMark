@@ -44,6 +44,13 @@ public class IndividualPageAction {
 		ModelAndView nextPage = new ModelAndView();
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		String imgUrl = null;
+
+		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
+		// 앞부분에 붙여준다.
+		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=]*$")){
+			url = "http://" + url;
+		}
+		
 		
 		//이미지가 저장되는 경로
 		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/" + userId + "/bookmark/";
@@ -106,6 +113,7 @@ public class IndividualPageAction {
 		jobj.put("y", posy);
 		jobj.put("id", maxBookmarkId);
 		jobj.put("imgUrl", imgUrl);
+		jobj.put("url", url);
 		
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
@@ -226,6 +234,12 @@ public class IndividualPageAction {
 		boolean flag = false;
 		String title = null;
 		URL addBookmarkUrl = null;
+		
+		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
+		// 앞부분에 붙여준다.
+		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=]*$")){
+			url = "http://" + url;
+		}
 		
 		try{
 			addBookmarkUrl = new URL(url);

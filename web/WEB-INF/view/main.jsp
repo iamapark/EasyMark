@@ -32,7 +32,8 @@
 	%>
 
 </head>
-<body style="background:url(${MEMBERINFO.bgImgUrl});background-position: 100% 100%;">
+<body style="background:url(${MEMBERINFO.bgImgUrl}) no-repeat center center fixed;
+             -webkit-background-size:cover; background-size:cover">
  	
  	<!-- Main Design Template -->
  	<jsp:include page="template/MacOS.jsp">
@@ -65,7 +66,7 @@
 		<jsp:include page="modal/setting.jsp" />
 	<!-- 북마크 추가 메뉴룰 클릭했을 때 MODAL -->
 		<jsp:include page="modal/bookmarkAdd.jsp" />
-	<!-- 북마크 아이콘 우측 상단의 톱니바퀴를 클릭했을 때 MODAL -->
+	<!-- 북마크 아이콘 위에서 오른쪽 클릭 후 북마크 정보 탭을 클릭했을 때 MODAL -->
 		<jsp:include page="modal/bookmarkInfo.jsp"></jsp:include>
  	<!-- MODAL END -->
 	

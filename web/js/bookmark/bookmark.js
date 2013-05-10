@@ -138,7 +138,7 @@ $('#add').bind('click',function(e){
 	e.preventDefault();
 	var filename = $('#addMarkForm').find('#addBookMarkImage').val();
 	var newLi;
-	var id, x, y;
+	var id, x, y, url;
 	
 	dataInfo = {
 		name:       $('#addBookMarkName').val(),
@@ -155,11 +155,11 @@ $('#add').bind('click',function(e){
 			
 		}).done(function(data){
 			kaka = data;
-			id = data.id; x = data.x; y = data.y;
+			id = data.id; x = data.x; y = data.y; url = data.url;
 			$('#bookmarkAdd').modal('hide');
 			alert('북마크가 추가되었습니다!!');
 			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-				newLi += '<img id="img" href="'+dataInfo.url+'" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
+				newLi += '<img id="img" href="'+ url +'" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
