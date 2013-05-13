@@ -227,4 +227,20 @@ public class MembershipAction {
 		mav.setViewName("result");
 		return mav;
 	}
+	
+	@RequestMapping("/extensionUserCheck")
+	public ModelAndView extensionUserCheck(HttpServletRequest request, @RequestParam("userId")String userId, 
+														               @RequestParam("password")String password,
+														               @RequestParam("callback")String callback){
+		ModelAndView mav = new ModelAndView();
+	
+		boolean flag = new MembershipServiceImpl().login(new Login(userId, password));
+		
+		String data = callback + "({\"result\" : \"" + Boolean.toString(flag) + "\", \"userId\" : \"" + userId + "\"})";
+
+		request.setAttribute("result", data);
+		mav.setViewName("result");
+		return mav;
+	}
+	
 }

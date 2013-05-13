@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -40,17 +42,19 @@ public class IndividualPageAction {
 																		 @RequestParam(value="name") String name,
 																		 @RequestParam(value="url") String url,
 																		 @RequestParam(value="description")String description,
-																		 @RequestParam(value="category")String category){
+																		 @RequestParam(value="category")String category,
+																		 @RequestParam(value="userId")String userId){
+		System.out.println("addMark()!!");
 		ModelAndView nextPage = new ModelAndView();
-		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		if(userId == null)
+			userId = (String)request.getSession().getAttribute("MEMBERID");
 		String imgUrl = null;
-
+		
 		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
 		// 앞부분에 붙여준다.
-		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=]*$")){
+		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=!#&]*$")){
 			url = "http://" + url;
 		}
-		
 		
 		//이미지가 저장되는 경로
 		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/" + userId + "/bookmark/";
@@ -96,6 +100,13 @@ public class IndividualPageAction {
 				posx++;
 				posy=1;
 			}
+			
+		}
+		
+		try {
+			name = URLDecoder.decode(name, "utf-8");
+			description = URLDecoder.decode(description, "utf-8");
+		} catch (UnsupportedEncodingException e) {
 			
 		}
 		
@@ -237,7 +248,7 @@ public class IndividualPageAction {
 		
 		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
 		// 앞부분에 붙여준다.
-		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=]*$")){
+		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=!#&]*$")){
 			url = "http://" + url;
 		}
 		
@@ -280,5 +291,23 @@ public class IndividualPageAction {
 		nextPage.setViewName("result");
 		return nextPage;
 	}
+	
+	@RequestMapping("/extensionAddMark")
+	public ModelAndView extensionAddMark(HttpServletRequest request, Img img, @RequestParam(value="addBookMarkImage",required=false)MultipartFile file,
+																		 @RequestParam(value="name") String name,
+																		 @RequestParam(value="url") String url,
+																		 @RequestParam(value="description")String description,
+																		 @RequestParam(value="category")String category,
+																		 @RequestParam(value="userId")String userId){
+		
+		ModelAndView nextPage = new ModelAndView();
+		
+		System.out.println("extensionAddMark()");
+		System.out.println("userId: " + userId);
+		
+		nextPage.setViewName("result");
+		return nextPage;
+	}
+	
 
 }
