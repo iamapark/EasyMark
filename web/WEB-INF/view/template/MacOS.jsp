@@ -27,6 +27,7 @@
 			<li><span style="color:white;">${MEMBERID}</span><a href="#setting" role="button" data-toggle="modal"><img src="<%=imgUrl%>" id="settingImg" style="border-radius: 20px;"/></a></li>
 			<li><span style="color:white;">북마크 추가</span><a href="#bookmarkAdd" role="button" data-toggle="modal"><img src="images/Bookmark.png"/></a></li>
 			<li><span style="color:white;">Friends</span><a href="#friends" role="button" data-toggle="modal"><img src="images/Users.png"/></a></li>
+			<li><span style="color:white;">Messages</span><a href="#messages" role="button" data-toggle="modal"><img src="images/Message_Icon.png"/></a></li>
 		</ul>
 		<div class="base"></div>
 		</div>

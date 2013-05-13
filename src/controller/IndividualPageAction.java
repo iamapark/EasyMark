@@ -43,7 +43,7 @@ public class IndividualPageAction {
 																		 @RequestParam(value="url") String url,
 																		 @RequestParam(value="description")String description,
 																		 @RequestParam(value="category")String category,
-																		 @RequestParam(value="userId")String userId){
+																		 @RequestParam(value="userId",required=false)String userId){
 		System.out.println("addMark()!!");
 		ModelAndView nextPage = new ModelAndView();
 		if(userId == null)
@@ -52,7 +52,7 @@ public class IndividualPageAction {
 		
 		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
 		// 앞부분에 붙여준다.
-		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=!#&]*$")){
+		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=!#&%+--,]*$")){
 			url = "http://" + url;
 		}
 		

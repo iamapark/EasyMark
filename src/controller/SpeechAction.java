@@ -34,7 +34,7 @@ public class SpeechAction {
 		
 		if(deStr.contains("추가")){
 			switch(deStr){
-			case "북마크 추가": case "북마크추가":
+			case "북마크 추가": case "북마크추가": case "북마크에 추가":
 			case "즐겨찾기 추가": case "즐겨찾기추가":
 			case "현재 페이지 추가":
 			case "현재 페이지 즐겨찾기 추가":
