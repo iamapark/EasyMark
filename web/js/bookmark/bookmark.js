@@ -21,12 +21,39 @@ var init = function(){
 	$('.bookmarkIcon').contextPopup({
 	  	title:'북마크',
 	  	items:[
-			{label:'북마크 변경', icon:'', action:function(){bookmarkUpdate();}},
-			{label:'북마크 삭제', icon:'', action:function(){bookmarkDelete();}}
+			{
+				label:'북마크 변경', 
+				icon:'', 
+				action:function(){
+					$('.contextMenuPlugin').remove();
+					bookmarkUpdate();
+				}
+			},
+			{
+				label:'북마크 삭제', 
+				icon:'', 
+				action:function(){
+					$('.contextMenuPlugin').remove();
+					$('#invisibleDiv').remove();
+					bookmarkDelete();
+				}
+			},
+			{
+				label:'북마크 추천', 
+				icon:'', 
+				action:function(){
+					$('.contextMenuPlugin').remove();
+					$('#invisibleDiv').remove();
+					bookmarkDelete();
+				}
+			}
 	  	]
 	});
 	
 	$('#addBookMarkUrl').focusout(bookmarkUrlFocusOut);
+};
+var bookMarkInit = function(newEntry){
+	$(newEntry).mouseover(bookMarkDelete).mouseout(bookMarkOut);
 };
 
 var bookMarkArrange = function(e){
@@ -138,7 +165,7 @@ $('#add').bind('click',function(e){
 	e.preventDefault();
 	var filename = $('#addMarkForm').find('#addBookMarkImage').val();
 	var newLi;
-	var id, x, y;
+	var id, x, y, url;
 	
 	dataInfo = {
 		name:       $('#addBookMarkName').val(),
@@ -155,15 +182,20 @@ $('#add').bind('click',function(e){
 			
 		}).done(function(data){
 			kaka = data;
-			id = data.id; x = data.x; y = data.y;
+			id = data.id; x = data.x; y = data.y; url = data.url;
 			$('#bookmarkAdd').modal('hide');
 			alert('북마크가 추가되었습니다!!');
 			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-				newLi += '<img id="img" href="'+dataInfo.url+'" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
+				newLi += '<img id="img" href="'+ url +'" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
-			init();
+			//init();
+			bookMarkInit(newLi);
+			kaka = this;
+			keke = $(this);
+			kiki = newLi;
+			
 		});
 	}else{
 		$("#addMarkForm").ajaxSubmit({
@@ -219,7 +251,7 @@ var bookmarkDelete = function(){
 			}
 		}).done(function(data){
 			gridster.remove_widget($('li[data-id="'+ $bookId +'"]'));
-			init();
+			//init();
 		});
 	}
 };

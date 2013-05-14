@@ -22,4 +22,8 @@ public interface MembershipServiceIF {
 	public void changeDesign(Design design);
 	
 	public void updateBgImg(Member m);
+
+	boolean registerMe2DayMember(Member member);
+
+	boolean me2DayLoginCheck(Login login);
 }

@@ -40,6 +40,81 @@ public class MembershipAction {
 		return mav;
 	}
 	
+	@RequestMapping("/me2dayRegister")
+	public ModelAndView me2dayRegister(HttpServletRequest request, HttpServletResponse response){
+		// 미투데이 로그인 후 사용자가 '수락합니다' 버튼을 누르면 true,
+				// '거절합니다' 버튼을 누르면 false를 리턴
+				String result = request.getParameter("result");
+				// 미투데이 아이디
+				String userId = request.getParameter("user_id");
+				// 미투데이 아이디를 식별할 수 있는 고유 키(미투데이에서 제공, 나중에 미투데이 정보를 받아올 때 사용)
+				String userKey = request.getParameter("user_key");
+				ModelAndView nextPage = new ModelAndView();
+
+				// dto Member 클래스를 사용하여 회원에 관한 정보를 객체에 담아 ibatis에 보낸다.
+				// 미투데이 계정으로 가입할 때는 일반 계정 사용자와 구분하기 위해 아이디에 @me2day를 붙인다.
+				Member member = new Member(userId + "@me2day", null, null, null, null,
+						userKey);
+
+				// 사용자가 '수락합니다' 버튼을 눌렀을 경우
+				if (result.equals("true")) {
+					nextPage.setViewName("index"); // 시작페이지로 이동한다.
+
+					// registerMe2DayMember 메소드는 인자로 넘겨받은 객체의 아이디가 이미
+					// DB에 저장되어 있을 경우(이미 가입되어 있는 회원인 경우 true를 리턴한다.
+					if (!new MembershipServiceImpl().registerMe2DayMember(member)) {
+						nextPage.setViewName("error/error");
+						request.setAttribute("msg", "이미 가입되어 있는 미투데이 계정입니다.");
+					}
+
+				} else if (result.equals("false")) { // 사용자가 '거절합니다' 버튼을 누른 경우
+					request.setAttribute("msg", "권한 획득에 실패했습니다.");
+					nextPage.setViewName("error/error");
+				}
+
+				return nextPage;
+	}
+
+	@RequestMapping("/me2dayLogin")
+	public ModelAndView me2dayLogin(HttpServletRequest request, HttpServletResponse response){
+			// 미투데이 로그인 후 사용자가 '수락합니다' 버튼을 누르면 true,
+			// '거절합니다' 버튼을 누르면 false를 리턴
+			String result = request.getParameter("result");
+			// 미투데이 아이디
+			String userId = request.getParameter("user_id");
+			ModelAndView nextPage = new ModelAndView();
+
+			// 미투데이 계정으로 회원가입할 때 아이디+@me2day로 DB에 저장했기 때문에,
+			// Login 클래스의 객체를 생성할 때 아이디에 @me2day를 붙여준다.
+			Login login = new Login(userId + "@me2day", null);
+
+			// DB에 아이디가 존재하면 true, 존재하지 않으면 false return
+			boolean flag = new MembershipServiceImpl().me2DayLoginCheck(login);
+
+			// '수락합니다' 버튼을 눌렀을 경우
+			if (result.equals("true")) {
+				System.out.println("flag:"+flag);
+				
+				if (flag) { // 로그인 성공
+					HttpSession session = request.getSession();
+					// 로그인 권한을 주기 위해 세션을 설정한다.
+					session.setAttribute("MEMBERID", login.getUserId());
+
+					nextPage.setViewName("views/individualPage/bookmark.jsp");
+
+				} else { // 로그인 실패
+					request.setAttribute("msg", "미 가입된 미투데이 계정입니다.");
+					nextPage.setViewName("views/membership/error.jsp");
+				}
+
+			} else if (result.equals("false")) { // '거절합니다' 버튼을 눌렀을 경우
+				request.setAttribute("msg", "권한 획득에 실패했습니다.");
+				nextPage.setViewName("views/membership/error.jsp");
+			}
+
+			return nextPage;																		  	   
+	}
+	
 	@RequestMapping("/checkId")
 	public ModelAndView checkId(HttpServletRequest request, HttpServletResponse response, @RequestParam(value="userId") String userId){
 		ModelAndView mav = new ModelAndView();
@@ -153,4 +228,21 @@ public class MembershipAction {
 		return mav;
 	}
 	
+
+	@RequestMapping("/extensionUserCheck")
+	public ModelAndView extensionUserCheck(HttpServletRequest request, @RequestParam("userId")String userId, 
+														               @RequestParam("password")String password,
+														               @RequestParam("callback")String callback){
+		ModelAndView mav = new ModelAndView();
+	
+		boolean flag = new MembershipServiceImpl().login(new Login(userId, password));
+		
+		String data = callback + "({\"result\" : \"" + Boolean.toString(flag) + "\", \"userId\" : \"" + userId + "\"})";
+
+		request.setAttribute("result", data);
+		mav.setViewName("result");
+		return mav;
+	}
+	
+
 }

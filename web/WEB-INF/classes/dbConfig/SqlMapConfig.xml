@@ -51,5 +51,6 @@
        
   <sqlMap resource="dbConfig/member.xml"/>
   <sqlMap resource="dbConfig/bookmark.xml"/>
+  <sqlMap resource="dbConfig/speech.xml"/>
 
 </sqlMapConfig>
