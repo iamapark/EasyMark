@@ -49,4 +49,5 @@ public interface IndividualPageServiceIF {
 	 * @return void
 	 */
 	public void informEasyMark(String userId);
+	public ArrayList<String> categoryList(String userId);
 }

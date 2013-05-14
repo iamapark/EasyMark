@@ -14,13 +14,14 @@
 		<result property="posY" column="pos_y" />
 		<result property="imgUrl" column="img_url" />
 		<result property="frequency" column="frequency" />
+		<result property="category" column="category" />
 	</resultMap>
 	
 	<insert id="addBookMark" parameterClass="BookMark">
 		insert into bookmark
-		(bookMark_name,bookmark_url,bookmark_descript,user_id,status,pos_x,pos_y,img_url,frequency)
+		(bookMark_name,bookmark_url,bookmark_descript,user_id,status,pos_x,pos_y,img_url,frequency,category)
 		values (#bookMarkName#, #bookMarkUrl#, #bookMarkDescript#, #userId#,
-		#status#, #posX#, #posY#, #imgUrl#, #frequency#)
+		#status#, #posX#, #posY#, #imgUrl#, #frequency#, #category#)
 		
 		<selectKey keyProperty="bookMarkId" resultClass="int">
 			select LAST_INSERT_ID()
@@ -39,7 +40,8 @@
 			pos_x,
 			pos_y,
 			img_url,
-			frequency frequency
+			frequency frequency,
+			category category
 		FROM bookmark 
 		WHERE user_id=#userId#
 	</select>
@@ -78,7 +80,8 @@
 			pos_x posX,
 			pos_y posY,
 			img_url imgUrl,
-			frequency frequency
+			frequency frequency,
+			category category
 		from bookmark WHERE bookmark_id=#bookMarkId#
 	</select>
 	
@@ -124,5 +127,8 @@
 		SELECT bookmark_id, bookmark_name, bookmark_url,
 		bookmark_descript FROM bookmark bookmark_id=#bookMarkId#
 		order by frequency
+	</select>
+	<select id="categoryList" parameterClass="String" resultClass="String">
+		SELECT DISTINCT category FROM bookmark where user_id=#userId#
 	</select>
 </sqlMap>

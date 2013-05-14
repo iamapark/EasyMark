@@ -152,4 +152,5 @@ public class MembershipAction {
 		mav.setViewName("result");
 		return mav;
 	}
+	
 }

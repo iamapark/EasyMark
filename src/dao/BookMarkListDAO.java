@@ -59,6 +59,17 @@ public class BookMarkListDAO {
 		return bookMarkByFrequency;
 		
 	}
+	public ArrayList<String> categoryList(String userId){
+		
+		ArrayList<String> categoryList = null;
+		try {
+			categoryList=(ArrayList<String>)sqlMapper.queryForList("categoryList", userId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return categoryList;
+	}
 	/*
 	 * public void updateBookMarkList(BookMark bookmark){
 	 * 

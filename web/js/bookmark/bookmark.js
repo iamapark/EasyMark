@@ -268,3 +268,38 @@ var bookmarkUrlFocusOut = function(){
 		});
 	}
 };
+//category 버튼 클릭
+$('#category').click(function(){
+	
+	var i;
+	var category;
+	
+	
+		$.ajax({
+			url: 'viewCategory',
+			dataType:'json',
+		}).done(function(data){
+			//모든 아이콘 제거 
+			gridster.remove_widget($('li.bookmarkIcon'));
+			console.log(data.length);
+			//category 마다 아이콘 만들기
+			for(i=0;i<data.length;i++){
+				category=data[i];
+				newLi = '<li data-id="#" data-toggle="tooltip" title="'+category+'" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+				newLi += '<img id="img" href="#" src="#" style="width:100%; height:100%;border-radius:20px;">';
+				newLi += '<div class="bookmarkIconInfo">' + category +'</div>';
+				newLi += '</li>';
+				gridster.add_widget(newLi, 1, 1);
+				
+			}
+			$('#setting').modal('hide');
+			init(); 
+			
+			
+			
+		});
+	});
+
+
+
+

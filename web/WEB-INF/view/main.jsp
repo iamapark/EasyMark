@@ -5,6 +5,7 @@
 <c:if test="${sessionScope.MEMBERID == null}">
 	<%
 		response.sendRedirect("/EasyMark/");
+	
 	%>
 </c:if>
 <!DOCTYPE html>

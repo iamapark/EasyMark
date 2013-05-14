@@ -50,6 +50,7 @@ CREATE TABLE "bookmark"
    "pos_y" INTEGER, 
    "img_url" CHARACTER VARYING(100), 
    "frequency" INTEGER,
+   "category" character varying(30),
    CONSTRAINT pk_bookmark_bookmark_id PRIMARY KEY("bookmark_id"), 
    FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT 
 );

@@ -28,6 +28,7 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.FileWriter;
 import dto.BookMark;
+import dto.Design;
 import dto.Img;
 import dto.Member;
 
@@ -44,6 +45,7 @@ public class IndividualPageAction {
 		ModelAndView nextPage = new ModelAndView();
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		String imgUrl = null;
+		System.out.println("userID :"+userId);
 		
 		//이미지가 저장되는 경로
 		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/" + userId + "/bookmark/";
@@ -92,7 +94,7 @@ public class IndividualPageAction {
 			
 		}
 		
-		BookMark bookMark = new BookMark(0,name, url, description, userId, status, posx, posy, imgUrl, 0);
+		BookMark bookMark = new BookMark(0,name, url, description, userId, status, posx, posy, imgUrl, 0,category);
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		System.out.println("maxBookmarkId: " + maxBookmarkId);
 		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
@@ -169,7 +171,7 @@ public class IndividualPageAction {
 			}
 		}
 		
-		BookMark bookMark = new BookMark(bookMarkId, name, url, desc, "", "", 0, 0, imgUrl, 0);
+		BookMark bookMark = new BookMark(bookMarkId, name, url, desc, "", "", 0, 0, imgUrl, 0,"");
 		new IndividualPageServiceImpl().modifyMark(bookMark);
 		
 		JSONObject jobj = new JSONObject();
@@ -266,5 +268,20 @@ public class IndividualPageAction {
 		nextPage.setViewName("result");
 		return nextPage;
 	}
+	//카테고리 보여주기
+		@RequestMapping("/viewCategory")
+		public ModelAndView viewCategory(HttpServletRequest request){
+			ModelAndView nextPage = new ModelAndView();
+			ArrayList<String> categoryList=null;
+			String userId = (String)request.getSession().getAttribute("MEMBERID");
+			//카테고리 목록 가져오기
+			categoryList=new IndividualPageServiceImpl().categoryList(userId);
+			JSONArray jobj = JSONArray.fromObject(categoryList); 
+			System.out.println(jobj.toString());
+			request.setAttribute("result", jobj);
+			nextPage.setViewName("result");
+			
+			return nextPage;  
+		}
 
 }
