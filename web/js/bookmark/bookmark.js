@@ -21,12 +21,39 @@ var init = function(){
 	$('.bookmarkIcon').contextPopup({
 	  	title:'북마크',
 	  	items:[
-			{label:'북마크 변경', icon:'', action:function(){bookmarkUpdate();}},
-			{label:'북마크 삭제', icon:'', action:function(){bookmarkDelete();}}
+			{
+				label:'북마크 변경', 
+				icon:'', 
+				action:function(){
+					$('.contextMenuPlugin').remove();
+					bookmarkUpdate();
+				}
+			},
+			{
+				label:'북마크 삭제', 
+				icon:'', 
+				action:function(){
+					$('.contextMenuPlugin').remove();
+					$('#invisibleDiv').remove();
+					bookmarkDelete();
+				}
+			},
+			{
+				label:'북마크 추천', 
+				icon:'', 
+				action:function(){
+					$('.contextMenuPlugin').remove();
+					$('#invisibleDiv').remove();
+					bookmarkDelete();
+				}
+			}
 	  	]
 	});
 	
 	$('#addBookMarkUrl').focusout(bookmarkUrlFocusOut);
+};
+var bookMarkInit = function(newEntry){
+	$(newEntry).mouseover(bookMarkDelete).mouseout(bookMarkOut);
 };
 
 var bookMarkArrange = function(e){
@@ -163,7 +190,12 @@ $('#add').bind('click',function(e){
 				newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
-			init();
+			//init();
+			bookMarkInit(newLi);
+			kaka = this;
+			keke = $(this);
+			kiki = newLi;
+			
 		});
 	}else{
 		$("#addMarkForm").ajaxSubmit({
@@ -219,7 +251,7 @@ var bookmarkDelete = function(){
 			}
 		}).done(function(data){
 			gridster.remove_widget($('li[data-id="'+ $bookId +'"]'));
-			init();
+			//init();
 		});
 	}
 };
