@@ -18,6 +18,7 @@ var init = function(){
 		openwindow.location.href = $(this).attr('href');
 	});
 	
+	
 	$('.bookmarkIcon').contextPopup({
 	  	title:'북마크',
 	  	items:[
@@ -190,8 +191,9 @@ $('#add').bind('click',function(e){
 				newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
-			//init();
-			bookMarkInit(newLi);
+			
+			kakaka.unbind('contextmenu');
+			init();
 			kaka = this;
 			keke = $(this);
 			kiki = newLi;

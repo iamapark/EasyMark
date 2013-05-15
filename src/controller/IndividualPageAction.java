@@ -45,6 +45,7 @@ public class IndividualPageAction {
 																		 @RequestParam(value="category")String category,
 																		 @RequestParam(value="userId",required=false)String userId){
 		System.out.println("addMark()!!");
+		System.out.println("userId: " + userId);
 		ModelAndView nextPage = new ModelAndView();
 		if(userId == null)
 			userId = (String)request.getSession().getAttribute("MEMBERID");
@@ -112,7 +113,6 @@ public class IndividualPageAction {
 		
 		BookMark bookMark = new BookMark(0,name, url, description, userId, status, posx, posy, imgUrl, 0);
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
-		System.out.println("maxBookmarkId: " + maxBookmarkId);
 		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
 		request.getSession().setAttribute("bookMarkList", bookMarkList);
 		
