@@ -12,6 +12,8 @@
 				  <li><a href="#setting_memberInfo" data-toggle="tab">회원정보</a></li>
 				  <li><a href="#setting_bookmarkInfo" data-toggle="tab">북마크</a></li>
 				  <li><a href="#setting_settings" data-toggle="tab">설정</a></li>
+				   <li><a href="#setting_category" data-toggle="tab">카테고리</a></li>
+				  
 				</ul>
 			</div>
 			<div class="setting_content" >
@@ -72,6 +74,12 @@
 							</form>
 							<span id="backgroundImgNoti"></span>
 					 	</div>
+				  	</div>
+				  	<div class="tab-pane" id="setting_category">
+				  		<h5>카테고리 변경</h5>
+				  		<form action="viewCategory" name="viewCategory" id="viewCategory" method="post" enctype="multipart/form-data">
+					  		<input type="button" id="category" name="category" value="category">
+					  	</form>
 				  	</div>
 				</div>
 			</div>

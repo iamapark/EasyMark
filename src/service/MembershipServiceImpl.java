@@ -63,4 +63,8 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 		return RegisterDAO.getInstance().me2DayLoginCheck(login);
 	}
 
+	public void registerRegisterTime(Member member) {
+		RegisterDAO.getInstance().registerRegisterTime(member);
+	}
+
 }

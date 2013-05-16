@@ -35,6 +35,7 @@ public class MembershipAction {
 			new MembershipServiceImpl().registerMember(member);
 			new MembershipServiceImpl().registerMemberInfo(member);
 			new MembershipServiceImpl().registerDesign(member);
+			new MembershipServiceImpl().registerRegisterTime(member);
 		}
 		mav.setViewName("index");
 		return mav;
@@ -168,17 +169,18 @@ public class MembershipAction {
 																			  @RequestParam(value="setting_name")String name,
 																			  @RequestParam(value="setting_email")String email){
 		ModelAndView mav = new ModelAndView();
-		
-		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/"+(String)request.getSession().getAttribute("MEMBERID")+"/";
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/"+userId+"/";
 		String imgUrl = null;
+		
 		if(file != null){
 			if(!file.getOriginalFilename().equals("")){
 				new FileWriter().writeFile(file, path, file.getOriginalFilename());
 				imgUrl = file.getOriginalFilename();
+				imgUrl = "users/img/" + userId + "/" + file.getOriginalFilename();
 			}
 		}
 		
-		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		Member m = new Member(userId, email, null, name, null, imgUrl);
 		new MembershipServiceImpl().updateMemberInfo(m);
 		m = new MembershipServiceImpl().getMemberInfo(userId);
@@ -228,6 +230,7 @@ public class MembershipAction {
 		return mav;
 	}
 	
+
 	@RequestMapping("/extensionUserCheck")
 	public ModelAndView extensionUserCheck(HttpServletRequest request, @RequestParam("userId")String userId, 
 														               @RequestParam("password")String password,
@@ -243,4 +246,5 @@ public class MembershipAction {
 		return mav;
 	}
 	
+
 }

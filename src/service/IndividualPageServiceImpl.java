@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dao.BookMarkDAO;
+import dao.BookMarkListDAO;
 import dto.BookMark;
 import dto.Design;
 
@@ -58,6 +59,11 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	public void modifyMark(BookMark bookMark){
 		BookMarkDAO.getInstance().modifyMark(bookMark);
 	}
+	public ArrayList<String> categoryList(String userId){
+		ArrayList<String> categoryList= null;
+		categoryList=(ArrayList<String>)BookMarkListDAO.getInstance().categoryList(userId);
+		return categoryList;
+	}
 
 	
 	@Override
@@ -72,6 +78,7 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	
 
 
