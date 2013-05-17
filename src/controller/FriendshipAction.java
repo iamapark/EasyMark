@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import service.FriendshipServiceImpl;
+import service.IndividualPageServiceImpl;
+import dto.BookMark;
 import dto.BookMarkShip;
 import dto.Friendship;
 import dto.Member;
@@ -158,4 +160,6 @@ public class FriendshipAction {
 		
 		return nextPage;
 	}
+
+	
 }
