@@ -43,6 +43,8 @@
 	</div><!--/span-->
 
 </div><!--/row-->
+<button class="btn btn-primary" id="memberTableAllSelect">전체 선택</button>
+<button class="btn btn-danger" id="selectDelete">선택 삭제</button>
 </div>
 
 <!-- MODAL -->

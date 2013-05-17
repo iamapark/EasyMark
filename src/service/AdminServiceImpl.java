@@ -22,4 +22,8 @@ public class AdminServiceImpl implements AdminServiceIF {
 	public MemberInfo getMemberInfo_admin(String userId) {
 		return MembershipDAO.getInstance().getMemberInfo_admin(userId);
 	}
+
+	public void deleteMembers(ArrayList<String> idList) {
+		MembershipDAO.getInstance().deleteMembers(idList);
+	}
 }

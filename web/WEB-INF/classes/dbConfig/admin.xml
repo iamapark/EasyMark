@@ -63,5 +63,44 @@
 			member_info.user_id
 		HAVING member_info.user_id = #userId#		
     </select>
-
+	
+	<delete id="deleteMembers" parameterClass="List">
+		delete from member_info
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<delete id="deleteBookMark" parameterClass="List">
+		delete from bookmark
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<delete id="deleteDesign" parameterClass="List">
+		delete from design
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<delete id="deleteMember" parameterClass="List">
+		delete from member
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
 </sqlMap>

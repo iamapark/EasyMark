@@ -80,4 +80,28 @@ public class AdminAction {
 		mav.setViewName("result");
 		return mav;
 	}
+	
+	
+	@RequestMapping("/deleteMembers")
+	public ModelAndView deleteMembers(HttpServletRequest request, HttpServletResponse response,
+									 @RequestParam(value="members") String members){
+
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<String> idList = new ArrayList<String>();
+			
+		String ar[] = members.split("&");
+		
+		for(String a:ar){
+			idList.add(a.split("=")[1]);
+		}
+		
+		new AdminServiceImpl().deleteMembers(idList);
+		
+		request.setAttribute("result", "true");
+		mav.setViewName("result");
+		return mav;
+		
+	}
+
 }

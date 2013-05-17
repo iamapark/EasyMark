@@ -27,3 +27,31 @@ var getMemberInfo = function(){
 		$('#info_registerDate').val(data.registerDate);
 	});
 };
+
+// 회원 테이블에서 전체 선택을 클릭했을 때
+$('#memberTableAllSelect').click(function(e){
+	if($(this).text() == '전체 선택'){
+		$('input[name=memberSelector]').attr('checked', true);
+		$(this).text('선택 해제');
+	}else{
+		$('input[name=memberSelector]').attr('checked', false);
+		$(this).text('전체 선택');
+	}
+});
+
+// 회원 테이블에서 전체 삭제를 클릭했을 때
+$('#selectDelete').click(function(e){
+	kaka = $('input[name=memberSelector]');
+	var data = $('input[name=memberSelector]').serialize();
+	
+	$.ajax({
+		url:'deleteMembers',
+		data:{
+			members:data
+		}
+	}).done(function(data){
+		console.log(data);
+	});
+	
+	
+});

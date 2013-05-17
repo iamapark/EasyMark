@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
@@ -45,5 +46,18 @@ public class MembershipDAO {
 			e.printStackTrace();
 		}
 		return m;
+	}
+
+	public void deleteMembers(ArrayList<String> idList) {
+		HashMap hm = new HashMap();
+		hm.put("idList", idList);
+		try{
+			sqlMapper.delete("deleteMemberInfo", idList);
+			sqlMapper.delete("deleteBookMark", idList);
+			sqlMapper.delete("deleteDesign", idList);
+			sqlMapper.delete("deleteMember", idList);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 }
