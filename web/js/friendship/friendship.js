@@ -155,37 +155,7 @@ $('#webSiteTab li:eq(1) a').click(function (e){
 	});
 });
 
-$('#updateMemberButton').click(function(e){
-	e.preventDefault();
-	console.log('회원정보 수정');
-	
-	var filename = $('#personalImg').val();
-	
-	if(filename == ''){
-		$.ajax({
-			url:'updateMemberInfo',
-			dataType:'json',
-			type:'POST',
-			data:{
-				userId:       $('#setting_userId').val(),
-				setting_name: $('#setting_name').val(),
-				setting_email:$('#setting_email').val()
-			}
-		}).done(function(data){
-			alert('회원 정보를 수정하였습니다.');
-		});
-	}else{
-		$("#updateMemberInfoForm").ajaxSubmit({
-        	dataType:'html',
-        	success:function(data,rst){
-        		var imgUrl = JSON.parse(data).imgUrl;
-        		$('#settingImg').attr('src', imgUrl);
-        		$('#inputPersonalImg').attr('src', imgUrl);
-        		alert('회원 정보를 수정하였습니다.');
-			}
-    	});
-	}
-});
+
 // 배경화면 파일을 선택했을 때 호출
 /*$('#backgroundImgFile').change(function(){
 	$("#bgImgForm").ajaxSubmit({

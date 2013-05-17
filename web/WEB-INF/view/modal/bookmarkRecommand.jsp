@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<div id="bookMarkRecommand" class="modal hide fade" tabindex="-1"
-		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="bookMarkRecommand" class="modal hide fade" tabindex="-1" data-width="450">
 		
 		
 		<div class="modal-header">
@@ -12,30 +11,39 @@
 		</div>
 		<div class="modal-body">
 
-			<form class="send" name="sendBookMark" action="" method="post">
+			<form class="send" name="sendBookMark" action="recommend" method="post">
 
+				<div class="control-group">
+					
+					<label class="control-label" for="inputId">ID</label>
+						<div class="controls">
+							<input type="text" name="friendId" id="recommend_friendId" placeholder="FriendList" value=<%= request.getAttribute("friendId") %>>
+							<%-- <BUTTON class=btn-small href="#FriendList" data-toggle="modal" onclick="friend('${sessionScope.MEMBERID}')">Friend</BUTTON> --%>
+						</div>
+				</div>
+					
 				<div class="control-group">
 					<label class="control-label" for="inputUrl">url</label>
 					<div class="controls">
-						<input type="text" id="url2" name="bookMarkUrl">
+						<input type="text" id="recommend_url" name="bookMarkUrl">
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputUrl">name</label>
 					<div class="controls">
-						<input type="text" id="name2" name="bookMarkName">
+						<input type="text" id="recommend_name" name="bookMarkName">
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label class="textarea">desc</label>
 					<div class="controls">
-						<textarea rows="4" cols="10" id="description2" name="bookMarkDescript"></textarea>
+						<textarea rows="4" cols="10" id="recommend_descript" name="bookMarkDescript"></textarea>
 					</div>
 
 				</div>
 				<div>
-					<button type="submit" class="send" id="send">send</button>
+					<button type="submit" class="send" id="sendButton">send</button>
 			</div>
 
 

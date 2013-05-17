@@ -81,6 +81,12 @@
     	where user_id=#userId#
   	</select>
   	
+  	<insert id="bookMarkRecommand" parameterClass="BookMarkShip">
+		INSERT INTO	bookmarkship 
+		(bookmark_name, bookmark_url, bookmark_descript, user_id, friend_id, status)
+		VALUES (#bookMarkName#, #bookMarkUrl#, #bookMarkDescript#, #userId#, #friendId#, #status#)
+	</insert>
+  	
   	<!-- <select id="getFriendBar" parameterClass="Friendship" resultClass="Member">
     	select m.user_id userId, m.name firstName, m.email email
     	from member_info m, friendship f
@@ -172,11 +178,7 @@
     	WHERE message_id=#messageId#
 	</delete>	
 
-	<insert id="bookMarkRecommand" parameterClass="BookMarkShip">
-		INSERT INTO	bookmarkship 
-		(bookmark_name, bookmark_url, bookmark_descript, user_id, friend_id, status)
-		VALUES (#bookMarkName#, #bookMarkUrl#, #bookMarkDescript#, #userId#, #friendId#, #status#)
-	</insert>
+	
 	
 
 	<delete id="bookMarkCancel" parameterClass="String">

@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import service.FriendshipServiceImpl;
@@ -167,6 +170,47 @@ public class FriendshipAction {
 
 		
 		return nextPage;*/
+	}
+
+	@RequestMapping("/recommend")
+	public ModelAndView recommend(HttpServletRequest request,
+			HttpServletResponse response, @RequestParam(value="recommend_friendId")String friendId,
+										  @RequestParam(value="recommend_url")String url,
+			  							  @RequestParam(value="recommend_name")String name,
+			  							  @RequestParam(value="recommend_descript")String descript) {
+		// 사용자ID 가져오기
+		
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		
+		String status = "추천";
+		
+		System.out.println("name :" + name + ", url :" + url);
+		
+		BookMarkShip bookmarkship = new BookMarkShip();
+		String[] selectFriend = friendId.split(",");
+
+		for (int i = 0; i < selectFriend.length; i++) {
+
+			bookmarkship = new BookMarkShip(0, name, url, descript, userId, selectFriend[i], status);
+			
+			new FriendshipServiceImpl().recommendSite(bookmarkship);
+		
+			System.out.println(bookmarkship.toString());
+		}
+
+		ModelAndView nextPage = new ModelAndView();
+
+		JSONObject jobj = new JSONObject();
+		jobj.put("x", posx);
+		jobj.put("y", posy);
+		jobj.put("id", maxBookmarkId);
+		jobj.put("imgUrl", imgUrl);
+		jobj.put("url", url);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+
+		return nextPage;
 	}
 
 	

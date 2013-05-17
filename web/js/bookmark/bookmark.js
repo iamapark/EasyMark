@@ -315,12 +315,12 @@ var bookmarkRecommand = function() {
 		}
 	}).done(function(data) {
 	
-		console.log("123돌아가나?")
+		console.log("123돌아가나?");
 		
 		
-		$('#url2').val($(data).attr('bookMarkUrl'));
-		$('#name2').val($(data).attr('bookMarkName'));
-		$('#description2').val($(data).attr('bookMarkDescript'));
+		$('#recommend_url').val($(data).attr('bookMarkUrl'));
+		$('#recommend_name').val($(data).attr('bookMarkName'));
+		$('#recommend_descript').val($(data).attr('bookMarkDescript'));
 		
 	
 		
@@ -413,3 +413,25 @@ $('#category')
 
 									});
 				});
+
+
+$('#sendButton').click(function(e){
+	
+	console.log('회원정보 수정');
+	
+	
+		$.ajax({
+			url:'recommend',
+			dataType:'json',
+			type:'POST',
+			data:{
+				recommend_friendId:$('#recommend_friendId').val(),
+				recommend_url: $('#recommend_url').val(),
+				recommend_name:$('#recommend_name').val(),
+				recommend_descript:$('#recommend_descript').val()
+			}
+		}).done(function(data){
+			alert('즐겨찾기를 친구에게 추천했습니다.');
+		});
+	
+});
