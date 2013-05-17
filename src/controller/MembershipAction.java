@@ -127,8 +127,6 @@ public class MembershipAction {
 		return mav;
 	}
 
-	
-	
 	@RequestMapping("/updateBgImg")
 	public ModelAndView updateBgImg(HttpServletRequest request, Img img, @RequestParam("backgroundImgFile")MultipartFile file){
 		ModelAndView mav = new ModelAndView();
@@ -152,4 +150,21 @@ public class MembershipAction {
 		mav.setViewName("result");
 		return mav;
 	}
+	
+	@RequestMapping("/extensionUserCheck")
+	public ModelAndView extensionUserCheck(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView mav = new ModelAndView();
+
+		String userId = request.getParameter("userId");
+		String password = request.getParameter("password");
+		String callback = request.getParameter("userCheckResult");
+		
+		boolean flag = new MembershipServiceImpl().login(new Login(userId, password));
+		
+		String data = callback + "({\"result\" : \"" + Boolean.toString(flag) + "\", \"userId\" : \"" + userId +"\"})";
+		request.setAttribute("result", data);
+		mav.setViewName("result");
+		return mav;
+	}
+
 }
