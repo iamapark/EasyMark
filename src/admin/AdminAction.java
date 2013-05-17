@@ -70,9 +70,7 @@ public class AdminAction {
 	@RequestMapping("/getMemberInfo_admin")
 	public ModelAndView getMemberInfo(HttpServletRequest request, HttpServletResponse response,
 									 @RequestParam(value="userId") String userId){
-		
-		System.out.println("userId: " + userId);
-		
+
 		ModelAndView mav = new ModelAndView();
 
 		MemberInfo m = new AdminServiceImpl().getMemberInfo_admin(request.getParameter("userId"));
