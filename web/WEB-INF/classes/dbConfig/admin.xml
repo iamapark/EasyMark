@@ -52,14 +52,16 @@
     </select>
     
     <select id="getMemberInfo_admin" parameterClass="String" resultClass="MemberInfo">
-    	SELECT 
+		SELECT 
 		    member_info.user_id userId, member_info.name name, register_time.register_time registerDate, member_info.email email,
-			COUNT(bookmark.user_id) AS bookmarkCount, COUNT(login_time.login_time) AS loginCount, NVL(member_info.img_url, 'NULL') AS imgUrl, NVL(member_info.bg_img_url, 'NULL') AS bgImgUrl
+			NVL(COUNT(bookmark.user_id), 0) AS bookmarkCount, 
+			NVL((SELECT COUNT(login_id) FROM login_time GROUP BY user_id HAVING user_id=#userId#), 0) AS loginCount, 
+			member_info.img_url AS imgUrl, member_info.bg_img_url AS bgImgUrl
 		FROM 
 			member_info LEFT OUTER JOIN bookmark ON member_info.user_id = bookmark.user_id JOIN	register_time ON register_time.user_id = member_info.user_id LEFT OUTER JOIN login_time ON member_info.user_id = login_time.user_id
 		GROUP BY 
 			member_info.user_id
-		HAVING member_info.user_id = #userId#	
+		HAVING member_info.user_id = #userId#		
     </select>
 
 </sqlMap>

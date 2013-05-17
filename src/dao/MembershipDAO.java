@@ -44,7 +44,6 @@ public class MembershipDAO {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		System.out.println(m);
 		return m;
 	}
 }

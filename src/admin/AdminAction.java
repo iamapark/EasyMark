@@ -72,8 +72,7 @@ public class AdminAction {
 									 @RequestParam(value="userId") String userId){
 
 		ModelAndView mav = new ModelAndView();
-
-		MemberInfo m = new AdminServiceImpl().getMemberInfo_admin(request.getParameter("userId"));
+		MemberInfo m = new AdminServiceImpl().getMemberInfo_admin(userId);
 
 		JSONObject dataJ = JSONObject.fromObject(m);
 		System.out.println(dataJ);
