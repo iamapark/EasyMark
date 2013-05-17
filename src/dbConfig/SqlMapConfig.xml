@@ -11,11 +11,12 @@
 	<typeAlias alias="Login" type="dto.Login"/>
 	<typeAlias alias="Design" type="dto.Design"/>
 	<typeAlias alias="BookMark" type="dto.BookMark"/>
+	<typeAlias alias="MemberTable" type="dto.MemberTable"/>
+	<typeAlias alias="MemberInfo" type="dto.MemberInfo"/>
 	<typeAlias alias="BookMarkShip" type="dto.BookMarkShip"/>
 	<typeAlias alias="Friendship" type="dto.Friendship"/>
 	<typeAlias alias="User" type="dto.User"/>
 	<typeAlias alias="FriendStatus" type="dto.FriendStatus"/>
-
 
   <!-- Configure a built-in transaction manager.  If you're using an 
        app server, you probably want to use its transaction manager 
@@ -56,5 +57,7 @@
   <sqlMap resource="dbConfig/member.xml"/>
   <sqlMap resource="dbConfig/bookmark.xml"/>
   <sqlMap resource="dbConfig/speech.xml"/>
+  <sqlMap resource="dbConfig/admin.xml"/>
   <sqlMap resource="dbConfig/friend.xml"/>
+
 </sqlMapConfig>

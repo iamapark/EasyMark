@@ -21,6 +21,7 @@
 	<bean id="friendshipAction" class="controller.FriendshipAction"/>
 	<bean id="individualPageAction" class="controller.IndividualPageAction"/>
 	<bean id="speechAction" class="controller.SpeechAction"/>
+	
 
  	<bean id="viewResolver"
  		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

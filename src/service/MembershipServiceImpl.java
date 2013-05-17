@@ -67,4 +67,8 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 		RegisterDAO.getInstance().registerRegisterTime(member);
 	}
 
+	public void loginCount(String userId) {
+		RegisterDAO.getInstance().loginCount(userId);
+	}
+
 }

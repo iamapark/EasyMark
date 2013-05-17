@@ -297,6 +297,29 @@ public class IndividualPageAction {
 		nextPage.setViewName("result");
 		return nextPage;
 	}
+	
+	@RequestMapping("/extensionAddMark")
+	public ModelAndView extensionAddMark(HttpServletRequest request, HttpServletResponse response,
+										@RequestParam(value="url")String url,
+										@RequestParam(value="name", required=false)String name,
+										@RequestParam(value="desc", required=false)String desc){
+		ModelAndView mav = new ModelAndView();
+		
+		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
+		// 앞부분에 붙여준다.
+		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=]*$")){
+			url = "http://" + url;
+		}
+		
+		System.out.println("extensionAddMark");
+		System.out.println("url: " + url);
+		System.out.println("name: " + name);
+		System.out.println("desc: " + desc);
+		
+		request.setAttribute("result", "true");
+		mav.setViewName("result");
+		return mav;
+	}
 
 	//카테고리 보여주기
 		@RequestMapping("/viewCategory")

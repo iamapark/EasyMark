@@ -135,11 +135,19 @@ public class MembershipAction {
 		Login login = new Login(userId, password);
 		
 		boolean flag = new MembershipServiceImpl().login(login);
-		Member m = new MembershipServiceImpl().getMemberInfo(userId);
-
+		Member m = new MembershipServiceImpl().getMemberInfo(userId); // 회원 정보를 받아온다.
+		
 		if(flag){
 			HttpSession session = request.getSession();
-			session.setAttribute("MEMBERID", userId);
+
+			if(!userId.equals(session.getAttribute("MEMBERID"))){
+				new MembershipServiceImpl().loginCount(userId); // 로그인 카운트를 1 증가시킨다.
+				session.setAttribute("MEMBERID", userId);
+				System.out.println("새로 로그인");
+			}else{
+				System.out.println("기존 로그인");
+			}
+
 			session.setAttribute("designType", new MembershipServiceImpl().getDesignType(userId));
 			session.setAttribute("MEMBERINFO", m);
 			request.getSession().setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
@@ -205,8 +213,6 @@ public class MembershipAction {
 		return mav;
 	}
 
-	
-	
 	@RequestMapping("/updateBgImg")
 	public ModelAndView updateBgImg(HttpServletRequest request, Img img, @RequestParam("backgroundImgFile")MultipartFile file){
 		ModelAndView mav = new ModelAndView();
@@ -246,6 +252,6 @@ public class MembershipAction {
 		mav.setViewName("result");
 		return mav;
 	}
-	
+
 
 }
