@@ -178,6 +178,7 @@ public class MembershipAction {
 																			  @RequestParam(value="setting_email")String email){
 		ModelAndView mav = new ModelAndView();
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		
 		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/"+userId+"/";
 		String imgUrl = null;
 		

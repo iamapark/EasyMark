@@ -12,7 +12,7 @@
 				  <li><a href="#setting_memberInfo" data-toggle="tab">회원정보</a></li>
 				  <li><a href="#setting_bookmarkInfo" data-toggle="tab">북마크</a></li>
 				  <li><a href="#setting_settings" data-toggle="tab">설정</a></li>
-				   <li><a href="#setting_category" data-toggle="tab">카테고리</a></li>
+				  <li><a href="#setting_category" data-toggle="tab">카테고리</a></li>
 				  
 				</ul>
 			</div>

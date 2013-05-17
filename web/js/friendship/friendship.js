@@ -4,17 +4,17 @@ $('a[data-toggle="modal"]').click(function(){
 });
 
 //여러가지 폼들을 초기화한다. 이전 데이터들을 지운다.
-var clearForm = function(){
+/*var clearForm = function(){
 	$('#backgroundImgNoti').text('');
 	$('#addBookMarkUrl').val('');
 	$('#addBookMarkName').val('');
 	$('#addBookMarkDescription').val('');
 	$('#addBookMarkImage').val('');
 	$('#bookmarkIconImageFile').val('');
-};
+};*/
 
 //회원정보 수정 버튼을 눌렀을 때 호출
-$('#updateMemberButton').click(function(e){
+/*$('#updateMemberButton').click(function(e){
 	e.preventDefault();
 	console.log('회원정보 수정');
 	
@@ -44,10 +44,10 @@ $('#updateMemberButton').click(function(e){
 			}
     	});
 	}
-});
+});*/
 
 
-$('#designSelect').change(function(){
+/*$('#designSelect').change(function(){
 	var styleSelected = $('#designSelect option:selected').val();
 	changeCSS(styleSelected);
 	changeElement(styleSelected);
@@ -88,28 +88,48 @@ function changeElement(fname){
 		$("#designMainContainer").hide();
 		$("#designMain2Container").show();
 	}
-}
+}*/
 
 /**
 <!-- setting 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. -->*/
-$('a[href="#setting"]').click(function(){
+$('a[href="#friendInfo"]').click(function(){
 	$.ajax({
-		url: 'getMemberInfo',
+		url: 'friend',
 		dataType:'json'
 	}).done(function(data){
 		console.log(data);
-		$('#setting_userId').val(data.userId);
-		$('#setting_name').val(data.name);
-		$('#setting_email').val(data.email);
-		if(data.imgUrl != ""){
-			$('#inputPersonalImg').attr('src', data.imgUrl);
-		}
-		$('#bgImg').attr('src', data.bgImgUrl);
+	});
+});
+
+$('#friendTab li:eq(1) a').click(function (e){	
+	$.ajax({
+		url: 'sendFriendReq',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
+	});
+});
+
+$('#friendTab li:eq(2) a').click(function (e){	
+	$.ajax({
+		url: 'takeFriendReq',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
+	});
+});
+
+$('#friendTab li:eq(3) a').click(function (e){	
+	$.ajax({
+		url: 'recommendInWeb',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
 	});
 });
 
 // 배경화면 파일을 선택했을 때 호출
-$('#backgroundImgFile').change(function(){
+/*$('#backgroundImgFile').change(function(){
 	$("#bgImgForm").ajaxSubmit({
    		dataType:'html',
    		success:function(data,rst){
@@ -119,4 +139,4 @@ $('#backgroundImgFile').change(function(){
    			$('body').css('background-image','url('+ pData.bgImgUrl+ ')');
 		}
     });
-});
+});*/
