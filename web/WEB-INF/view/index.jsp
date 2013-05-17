@@ -101,6 +101,8 @@
   </div>
 </div>
 
+<a href="goAdmin">관리자</a>
+
 <script src="js/jquery.js"></script>
 <script src="js/membership/index.js"></script>
 </body>

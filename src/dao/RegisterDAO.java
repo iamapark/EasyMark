@@ -174,4 +174,12 @@ public class RegisterDAO {
 		}
 	}
 
+	public void loginCount(String userId) {
+		try{
+			sqlMapper.insert("loginCount", userId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
 }
