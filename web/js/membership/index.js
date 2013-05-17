@@ -99,3 +99,35 @@ var loginButtonClicked = function(){
 		document.loginForm.submit();
 	}
 };
+
+/**
+ * '미투데이 계정으로 등록하기' 링크를 눌렀을 경우 호출되는 함수
+ * */
+var me2dayRegister = function(){
+	// jQuery Ajax Call
+	$.ajax({
+		url: 'Proxy/proxy.jsp', // javascript same origin policy를 해결하기 위한 프록시
+		dataType:'json',
+		data: {
+				url: 'http://me2day.net/api/get_auth_url.json?akey=acf3c1a58ff4366e4dadbe67378c7af2',
+	   		  }
+	}).done(function(data){
+		location.href = data.url;
+	});
+};
+
+/**
+ * '미투데이 계정으로 로그인하기' 링크를 눌렀을 경우 호출되는 함수
+ * */
+var me2dayLogin = function(){
+	// jQuery Ajax Call
+	$.ajax({
+		url: 'Proxy/proxy.jsp', //// javascript same origin policy를 해결하기 위한 프록시
+		dataType:'json',
+		data: {
+				url: 'http://me2day.net/api/get_auth_url.json?akey=8d41ef461f4c6e08dc8e235c2337db37',
+	   		  }
+	}).done(function(data){
+		location.href = data.url;
+	});
+};

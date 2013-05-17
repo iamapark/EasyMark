@@ -50,6 +50,7 @@ CREATE TABLE "bookmark"
    "pos_y" INTEGER, 
    "img_url" CHARACTER VARYING(100), 
    "frequency" INTEGER,
+   "category" character varying(30),
    CONSTRAINT pk_bookmark_bookmark_id PRIMARY KEY("bookmark_id"), 
    FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT 
 );
@@ -175,3 +176,27 @@ CREATE TABLE "design"
 );
 
 
+/**음성인식과 관련된 테이블*/
+CREATE TABLE "speech_site" 
+(
+   "url" CHARACTER VARYING(255) NOT NULL, 
+   "speech" CHARACTER VARYING(255), 
+   CONSTRAINT pk PRIMARY KEY("url") 
+);
+INSERT INTO speech_site (url, speech) VALUES ('http://www.google.co.kr', '구글');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.daum.net', '다음');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.naver.com', '네이버');
+INSERT INTO speech_site (url, speech) VALUES ('http://nate.com', '네이트');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.facebook.com', '페이스북');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.linkedin.com', '링크드인');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.twitter.com', '트위터');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.donga.com/', '동아일보');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.tistory.cm', '티스토리');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.chosun.com/', '조선일보');
+INSERT INTO speech_site (url, speech) VALUES ('http://joongang.joinsmsn.com/', '중앙일보');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.11st.co.kr/html/main.html', '11 번가');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.gmarket.co.kr/', '지마켓');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.mk.co.kr/', '매일경제');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.auction.co.kr/', '옥션');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.khan.co.kr/', '경향신문');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.nate.com/?f=cymain', '싸이월드');

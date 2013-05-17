@@ -52,5 +52,23 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 	public void updateBgImg(Member m) {
 		RegisterDAO.getInstance().updateBgImg(m);
 	}
+	
+	@Override
+	public boolean registerMe2DayMember(Member member) {
+		return RegisterDAO.getInstance().registerMe2DayMember(member);
+	}
+
+	@Override
+	public boolean me2DayLoginCheck(Login login) {
+		return RegisterDAO.getInstance().me2DayLoginCheck(login);
+	}
+
+	public void registerRegisterTime(Member member) {
+		RegisterDAO.getInstance().registerRegisterTime(member);
+	}
+
+	public void loginCount(String userId) {
+		RegisterDAO.getInstance().loginCount(userId);
+	}
 
 }

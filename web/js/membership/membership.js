@@ -38,9 +38,8 @@ $('#updateMemberButton').click(function(e){
         	dataType:'html',
         	success:function(data,rst){
         		var imgUrl = JSON.parse(data).imgUrl;
-        		var userId = JSON.parse(data).userId;
-        		$('#settingImg').attr('src', 'users/img/'+userId+'/'+imgUrl);
-        		$('#inputPersonalImg').attr('src', 'users/img/'+userId+'/'+imgUrl);
+        		$('#settingImg').attr('src', imgUrl);
+        		$('#inputPersonalImg').attr('src', imgUrl);
         		alert('회원 정보를 수정하였습니다.');
 			}
     	});
@@ -102,7 +101,7 @@ $('a[href="#setting"]').click(function(){
 		$('#setting_name').val(data.name);
 		$('#setting_email').val(data.email);
 		if(data.imgUrl != ""){
-			$('#inputPersonalImg').attr('src', 'users/img/' + data.userId + "/" + data.imgUrl);
+			$('#inputPersonalImg').attr('src', data.imgUrl);
 		}
 		$('#bgImg').attr('src', data.bgImgUrl);
 	});

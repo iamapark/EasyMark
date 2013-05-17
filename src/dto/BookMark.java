@@ -15,6 +15,7 @@ public class BookMark implements Serializable {
 	private int posY;
 	private String imgUrl;
 	private int frequency;
+	private String category;
 	
 	
 	public BookMark() {
@@ -37,7 +38,7 @@ public class BookMark implements Serializable {
 	
 	public BookMark(int bookMarkId, String bookMarkName, String bookMarkUrl,
 			String bookMarkDescript, String userId, String status, int posX,
-			int posY, String imgUrl, int frequency) {
+			int posY, String imgUrl, int frequency, String category) {
 		super();
 		this.bookMarkId = bookMarkId;
 		this.bookMarkName = bookMarkName;
@@ -49,7 +50,9 @@ public class BookMark implements Serializable {
 		this.posY = posY;
 		this.imgUrl = imgUrl;
 		this.frequency = frequency;
+		this.category = category;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -135,6 +138,12 @@ public class BookMark implements Serializable {
 
 	public void setFrequency(int frequency) {
 		this.frequency = frequency;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 }

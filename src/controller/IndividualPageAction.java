@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -28,6 +30,7 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.FileWriter;
 import dto.BookMark;
+import dto.Design;
 import dto.Img;
 import dto.Member;
 
@@ -40,17 +43,21 @@ public class IndividualPageAction {
 																		 @RequestParam(value="name") String name,
 																		 @RequestParam(value="url") String url,
 																		 @RequestParam(value="description")String description,
-																		 @RequestParam(value="category")String category){
+																		 @RequestParam(value="category")String category,
+																		 @RequestParam(value="userId",required=false)String userId){
+		System.out.println("addMark()!!");
+		System.out.println("userId: " + userId);
 		ModelAndView nextPage = new ModelAndView();
-		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		if(userId == null)
+			userId = (String)request.getSession().getAttribute("MEMBERID");
 		String imgUrl = null;
-
+		System.out.println("userID :"+userId);
+		
 		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
 		// 앞부분에 붙여준다.
-		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=]*$")){
+		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=!#&%+--,]*$")){
 			url = "http://" + url;
 		}
-		
 		
 		//이미지가 저장되는 경로
 		String path = request.getSession().getServletContext().getRealPath("/users/img/")+"/" + userId + "/bookmark/";
@@ -99,9 +106,19 @@ public class IndividualPageAction {
 			
 		}
 		
-		BookMark bookMark = new BookMark(0,name, url, description, userId, status, posx, posy, imgUrl, 0);
+
+		BookMark bookMark = new BookMark(0,name, url, description, userId, status, posx, posy, imgUrl, 0,category);
+
+		try {
+			name = URLDecoder.decode(name, "utf-8");
+			description = URLDecoder.decode(description, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			
+		}
+		
+		
+
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
-		System.out.println("maxBookmarkId: " + maxBookmarkId);
 		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
 		request.getSession().setAttribute("bookMarkList", bookMarkList);
 		
@@ -177,7 +194,7 @@ public class IndividualPageAction {
 			}
 		}
 		
-		BookMark bookMark = new BookMark(bookMarkId, name, url, desc, "", "", 0, 0, imgUrl, 0);
+		BookMark bookMark = new BookMark(bookMarkId, name, url, desc, "", "", 0, 0, imgUrl, 0,"");
 		new IndividualPageServiceImpl().modifyMark(bookMark);
 		
 		JSONObject jobj = new JSONObject();
@@ -237,7 +254,7 @@ public class IndividualPageAction {
 		
 		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
 		// 앞부분에 붙여준다.
-		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=]*$")){
+		if(!url.trim().matches("^https?://[a-zA-Z0-9./?&_=!#&]*$")){
 			url = "http://" + url;
 		}
 		
@@ -303,5 +320,41 @@ public class IndividualPageAction {
 		mav.setViewName("result");
 		return mav;
 	}
+
+	//카테고리 보여주기
+		@RequestMapping("/viewCategory")
+		public ModelAndView viewCategory(HttpServletRequest request){
+			ModelAndView nextPage = new ModelAndView();
+			ArrayList<String> categoryList=null;
+			String userId = (String)request.getSession().getAttribute("MEMBERID");
+			//카테고리 목록 가져오기
+			categoryList=new IndividualPageServiceImpl().categoryList(userId);
+			JSONArray jobj = JSONArray.fromObject(categoryList); 
+			System.out.println(jobj.toString());
+			request.setAttribute("result", jobj);
+			nextPage.setViewName("result");
+			
+			return nextPage;  
+		}
+
+	
+	@RequestMapping("/extensionAddMark")
+	public ModelAndView extensionAddMark(HttpServletRequest request, Img img, @RequestParam(value="addBookMarkImage",required=false)MultipartFile file,
+																		 @RequestParam(value="name") String name,
+																		 @RequestParam(value="url") String url,
+																		 @RequestParam(value="description")String description,
+																		 @RequestParam(value="category")String category,
+																		 @RequestParam(value="userId")String userId){
+		
+		ModelAndView nextPage = new ModelAndView();
+		
+		System.out.println("extensionAddMark()");
+		System.out.println("userId: " + userId);
+		
+		nextPage.setViewName("result");
+		return nextPage;
+	}
+	
+
 
 }

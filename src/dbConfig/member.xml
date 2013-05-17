@@ -30,6 +30,13 @@
 		VALUES (#userId#)
     </insert>
     
+    <insert id="registerRegisterTime" parameterClass="Member">
+    	INSERT INTO
+    		register_time(user_id, register_time)
+    	VALUES
+    		(#userId#, SYS_TIMESTAMP)
+    </insert>
+    
     <select id="checkId" parameterClass="String" resultClass="String">
         SELECT 
         	user_id
@@ -94,4 +101,11 @@
     	WHERE
     		user_id=#userId#
     </update>
+    
+    <insert id="loginCount" parameterClass="String">
+    	INSERT INTO 
+    		login_time(user_id, login_time) 
+   		VALUES 
+   			(#userId#, SYS_TIMESTAMP);
+    </insert>
 </sqlMap>

@@ -5,6 +5,7 @@
 <c:if test="${sessionScope.MEMBERID == null}">
 	<%
 		response.sendRedirect("/EasyMark/");
+	
 	%>
 </c:if>
 <!DOCTYPE html>
@@ -50,7 +51,7 @@
 	<div id="gridster" class="gridster">
     	<ul>
 			<c:forEach items="${sessionScope.bookMarkList}"	var="bookMark">
-			<li data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
+			<li style="" data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
             	<img id="img" href="${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
             	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
             </li> 
@@ -68,6 +69,8 @@
 		<jsp:include page="modal/bookmarkAdd.jsp" />
 	<!-- 북마크 아이콘 위에서 오른쪽 클릭 후 북마크 정보 탭을 클릭했을 때 MODAL -->
 		<jsp:include page="modal/bookmarkInfo.jsp"></jsp:include>
+	<!-- 친구 아이콘을 클릭했을 때 MODAL -->
+		<jsp:include page="modal/friend.jsp"></jsp:include>
  	<!-- MODAL END -->
 	
 	

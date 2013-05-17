@@ -11,6 +11,9 @@
 	<typeAlias alias="Login" type="dto.Login"/>
 	<typeAlias alias="Design" type="dto.Design"/>
 	<typeAlias alias="BookMark" type="dto.BookMark"/>
+	<typeAlias alias="MemberTable" type="dto.MemberTable"/>
+	<typeAlias alias="MemberInfo" type="dto.MemberInfo"/>
+	
 
 
   <!-- Configure a built-in transaction manager.  If you're using an 
@@ -51,5 +54,7 @@
        
   <sqlMap resource="dbConfig/member.xml"/>
   <sqlMap resource="dbConfig/bookmark.xml"/>
+  <sqlMap resource="dbConfig/speech.xml"/>
+  <sqlMap resource="dbConfig/admin.xml"/>
 
 </sqlMapConfig>

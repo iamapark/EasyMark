@@ -44,6 +44,7 @@ jQuery.fn.contextPopup = function(menuData) {
       $('<li class="' + settings.headerClass + '"></li>').text(settings.title).appendTo(menu);
     }
     settings.items.forEach(function(item) {
+    	console.log('item');
       if (item) {
         var rowCode = '<li><a href="#"><span></span></a></li>';
         // if(item.icon)
@@ -68,7 +69,8 @@ jQuery.fn.contextPopup = function(menuData) {
   }
 
   // On contextmenu event (right click)
-  this.bind('contextmenu', function(e) {	
+  kakaka = this;
+  this.bind('contextmenu', function(e) {
     var menu = createMenu(e)
       .show();
     
@@ -86,7 +88,7 @@ jQuery.fn.contextPopup = function(menuData) {
       .bind('contextmenu', function() { return false; });
 
     // Cover rest of page with invisible div that when clicked will cancel the popup.
-    var bg = $('<div></div>')
+    var bg = $('<div id="invisibleDiv"></div>')
       .css({left:0, top:0, width:'100%', height:'100%', position:'absolute', zIndex:1000000})
       .appendTo(document.body)
       .bind('contextmenu click', function() {
