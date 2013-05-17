@@ -91,8 +91,17 @@ function changeElement(fname){
 }*/
 
 /**
-<!-- setting 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. -->*/
+<!-- friend 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. -->*/
 $('a[href="#friendInfo"]').click(function(){
+	$.ajax({
+		url: 'friend',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
+	});
+});
+
+$('#friendTab li:eq(0) a').click(function (e){	
 	$.ajax({
 		url: 'friend',
 		dataType:'json'
@@ -128,6 +137,55 @@ $('#friendTab li:eq(3) a').click(function (e){
 	});
 });
 
+$('#webSiteTab li:eq(0) a').click(function (e){	
+	$.ajax({
+		url: 'recommendInWeb',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
+	});
+});
+
+$('#webSiteTab li:eq(1) a').click(function (e){	
+	$.ajax({
+		url: 'recommendOutWeb',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
+	});
+});
+
+$('#updateMemberButton').click(function(e){
+	e.preventDefault();
+	console.log('회원정보 수정');
+	
+	var filename = $('#personalImg').val();
+	
+	if(filename == ''){
+		$.ajax({
+			url:'updateMemberInfo',
+			dataType:'json',
+			type:'POST',
+			data:{
+				userId:       $('#setting_userId').val(),
+				setting_name: $('#setting_name').val(),
+				setting_email:$('#setting_email').val()
+			}
+		}).done(function(data){
+			alert('회원 정보를 수정하였습니다.');
+		});
+	}else{
+		$("#updateMemberInfoForm").ajaxSubmit({
+        	dataType:'html',
+        	success:function(data,rst){
+        		var imgUrl = JSON.parse(data).imgUrl;
+        		$('#settingImg').attr('src', imgUrl);
+        		$('#inputPersonalImg').attr('src', imgUrl);
+        		alert('회원 정보를 수정하였습니다.');
+			}
+    	});
+	}
+});
 // 배경화면 파일을 선택했을 때 호출
 /*$('#backgroundImgFile').change(function(){
 	$("#bgImgForm").ajaxSubmit({

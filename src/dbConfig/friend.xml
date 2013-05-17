@@ -29,7 +29,7 @@
 	<resultMap id="statusList" class="FriendStatus">
 		<result property="userId" column="user_id" />
 		<result property="friendId" column="friend_id" />
-		<result property="firstName" column="name" />
+		<result property="name" column="name" />
 		<result property="status" column="status" />
 	</resultMap>
 
@@ -73,6 +73,12 @@
     	select bookmark_id bookMarkId, bookmark_url bookMarkUrl, bookmark_name bookMarkName, bookmark_descript bookMarkDescript, user_id userId, friend_id friendId
     	from bookmarkship
     	where friend_id=#userId#
+  	</select>
+  	
+  	<select id="getKey" parameterClass="String" resultClass="Member">
+    	select me2day_key me2DayKey 
+    	from member_info
+    	where user_id=#userId#
   	</select>
   	
   	<!-- <select id="getFriendBar" parameterClass="Friendship" resultClass="Member">
@@ -179,9 +185,5 @@
 		bookmark_id=#bookMarkId#
 	</delete>
 
-	<select id="getKey" parameterClass="String" resultClass="Member">
-    	select me2day_key me2DayKey 
-    	from member_info
-    	where user_id=#userId#
-  	</select> -->
+	 -->
 </sqlMap>
