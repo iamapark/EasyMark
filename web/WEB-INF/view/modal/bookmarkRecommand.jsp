@@ -13,6 +13,13 @@
 		<div class="modal-body">
 
 			<form class="send" name="sendBookMark" action="" method="post">
+				<div class="control-group">
+					<label class="control-label" for="inputUrl">FriendList</label>
+					<div class="controls">
+						<input type="text" id="friendList2" name="friendList">
+					</div>
+				</div>
+
 
 				<div class="control-group">
 					<label class="control-label" for="inputUrl">url</label>
