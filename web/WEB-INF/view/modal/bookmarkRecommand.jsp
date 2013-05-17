@@ -11,9 +11,7 @@
 		</div>
 		<div class="modal-body">
 
-			<form class="send" name="sendBookMark" action="recommend" method="post">
-
-				<div class="control-group">
+			<div class="control-group">
 					
 					<label class="control-label" for="inputId">ID</label>
 						<div class="controls">
@@ -43,11 +41,10 @@
 
 				</div>
 				<div>
-					<button type="submit" class="send" id="sendButton">send</button>
+					<button class="send" id="sendButton">send</button>
 			</div>
 
 
-			</form>
 		</div>
 
 
@@ -58,3 +55,5 @@
 
 
 	</div>
+
+	

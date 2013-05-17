@@ -122,9 +122,8 @@ public class FriendshipAction {
 		recommendedWeb = new FriendshipServiceImpl().inWeb(userId);
 		
 		ModelAndView mav = new ModelAndView();
-		JSONArray dataJ = JSONArray.fromObject(recommendedWeb);
-		request.setAttribute("result", dataJ);
-		System.out.println(dataJ.toString());
+		request.setAttribute("result", "true");
+		
 		mav.setViewName("result");
 		
 		return mav;
@@ -200,14 +199,14 @@ public class FriendshipAction {
 
 		ModelAndView nextPage = new ModelAndView();
 
-		JSONObject jobj = new JSONObject();
-		jobj.put("x", posx);
-		jobj.put("y", posy);
-		jobj.put("id", maxBookmarkId);
-		jobj.put("imgUrl", imgUrl);
-		jobj.put("url", url);
+		/*ModelAndView mav = new ModelAndView();
+		JSONArray dataJ = JSONArray.fromObject(bookmarkship);
+		request.setAttribute("result", dataJ);
+		System.out.println(dataJ.toString());
+		mav.setViewName("result");
 		
-		request.setAttribute("result", jobj);
+		return mav;*/
+		request.setAttribute("result", "true");
 		nextPage.setViewName("result");
 
 		return nextPage;
