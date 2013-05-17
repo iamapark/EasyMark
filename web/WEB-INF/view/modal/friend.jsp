@@ -14,7 +14,7 @@
 			  <li><a href="#friend_myFriend" data-toggle="tab">친구 리스트</a></li>
 			  <li><a href="#friend_sendRequest" data-toggle="tab">내가 친구 요청한 리스트</a></li>
 			  <li><a href="#friend_takeRequest" data-toggle="tab">내가 친구 요청받은 리스트</a></li>
-			  <li><a href="#d" data-toggle="tab">추천받은 북마크 리스트</a></li>
+			  <li><a href="#friend_BookMark" data-toggle="tab">추천받은 북마크 리스트</a></li>
 			  <li><a href="#e" data-toggle="tab">미투데이 친구 리스트</a></li>
 			</ul>
 		</div>
@@ -24,7 +24,7 @@
 			  	<!-- 친구 리스트 -->
 			  	<div class="tab-pane active" id="friend_myFriend">
 			  		<h3>친구 리스트</h3>
-			  		<form class="form-search" style="text-align:right; margin-right:24px; float:right;" id="friendForm" method="post">
+			  		<form class="form-search" style="text-align:right; margin-right:24px; float:right;" action="memberList" id="friendForm" method="post">
 						<!-- <div class="input-prepend"> -->
 						<div class="input-append"> 
 							User ID
@@ -167,7 +167,7 @@
 		  		<!-- 내가 친구 요청받은 리스트 종료 -->
 		  		
 		  		<!-- 추천받은 북마크 리스트 -->
-		  		<div class="tab-pane" id="d">
+		  		<div class="tab-pane" id="friend_BookMark">
 		  			<h3>추천받은 북마크 리스트</h3>
 		  			<ul class="nav nav-tabs" id="webSiteTab">
 					  <li class="active"><a href="#outWeb" data-toggle="tab">추천 받은 WEB</a></li>

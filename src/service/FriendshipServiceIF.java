@@ -122,7 +122,7 @@ public interface FriendshipServiceIF {
 
 	
 	
-	//public void recommendSite(BookMarkShip bookmarkship);
+	public void recommendSite(BookMarkShip bookmarkship);
 	
 	public void bookmarkCancel(String bookMarkId);
 	

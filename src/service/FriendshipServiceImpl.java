@@ -186,10 +186,10 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 		return member;
 	}
 
-	/*@Override
+	@Override
 	public void recommendSite(BookMarkShip bookmarkship) {
 		FriendDAO.getInstance().recommendSite(bookmarkship);
-	}*/
+	}
 
 	@Override
 	public void bookmarkCancel(String bookMarkId) {

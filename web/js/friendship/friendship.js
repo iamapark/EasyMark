@@ -91,8 +91,17 @@ function changeElement(fname){
 }*/
 
 /**
-<!-- setting 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. -->*/
+<!-- friend 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. -->*/
 $('a[href="#friendInfo"]').click(function(){
+	$.ajax({
+		url: 'friend',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
+	});
+});
+
+$('#friendTab li:eq(0) a').click(function (e){	
 	$.ajax({
 		url: 'friend',
 		dataType:'json'
@@ -127,6 +136,25 @@ $('#friendTab li:eq(3) a').click(function (e){
 		console.log(data);
 	});
 });
+
+$('#webSiteTab li:eq(0) a').click(function (e){	
+	$.ajax({
+		url: 'recommendInWeb',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
+	});
+});
+
+$('#webSiteTab li:eq(1) a').click(function (e){	
+	$.ajax({
+		url: 'recommendOutWeb',
+		dataType:'json'
+	}).done(function(data){
+		console.log(data);
+	});
+});
+
 
 // 배경화면 파일을 선택했을 때 호출
 /*$('#backgroundImgFile').change(function(){
