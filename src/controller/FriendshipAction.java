@@ -199,13 +199,6 @@ public class FriendshipAction {
 
 		ModelAndView nextPage = new ModelAndView();
 
-		/*ModelAndView mav = new ModelAndView();
-		JSONArray dataJ = JSONArray.fromObject(bookmarkship);
-		request.setAttribute("result", dataJ);
-		System.out.println(dataJ.toString());
-		mav.setViewName("result");
-		
-		return mav;*/
 		request.setAttribute("result", "true");
 		nextPage.setViewName("result");
 

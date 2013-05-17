@@ -11,7 +11,24 @@
 		</div>
 		<div class="modal-body">
 
+<<<<<<< HEAD
 			<div class="control-group">
+=======
+<<<<<<< HEAD
+			<form class="send" name="sendBookMark" action="" method="post">
+				<div class="control-group">
+					<label class="control-label" for="inputUrl">FriendList</label>
+					<div class="controls">
+						<input type="text" id="friendList2" name="friendList">
+					</div>
+				</div>
+
+=======
+			<form class="send" name="sendBookMark" action="recommend" method="post">
+>>>>>>> 3493c39012e624aa33eb8f8d5846f892833e389c
+
+				<div class="control-group">
+>>>>>>> 520a2d30d58889d156f0b095f04fe5d356d77ea2
 					
 					<label class="control-label" for="inputId">ID</label>
 						<div class="controls">
