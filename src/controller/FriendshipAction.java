@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import service.FriendshipServiceImpl;
@@ -29,19 +32,17 @@ public class FriendshipAction {
 		
 		System.out.println(userId);
 		
-		/*Member memberKey = null;
-		memberKey = new FriendshipServiceImpl().getKey(userId);
+		Member memberKey = new FriendshipServiceImpl().getKey(userId);
+		
 		System.out.println(memberKey.getMe2DayKey());
 		
-		String me2dayKey = null;
+		String me2dayKey = memberKey.getMe2DayKey();
 		
-		if(memberKey.getMe2DayKey().equals("NULL")){
+		if(me2dayKey == null)
 			me2dayKey = "NotMe2Login";
-		}
 		else
-			me2dayKey = "me2dayLogin";
-		*/
-				
+			me2dayKey = "Me2Login";	
+		
 		ArrayList<Member> friendList = null;
 		Friendship friend = new Friendship(userId, "", "친구");
 		friendList = new FriendshipServiceImpl().getFriendList(friend);
@@ -71,7 +72,7 @@ public class FriendshipAction {
 		Friendship friendship = new Friendship(userId, friendId, status);
 
 		sendFriendReqList = new FriendshipServiceImpl().sendFriendReqList(friendship);
-
+		
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(sendFriendReqList);
 		request.setAttribute("result", dataJ);
@@ -112,17 +113,18 @@ public class FriendshipAction {
 	}
 	
 	@RequestMapping("/recommendInWeb")
-	public ModelAndView recommendInWeb(HttpServletRequest request,
-			HttpServletResponse response) {
+	public ModelAndView recommendInWeb(HttpServletRequest request, HttpServletResponse response) {
 
-		String userId = request.getParameter("userId");
-
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		
+		System.out.println("추천받은사이트");
 		ArrayList<BookMarkShip> recommendedWeb = new ArrayList<BookMarkShip>();
 		recommendedWeb = new FriendshipServiceImpl().inWeb(userId);
-
+		
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(recommendedWeb);
 		request.setAttribute("result", dataJ);
+		System.out.println(dataJ.toString());
 		mav.setViewName("result");
 		
 		return mav;
@@ -138,7 +140,7 @@ public class FriendshipAction {
 	public ModelAndView recommendOutWeb(HttpServletRequest request,
 			HttpServletResponse response) {
 
-		String userId = request.getParameter("userId");
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		System.out.println("넘어온 ID : " + userId);
 
 		ArrayList<BookMarkShip> recommendWeb = new ArrayList<BookMarkShip>();
@@ -148,7 +150,16 @@ public class FriendshipAction {
 			System.out.println(recommendWeb.get(i).getBookMarkName());
 		}
 
-		request.setAttribute("outWebList", recommendWeb);
+		ModelAndView mav = new ModelAndView();
+		JSONArray dataJ = JSONArray.fromObject(recommendWeb);
+		request.setAttribute("result", dataJ);
+		System.out.println(dataJ.toString());
+		mav.setViewName("result");
+		
+		return mav;
+		
+		
+		/*request.setAttribute("outWebList", recommendWeb);
 
 		JSONArray inList = JSONArray.fromObject(recommendWeb);
 		request.setAttribute("result", inList.toString());
@@ -158,6 +169,44 @@ public class FriendshipAction {
 		nextPage.setViewName("/views/result.jsp");
 
 		
+		return nextPage;*/
+	}
+
+	@RequestMapping("/recommend")
+	public ModelAndView recommend(HttpServletRequest request,
+			HttpServletResponse response, @RequestParam(value="recommend_friendId")String friendId,
+										  @RequestParam(value="recommend_url")String url,
+			  							  @RequestParam(value="recommend_name")String name,
+			  							  @RequestParam(value="recommend_descript")String descript) {
+		// 사용자ID 가져오기
+		
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		
+		String status = "추천";
+		
+		System.out.println("name :" + name + ", url :" + url);
+		
+		BookMarkShip bookmarkship = new BookMarkShip();
+		String[] selectFriend = friendId.split(",");
+
+		for (int i = 0; i < selectFriend.length; i++) {
+
+			bookmarkship = new BookMarkShip(0, name, url, descript, userId, selectFriend[i], status);
+			
+			new FriendshipServiceImpl().recommendSite(bookmarkship);
+		
+			System.out.println(bookmarkship.toString());
+		}
+
+		ModelAndView nextPage = new ModelAndView();
+
+		JSONObject jobj = new JSONObject();
+		
+		jobj.put("url", url);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+
 		return nextPage;
 	}
 

@@ -14,25 +14,25 @@
 				  <div class="control-group">
 				    <label class="control-label" for="inputId">아이디</label>
 				    <div class="controls">
-				      <input type="text" id="setting_userId" placeholder="아이디" READONLY>
+				      <input type="text" id="info_userId" placeholder="아이디" READONLY>
 				    </div>
 				  </div>
 				  <div class="control-group">
 				    <label class="control-label" for="inputName">이름</label>
 				    <div class="controls">
-				      <input type="text" id="setting_name" placeholder="이름" name="setting_name">
+				      <input type="text" id="info_name" placeholder="이름" name="setting_name">
 				    </div>
 				  </div>
 				  <div class="control-group">
 				    <label class="control-label" for="inputEmail">이메일</label>
 				    <div class="controls">
-				      <input type="text" id="setting_email" placeholder="이메일 주소" name="setting_email">
+				      <input type="text" id="info_email" placeholder="이메일 주소" name="setting_email">
 				    </div>
 				  </div>
 				  <div class="control-group">
 				    <label class="control-label" for="inputPersonalImg">개인 이미지</label>
 				    <div class="controls">
-				    	<img id="inputPersonalImg" src="images/defaultProfile.jpg" style="width:100px;">
+				    	<img id="info_personalImg" src="images/defaultProfile.jpg" style="width:100px;">
 				    	<div><input type="file" name="file" id="personalImg"></div>
 				    </div>
 				  </div>
@@ -42,25 +42,25 @@
 				<div class="control-group">
 				    <label class="control-label" for="inputId">북마크 수</label>
 				    <div class="controls">
-				      <input type="text" id="setting_userId" READONLY>
+				      <input type="text" id="info_bookmarkCount" READONLY>
 				    </div>
 			  	</div>
 			  	<div class="control-group">
 				    <label class="control-label" for="inputId">로그인 횟수</label>
 				    <div class="controls">
-				      <input type="text" id="setting_userId" READONLY>
+				      <input type="text" id="info_loginCount" READONLY>
 				    </div>
 			  	</div>
 			  	<div class="control-group">
 				    <label class="control-label" for="inputId">등록일</label>
 				    <div class="controls">
-				      <input type="text" id="setting_userId" READONLY>
+				      <input type="text" id="info_registerDate" READONLY>
 				    </div>
 			  	</div>
 			  	<div class="control-group">
 				    <label class="control-label" for="inputPersonalImg">배경 이미지</label>
 				    <div class="controls">
-				    	<img id="inputPersonalImg" src="images/defaultProfile.jpg" style="width:100px;">
+				    	<img id="info_bgImg" src="images/defaultProfile.jpg" style="width:100px;">
 				    	<div><input type="file" name="file" id="personalImg"></div>
 				    </div>
 				  </div>

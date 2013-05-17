@@ -263,14 +263,14 @@ public class FriendDAO {
 
 	}
 
-	/*public void recommendSite(BookMarkShip bookmarkship) {
+	public void recommendSite(BookMarkShip bookmarkship) {
 		try {
 			sqlMapper.insert("bookMarkRecommand", bookmarkship);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
 
 
 

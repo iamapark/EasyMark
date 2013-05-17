@@ -36,7 +36,7 @@ public class MembershipDAO {
 	}
 
 	public MemberInfo getMemberInfo_admin(String userId) {
-		System.out.println("userID:" + userId);
+		userId = userId.trim();
 		MemberInfo m = null;
 		
 		try{
