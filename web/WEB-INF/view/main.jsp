@@ -71,6 +71,9 @@
 		<jsp:include page="modal/bookmarkInfo.jsp"></jsp:include>
 	<!-- 친구 아이콘을 클릭했을 때 MODAL -->
 		<jsp:include page="modal/friend.jsp"></jsp:include>
+	<!--북마크 아이콘 위에서 오른쪽 클릭 후 북마크  추천했을 때  MODAL -->
+		<jsp:include page="modal/bookmarkRecommand.jsp"></jsp:include>	
+		
  	<!-- MODAL END -->
 	
 	
