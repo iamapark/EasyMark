@@ -35,6 +35,8 @@ $('#menu_membership').click(function(e){
 	}).done(function(data){
 		var memberData = JSON.parse(data);
 		var action = null;
+		var select = null;
+		
 		for(var i=0; i<memberData.length; i++){
 			action = "<a class='btn btn-success' href='#memberInfo' id='memberInfoButton' data-id=' "+ memberData[i].userId + "' role='button' data-toggle='modal'>" +
 					 	"<i class='icon-zoom-in icon-white'></i>View" +                          
@@ -43,7 +45,8 @@ $('#menu_membership').click(function(e){
 						"<i class='icon-trash icon-white'></i>"+ 
 							"Delete"+
 					"</a>";
-			$('.datatable').dataTable().fnAddData([memberData[i].userId, memberData[i].name, memberData[i].registerDate, memberData[i].email, memberData[i].bookMarkCount, action]);
+			select = "<input type='checkbox' value='" + memberData[i].userId + "'></input>";
+			$('.datatable').dataTable().fnAddData('ㅏ맘', [memberData[i].userId, memberData[i].name, memberData[i].registerDate, memberData[i].email, memberData[i].bookMarkCount, action]);
 		}
 		$('a[href="#memberInfo"]').click(getMemberInfo);
 	});

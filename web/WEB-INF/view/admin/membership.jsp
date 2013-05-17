@@ -26,6 +26,7 @@
 			<table class="table table-striped table-bordered bootstrap-datatable datatable">
 			  <thead>
 				  <tr>
+				  	  <th>선택</th>
 					  <th>user ID</th>
 					  <th>Name</th>
 					  <th>Date registered</th>
