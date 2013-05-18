@@ -87,5 +87,13 @@
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
+	<script src="tipJS/tipJS-MVC.js"></script>
+	<script>
+	window.onload=function(){
+		tipJS.loadApp(["EasyMark"]); // EasyMark.. load
+		
+		  //  EasyMark.fill 이름 controller 실행
+	};
+	</script>
 </body>
 </html>

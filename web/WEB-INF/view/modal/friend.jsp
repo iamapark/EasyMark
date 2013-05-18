@@ -32,7 +32,9 @@
 							<button type="submit" class="btn btn-info">Search</button>
 						</div>
 					</form>
-					<table class="table table-bordered" width="70%">
+					
+					<div id = "friendTable">
+					<%-- <table class="table table-bordered" width="70%">
 						<thead>
 							<tr>
 					          <th>UserID</th>
@@ -51,31 +53,34 @@
 							</tr>		
 						</c:forEach>
 						</tbody>
-					</table>
+					</table> --%>
+					</div>
 		  		</div>
 		  		<!-- 친구 리스트 종료 -->
 		  		
 		  		<!-- 내가 친구 요청한 리스트 -->
 		  		<div class="tab-pane" id="friend_sendRequest">
 			  		<h3>내가 친구 요청한 리스트</h3>
-			  		<table class="table table-bordered" width="70%">
+			  			<div id = "sendRequestTable">
+			  		<%--<table class="table table-bordered" width="70%">
 						<thead>
 						<tr>
 							<th>USER ID</th>
 							<th>STATUS</th>
 						</tr>	
-					
-						<c:forEach items="${requestScope.sendFriendReqList}" var="sendFriend">
+						
+						
+						 <c:forEach items="${requestScope.sendFriendReqList}" var="sendFriend">
 							<tr>
 								<td>${sendFriend.friendId}</td>
-								<%-- <td>&nbsp;&nbsp;&nbsp;${member.firstName}&nbsp;&nbsp;&nbsp;</td> --%>
+								<td>&nbsp;&nbsp;&nbsp;${member.firstName}&nbsp;&nbsp;&nbsp;</td>
 								<td>
 									<button id="accept" class="btn btn-small btn btn-warning" onclick="cancel('${sessionScope.MEMBERID}','${sendFriend.friendId}');">요청취소</button>
 								</td>
 							</tr>		
-						</c:forEach>
-					
-					</table>
+						</c:forEach> --%>
+						</div>
+					<!-- </table> -->
 		  		</div>
 		  		<!-- 내가 친구 요청한 리스트 종료-->
 		  		
