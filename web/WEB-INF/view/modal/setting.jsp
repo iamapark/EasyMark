@@ -70,7 +70,7 @@
 					<!-- 북마크 리스트 -->
 					<h4>북마크</h4>
 
-					<input type="text" name="bookMarkId" id="bookMarkId">
+					<input type="text" name="bookMarkUrl" id="bookMarkUrl">
 
 
 

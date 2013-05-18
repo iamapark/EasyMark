@@ -118,9 +118,8 @@ $('a[href="#setting_bookmarkInfo"]').click(function() {
 		dataType : 'json',
 		
 	}).done(function(data) {
-		console.log("123");
-		$('#bookMarkId').val(data.bookMarkId);
-
+		
+		
 	});
 
 });
