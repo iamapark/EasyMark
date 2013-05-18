@@ -41,7 +41,7 @@ $('#menu_membership').click(function(e){
 			action = "<a class='btn btn-success' href='#memberInfo' id='memberInfoButton' data-id='"+ memberData[i].userId + "' role='button' data-toggle='modal'>" +
 					 	"<i class='icon-zoom-in icon-white'></i>View" +                          
 					 "</a>"+
-					 "<a class='btn btn-danger' href='#'>"+
+					 "<a class='btn btn-danger' href='#memberDeleteButton' id='memberDeleteButton' data-id='"+ memberData[i].userId + "' data-count='"+ i + "' >"+
 						"<i class='icon-trash icon-white'></i>"+ 
 							"Delete"+
 					"</a>";
@@ -49,6 +49,7 @@ $('#menu_membership').click(function(e){
 			$('.datatable').dataTable().fnAddData([select, memberData[i].userId, memberData[i].name, memberData[i].registerDate, memberData[i].email, memberData[i].bookMarkCount, action]);
 		}
 		$('a[href="#memberInfo"]').click(getMemberInfo);
+		$('a[href="#memberDeleteButton"]').click(memberDelete);
 	});
 	
 	// 회원 테이블을 화면에 뿌린다.

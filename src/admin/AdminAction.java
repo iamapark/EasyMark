@@ -81,7 +81,7 @@ public class AdminAction {
 		return mav;
 	}
 	
-	
+	// 여러 명 동시에 삭제
 	@RequestMapping("/deleteMembers")
 	public ModelAndView deleteMembers(HttpServletRequest request, HttpServletResponse response,
 									 @RequestParam(value="members") String members){
@@ -103,5 +103,19 @@ public class AdminAction {
 		return mav;
 		
 	}
+	
+	// 한 명 삭제
+	@RequestMapping("/deleteMember")
+	public ModelAndView deleteMember(HttpServletRequest request, HttpServletResponse response,
+									 @RequestParam(value="userId") String userId){
 
+		ModelAndView mav = new ModelAndView();
+		
+		new AdminServiceImpl().deleteMembers(userId);
+		
+		request.setAttribute("result", "true");
+		mav.setViewName("result");
+		return mav;
+		
+	}
 }

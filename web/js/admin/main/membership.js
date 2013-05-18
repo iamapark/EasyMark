@@ -50,8 +50,26 @@ $('#selectDelete').click(function(e){
 			members:data
 		}
 	}).done(function(data){
-		console.log(data);
+		
+		for(var i=0; i<$('input[name=memberSelector]').length; i++){
+			if($('input[name=memberSelector]')[i].checked){
+				$('.datatable').dataTable().fnDeleteRow(i);
+			}
+		}
 	});
-	
-	
 });
+
+// 회원 테이블에서 각 목록의 삭제 버튼을 클릭했을 때
+var memberDelete = function(){
+	var userId = $(this).data('id');
+	var count = $(this).data('count');
+	
+	$.ajax({
+		url:'deleteMember',
+		data:{
+			userId:userId
+		}
+	}).done(function(data){
+		$('.datatable').dataTable().fnDeleteRow(count);
+	});
+};

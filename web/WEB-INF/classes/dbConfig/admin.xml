@@ -48,23 +48,26 @@
 		FROM 
 			member_info LEFT OUTER JOIN bookmark ON member_info.user_id = bookmark.user_id JOIN register_time ON register_time.user_id = member_info.user_id
 		GROUP BY 
-			member_info.user_id	
+			member_info.user_id, register_time.register_id
+		HAVING 
+			register_time.leave_time IS NULL
     </select>
     
     <select id="getMemberInfo_admin" parameterClass="String" resultClass="MemberInfo">
 		SELECT 
-		    member_info.user_id userId, member_info.name name, register_time.register_time registerDate, member_info.email email,
-			NVL(COUNT(bookmark.user_id), 0) AS bookmarkCount, 
-			NVL((SELECT COUNT(login_id) FROM login_time GROUP BY user_id HAVING user_id=#userId#), 0) AS loginCount, 
+    		member_info.user_id userId, member_info.name, register_time.register_time registerDate, member_info.email, COUNT(bookmark.user_id) AS bookmarkCount,
+    		NVL((SELECT COUNT(login_id) FROM login_time GROUP BY user_id HAVING user_id='b'), 0)						
+    		AS loginCount	, 
 			member_info.img_url AS imgUrl, member_info.bg_img_url AS bgImgUrl
 		FROM 
-			member_info LEFT OUTER JOIN bookmark ON member_info.user_id = bookmark.user_id JOIN	register_time ON register_time.user_id = member_info.user_id LEFT OUTER JOIN login_time ON member_info.user_id = login_time.user_id
+			member_info LEFT OUTER JOIN bookmark ON member_info.user_id = bookmark.user_id JOIN register_time ON register_time.user_id = member_info.user_id
 		GROUP BY 
-			member_info.user_id
-		HAVING member_info.user_id = #userId#		
+			member_info.user_id, register_time.register_id
+		HAVING 
+			member_info.user_id = #userId# AND register_time.leave_time IS NULL	
     </select>
 	
-	<delete id="deleteMembers" parameterClass="List">
+	<delete id="deleteMemberInfo" parameterClass="List">
 		delete from member_info
 		
 		<dynamic prepend="WHERE user_id IN">
@@ -103,4 +106,14 @@
 			</iterate>
 		</dynamic>
 	</delete>
+	
+	<update id="leaveMember" parameterClass="List">
+		update register_time
+		set leave_time = SYS_TIMESTAMP
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</update>
 </sqlMap>

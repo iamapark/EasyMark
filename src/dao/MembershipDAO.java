@@ -49,13 +49,26 @@ public class MembershipDAO {
 	}
 
 	public void deleteMembers(ArrayList<String> idList) {
-		HashMap hm = new HashMap();
-		hm.put("idList", idList);
 		try{
 			sqlMapper.delete("deleteMemberInfo", idList);
 			sqlMapper.delete("deleteBookMark", idList);
 			sqlMapper.delete("deleteDesign", idList);
 			sqlMapper.delete("deleteMember", idList);
+			sqlMapper.update("leaveMember", idList);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteMembers(String userId) {
+		ArrayList<String> idList = new ArrayList<String>();
+		idList.add(userId);
+		try{
+			sqlMapper.delete("deleteMemberInfo", idList);
+			sqlMapper.delete("deleteBookMark", idList);
+			sqlMapper.delete("deleteDesign", idList);
+			sqlMapper.delete("deleteMember", idList);
+			sqlMapper.update("leaveMember", idList);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
