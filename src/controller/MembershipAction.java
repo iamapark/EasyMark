@@ -152,7 +152,6 @@ public class MembershipAction {
 
 		if (flag) {
 			HttpSession session = request.getSession();
-
 			if (!userId.equals(session.getAttribute("MEMBERID"))) {
 				new MembershipServiceImpl().loginCount(userId); // 로그인 카운트를 1
 																// 증가시킨다.
