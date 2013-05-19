@@ -166,4 +166,20 @@ public class RegisterDAO {
 		return flag;
 	}
 
+	public void registerRegisterTime(Member member) {
+		try{
+			sqlMapper.insert("registerRegisterTime", member);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	public void loginCount(String userId) {
+		try{
+			sqlMapper.insert("loginCount", userId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
 }

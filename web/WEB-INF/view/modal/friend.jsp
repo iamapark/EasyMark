@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-<header id="friendInfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:80%; left:10%; right:10%; 	margin-left:0;">	
+
+<div id="friendInfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:80%; left:10%; right:10%; 	margin-left:0;">	
 	<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">X</button>
@@ -9,11 +10,11 @@
 	</div>
 	<div class="modal-body">
 		<div class="setting_nav" style="float:left; margin-right:20px;">
-			<ul class="nav nav-tabs nav-stacked">
-			  <li><a href="#a" data-toggle="tab">친구 리스트</a></li>
-			  <li><a href="#b" data-toggle="tab">내가 친구 요청한 리스트</a></li>
-			  <li><a href="#c" data-toggle="tab">내가 친구 요청받은 리스트</a></li>
-			  <li><a href="#d" data-toggle="tab">추천받은 북마크 리스트</a></li>
+			<ul class="nav nav-tabs nav-stacked" id="friendTab">
+			  <li><a href="#friend_myFriend" data-toggle="tab">친구 리스트</a></li>
+			  <li><a href="#friend_sendRequest" data-toggle="tab">내가 친구 요청한 리스트</a></li>
+			  <li><a href="#friend_takeRequest" data-toggle="tab">내가 친구 요청받은 리스트</a></li>
+			  <li><a href="#friend_BookMark" data-toggle="tab">추천받은 북마크 리스트</a></li>
 			  <li><a href="#e" data-toggle="tab">미투데이 친구 리스트</a></li>
 			</ul>
 		</div>
@@ -21,9 +22,9 @@
 			<div class="tab-content" style="border:1px solid #ddd; padding-left:10px;">
 			  	
 			  	<!-- 친구 리스트 -->
-			  	<div class="tab-pane active" id="a">
+			  	<div class="tab-pane active" id="friend_myFriend">
 			  		<h3>친구 리스트</h3>
-			  		<form class="form-search" style="text-align:right; margin-right:24px; float:right;" action="memberList.friendship?userId=${sessionScope.MEMBERID}" method="post">
+			  		<form class="form-search" style="text-align:right; margin-right:24px; float:right;" action="memberList" id="friendForm" method="post">
 						<!-- <div class="input-prepend"> -->
 						<div class="input-append"> 
 							User ID
@@ -31,7 +32,9 @@
 							<button type="submit" class="btn btn-info">Search</button>
 						</div>
 					</form>
-					<table class="table table-bordered" width="70%">
+					
+					<div id = "friendTable">
+					<%-- <table class="table table-bordered" width="70%">
 						<thead>
 							<tr>
 					          <th>UserID</th>
@@ -50,36 +53,39 @@
 							</tr>		
 						</c:forEach>
 						</tbody>
-					</table>
+					</table> --%>
+					</div>
 		  		</div>
 		  		<!-- 친구 리스트 종료 -->
 		  		
 		  		<!-- 내가 친구 요청한 리스트 -->
-		  		<div class="tab-pane" id="b">
+		  		<div class="tab-pane" id="friend_sendRequest">
 			  		<h3>내가 친구 요청한 리스트</h3>
-			  		<table class="table table-bordered" width="70%">
+			  			<div id = "sendRequestTable">
+			  		<%--<table class="table table-bordered" width="70%">
 						<thead>
 						<tr>
 							<th>USER ID</th>
 							<th>STATUS</th>
 						</tr>	
-					
-						<c:forEach items="${requestScope.sendFriendReqList}" var="sendFriend">
+						
+						
+						 <c:forEach items="${requestScope.sendFriendReqList}" var="sendFriend">
 							<tr>
 								<td>${sendFriend.friendId}</td>
-								<%-- <td>&nbsp;&nbsp;&nbsp;${member.firstName}&nbsp;&nbsp;&nbsp;</td> --%>
+								<td>&nbsp;&nbsp;&nbsp;${member.firstName}&nbsp;&nbsp;&nbsp;</td>
 								<td>
 									<button id="accept" class="btn btn-small btn btn-warning" onclick="cancel('${sessionScope.MEMBERID}','${sendFriend.friendId}');">요청취소</button>
 								</td>
 							</tr>		
-						</c:forEach>
-					
-					</table>
+						</c:forEach> --%>
+						</div>
+					<!-- </table> -->
 		  		</div>
 		  		<!-- 내가 친구 요청한 리스트 종료-->
 		  		
 		  		<!-- 내가 친구 요청받은 리스트 -->
-		  		<div class="tab-pane" id="c">
+		  		<div class="tab-pane" id="friend_takeRequest">
 		  			<h3>내가 친구 요청받은 리스트</h3>
 		  			<table class="table table-bordered" width="70%">
 					<thead>
@@ -166,7 +172,7 @@
 		  		<!-- 내가 친구 요청받은 리스트 종료 -->
 		  		
 		  		<!-- 추천받은 북마크 리스트 -->
-		  		<div class="tab-pane" id="d">
+		  		<div class="tab-pane" id="friend_BookMark">
 		  			<h3>추천받은 북마크 리스트</h3>
 		  			<ul class="nav nav-tabs" id="webSiteTab">
 					  <li class="active"><a href="#outWeb" data-toggle="tab">추천 받은 WEB</a></li>
@@ -242,4 +248,5 @@
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">닫기</button>
 	</div>
-</header>
+	
+</div>

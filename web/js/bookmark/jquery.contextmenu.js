@@ -69,7 +69,8 @@ jQuery.fn.contextPopup = function(menuData) {
   }
 
   // On contextmenu event (right click)
-  this.bind('contextmenu', function(e) {	
+  kakaka = this;
+  this.bind('contextmenu', function(e) {
     var menu = createMenu(e)
       .show();
     

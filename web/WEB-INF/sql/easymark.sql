@@ -176,6 +176,19 @@ CREATE TABLE "design"
 );
 
 
+CREATE TABLE "bookmarkship"(
+	"bookmark_id" integer AUTO_INCREMENT NOT NULL,
+	"bookmark_name" character varying(255),
+	"bookmark_url" character varying(255),
+	"bookmark_descript" character varying(4096),
+	"user_id" character varying(30),
+	"friend_id" character varying(30),
+	"status" character varying(30),
+	FOREIGN KEY ("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT pk_bookmarkship_bookmark_id PRIMARY KEY("bookmark_id")
+);
+
+
 /**음성인식과 관련된 테이블*/
 CREATE TABLE "speech_site" 
 (

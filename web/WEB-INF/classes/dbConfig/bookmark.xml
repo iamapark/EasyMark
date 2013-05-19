@@ -16,46 +16,48 @@
 		<result property="frequency" column="frequency" />
 		<result property="category" column="category" />
 	</resultMap>
-	
+
 	<insert id="addBookMark" parameterClass="BookMark">
 		insert into bookmark
 		(bookMark_name,bookmark_url,bookmark_descript,user_id,status,pos_x,pos_y,img_url,frequency,category)
 		values (#bookMarkName#, #bookMarkUrl#, #bookMarkDescript#, #userId#,
 		#status#, #posX#, #posY#, #imgUrl#, #frequency#, #category#)
-		
+
 		<selectKey keyProperty="bookMarkId" resultClass="int">
-			select LAST_INSERT_ID()
+			select
+			LAST_INSERT_ID()
 		</selectKey>
 	</insert>
-	
+
 	<!-- Select with no parameters using the result map for Account class. -->
 	<select id="bookMarkList" parameterClass="String" resultMap="BookMarkList">
-		SELECT 
-			bookmark_id,
-			bookmark_name,
-			bookmark_url,
-			bookmark_descript,
-			user_id,
-			status,
-			pos_x,
-			pos_y,
-			img_url,
-			frequency frequency,
-			category category
-		FROM bookmark 
+		SELECT
+		bookmark_id,
+		bookmark_name,
+		bookmark_url,
+		bookmark_descript,
+		user_id,
+		status,
+		pos_x,
+		pos_y,
+		img_url,
+		frequency frequency,
+		category
+		category
+		FROM bookmark
 		WHERE user_id=#userId#
 	</select>
-	
+
 	<select id="bookMarkPosx" parameterClass="String" resultClass="Integer">
 		SELECT MAX(pos_x) from bookmark WHERE user_id=#userId#
 	</select>
-	
+
 	<select id="bookMarkPosy" parameterClass="java.util.HashMap"
 		resultClass="Integer">
 		SELECT MAX(pos_y) from bookmark WHERE user_id=#userId# AND
 		pos_x=#posX#
 	</select>
-	
+
 	<update id="arrangeIcon" parameterClass="BookMark">
 		UPDATE bookmark
 		SET
@@ -63,28 +65,31 @@
 		pos_y=#posY#
 		WHERE bookmark_id=#bookMarkId#
 	</update>
-	
+
 	<delete id="deleteIcon" parameterClass="Integer">
-		DELETE FROM bookmark WHERE bookmark_id=#bookMarkId#
+		DELETE FROM bookmark
+		WHERE bookmark_id=#bookMarkId#
 
 	</delete>
-	
+
 	<select id="getBookMark" parameterClass="Integer" resultClass="BookMark">
-		SELECT 
-			bookmark_id bookMarkId,
-			bookmark_name bookMarkName,
-			bookmark_url bookMarkUrl,
-			bookmark_descript bookMarkDescript,
-			user_id userId,
-			status status,
-			pos_x posX,
-			pos_y posY,
-			img_url imgUrl,
-			frequency frequency,
-			category category
+		SELECT
+		bookmark_id bookMarkId,
+		bookmark_name bookMarkName,
+		bookmark_url
+		bookMarkUrl,
+		bookmark_descript bookMarkDescript,
+		user_id userId,
+		status
+		status,
+		pos_x posX,
+		pos_y posY,
+		img_url imgUrl,
+		frequency frequency,
+		category category
 		from bookmark WHERE bookmark_id=#bookMarkId#
 	</select>
-	
+
 	<update id="modifyMark" parameterClass="BookMark">
 		UPDATE bookmark
 		SET
@@ -92,21 +97,32 @@
 		bookmark_url=#bookMarkUrl#,
 		bookmark_descript=#bookMarkDescript#
 		<isNotNull property="imgUrl">
-			, img_url=#imgUrl# 
+			, img_url=#imgUrl#
 		</isNotNull>
 		WHERE bookmark_id=#bookMarkId#
 	</update>
-	
+
 	<!--남기윤 viewBookMarkList 셀렉트 구문 -->
 
 	<select id="viewBookMarkList" parameterClass="String" resultMap="BookMarkList">
-		SELECT bookmark_id, bookmark_name, bookmark_url,
+		SELECT
+		bookmark_id,
+		bookmark_name,
+		bookmark_url,
 		bookmark_descript,
-		user_id, status, pos_x, pos_y FROM bookmark where user_id=#userId#
-
+		user_id,
+		status,
+		pos_x,
+		pos_y,
+		img_url,
+		frequency frequency,
+		category
+		category
+		FROM bookmark
+		WHERE user_id=#userId#
 
 	</select>
-	
+
 	<!--남기윤 updateBookMarkList 셀렉트 구문 -->
 	<update id="updateBookMarkList" parameterClass="BookMark">
 
@@ -117,16 +133,18 @@
 		status=#status#, pos_x=#posX#,
 		pos_y=#posY# where user_id=#userId#
 	</update>
-	
+
 	<delete id="deleteBookMarkList" parameterClass="Integer">
 		delete from
 		bookmark where bookmark_id=#bookMarkId#
 	</delete>
-	
-	<select id="bookMarkByFrequency" parameterClass="Integer" resultMap="BookMarkList">
+
+	<select id="bookMarkByFrequency" parameterClass="Integer"
+		resultMap="BookMarkList">
 		SELECT bookmark_id, bookmark_name, bookmark_url,
 		bookmark_descript FROM bookmark bookmark_id=#bookMarkId#
-		order by frequency
+		order by
+		frequency
 	</select>
 	<delete id="deleteCategory" parameterClass="BookMark">
 		DELETE FROM category WHERE categoy_name=#bookMarkName# and user_id=#userId#
