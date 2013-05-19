@@ -3,7 +3,9 @@ package service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import dao.CategoryDAO;
 import dto.BookMark;
+import dto.Category;
 import dto.Design;
 
 /**
@@ -49,5 +51,9 @@ public interface IndividualPageServiceIF {
 	 * @return void
 	 */
 	public void informEasyMark(String userId);
-	public ArrayList<String> categoryList(String userId);
+	public int addCategory(Category category);
+	public void deleteCategory(BookMark bookmark);
+	public ArrayList<Category> categoryList(String userId);
+	public boolean isExistCategory(String categoryName);
+	
 }

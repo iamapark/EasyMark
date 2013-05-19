@@ -128,7 +128,9 @@
 		bookmark_descript FROM bookmark bookmark_id=#bookMarkId#
 		order by frequency
 	</select>
-	<select id="categoryList" parameterClass="String" resultClass="String">
-		SELECT DISTINCT category FROM bookmark where user_id=#userId#
-	</select>
+	<delete id="deleteCategory" parameterClass="BookMark">
+		DELETE FROM category WHERE categoy_name=#bookMarkName# and user_id=#userId#
+
+	</delete>
+	
 </sqlMap>

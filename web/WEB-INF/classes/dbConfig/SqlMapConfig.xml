@@ -11,6 +11,7 @@
 	<typeAlias alias="Login" type="dto.Login"/>
 	<typeAlias alias="Design" type="dto.Design"/>
 	<typeAlias alias="BookMark" type="dto.BookMark"/>
+	<typeAlias alias="Category" type="dto.Category"/>
 
 
   <!-- Configure a built-in transaction manager.  If you're using an 
@@ -23,6 +24,7 @@
       <property name="JDBC.ConnectionURL" value="jdbc:cubrid:localhost:33000:nhneasymark:::?charSet=utf-8"/>
       <property name="JDBC.Username" value="dba"/>
       <property name="JDBC.Password" value="password"/>
+      
     </dataSource>
   </transactionManager>
   
@@ -52,5 +54,6 @@
   <sqlMap resource="dbConfig/member.xml"/>
   <sqlMap resource="dbConfig/bookmark.xml"/>
   <sqlMap resource="dbConfig/speech.xml"/>
+  <sqlMap resource="dbConfig/category.xml"/>
 
 </sqlMapConfig>

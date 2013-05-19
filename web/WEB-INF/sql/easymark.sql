@@ -200,3 +200,15 @@ INSERT INTO speech_site (url, speech) VALUES ('http://www.mk.co.kr/', '매일경
 INSERT INTO speech_site (url, speech) VALUES ('http://www.auction.co.kr/', '옥션');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.khan.co.kr/', '경향신문');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.nate.com/?f=cymain', '싸이월드');
+
+/**category 테이블*/
+CREATE TABLE "category"(
+"category_id" integer AUTO_INCREMENT(1,1) NOT NULL,
+"category_name" character varying(255),
+"user_id" character varying(30),
+CONSTRAINT pk_category_category_id PRIMARY KEY("category_id"),
+FOREIGN KEY ("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+
+
+

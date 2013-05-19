@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <header id="bookmarkAdd" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:80%; left:10%; right:10%; 	margin-left:0;">	
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
@@ -32,9 +33,10 @@
         	<label class="control-label" for="addBookMarkCategory">Category</label>
          	<div class="controls">
               	<select name="category" id="addBookMarkCategory">
-              		<option value="sports">스포츠</option>
-              		<option value="movie">영화</option>
-              		<option value="economy">경제</option>
+              		<option value="none">none</option>
+              		<c:forEach items="${sessionScope.categoryList}" var="category">
+              		<option value="${category.categoryName}">${category.categoryName}</option>
+              		</c:forEach>
               	</select>
             </div>
         </div>

@@ -10,7 +10,9 @@ import java.util.HashMap;
 
 import dao.BookMarkDAO;
 import dao.BookMarkListDAO;
+import dao.CategoryDAO;
 import dto.BookMark;
+import dto.Category;
 import dto.Design;
 
 public class IndividualPageServiceImpl implements IndividualPageServiceIF {
@@ -59,12 +61,24 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	public void modifyMark(BookMark bookMark){
 		BookMarkDAO.getInstance().modifyMark(bookMark);
 	}
-	public ArrayList<String> categoryList(String userId){
-		ArrayList<String> categoryList= null;
-		categoryList=(ArrayList<String>)BookMarkListDAO.getInstance().categoryList(userId);
-		return categoryList;
-	}
 
+	//user의 category insert 
+	public int addCategory(Category category){
+		return CategoryDAO.getInstance().addCategory(category);
+	}
+	//user의 category delete
+		public void deleteCategory(BookMark bookmark){
+			BookMarkDAO.getInstance().deleteCategory(bookmark);
+		}
+	//user의 categoryList
+	public ArrayList<Category> categoryList(String userId){
+		return CategoryDAO.getInstance().categoryList(userId);
+	}
+	public boolean isExistCategory(String categoryName){
+		boolean flag=false;
+		flag=CategoryDAO.getInstance().isExistCategory(categoryName);
+		return flag;
+	}
 	
 	@Override
 	public void changeDesign(String userId, Design design) {

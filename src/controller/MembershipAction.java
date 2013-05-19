@@ -142,6 +142,8 @@ public class MembershipAction {
 			session.setAttribute("designType", new MembershipServiceImpl().getDesignType(userId));
 			session.setAttribute("MEMBERINFO", m);
 			request.getSession().setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+			//bookMar add 할때 categoryList option 가져오기
+			request.getSession().setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
 			mav.setViewName("main");
 		}else{
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");

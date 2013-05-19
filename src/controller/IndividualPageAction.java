@@ -30,6 +30,7 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.FileWriter;
 import dto.BookMark;
+import dto.Category;
 import dto.Design;
 import dto.Img;
 import dto.Member;
@@ -46,6 +47,7 @@ public class IndividualPageAction {
 																		 @RequestParam(value="category")String category,
 																		 @RequestParam(value="userId",required=false)String userId){
 		System.out.println("addMark()!!");
+		System.out.println("name"+name);
 		ModelAndView nextPage = new ModelAndView();
 		if(userId == null)
 			userId = (String)request.getSession().getAttribute("MEMBERID");
@@ -208,7 +210,13 @@ public class IndividualPageAction {
 	public ModelAndView deleteMark(HttpServletRequest request,
 			HttpServletResponse response, Img img, @RequestParam(value="bookmarkId")int bookMarkId){
 		ModelAndView nextPage = new ModelAndView();
-		
+		BookMark bookmark=null;
+		//만약 category 삭제하는 거면 category Table에서도 제거
+		bookmark=new IndividualPageServiceImpl().getBookMark(bookMarkId);
+		if(bookmark.getCategory().equals("")){
+			//category 삭제
+			new IndividualPageServiceImpl().deleteCategory(bookmark);
+		}
 		new IndividualPageServiceImpl().deleteIcon(bookMarkId);
 		
 		request.setAttribute("result", Boolean.toString(true));
@@ -298,23 +306,6 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 
-	//카테고리 보여주기
-		@RequestMapping("/viewCategory")
-		public ModelAndView viewCategory(HttpServletRequest request){
-			ModelAndView nextPage = new ModelAndView();
-			ArrayList<String> categoryList=null;
-			String userId = (String)request.getSession().getAttribute("MEMBERID");
-			//카테고리 목록 가져오기
-			categoryList=new IndividualPageServiceImpl().categoryList(userId);
-			JSONArray jobj = JSONArray.fromObject(categoryList); 
-			System.out.println(jobj.toString());
-			request.setAttribute("result", jobj);
-			nextPage.setViewName("result");
-			
-			return nextPage;  
-		}
-
-	
 	@RequestMapping("/extensionAddMark")
 	public ModelAndView extensionAddMark(HttpServletRequest request, Img img, @RequestParam(value="addBookMarkImage",required=false)MultipartFile file,
 																		 @RequestParam(value="name") String name,
@@ -331,6 +322,66 @@ public class IndividualPageAction {
 		nextPage.setViewName("result");
 		return nextPage;
 	}
+	//카테고리 추가
+	//isExistCategory 써서 중복된 category add 안되게 해야한다
+	@RequestMapping("/addCategory")
+	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
+															   @RequestParam(value="userId",required=false)String userId){
+		System.out.println("addCategory()!!");
+		ModelAndView nextPage = new ModelAndView();
+		if(userId == null)
+			userId = (String)request.getSession().getAttribute("MEMBERID");
+		String imgUrl = "images/folder.png";
+		System.out.println("userID :"+userId);
+		String status="false";
+		int posx=0;
+		int posy=0;
+		ArrayList<BookMark> bookMarkList = null;
+		//현재 사용자의 북마크 리스트 가져오기
+		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
+		
+		//만약 처음 북마크 추가이면 1,1 위치 삽입
+		if(bookMarkList.size()==0){
+			posx=1;
+			posy=1;
+		}else{////////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
+			posx=new IndividualPageServiceImpl().bookMarkPosx(userId);
+			System.out.println("x="+posx);
+			//ParameterClass 2개라서 HashMap 이용 맞나?
+			HashMap<String, Object> pos=new HashMap<String, Object>();
+			pos.put("userId", userId);
+			pos.put("posX", posx);
+			posy=new IndividualPageServiceImpl().bookMarkPosy(pos); //x줄에 제일 마지막 y값
+			System.out.println("by="+posy);
+			posy++; //+1해서 다음에 놓을 곳 배치
+			System.out.println("ay="+posy);
+			if(posy==7){//다음줄로 넘기기
+				posx++;
+				posy=1;
+			}
+			
+		}
+		
+
+		BookMark bookMark = new BookMark(0,categoryName, "", "", userId, status, posx, posy, imgUrl, 0,"");
+		Category category=new Category(0, categoryName, userId);
+		//category폴더 bookmark Table에 저장
+		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
+		//User에 대한 category 내용 category Table에 저장
+		new IndividualPageServiceImpl().addCategory(category);
+		JSONObject jobj = new JSONObject();
+		jobj.put("x", posx);
+		jobj.put("y", posy);
+		jobj.put("id", maxBookmarkId);
+		jobj.put("imgUrl", imgUrl);
+		jobj.put("categoryName", categoryName);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+		
+		return nextPage;
+	}
+	
 	
 
 
