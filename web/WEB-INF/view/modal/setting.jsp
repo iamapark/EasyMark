@@ -23,7 +23,6 @@
 				style="border: 1px solid #ddd; padding-left: 10px;">
 				<div class="tab-pane active" id="setting_memberInfo">
 					<!-- 회원 개인 정보  & 탈퇴 신청<-->
-					</-->
 					<h4>회원정보</h4>
 					<form class="form-horizontal" action="updateMemberInfo"
 						id="updateMemberInfoForm" method="POST"
@@ -64,38 +63,6 @@
 							id="updateMemberButton">회원정보 수정</button>
 					</form>
 				</div>
-
-
-				<div class="tab-pane" id="setting_bookmarkInfo">
-					<!-- 북마크 리스트 -->
-					<h4>북마크</h4>
-
-					<input type="text" name="bookMarkUrl" id="bookMarkUrl">
-
-
-
-
-
-				</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				<div class="tab-pane" id="setting_settings">
 					<!-- 비밀번호 변경, 디자인 변경 -->
 					<div>
@@ -115,43 +82,18 @@
 							<input type="file" id="backgroundImgFile"
 								name="backgroundImgFile">
 						</form>
-<<<<<<< HEAD
 			  	  	</div>
-				  	<div class="tab-pane" id="setting_bookmarkInfo">
-				  		<!-- 북마크 리스트 -->
-					  	북마크
-				  	</div>
-					<div class="tab-pane" id="setting_settings">
-						<!-- 비밀번호 변경, 디자인 변경 -->
-					  	<div>
-					  		<!-- 디자인 변경 -->
-					  		<h5>디자인 변경</h5>
-							<select id="designSelect" name="style">
-								<option value="MacOS">디자인 1: MacOS</option>
-								<option value="WindowsOS">디자인 2: WindowsOS</option>
-							</select>
-							<span id="designSelectNoti"></span>
-					 	</div>
-					 	<div>
-					  		<!-- 배경화면 변경 -->
-					  		<h5>배경화면 변경</h5>
-							<img id="bgImg" src="images/calendar.png" style="width:15%;"/><br>
-							<form action="updateBgImg" name="bgImgForm" id="bgImgForm" method="post" enctype="multipart/form-data">
-								<input type="file" id="backgroundImgFile" name="backgroundImgFile">
-							</form>
-							<span id="backgroundImgNoti"></span>
-					 	</div>
-				  	</div>
-				  	<div class="tab-pane" id="setting_category">
+			  	  	<div class="tab-pane" id="setting_category">
 				  		<h5>카테고리 추가</h5>
 				  		<form action="addCategory" name="addCategory" id="addCategory" method="post" enctype="multipart/form-data">
 				  			<input type="text" id="categoryName" name="categoryName">
 					  		<input type="button" id="category" name="category" value="add">
 					  	</form>
 				  	</div>
-=======
-						<span id="backgroundImgNoti"></span>
-					</div>
+		  	  	</div>
+				<div class="tab-pane" id="setting_bookmarkInfo">
+				  		<!-- 북마크 리스트 -->
+					  	북마크
 				</div>
 				<div class="tab-pane" id="setting_category">
 					<h5>카테고리 변경</h5>
@@ -160,7 +102,6 @@
 						<input type="button" id="category" name="category"
 							value="category">
 					</form>
->>>>>>> 66796410e78628aed81ba40be2961cad980ceadf
 				</div>
 			</div>
 		</div>

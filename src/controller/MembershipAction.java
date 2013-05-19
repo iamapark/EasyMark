@@ -148,9 +148,9 @@ public class MembershipAction {
 		Login login = new Login(userId, password);
 		boolean flag = false;
 		
-		if(r.equals("true"))
+		/*if(r.equals("true"))
 			flag = true;
-		else
+		else*/
 			flag = new MembershipServiceImpl().login(login);
 		
 		 if (flag) {

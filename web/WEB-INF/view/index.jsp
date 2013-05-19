@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <c:if test="${sessionScope.MEMBERID != null}">
 	<%
-		response.sendRedirect("login?r=true");
+		//response.sendRedirect("login?r=true");
 	%>
 </c:if>    
 <!DOCTYPE html>
