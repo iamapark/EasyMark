@@ -14,7 +14,7 @@
 				<li><a href="#setting_memberInfo" data-toggle="tab">회원정보</a></li>
 				<li><a href="#setting_bookmarkInfo" data-toggle="tab">북마크</a></li>
 				<li><a href="#setting_settings" data-toggle="tab">설정</a></li>
-				<li><a href="#setting_category" data-toggle="tab">카테고리</a></li>
+				<li><a href="#setting_categoryChange" data-toggle="tab">카테고리</a></li>
 
 			</ul>
 		</div>
@@ -92,10 +92,37 @@
 				  	</div>
 		  	  	</div>
 				<div class="tab-pane" id="setting_bookmarkInfo">
-				  		<!-- 북마크 리스트 -->
-					  	북마크
+				  	<!-- 북마크 리스트 -->
+				  	<h1>북마크 리스트</h1>
+				  	
+				  	<div class="row-fluid sortable">		
+					<div class="box span12">
+					<div class="box-content">
+						<table class="table table-striped table-bordered bootstrap-datatable bookmarktable">
+						  <thead>
+							  <tr>
+							  	  <th>선택</th>
+								  <th>이름</th>
+								  <th>URL</th>
+								  <th>설명</th>
+								  <th>접속 횟수</th>
+							  </tr>
+						  </thead>
+						  <tbody id="MemberDataTable">
+							<!-- 여기에 회원 정보가 들어간다. -->
+						  </tbody>
+					  </table>            
+					</div>
+					</div>
+					</div>	
+
+
+
+
+
+
 				</div>
-				<div class="tab-pane" id="setting_category">
+				<div class="tab-pane" id="setting_categoryChange">
 					<h5>카테고리 변경</h5>
 					<form action="viewCategory" name="viewCategory" id="viewCategory"
 						method="post" enctype="multipart/form-data">

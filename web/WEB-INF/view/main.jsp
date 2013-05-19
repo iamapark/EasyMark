@@ -12,6 +12,8 @@
 	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
 	<link rel="stylesheet" href="css/bookmark/jquery.contextmenu.css" type="text/css" >
+	<link href="css/dataTables/jquery.dataTables_themeroller.css" rel="stylesheet">
+	<link href="css/dataTables/jquery.dataTables.css" rel="stylesheet">
 	<!-- design:main -->
 	<%
 		String designType = (String)session.getAttribute("designType");
@@ -73,12 +75,14 @@
 	
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.form.js"></script>
+	<script src="js/dataTables/jquery.dataTables.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
 	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/bookmark/bookmark.js"></script>
 	<script src="js/membership/membership.js"></script>
 	<script src="js/friendship/friendship.js"></script>
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
+	
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
 	<script src="tipJS/tipJS-MVC.js"></script>

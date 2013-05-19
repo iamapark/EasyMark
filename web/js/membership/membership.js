@@ -1,3 +1,11 @@
+$('.bookmarktable').dataTable({
+	"sPaginationType": "full_numbers",
+	"bJQueryUI": true
+});
+$('.bookmarktable tbody tr').on('click', function () {
+    alert('keke');
+});
+
 // 배경화면에서 MODAL을 불러오는 a태그를 클릭했을 때 호출
 $('a[data-toggle="modal"]').click(function() {
 	clearForm();
@@ -100,7 +108,6 @@ $('a[href="#setting"]').click(function() {
 		url : 'getMemberInfo',
 		dataType : 'json'
 	}).done(function(data) {
-		console.log(data);
 		$('#setting_userId').val(data.userId);
 		$('#setting_name').val(data.name);
 		$('#setting_email').val(data.email);
@@ -111,16 +118,24 @@ $('a[href="#setting"]').click(function() {
 	});
 });
 
+// setting 메뉴에서 북마크 탭을 클릭했을 때
+// 회원의 북마크 리스트를 불러와서 화면에 테이블 형식으로 뿌려준다.
 $('a[href="#setting_bookmarkInfo"]').click(function() {
+	// 북마크 테이블의 모든 데이터를 지운다.
+	$('.bookmarktable').dataTable().fnClearTable();
 	
 	$.ajax({
 		url : 'viewBookMarkList',
 		dataType : 'json',
 		
 	}).done(function(data) {
-		
-		
+		for(var i=0; i<data.length; i++){
+			var bm = data[i];
+			$('.bookmarktable').dataTable().fnAddData(['1', bm.bookMarkName, bm.bookMarkUrl, bm.bookMarkDescript, bm.frequency]);
+		}
 	});
+	
+	 
 
 });
 
