@@ -33,6 +33,7 @@ $('#menu_membership').click(function(e){
 	$.ajax({
 		url:'fillMemberTable'
 	}).done(function(data){
+		console.log(data);
 		var memberData = JSON.parse(data);
 		var action = null;
 		var select = null;

@@ -2,6 +2,40 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 
+<script>
+		function deleteFriend(friendId){
+			
+			console.log("friendId: " + friendId);
+		}	
+			/* var clickedRow = $("#delete").parent().parent();
+			
+			$.ajax({
+				url: 'deleteFriend',
+			//	dataType:'json',
+				data: {
+						friendId: friendId,
+				}
+			}).done(function(data){
+
+			});  
+	         
+	        if( clickedRow.find("td:eq(0)").attr("rowspan") ){
+	            if( clickedRow.next().hasClass(friendId) ){
+	                clickedRow.next().prepend(clickedRow.find("td:eq(0)"));
+	            }
+	        }
+	
+	        clickedRow.remove();
+	        resizeRowspan(friendId);  
+		}
+		
+		function resizeRowspan(cls){
+	        var rowspan = $("."+cls).length;
+	        $("."+cls+":first td:eq(0)").attr("rowspan", rowspan);
+	    }*/	
+		
+</script>
+
 <div id="friendInfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:80%; left:10%; right:10%; 	margin-left:0;">	
 	<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal"
@@ -33,8 +67,8 @@
 						</div>
 					</form>
 					
-					<div id = "friendTable">
-					<%-- <table class="table table-bordered" width="70%">
+					<div class = "box-content">
+					<table class="table table-striped table-bordered bootstrap-datatable friendtable">
 						<thead>
 							<tr>
 					          <th>UserID</th>
@@ -44,7 +78,14 @@
 					     	</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${requestScope.friendList}" var="friend">
+						
+						
+						</tbody>
+						
+						
+					</table>
+						
+						<%-- <c:forEach items="${requestScope.friendList}" var="friend">
 							<tr>
 								<td>&nbsp;&nbsp;&nbsp;${friend.userId}&nbsp;&nbsp;&nbsp;</td>
 								<td>&nbsp;&nbsp;&nbsp;${friend.firstName}&nbsp;&nbsp;&nbsp;</td>
@@ -52,8 +93,8 @@
 								<td width="50px"><input class="btn btn-small btn btn-danger" type="button" onclick="deleteFriend('${sessionScope.MEMBERID}','${friend.userId}');" value="친구삭제" /></td>					
 							</tr>		
 						</c:forEach>
-						</tbody>
-					</table> --%>
+						
+					 --%>
 					</div>
 		  		</div>
 		  		<!-- 친구 리스트 종료 -->
@@ -61,7 +102,22 @@
 		  		<!-- 내가 친구 요청한 리스트 -->
 		  		<div class="tab-pane" id="friend_sendRequest">
 			  		<h3>내가 친구 요청한 리스트</h3>
-			  			<div id = "sendRequestTable">
+			  			<div class = "box-content">
+							<table class="table table-striped table-bordered bootstrap-datatable sendfriendtable">
+								<thead>
+									<tr>
+							          <th>UserID</th>
+							          <th>Status</th>                                          
+							     	</tr>
+								</thead>
+								<tbody>
+								
+								
+								</tbody>
+								
+								
+							</table>
+						</div>	
 			  		<%--<table class="table table-bordered" width="70%">
 						<thead>
 						<tr>
@@ -79,7 +135,7 @@
 								</td>
 							</tr>		
 						</c:forEach> --%>
-						</div>
+						
 					<!-- </table> -->
 		  		</div>
 		  		<!-- 내가 친구 요청한 리스트 종료-->
@@ -87,6 +143,24 @@
 		  		<!-- 내가 친구 요청받은 리스트 -->
 		  		<div class="tab-pane" id="friend_takeRequest">
 		  			<h3>내가 친구 요청받은 리스트</h3>
+		  				<div class = "box-content">
+							<table class="table table-striped table-bordered bootstrap-datatable takefriendtable">
+								<thead>
+									<tr>
+							          <th>UserID</th>
+							          <th>Status</th>                                          
+							     	</tr>
+								</thead>
+								<tbody>
+								
+								
+								</tbody>
+								
+								
+							</table>
+						</div>	
+					<%-- 
+					
 		  			<table class="table table-bordered" width="70%">
 					<thead>
 						<tr>
@@ -167,7 +241,7 @@
 							</tr>		
 						</c:forEach>
 					</tbody>
-					</table>
+					</table> --%>
 		  		</div>
 		  		<!-- 내가 친구 요청받은 리스트 종료 -->
 		  		
@@ -175,13 +249,31 @@
 		  		<div class="tab-pane" id="friend_BookMark">
 		  			<h3>추천받은 북마크 리스트</h3>
 		  			<ul class="nav nav-tabs" id="webSiteTab">
-					  <li class="active"><a href="#outWeb" data-toggle="tab">추천 받은 WEB</a></li>
-					  <li><a href="#inWeb" data-toggle="tab">추천 한 WEB</a></li>
+					  <li class="active"><a href="#inWeb" data-toggle="tab">추천 받은 WEB</a></li>
+					  <li><a href="#outWeb" data-toggle="tab">추천 한 WEB</a></li>
 					</ul>
 					<div class="tab-content">
-					  <div class="tab-pane active" id="outWeb">
+					  <div class="tab-pane active" id="inweb">
+					  	<div class = "box-content">
+							<table class="table table-striped table-bordered bootstrap-datatable inwebtable">
+								<thead>
+									<tr>
+							          	<th>ID</th>
+										<th>URL</th>
+										<th>NAME</th>
+										<th>RECOMMENDATION</th>                                        
+							     	</tr>
+								</thead>
+								<tbody>
+								
+								
+								</tbody>
+								
+								
+							</table>
+						</div>
 				  		<%-- <div id="memberId" align="right">${sessionScope.MEMBERID}</div> --%>
-				 	 	<table class="table table-bordered">
+				 	 	<%-- <table class="table table-bordered">
 							<tr>
 								<th>ID</th>
 								<th>URL</th>
@@ -214,13 +306,30 @@
 								</tr>
 							</c:forEach>
 					 		
-					 	</table>
+					 	</table> --%>
 				 
 					  </div>
 					  
-					  <div class="tab-pane" id="inWeb">
-					  
-					  	<table class="table table-bordered">
+					  <div class="tab-pane" id="outWeb">
+					  	<div class = "box-content">
+							<table class="table table-striped table-bordered bootstrap-datatable outwebtable">
+								<thead>
+									<tr>
+							          	<th>ID</th>
+										<th>URL</th>
+										<th>NAME</th>
+										<th>RECOMMENDATION</th>                                        
+							     	</tr>
+								</thead>
+								<tbody>
+								
+								
+								</tbody>
+								
+								
+							</table>
+						</div>
+					  	<!-- <table class="table table-bordered">
 							<tr>
 								<th>ID</th>
 								<th>URL</th>
@@ -230,7 +339,7 @@
 							
 							<tr id="outWebList">
 							</tr>
-					 	</table>	
+					 	</table> -->	
 					 		
 					  </div>
 					</div>

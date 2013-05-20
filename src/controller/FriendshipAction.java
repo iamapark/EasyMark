@@ -48,7 +48,9 @@ public class FriendshipAction {
 		friendList = new FriendshipServiceImpl().getFriendList(friend);
 		
 		ModelAndView mav = new ModelAndView();
+		
 		JSONArray dataJ = JSONArray.fromObject(friendList);
+		System.out.println(dataJ);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 		return mav;
@@ -122,7 +124,10 @@ public class FriendshipAction {
 		recommendedWeb = new FriendshipServiceImpl().inWeb(userId);
 		
 		ModelAndView mav = new ModelAndView();
-		request.setAttribute("result", "true");
+		/*request.setAttribute("result", "true");
+		*/
+		JSONArray dataJ = JSONArray.fromObject(recommendedWeb);
+		request.setAttribute("result", dataJ);
 		
 		mav.setViewName("result");
 		
@@ -152,7 +157,7 @@ public class FriendshipAction {
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(recommendWeb);
 		request.setAttribute("result", dataJ);
-		System.out.println(dataJ.toString());
+		
 		mav.setViewName("result");
 		
 		return mav;
@@ -205,7 +210,25 @@ public class FriendshipAction {
 		return nextPage;
 	}
 	
-	
+	// 친구 삭제
+		@RequestMapping("/deleteFriend")
+		public ModelAndView deleteFriend(HttpServletRequest request,
+				HttpServletResponse response) {
+			String userId = (String)request.getSession().getAttribute("MEMBERID");
+			String friendId = request.getParameter("friendId");
+			//String friendshipId = request.getParameter("friendshipId");
+			System.out.println(friendId);
+			ModelAndView mav = new ModelAndView();
+
+			//Friendship friendship = new Friendship(Integer.parseInt(friendshipId), userId, friendId, "친구");
+			Friendship friendship = new Friendship(userId, friendId, "친구");
+
+			new FriendshipServiceImpl().deleteFriend(friendship);
+
+			request.setAttribute("result", "true");
+			mav.setViewName("result");
+			return mav;
+		}
 	
 	
 	
