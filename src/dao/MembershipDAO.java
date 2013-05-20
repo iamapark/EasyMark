@@ -55,6 +55,7 @@ public class MembershipDAO {
 			sqlMapper.delete("deleteDesign", idList);
 			sqlMapper.delete("deleteMember", idList);
 			sqlMapper.update("leaveMember", idList);
+			sqlMapper.update("deleteLoginInfo", idList);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -69,6 +70,8 @@ public class MembershipDAO {
 			sqlMapper.delete("deleteDesign", idList);
 			sqlMapper.delete("deleteMember", idList);
 			sqlMapper.update("leaveMember", idList);
+			sqlMapper.update("deleteLoginInfo", idList);
+			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}

@@ -116,6 +116,16 @@
 		</dynamic>
 	</delete>
 	
+	<delete id="deleteLoginInfo" parameterClass="List">
+		delete from login_time
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
 	<update id="leaveMember" parameterClass="List">
 		update register_time
 		set leave_time = SYS_TIMESTAMP

@@ -151,3 +151,13 @@ $('#backgroundImgFile').change(function() {
 		}
 	});
 });
+
+// 회원 탈퇴 버튼을 클릭했을 때
+$('#leaveMembership').click(function(e){
+	e.preventDefault();
+	var flag = confirm('정말 탈퇴하시겠습니까?');
+	
+	if(flag){
+		location.href = 'leaveMembership';
+	}
+});
