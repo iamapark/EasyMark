@@ -65,7 +65,8 @@ $('#menu_statistics').click(function(e){
 	$('#membershipDiv').hide();
 	$('#dashboardDiv').hide();
 	
-	fillStatistics();
+	fillLoginCounterHourly();
+	fillTotalStatistics();
 });
 
 init();

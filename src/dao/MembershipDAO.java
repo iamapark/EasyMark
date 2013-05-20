@@ -86,4 +86,30 @@ public class MembershipDAO {
 		
 		return c;
 	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Count> getLoginCounterHourly() {
+		ArrayList<Count> c = new ArrayList<Count>();
+		
+		try{
+			c = (ArrayList<Count>)sqlMapper.queryForList("getLoginCounterHourly");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return c;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Count> getTotalStatistics() {
+		ArrayList<Count> i = new ArrayList<Count>();
+		
+		try{
+			i = (ArrayList<Count>)sqlMapper.queryForList("getTotalStatistics");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return i;
+	}
 }

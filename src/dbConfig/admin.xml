@@ -36,6 +36,10 @@
 	<resultMap id="CountList" class="Count">
 		<result property="basis" column="basis" />
 		<result property="countResult" column="count_result" />
+		<result property="totalConnection" column="total_connection" />
+		<result property="avgConnection" column="avg_connection" />
+		<result property="totalBookMarkCount" column="total_bookMarkCount" />
+		<result property="avgBookMarkCount" column="avg_bookMarkCount" />
 	</resultMap>
     
     <select id="adminLogin" parameterClass="Login" resultClass="String">
@@ -124,13 +128,41 @@
 	
 	<select id="getRegisterCount" parameterClass="String" resultMap="CountList">
 		SELECT 
-			register_time basis, COUNT(DAY(register_time)) count_result
+			register_time basis, COUNT(DAY(register_time)) count_result,
+			1 total_connection,
+			1 avg_connection,
+			1 total_bookmarkCount,
+			1 avg_bookMarkCount
 		FROM 
 			register_time
 		GROUP BY 
 			MONTH(register_time), YEAR(register_time), DAY(register_time)
 		HAVING 
 			YEAR(register_time)=2013 AND MONTH(register_time)=#selectedMonth#
+	</select>
+	
+	<select id="getLoginCounterHourly" resultMap="CountList">
+		SELECT 
+			HOUR(TIME(login_time)) basis, 
+			COUNT(HOUR(TIME(login_time))) count_result,
+			1 total_connection,
+			1 avg_connection,
+			1 total_bookmarkCount,
+			1 avg_bookMarkCount
+		FROM 
+			login_time
+		GROUP BY 
+			HOUR(TIME(login_time));
+	</select>
+	
+	<select id="getTotalStatistics" resultMap="CountList">
+		SELECT 
+			'' basis,
+			1 count_result,
+			(SELECT ROUND(SUM(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time) AS total_connection,
+			(SELECT ROUND(AVG(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time) AS avg_connection,
+			(SELECT COUNT(bookmark_id) FROM bookmark) AS total_bookmarkCount,
+			(SELECT AVG(cnt) FROM (SELECT COUNT(bookmark_id) AS cnt FROM bookmark GROUP BY user_id) AS c) AS avg_bookMarkCount
 	</select>
 	
 </sqlMap>

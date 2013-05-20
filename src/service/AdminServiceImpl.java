@@ -35,4 +35,12 @@ public class AdminServiceImpl implements AdminServiceIF {
 	public ArrayList<Count> getRegisterCount(String selectedMonth) {
 		return MembershipDAO.getInstance().getRegisterCount(selectedMonth);
 	}
+
+	public ArrayList<Count> getLoginCounterHourly() {
+		return MembershipDAO.getInstance().getLoginCounterHourly();
+	}
+
+	public ArrayList<Count> getTotalStatistics() {
+		return MembershipDAO.getInstance().getTotalStatistics();
+	}
 }

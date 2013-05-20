@@ -3,6 +3,10 @@ package dto;
 public class Count {
 	private String basis;
 	private int countResult;
+	private int totalConnection;
+	private int avgConnection;
+	private int totalBookMarkCount;
+	private int avgBookMarkCount;
 	
 	public Count() {
 		super();
@@ -12,6 +16,26 @@ public class Count {
 		super();
 		this.basis = basis;
 		this.countResult = countResult;
+	}
+	
+	public Count(String basis, int countResult, int totalConnection,
+			int avgConnection, int totalBookMarkCount, int avgBookMarkCount) {
+		super();
+		this.basis = basis;
+		this.countResult = countResult;
+		this.totalConnection = totalConnection;
+		this.avgConnection = avgConnection;
+		this.totalBookMarkCount = totalBookMarkCount;
+		this.avgBookMarkCount = avgBookMarkCount;
+	}
+	
+	public Count(int totalConnection, int avgConnection,
+			int totalBookMarkCount, int avgBookMarkCount) {
+		super();
+		this.totalConnection = totalConnection;
+		this.avgConnection = avgConnection;
+		this.totalBookMarkCount = totalBookMarkCount;
+		this.avgBookMarkCount = avgBookMarkCount;
 	}
 
 	public String getBasis() {
@@ -29,4 +53,38 @@ public class Count {
 	public void setCountResult(int countResult) {
 		this.countResult = countResult;
 	}
+
+	public int getTotalConnection() {
+		return totalConnection;
+	}
+
+	public void setTotalConnection(int totalConnection) {
+		this.totalConnection = totalConnection;
+	}
+
+	public int getAvgConnection() {
+		return avgConnection;
+	}
+
+	public void setAvgConnection(int avgConnection) {
+		this.avgConnection = avgConnection;
+	}
+
+	public int getTotalBookMarkCount() {
+		return totalBookMarkCount;
+	}
+
+	public void setTotalBookMarkCount(int totalBookMarkCount) {
+		this.totalBookMarkCount = totalBookMarkCount;
+	}
+
+	public int getAvgBookMarkCount() {
+		return avgBookMarkCount;
+	}
+
+	public void setAvgBookMarkCount(int avgBookMarkCount) {
+		this.avgBookMarkCount = avgBookMarkCount;
+	}
+
+	
 }

@@ -56,11 +56,8 @@ public class AdminAction {
 		ModelAndView mav = new ModelAndView();
 		
 		ArrayList<Member> memberList = new AdminServiceImpl().fillMemberTable();
-		System.out.println("회원 수: " + memberList.size());
-		
 		
 		JSONArray dataJ = JSONArray.fromObject(memberList);
-		System.out.println(dataJ);
 		
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
@@ -75,7 +72,6 @@ public class AdminAction {
 		MemberInfo m = new AdminServiceImpl().getMemberInfo_admin(userId);
 
 		JSONObject dataJ = JSONObject.fromObject(m);
-		System.out.println(dataJ);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 		return mav;
@@ -131,5 +127,35 @@ public class AdminAction {
 		mav.setViewName("result");
 		return mav;
 	}
+	
+	@RequestMapping("/getLoginCounterHourly")
+	public ModelAndView getLoginCounterHourly(HttpServletRequest request, HttpServletResponse response){
+		
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<Count> c = new AdminServiceImpl().getLoginCounterHourly();
+		
+		JSONArray dataJ = JSONArray.fromObject(c);
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
+		return mav;
+	}
+	
+	@RequestMapping("/getTotalStatistics")
+	public ModelAndView getTotalStatistics(HttpServletRequest request, HttpServletResponse response){
+		
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<Count> c = new AdminServiceImpl().getTotalStatistics();
+		
+		JSONArray dataJ = JSONArray.fromObject(c);
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
+		return mav;
+	}
+	
+	
 
+	
+	
 }

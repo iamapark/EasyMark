@@ -15,12 +15,12 @@
 				<a data-rel="tooltip" title="6 new members." class="well span6 top-block" href="#">
 					<span class="icon32 icon-red icon-user"></span>
 					<div>총 접속 시간</div>
-					<div>1230</div>
+					<div id="totalConnection">1230</div>
 				</a>
 				<a data-rel="tooltip" title="6 new members." class="well span6 top-block" href="#">
 					<span class="icon32 icon-red icon-user"></span>
 					<div>평균 접속 시간</div>
-					<div>30</div>
+					<div id="avgConnection">30</div>
 				</a>
 			</div>
 		</div>
@@ -37,12 +37,12 @@
 				<a data-rel="tooltip" title="6 new members." class="well span6 top-block" href="#">
 					<span class="icon32 icon-red icon-user"></span>
 					<div>총 북마크 수</div>
-					<div>507</div>
+					<div id="totalBookMarkCount">507</div>
 				</a>
 				<a data-rel="tooltip" title="6 new members." class="well span6 top-block" href="#">
 					<span class="icon32 icon-red icon-user"></span>
 					<div>평균 북마크 수</div>
-					<div>40.3</div>
+					<div id="avgBookMarkCount">40.3</div>
 				</a>
 			</div>
 		</div>
@@ -77,7 +77,7 @@
 								  </select>
 								</div>
 							  </div>
-				<div id="myfirstchart"></div>
+				<div id="registerMemberMonthly"></div>
 			</div>
 		</div>
 		<div class="box">
@@ -90,7 +90,7 @@
 				</div>
 			</div>
 			<div class="box-content">
-				<div id="sincos"  class="center" style="height:300px" ></div>
+				<div id="loginCounterHourly"></div>
 			</div>
 		</div>
 	</div>
