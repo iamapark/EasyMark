@@ -41,8 +41,9 @@ public class MembershipAction {
 			new MembershipServiceImpl().registerMember(member);
 			new MembershipServiceImpl().registerMemberInfo(member);
 			new MembershipServiceImpl().registerDesign(member);
-			
+			new MembershipServiceImpl().registerRegisterTime(member);
 		}
+		System.out.println("ss");
 		mav.setViewName("index");
 		return mav;
 	}
