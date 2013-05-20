@@ -21,6 +21,8 @@
 	<typeAlias alias="Friendship" type="dto.Friendship"/>
 	<typeAlias alias="User" type="dto.User"/>
 	<typeAlias alias="FriendStatus" type="dto.FriendStatus"/>
+	
+	<typeAlias alias="Count" type="dto.Count"/>
 
 
   <!-- Configure a built-in transaction manager.  If you're using an 

@@ -32,6 +32,11 @@
 		<result property="imgUrl" column="img_url" />
 		<result property="bgImgUrl" column="bg_img_url" />
 	</resultMap>
+	
+	<resultMap id="CountList" class="Count">
+		<result property="basis" column="basis" />
+		<result property="countResult" column="count_result" />
+	</resultMap>
     
     <select id="adminLogin" parameterClass="Login" resultClass="String">
         SELECT 
@@ -116,4 +121,16 @@
 			</iterate>
 		</dynamic>
 	</update>
+	
+	<select id="getRegisterCount" parameterClass="String" resultMap="CountList">
+		SELECT 
+			register_time basis, COUNT(DAY(register_time)) count_result
+		FROM 
+			register_time
+		GROUP BY 
+			MONTH(register_time), YEAR(register_time), DAY(register_time)
+		HAVING 
+			YEAR(register_time)=2013 AND MONTH(register_time)=#selectedMonth#
+	</select>
+	
 </sqlMap>

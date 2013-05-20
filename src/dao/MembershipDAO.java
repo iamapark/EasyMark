@@ -2,10 +2,10 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import dto.Count;
 import dto.Member;
 import dto.MemberInfo;
 
@@ -72,5 +72,18 @@ public class MembershipDAO {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Count> getRegisterCount(String selectedMonth) {
+		ArrayList<Count> c = new ArrayList<Count>();
+		
+		try{
+			c = (ArrayList<Count>)sqlMapper.queryForList("getRegisterCount", selectedMonth);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return c;
 	}
 }

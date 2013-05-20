@@ -1,7 +1,7 @@
 var init = function(){
-	$('#dashboardDiv').show();
+	$('#dashboardDiv').hide();
 	$('#membershipDiv').hide();
-	$('#statisticsDiv').hide();
+	$('#statisticsDiv').show();
 };
 
 $('.btn-minimize').click(function(e){
@@ -23,6 +23,7 @@ $('#menu_dashboard').click(function(e){
 //왼쪽 메뉴에서 회원관리를 클릭했을 때
 $('#menu_membership').click(function(e){
 	e.preventDefault();
+	$('#membershipDiv').show();
 	$('#dashboardDiv').hide();
 	$('#statisticsDiv').hide();
 	
@@ -63,6 +64,8 @@ $('#menu_statistics').click(function(e){
 	$('#statisticsDiv').show();
 	$('#membershipDiv').hide();
 	$('#dashboardDiv').hide();
+	
+	fillStatistics();
 });
 
 init();

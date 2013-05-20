@@ -11,6 +11,7 @@
 
 	<!-- The styles -->
 	<link id="bs-css" href="css/admin/bootstrap-cerulean.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
 	<style type="text/css">
 	  body {
 		padding-bottom: 40px;
@@ -91,6 +92,9 @@
 	
 	<!-- 자바스크립트 라이브러리 import하는 js -->
 	<script src="js/admin/main/import.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+	<script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+	<script src="js/admin/main/statistics.js"></script>
 	<script src="js/admin/main/main.js"></script>
 	<script src="js/admin/main/membership.js"></script>
 	<script src='js/admin/charisma.js'></script>
