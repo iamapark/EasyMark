@@ -1,7 +1,7 @@
 var init = function(){
-	$('#dashboardDiv').hide();
+	$('#dashboardDiv').show();
 	$('#membershipDiv').hide();
-	$('#statisticsDiv').show();
+	$('#statisticsDiv').hide();
 };
 
 $('.btn-minimize').click(function(e){
