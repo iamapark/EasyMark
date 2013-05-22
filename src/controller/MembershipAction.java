@@ -143,41 +143,30 @@ public class MembershipAction {
 	public ModelAndView login(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "loginId") String userId,
-			@RequestParam(value = "loginPassword") String password,
-			@RequestParam(value = "r", required=false) String r) {
+			@RequestParam(value = "loginPassword") String password) {
 		ModelAndView mav = new ModelAndView();
 		Login login = new Login(userId, password);
 		boolean flag = false;
 		
-		/*if(r.equals("true"))
-			flag = true;
-		else*/
-			flag = new MembershipServiceImpl().login(login);
+		
+		System.out.println("로그인 아이디: " + request.getSession().getAttribute("MEMBERID"));
+		System.out.println("userId: " + userId);
+		
+		flag = new MembershipServiceImpl().login(login);
 		
 		 if (flag) {
 		 		Member m = new MembershipServiceImpl().getMemberInfo(userId);
 			
-		 		HttpSession session = request.getSession();
-			
-			if (!userId.equals(session.getAttribute("MEMBERID"))) {
-				new MembershipServiceImpl().loginCount(userId); // 로그인 카운트를 1
-																// 증가시킨다.
-				session.setAttribute("MEMBERID", userId);
-				System.out.println("새로 로그인");
-			} else {
-				System.out.println("기존 로그인");
-			}
-
-			session.setAttribute("designType",
+	 		HttpSession session = request.getSession();
+	 		session.setAttribute("MEMBERID", userId);
+	 		
+			request.setAttribute("designType",
 					new MembershipServiceImpl().getDesignType(userId));
-			session.setAttribute("MEMBERINFO", m);
+			request.setAttribute("MEMBERINFO", m);
 
-			request.getSession().setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
 			//bookMar add 할때 categoryList option 가져오기
-			request.getSession().setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
-
-			request.getSession().setAttribute("bookMarkList",
-					new IndividualPageServiceImpl().bookMarkList(userId));
+			request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
 
 			mav.setViewName("main");
 		} else {
@@ -314,6 +303,47 @@ public class MembershipAction {
 		nextPage.setViewName("result");
 		System.out.println("viewBookMarkList" + viewBookMarkList);
 		return nextPage;
+
+	}
+	
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		ModelAndView nextPage = new ModelAndView();
+		
+		request.getSession().invalidate();
+		nextPage.setViewName("index");
+		return nextPage;
+
+	}
+	
+	@RequestMapping("/loginSession")
+	public ModelAndView loginSession(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		ModelAndView mav = new ModelAndView();
+		
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		
+		System.out.println("로그인 아이디: " + request.getSession().getAttribute("MEMBERID"));
+		
+		 if (userId != null) {
+		 	Member m = new MembershipServiceImpl().getMemberInfo(userId);
+			
+			request.setAttribute("designType",
+					new MembershipServiceImpl().getDesignType(userId));
+			request.setAttribute("MEMBERINFO", m);
+			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+			//bookMar add 할때 categoryList option 가져오기
+			request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
+
+			mav.setViewName("main");
+		} else {
+			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");
+			mav.setViewName("error/error");
+		}
+		return mav;
 
 	}
 

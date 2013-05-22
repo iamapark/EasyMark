@@ -18,7 +18,7 @@ import com.nhncorp.mods.socket.io.impl.Namespace;
 
 import dto.Member;
 
-public class AdminServer {/*
+public class AdminServer {
 	private Vertx vt;
 	private SocketIOServer io;
 	private HashMap<String, SocketIOSocket> sockets;
@@ -83,8 +83,8 @@ public class AdminServer {/*
 		return sockets.containsKey(adminId);
 	}
 	
-	*//**
-	 * 사용자가 로그인 할때마다 현재 로그인 중인 사용자 수를 Admin 페이지에 푸쉬한다.*//*
+	/**
+	 * 사용자가 로그인 할때마다 현재 로그인 중인 사용자 수를 Admin 페이지에 푸쉬한다.*/
 	public void pushLoginMemberCount(int count){
 		System.out.println("pushLoginMemberCount");
 		JsonObject data = new JsonObject();
@@ -98,14 +98,14 @@ public class AdminServer {/*
 		}
 	}
 	
-	*//**
-	 * 사용자가 로그인 할때마다 사용자 계정에 관한 정보를 Admin 페이지에 푸쉬한다.*//*
+	/**
+	 * 사용자가 로그인 할때마다 사용자 계정에 관한 정보를 Admin 페이지에 푸쉬한다.*/
 	public void pushLoginMemberInfo(String userId){
 		System.out.println("pushLoginMemberInfo");
-		Member member = new MembershipServiceImpl().getMyInfo(userId);
+		Member member = new MembershipServiceImpl().getMemberInfo(userId);
 		JsonObject data = new JsonObject();
 		data.putString("userId", member.getUserId());
-		data.putString("firstName", member.getFirstName());
+		data.putString("firstName", member.getName());
 		data.putString("email", member.getEmail());
 		
 		Set<String> set = sockets.keySet();
@@ -116,6 +116,7 @@ public class AdminServer {/*
 		}
 	}
 
+	/**사용자가 로그아웃 할 때마다 관리자 페이지로 아이디를 push 한다.*/
 	public void refreshLogoutMember(String id) {
 		JsonObject data = new JsonObject();
 		data.putString("userId", id);
@@ -126,5 +127,5 @@ public class AdminServer {/*
 		while(iter.hasNext()){
 			sockets.get(iter.next()).emit("refreshLogoutMember", data);
 		}
-	}*/
+	}
 }

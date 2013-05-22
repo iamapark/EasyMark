@@ -161,3 +161,9 @@ $('#leaveMembership').click(function(e){
 		location.href = 'leaveMembership';
 	}
 });
+
+// 로그 아웃 버튼을 클릭했을 때
+$('#logoutButton').click(function(e){
+	e.preventDefault();
+	location.href = 'logout';
+});

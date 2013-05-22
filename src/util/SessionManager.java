@@ -31,6 +31,10 @@ public class SessionManager {
 		session.remove(httpSession.getId());
 	}
 	
+	public HttpSession get(String id){
+		return session.get(id);
+	}
+	
 	public int count(){
 		int count = 0;
 		

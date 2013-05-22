@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-   
+   <c:if test="${sessionScope.MEMBERID != null}">
+   	<% response.sendRedirect("loginSession"); %>
+   </c:if>
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,7 +105,7 @@
   </div>
 </div>
 
-<a href="goAdmin">관리자</a>
+<a href="goAdmin">관리자 ${sessionScope.MEMBERID}</a>
 
 <script src="js/jquery.js"></script>
 <script src="js/membership/index.js"></script>

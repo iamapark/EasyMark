@@ -65,3 +65,9 @@ document.write("<script src='js/admin/jquery.autogrow-textarea.js'></script>");
 document.write("<script src='js/admin/jquery.uploadify-3.1.min.js'></script>");
 /* history.js for cross-browser state change on ajax */
 document.write("<script src='js/admin/jquery.history.js'></script>");
+
+
+
+
+/* real time web을 위한 socket.io js*/
+document.write("<script src='js/socket.io.js'></script>");

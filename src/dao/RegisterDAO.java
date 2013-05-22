@@ -182,4 +182,12 @@ public class RegisterDAO {
 		}
 	}
 
+	public void logoutCount(String userId) {
+		try{
+			sqlMapper.insert("logoutCount", userId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
 }

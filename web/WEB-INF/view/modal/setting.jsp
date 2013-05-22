@@ -62,7 +62,9 @@
 						<button type="submit" class="btn btn-primary"
 							id="updateMemberButton">회원정보 수정</button>
 						<button class="btn btn-danger"
-							id="leaveMembership">회원 탈퇴</button>							
+							id="leaveMembership">회원 탈퇴</button>
+						<button class="btn btn-inverse"
+							id="logoutButton">로그 아웃</button>														
 					</form>
 				</div>
 				<div class="tab-pane" id="setting_settings">

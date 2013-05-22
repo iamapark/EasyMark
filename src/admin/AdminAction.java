@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import service.AdminServiceImpl;
+import util.AdminServer;
 import dto.Count;
 import dto.Login;
 import dto.Member;
@@ -23,6 +24,13 @@ import dto.MemberInfo;
 
 @Controller
 public class AdminAction {
+	
+	
+	public AdminAction(){
+		//AdminServer.getInstance().start();
+	}
+	
+	
 	@RequestMapping("/goAdmin")
 	public ModelAndView addBookMark(HttpServletRequest request){
 		ModelAndView mav = new ModelAndView();

@@ -30,8 +30,13 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
   
+  <!-- 미완 임둥 -->
   <listener>
   	<listener-class>util.SessionManagerListener</listener-class>
+  </listener>
+  
+  <listener>
+  	<listener-class>util.SessionAttributeListener</listener-class>
   </listener>
   
 </web-app>

@@ -98,5 +98,6 @@
 	<script src="js/admin/main/main.js"></script>
 	<script src="js/admin/main/membership.js"></script>
 	<script src='js/admin/charisma.js'></script>
+	<script src="js/admin/main/realtime.js"></script>
 </body>
 </html>

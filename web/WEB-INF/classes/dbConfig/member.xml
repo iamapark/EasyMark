@@ -108,4 +108,11 @@
    		VALUES 
    			(#userId#, SYSTIMESTAMP);
     </insert>
+    
+    <update id="logoutCount" parameterClass="String">
+    	UPDATE 
+    		login_time 
+    	SET 
+    		logout_time = SYSTIMESTAMP WHERE user_id=#userId# AND logout_time IS NULL;
+    </update>
 </sqlMap>
