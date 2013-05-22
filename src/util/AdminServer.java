@@ -129,6 +129,12 @@ public class AdminServer {
 		push("pushRegisterMemberCount", data);
 	}
 	
+	public void trafficCount(){
+		JsonObject data = new JsonObject();
+		data.putNumber("traffic", 1);
+		push("trafficCount", data);
+	}
+	
 	private void push(String eventHandler, JsonObject data){
 		Set<String> set = sockets.keySet();
 		Iterator<String> iter = set.iterator();

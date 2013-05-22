@@ -1,5 +1,6 @@
 /* jQuery */
 document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
+//document.write("<script src='js/jquery.js'></script>");
 /* jQuery UI */
 document.write("<script src='js/admin/jquery-ui-1.8.21.custom.js'></script>");
 /* transition / effect library */

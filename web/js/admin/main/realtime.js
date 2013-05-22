@@ -8,6 +8,7 @@ $(document).ready(function(){
 	initRealtime();
 	getLoginMemberList();
 	getDashboardCount();
+	realtimeChart();
 });
 
 
@@ -60,6 +61,15 @@ var registerServer = function(){
 	socket.on('pushRegisterMemberCount', function(data){
 		$('#totalMemberCount').text(data.memberCount);
 		$('#todayRegisterCount').text(data.todayRegisterCount);
+	});
+	
+	
+	/**서버에서 트래픽이 발생할 경우
+	 * 트래픽 카운트를 1 증가시킨다.*/
+	socket.on('trafficCount', function(data){
+		console.log(data);
+		kaka = data;
+		traffic++;
 	});
 };
 
@@ -118,4 +128,109 @@ var fillLoginMemberInfoTable = function(){
 	}
 	
 	$('#loginMemberListUl').append(li);
+};
+
+
+var dataCheck = function(){
+	ar = new Array();
+	
+	ar.push((new Date()).getTime(), traffic);
+	
+	return ar; //[(new Date()).getTime(), Math.random() * 100];
+};
+
+var dataCheckA = function(){
+	ar = new Array();
+	
+	ar.push(10, 10);
+	
+	return ar;
+};
+
+var traffic = 0;
+var trafficInterval = function(){
+	traffic = 0;
+};
+
+// 실시간 트래픽 추적 차트
+var realtimeChart = function(){
+	$(function () {
+	    $(document).ready(function() {
+	        Highcharts.setOptions({
+	            global: {
+	                useUTC: false
+	            }
+	        });
+	    
+	        var chart;
+	        $('#realtimeChart').highcharts({
+	            chart: {
+	                type: 'spline',
+	                animation: Highcharts.svg, // don't animate in old IE
+	                marginRight: 10,
+	                events: {
+	                    load: function() {
+	    
+	                        // set up the updating of the chart each second
+	                        var series = this.series[0];
+	                        setInterval(function() {
+	                            var x = (new Date()).getTime(), // current time
+	                                y = Math.random() * 100;
+	                            series.addPoint(dataCheck(), true, true);
+	                            trafficInterval();
+	                        }, 1000);
+	                    }
+	                }
+	            },
+	            title: {
+	                text: '실시간 트래픽 현황'
+	            },
+	            xAxis: {
+	                type: 'datetime',
+	                tickPixelInterval: 1500
+	            },
+	            yAxis: {
+	                title: {
+	                    text: 'Value'
+	                },
+	                plotLines: [{
+	                    value: 0,
+	                    width: 1,
+	                    color: '#808080'
+	                }]
+	            },
+	            tooltip: {
+	                formatter: function() {
+	                        return '<b>'+ this.series.name +'</b><br/>'+
+	                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+	                        Highcharts.numberFormat(this.y, 2);
+	                }
+	            },
+	            legend: {
+	                enabled: false
+	            },
+	            exporting: {
+	                enabled: false
+	            },
+	            series: [{
+	                name: 'Random data',
+	                data: (function() {
+	                    // generate an array of random data
+	                    var data = [],
+	                        time = (new Date()).getTime(),
+	                        i;
+	    
+	                    for (i = -19; i <= 0; i++) {
+	                        data.push({
+	                            x: time + i * 1000,
+	                            y: 0//Math.random()
+	                        });
+	                    }
+	                    return data;
+	                })()
+	            }]
+	        });
+	    });
+	    
+	});
 };

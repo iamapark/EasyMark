@@ -30,6 +30,10 @@ import dto.Member;
 
 @Controller
 public class MembershipAction {
+	
+	private void traffic(){
+		AdminServer.getInstance().trafficCount();
+	}
 
 	@RequestMapping("/register")
 	public ModelAndView register(HttpServletRequest request,
@@ -53,6 +57,8 @@ public class MembershipAction {
 		}
 		System.out.println("ss");
 		mav.setViewName("index");
+		
+		traffic();
 		return mav;
 	}
 
@@ -89,6 +95,7 @@ public class MembershipAction {
 			nextPage.setViewName("error/error");
 		}
 
+		traffic();
 		return nextPage;
 	}
 
@@ -130,6 +137,7 @@ public class MembershipAction {
 			nextPage.setViewName("views/membership/error.jsp");
 		}
 
+		traffic();
 		return nextPage;
 	}
 
@@ -181,6 +189,8 @@ public class MembershipAction {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");
 			mav.setViewName("error/error");
 		}
+		 
+		traffic();
 		return mav;
 	}
 
@@ -196,6 +206,8 @@ public class MembershipAction {
 		JSONObject dataJ = JSONObject.fromObject(m);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 	}
 
@@ -229,6 +241,8 @@ public class MembershipAction {
 		JSONObject dataJ = JSONObject.fromObject(m);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 	}
 
@@ -243,6 +257,8 @@ public class MembershipAction {
 
 		request.setAttribute("result", "true");
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 	}
 
@@ -271,6 +287,8 @@ public class MembershipAction {
 		JSONObject dataJ = JSONObject.fromObject(m);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 	}
 
@@ -289,6 +307,8 @@ public class MembershipAction {
 
 		request.setAttribute("result", data);
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 	}
 
@@ -310,6 +330,8 @@ public class MembershipAction {
 
 		nextPage.setViewName("result");
 		System.out.println("viewBookMarkList" + viewBookMarkList);
+		
+		traffic();
 		return nextPage;
 
 	}
@@ -322,6 +344,8 @@ public class MembershipAction {
 		
 		request.getSession().invalidate();
 		nextPage.setViewName("index");
+		
+		traffic();
 		return nextPage;
 
 	}
@@ -351,8 +375,9 @@ public class MembershipAction {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");
 			mav.setViewName("error/error");
 		}
+		 
+		 traffic();
 		return mav;
-
 	}
 
 }

@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
+import util.AdminServer;
 import util.FileWriter;
 import dto.BookMark;
 import dto.Category;
@@ -37,6 +38,10 @@ import dto.Member;
 
 @Controller
 public class IndividualPageAction {
+	
+	private void traffic(){
+		AdminServer.getInstance().trafficCount();
+	}
 
 	@RequestMapping("/addMark")
 	public ModelAndView addBookMark(
@@ -147,6 +152,7 @@ public class IndividualPageAction {
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
 
+		traffic();
 		return nextPage;
 	}
 
@@ -163,6 +169,8 @@ public class IndividualPageAction {
 		JSONArray dataJ = JSONArray.fromObject(bookMarkList);
 		request.setAttribute("result", dataJ);
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -179,6 +187,7 @@ public class IndividualPageAction {
 		request.setAttribute("result", bookMarkJ.toString());
 		nextPage.setViewName("result");
 
+		traffic();
 		return nextPage;
 	}
 
@@ -221,6 +230,8 @@ public class IndividualPageAction {
 		jobj.put("imgUrl", imgUrl);
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -242,6 +253,8 @@ public class IndividualPageAction {
 
 		request.setAttribute("result", Boolean.toString(true));
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -270,6 +283,8 @@ public class IndividualPageAction {
 
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -330,6 +345,8 @@ public class IndividualPageAction {
 
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -355,6 +372,8 @@ public class IndividualPageAction {
 
 		request.setAttribute("result", "true");
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 	}
 
@@ -375,6 +394,8 @@ public class IndividualPageAction {
 		System.out.println("userId: " + userId);
 
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -435,11 +456,7 @@ public class IndividualPageAction {
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
 		
+		traffic();
 		return nextPage;
 	}
-	
-	
-
-
-
 }

@@ -39,23 +39,30 @@ $('#menu_membership').click(function(e){
 		var select = null;
 		
 		for(var i=0; i<memberData.length; i++){
-			action = "<a class='btn btn-success' href='#memberInfo' id='memberInfoButton' data-id='"+ memberData[i].userId + "' role='button' data-toggle='modal'>" +
+			action = "<a onclick='getMemberInfo()' class='btn btn-success' href='#memberInfo' data-id='"+ memberData[i].userId + "' role='button' data-toggle='modal'>" +
 					 	"<i class='icon-zoom-in icon-white'></i>View" +                          
 					 "</a>"+
-					 "<a class='btn btn-danger' href='#memberDeleteButton' id='memberDeleteButton' data-id='"+ memberData[i].userId + "' data-count='"+ i + "' >"+
+					 "<a class='btn btn-danger' href='#memberDeleteButton' data-id='"+ memberData[i].userId + "' data-count='"+ i + "' >"+
 						"<i class='icon-trash icon-white'></i>"+ 
 							"Delete"+
 					"</a>";
 			select = "<input type='checkbox' name='memberSelector' value='" + memberData[i].userId + "'></input>";
 			$('.datatable').dataTable().fnAddData([select, memberData[i].userId, memberData[i].name, memberData[i].registerDate, memberData[i].email, memberData[i].bookMarkCount, action]);
 		}
+		
 		$('a[href="#memberInfo"]').click(getMemberInfo);
 		$('a[href="#memberDeleteButton"]').click(memberDelete);
+		
 	});
 	
 	// 회원 테이블을 화면에 뿌린다.
 	$('#membershipDiv').show();
 });
+
+var keke = function(){
+	alert('keke');
+};
+
 
 //왼쪽 메뉴에서 통계를 클릭했을 때
 $('#menu_statistics').click(function(e){
