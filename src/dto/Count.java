@@ -6,7 +6,7 @@ public class Count {
 	private int totalConnection;
 	private int avgConnection;
 	private int totalBookMarkCount;
-	private int avgBookMarkCount;
+	private double avgBookMarkCount;
 	
 	public Count() {
 		super();
@@ -19,7 +19,7 @@ public class Count {
 	}
 	
 	public Count(String basis, int countResult, int totalConnection,
-			int avgConnection, int totalBookMarkCount, int avgBookMarkCount) {
+			int avgConnection, int totalBookMarkCount, double avgBookMarkCount) {
 		super();
 		this.basis = basis;
 		this.countResult = countResult;
@@ -30,7 +30,7 @@ public class Count {
 	}
 	
 	public Count(int totalConnection, int avgConnection,
-			int totalBookMarkCount, int avgBookMarkCount) {
+			int totalBookMarkCount, double avgBookMarkCount) {
 		super();
 		this.totalConnection = totalConnection;
 		this.avgConnection = avgConnection;
@@ -78,11 +78,11 @@ public class Count {
 		this.totalBookMarkCount = totalBookMarkCount;
 	}
 
-	public int getAvgBookMarkCount() {
+	public double getAvgBookMarkCount() {
 		return avgBookMarkCount;
 	}
 
-	public void setAvgBookMarkCount(int avgBookMarkCount) {
+	public void setAvgBookMarkCount(double avgBookMarkCount) {
 		this.avgBookMarkCount = avgBookMarkCount;
 	}
 

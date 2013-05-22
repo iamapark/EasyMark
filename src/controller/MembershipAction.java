@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.vertx.java.core.json.JsonObject;
 
+import service.AdminServiceImpl;
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
+import util.AdminServer;
 import util.FileWriter;
 import dto.BookMark;
+import dto.DashboardCount;
 import dto.Design;
 import dto.Img;
 import dto.Login;
@@ -42,6 +46,10 @@ public class MembershipAction {
 			new MembershipServiceImpl().registerMemberInfo(member);
 			new MembershipServiceImpl().registerDesign(member);
 			new MembershipServiceImpl().registerRegisterTime(member);
+			
+			DashboardCount c = new AdminServiceImpl().getDashboardCount();
+			JSONObject dataJ = JSONObject.fromObject(c);
+			AdminServer.getInstance().pushRegisterMemberCount(dataJ);
 		}
 		System.out.println("ss");
 		mav.setViewName("index");

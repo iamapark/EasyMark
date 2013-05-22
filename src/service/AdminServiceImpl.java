@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dao.LoginDAO;
 import dao.MembershipDAO;
 import dto.Count;
+import dto.DashboardCount;
 import dto.Login;
 import dto.Member;
 import dto.MemberInfo;
@@ -42,5 +43,17 @@ public class AdminServiceImpl implements AdminServiceIF {
 
 	public ArrayList<Count> getTotalStatistics() {
 		return MembershipDAO.getInstance().getTotalStatistics();
+	}
+
+	public DashboardCount getDashboardCount() {
+		return MembershipDAO.getInstance().getDashboardCount();
+	}
+
+	public ArrayList<Member> getLoginMembersInfoList(ArrayList<String> ar) {
+		return MembershipDAO.getInstance().getLoginMembersInfoList(ar);
+	}
+
+	public Member getLoginMemberInfo(String userId) {
+		return MembershipDAO.getInstance().getLoginMemberInfo(userId);
 	}
 }

@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import service.AdminServiceImpl;
 import util.AdminServer;
+import util.SessionManager;
 import dto.Count;
+import dto.DashboardCount;
 import dto.Login;
 import dto.Member;
 import dto.MemberInfo;
@@ -32,13 +34,12 @@ public class AdminAction {
 	
 	
 	@RequestMapping("/goAdmin")
-	public ModelAndView addBookMark(HttpServletRequest request){
+	public ModelAndView goAdmin(HttpServletRequest request){
 		ModelAndView mav = new ModelAndView();
 		
 		mav.setViewName("admin/index");
 		return mav;
 	}
-			
 	
 	@RequestMapping("/adminLogin")
 	public ModelAndView login(HttpServletRequest request,
@@ -56,7 +57,6 @@ public class AdminAction {
 		}
 		return mav;
 	}
-	
 	
 	@RequestMapping("/fillMemberTable")
 	public ModelAndView fillMemberTable(HttpServletRequest request,
@@ -106,7 +106,6 @@ public class AdminAction {
 		request.setAttribute("result", "true");
 		mav.setViewName("result");
 		return mav;
-		
 	}
 	
 	// 한 명 삭제
@@ -137,6 +136,7 @@ public class AdminAction {
 		return mav;
 	}
 	
+	// 시간대 별 로그인 수
 	@RequestMapping("/getLoginCounterHourly")
 	public ModelAndView getLoginCounterHourly(HttpServletRequest request, HttpServletResponse response){
 		
@@ -150,6 +150,7 @@ public class AdminAction {
 		return mav;
 	}
 	
+	// 관리자 페이지에서 왼쪽 메뉴의 통계를 클릭했을 때 실행되는 메소드
 	@RequestMapping("/getTotalStatistics")
 	public ModelAndView getTotalStatistics(HttpServletRequest request, HttpServletResponse response){
 		
@@ -163,6 +164,7 @@ public class AdminAction {
 		return mav;
 	}
 	
+	// 회원 탈퇴 처리 메소드
 	@RequestMapping("/leaveMembership")
 	public ModelAndView leaveMembership(HttpServletRequest request, HttpServletResponse response){
 
@@ -176,4 +178,40 @@ public class AdminAction {
 		return mav;
 	}
 	
+	// 대시보드 상단 네 개의 통계치 메소드
+	@RequestMapping("/getDashboardCount")
+	public ModelAndView getDashboardCount(HttpServletRequest request, HttpServletResponse response){
+
+		ModelAndView mav = new ModelAndView();
+		
+		DashboardCount c = new AdminServiceImpl().getDashboardCount();
+		
+		JSONObject dataJ = JSONObject.fromObject(c);
+		dataJ.put("loginMemberCount", SessionManager.getInstance().count());
+
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
+		return mav;
+	}
+	
+	// 현재 로그인 중인 사용자의 정보를 받아오는 메소드
+	@RequestMapping("/getLoginMemberInfoList")
+	public ModelAndView getLoginMemberList(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView mav = new ModelAndView();
+		
+		if(SessionManager.getInstance().count() != 0){
+			ArrayList<String> ar = SessionManager.getInstance().getLoginId();
+			
+			ArrayList<Member> loginMemberInfoList = new AdminServiceImpl().getLoginMembersInfoList(ar);
+			
+			JSONArray dataJ = JSONArray.fromObject(loginMemberInfoList);
+			
+			request.setAttribute("result", dataJ);
+		}else
+			request.setAttribute("result", "{'result':'false'}");
+		
+		
+		mav.setViewName("result");
+		return mav;
+	}
 }

@@ -597,7 +597,9 @@ function docReady(){
 			yaxis: { min: 0, max: 100 },
 			xaxis: { show: false }
 		};
+		
 		var plot = $.plot($("#realtimechart"), [ getRandomData() ], options);
+		
 		function update() {
 			plot.setData([ getRandomData() ]);
 			// since the axes don't change, we don't need to call plot.setupGrid()

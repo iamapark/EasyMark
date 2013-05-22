@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import net.sf.json.JSONObject;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.HttpServer;
@@ -87,15 +88,11 @@ public class AdminServer {
 	 * 사용자가 로그인 할때마다 현재 로그인 중인 사용자 수를 Admin 페이지에 푸쉬한다.*/
 	public void pushLoginMemberCount(int count){
 		System.out.println("pushLoginMemberCount");
+		System.out.println("size: " + sockets.size());
 		JsonObject data = new JsonObject();
 		data.putNumber("count", count);
 		
-		Set<String> set = sockets.keySet();
-		Iterator<String> iter = set.iterator();
-		
-		while(iter.hasNext()){
-			sockets.get(iter.next()).emit("loginMemberCount", data);
-		}
+		push("loginMemberCount", data);
 	}
 	
 	/**
@@ -105,15 +102,12 @@ public class AdminServer {
 		Member member = new MembershipServiceImpl().getMemberInfo(userId);
 		JsonObject data = new JsonObject();
 		data.putString("userId", member.getUserId());
-		data.putString("firstName", member.getName());
+		data.putString("name", member.getName());
 		data.putString("email", member.getEmail());
+		data.putString("bgImgUrl", member.getBgImgUrl());
+		data.putString("imgUrl", member.getImgUrl());
 		
-		Set<String> set = sockets.keySet();
-		Iterator<String> iter = set.iterator();
-		
-		while(iter.hasNext()){
-			sockets.get(iter.next()).emit("loginMemberInfo", data);
-		}
+		push("loginMemberInfo", data);
 	}
 
 	/**사용자가 로그아웃 할 때마다 관리자 페이지로 아이디를 push 한다.*/
@@ -121,11 +115,27 @@ public class AdminServer {
 		JsonObject data = new JsonObject();
 		data.putString("userId", id);
 		
+		push("refreshLogoutMember", data);
+	}
+
+	
+	public void pushRegisterMemberCount(JSONObject dataJ){
+		System.out.println("pushRegisterMemberCount");
+		System.out.println(dataJ);
+
+		JsonObject data = new JsonObject();
+		data.putString("memberCount", Integer.toString((Integer)dataJ.get("memberCount")));
+		data.putString("todayRegisterCount", Integer.toString((Integer)dataJ.get("todayRegisterCount")));
+		push("pushRegisterMemberCount", data);
+	}
+	
+	private void push(String eventHandler, JsonObject data){
 		Set<String> set = sockets.keySet();
 		Iterator<String> iter = set.iterator();
 		
 		while(iter.hasNext()){
-			sockets.get(iter.next()).emit("refreshLogoutMember", data);
+			sockets.get(iter.next()).emit(eventHandler, data);
 		}
 	}
+
 }

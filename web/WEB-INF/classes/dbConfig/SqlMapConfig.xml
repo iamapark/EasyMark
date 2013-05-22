@@ -23,6 +23,7 @@
 	<typeAlias alias="FriendStatus" type="dto.FriendStatus"/>
 	
 	<typeAlias alias="Count" type="dto.Count"/>
+	<typeAlias alias="DashboardCount" type="dto.DashboardCount"/>
 
 
   <!-- Configure a built-in transaction manager.  If you're using an 

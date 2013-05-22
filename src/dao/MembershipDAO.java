@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import dto.Count;
+import dto.DashboardCount;
 import dto.Member;
 import dto.MemberInfo;
 
@@ -114,5 +115,42 @@ public class MembershipDAO {
 		}
 		
 		return i;
+	}
+
+	public DashboardCount getDashboardCount() {
+		DashboardCount i = new DashboardCount();
+		
+		try{
+			i = (DashboardCount)sqlMapper.queryForObject("getDashboardCount");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return i;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Member> getLoginMembersInfoList(ArrayList<String> ar) {
+		ArrayList<Member> loginMemberInfoList = new ArrayList<Member>();
+		
+		try{
+			loginMemberInfoList = (ArrayList<Member>)sqlMapper.queryForList("getLoginMembersInfoList", ar);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return loginMemberInfoList;
+	}
+
+	public Member getLoginMemberInfo(String userId) {
+		Member m = new Member();
+		
+		try{
+			m = (Member)sqlMapper.queryForObject("getLoginMemberInfo", userId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return m;
 	}
 }
