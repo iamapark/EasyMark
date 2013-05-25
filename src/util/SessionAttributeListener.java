@@ -15,6 +15,7 @@ public class SessionAttributeListener implements HttpSessionAttributeListener {
 		
 		if(sessionBindingEvent.getName().equals("MEMBERID")){
 			String userId = (String)sessionBindingEvent.getSession().getAttribute("MEMBERID");
+			System.out.println("로그인: " + userId);
 			new MembershipServiceImpl().loginCount(userId); // 로그인 카운트를 1 증가시킨다.
 			
 			SessionManager.getInstance().add(sessionBindingEvent.getSession());

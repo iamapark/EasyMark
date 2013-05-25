@@ -15,6 +15,7 @@ public class SessionManagerListener implements HttpSessionListener {
 	@Override
 	public void sessionDestroyed(HttpSessionEvent paramSessionEvent) {
 		String userId = (String)paramSessionEvent.getSession().getAttribute("MEMBERID");
+		System.out.println("로그아웃: " + userId);
 		SessionManager.getInstance().remove(paramSessionEvent.getSession());
 		
 		new MembershipServiceImpl().logoutCount(userId); // 로그인 카운트를 1 증가시킨다.

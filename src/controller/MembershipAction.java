@@ -121,20 +121,29 @@ public class MembershipAction {
 			System.out.println("flag:" + flag);
 
 			if (flag) { // 로그인 성공
-				HttpSession session = request.getSession();
-				// 로그인 권한을 주기 위해 세션을 설정한다.
-				session.setAttribute("MEMBERID", login.getUserId());
+				Member m = new MembershipServiceImpl().getMemberInfo(userId + "@me2day");
+				
+		 		HttpSession session = request.getSession();
+		 		session.setAttribute("MEMBERID", userId + "@me2day");
+		 		
+				request.setAttribute("designType",
+						new MembershipServiceImpl().getDesignType(userId + "@me2day"));
+				request.setAttribute("MEMBERINFO", m);
 
-				nextPage.setViewName("views/individualPage/bookmark.jsp");
+				request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId + "@me2day"));
+				//bookMar add 할때 categoryList option 가져오기
+				request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId + "@me2day"));
+
+				nextPage.setViewName("main");
 
 			} else { // 로그인 실패
 				request.setAttribute("msg", "미 가입된 미투데이 계정입니다.");
-				nextPage.setViewName("views/membership/error.jsp");
+				nextPage.setViewName("error/error");
 			}
 
 		} else if (result.equals("false")) { // '거절합니다' 버튼을 눌렀을 경우
 			request.setAttribute("msg", "권한 획득에 실패했습니다.");
-			nextPage.setViewName("views/membership/error.jsp");
+			nextPage.setViewName("error/error");
 		}
 
 		traffic();
@@ -160,18 +169,15 @@ public class MembershipAction {
 			HttpServletResponse response,
 			@RequestParam(value = "loginId") String userId,
 			@RequestParam(value = "loginPassword") String password) {
+		
 		ModelAndView mav = new ModelAndView();
 		Login login = new Login(userId, password);
 		boolean flag = false;
 		
-		
-		System.out.println("로그인 아이디: " + request.getSession().getAttribute("MEMBERID"));
-		System.out.println("userId: " + userId);
-		
 		flag = new MembershipServiceImpl().login(login);
 		
 		 if (flag) {
-		 		Member m = new MembershipServiceImpl().getMemberInfo(userId);
+		 	Member m = new MembershipServiceImpl().getMemberInfo(userId);
 			
 	 		HttpSession session = request.getSession();
 	 		session.setAttribute("MEMBERID", userId);

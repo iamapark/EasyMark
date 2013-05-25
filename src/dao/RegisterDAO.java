@@ -135,6 +135,9 @@ public class RegisterDAO {
 		if (flag) {
 			try {
 				sqlMapper.insert("registerMember", member);
+				registerMemberInfo(member);
+				registerDesign(member);
+				registerRegisterTime(member);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -145,8 +148,19 @@ public class RegisterDAO {
 	}
 
 	public boolean me2DayLoginCheck(Login login) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean flag = false;
+		Login result = null;
+
+		try {
+			result = (Login)sqlMapper.queryForObject("me2DayLoginCheck", login);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if(result != null) flag = true;
+
+		return flag;
 	}
 	
 	private boolean isExistMe2DayMember(String userId) {
