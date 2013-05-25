@@ -39,10 +39,10 @@ $('#menu_membership').click(function(e){
 		var select = null;
 		
 		for(var i=0; i<memberData.length; i++){
-			action = "<a onclick='getMemberInfo()' class='btn btn-success' href='#memberInfo' data-id='"+ memberData[i].userId + "' role='button' data-toggle='modal'>" +
+			action = "<a onclick='getMemberInfo(this)' class='btn btn-success' href='#memberInfo' data-id='"+ memberData[i].userId + "' role='button' data-toggle='modal'>" +
 					 	"<i class='icon-zoom-in icon-white'></i>View" +                          
 					 "</a>"+
-					 "<a class='btn btn-danger' href='#memberDeleteButton' data-id='"+ memberData[i].userId + "' data-count='"+ i + "' >"+
+					 "<a onclick='memberDelete(this)' class='btn btn-danger' href='#memberDeleteButton' data-id='"+ memberData[i].userId + "' data-count='"+ i + "' >"+
 						"<i class='icon-trash icon-white'></i>"+ 
 							"Delete"+
 					"</a>";
@@ -50,8 +50,8 @@ $('#menu_membership').click(function(e){
 			$('.datatable').dataTable().fnAddData([select, memberData[i].userId, memberData[i].name, memberData[i].registerDate, memberData[i].email, memberData[i].bookMarkCount, action]);
 		}
 		
-		$('a[href="#memberInfo"]').click(getMemberInfo);
-		$('a[href="#memberDeleteButton"]').click(memberDelete);
+		//$('a[href="#memberInfo"]').click(getMemberInfo);
+		//$('a[href="#memberDeleteButton"]').click(memberDelete);
 		
 	});
 	
