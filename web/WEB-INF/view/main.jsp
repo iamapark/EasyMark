@@ -31,7 +31,6 @@
 </head>
 <body style="background:url(${MEMBERINFO.bgImgUrl}) no-repeat center center fixed;
              -webkit-background-size:cover; background-size:cover">
- 	
  	<!-- Main Design Template -->
  	<jsp:include page="template/MacOS.jsp">
  		<jsp:param value="${designType}" name="flag"/>
@@ -87,7 +86,21 @@
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
 	<script src="tipJS/tipJS-MVC.js"></script>
 	<script>
-		
+		var sleepTime = 0;
+	
+		var timer = function(){
+			console.log(sleepTime++);
+			if(sleepTime === 1){
+				location.href = 'sleepPage';
+			}
+		};
+	
+		setInterval("timer()", 1000);
+	
+		$(document).mousemove(function(e){
+			console.log('mouse move!!');
+			sleepTime = 0;
+		});
 	</script>
 </body>
 </html>
