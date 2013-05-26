@@ -5,7 +5,35 @@ $(document).ready(function() {
 //-----------------------------------------------------------------------------------
 
 $('.submit').click(function() {
-	var ValPassword = $('#password').val() === 'admin';
+	
+	var userId = $('#userId').val();
+	var password = $('#password').val();
+	
+	console.log('userId: ' + userId);
+	console.log('passoword: ' + password);
+	
+	$.ajax({
+		url:'loginCheck',
+		type:'POST',
+		data:{
+			loginId: userId,
+			loginPassword: password
+		}
+	}).done(function(data){
+		if(data == 'true'){
+			console.log('로그인 성공');
+			$('.tooltip-pass').hide();
+			$('#loginForm').submit();
+		}else{
+			console.log('로그인 실패');
+			$('input[type=password]').select();
+			$('.validate').addClass('error').delay(210).queue(function() { $(this).removeClass('error'); $(this).dequeue(); $('.tooltip-pass').show(); });
+		}
+	});
+	
+	return false;
+	
+	/*var ValPassword = $('#password').val() === 'admin';
     if (ValPassword === true) {
 		$('input[type=password]').addClass('valid');
 		$('.tooltip-pass').hide();
@@ -20,7 +48,7 @@ $('.submit').click(function() {
 		$('input[type=password]').select();
     	$('.validate').addClass('error').delay(210).queue(function() { $(this).removeClass('error'); $(this).dequeue(); $('.tooltip-pass').show(); });
 			return false;
-    	}
+    	}*/
 });
 
 }); 

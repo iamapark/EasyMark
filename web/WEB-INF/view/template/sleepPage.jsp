@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" type="text/css" media="screen" href="css/sleepPage/style.css"/>
-<title>Mac OS X Lion CSS3 by Alessio Atzeni</title>
+<title>${MEMBERINFO.name}님 계정이 휴면 상태입니다.</title>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/admin/jquery-ui-1.8.21.custom.js"></script>
 <script type="text/javascript" src="js/modernizr.js"></script>
@@ -37,8 +37,9 @@
         </div>
         <div id="switch">
         <div class="validate">
-        <form action="#page">
-        	<input type="password" id="password" placeholder="Password" />
+        <form action="login" id="loginForm" method="POST">
+        	<input type="hidden" name="loginId" id="userId" value="${MEMBERINFO.userId}">
+        	<input type="password" name="loginPassword" id="password" placeholder="비밀번호" />
             <input type="submit" class="submit" />
             <div class="tooltip-pass">
             <p>비밀번호를 입력하세요.</p>

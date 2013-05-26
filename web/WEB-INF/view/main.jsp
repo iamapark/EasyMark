@@ -89,16 +89,15 @@
 		var sleepTime = 0;
 	
 		var timer = function(){
-			console.log(sleepTime++);
-			if(sleepTime === 500){
-				location.href = 'sleepPage';
+			sleepTime++;
+			if(sleepTime === 100){
+				location.replace('sleepPage');
 			}
 		};
 	
 		setInterval("timer()", 1000);
 	
 		$(document).mousemove(function(e){
-			console.log('mouse move!!');
 			sleepTime = 0;
 		});
 	</script>
