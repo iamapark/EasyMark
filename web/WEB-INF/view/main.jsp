@@ -90,7 +90,7 @@
 	
 		var timer = function(){
 			console.log(sleepTime++);
-			if(sleepTime === 1){
+			if(sleepTime === 500){
 				location.href = 'sleepPage';
 			}
 		};
