@@ -27,11 +27,9 @@ import dto.MemberInfo;
 @Controller
 public class AdminAction {
 	
-	
 	public AdminAction(){
 		//AdminServer.getInstance().start();
 	}
-	
 	
 	@RequestMapping("/goAdmin")
 	public ModelAndView goAdmin(HttpServletRequest request){
@@ -53,15 +51,16 @@ public class AdminAction {
 		if(flag){ // 로그인 성공
 			mav.setViewName("admin/main"); 
 		}else{
-			mav.setViewName("error");
+			request.setAttribute("msg", "아이디와 비밀번호를 정확히 입력하세요. 멍충이 ㅋ");
+			mav.setViewName("error/error");
 		}
 		return mav;
 	}
 	
+	// 회원 테이블을 채우기 위해 회원에 관한 정보가 담긴 리스트를 불러온다.
 	@RequestMapping("/fillMemberTable")
 	public ModelAndView fillMemberTable(HttpServletRequest request,
 										HttpServletResponse response){
-		System.out.println("fillMemberTable");
 		ModelAndView mav = new ModelAndView();
 		
 		ArrayList<Member> memberList = new AdminServiceImpl().fillMemberTable();
@@ -73,6 +72,7 @@ public class AdminAction {
 		return mav;
 	}
 	
+	// 회원에 관한 상세 정보를 불러온다. (로그인 횟수, 북마크 개수, 이름, 이메일 주소, 이미지 등)
 	@RequestMapping("/getMemberInfo_admin")
 	public ModelAndView getMemberInfo(HttpServletRequest request, HttpServletResponse response,
 									 @RequestParam(value="userId") String userId){

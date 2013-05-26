@@ -33,7 +33,6 @@
 			<div class="content-2">
 				<p>
 					<a href="#" class="media tw">Twitter</a>
-					<a href="#" class="media fb">Facebook</a>
 					<a href="#" class="media me" onclick="me2dayRegister(); return false;">me2day</a>
 				</p>	
 				<form action="register" autocomplete="on" name="registerForm" method="POST">
@@ -67,8 +66,7 @@
 			<!-- 로그인 양식 -->
 			<div class="content-1">
 				<p>
-					<a href="#" class="media tw">Facebook</a>
-					<a href="#" class="media fb">Twitter</a>
+					<a href="#" class="media tw">Twitter</a>
 					<a href="#" class="media me" onclick="me2dayLogin(); return false;">me2day</a>
 				</p>
 				<form  action="login" autocomplete="on" method="POST" name="loginForm">
@@ -104,8 +102,6 @@
 	</section>
   </div>
 </div>
-
-<a href="goAdmin">관리자 ${sessionScope.MEMBERID}</a>
 
 <script src="js/jquery.js"></script>
 <script src="js/membership/index.js"></script>
