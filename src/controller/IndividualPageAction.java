@@ -257,6 +257,31 @@ public class IndividualPageAction {
 		traffic();
 		return nextPage;
 	}
+	
+	// 북마크 한 번에 여러 개 지울 때
+	@RequestMapping("/deleteBookMarks")
+	public ModelAndView deleteMarks(HttpServletRequest request,
+			HttpServletResponse response, Img img,
+			@RequestParam(value = "bookmarks") String bookmarks) {
+		
+		ModelAndView nextPage = new ModelAndView();
+		
+		ArrayList<Integer> selectedIdList = new ArrayList<Integer>();
+		String[] selectedBookmarkId = bookmarks.split(",");
+		
+		for(String selectedId: selectedBookmarkId){
+			selectedIdList.add(Integer.parseInt(selectedId));
+		}
+		
+		new IndividualPageServiceImpl().deleteIcons(selectedIdList);
+		
+		request.setAttribute("result", Boolean.toString(true));
+		nextPage.setViewName("result");
+		
+		traffic();
+		return nextPage;
+	}
+	
 
 	@RequestMapping("/arrange")
 	public ModelAndView arrange(HttpServletRequest request,

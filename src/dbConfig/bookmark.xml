@@ -69,7 +69,16 @@
 	<delete id="deleteIcon" parameterClass="Integer">
 		DELETE FROM bookmark
 		WHERE bookmark_id=#bookMarkId#
-
+	</delete>
+	
+	<delete id="deleteIcons" parameterClass="List">
+		delete from bookmark
+		
+		<dynamic prepend="WHERE bookmark_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
 	</delete>
 
 	<select id="getBookMark" parameterClass="Integer" resultClass="BookMark">

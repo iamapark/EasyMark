@@ -1,3 +1,7 @@
+$(document).ready(function(){
+	
+});
+
 $('.bookmarktable').dataTable({
 	"sPaginationType": "full_numbers",
 	"bJQueryUI": true
@@ -118,6 +122,7 @@ $('a[href="#setting"]').click(function() {
 	});
 });
 
+
 // setting 메뉴에서 북마크 탭을 클릭했을 때
 // 회원의 북마크 리스트를 불러와서 화면에 테이블 형식으로 뿌려준다.
 $('a[href="#setting_bookmarkInfo"]').click(function() {
@@ -130,14 +135,58 @@ $('a[href="#setting_bookmarkInfo"]').click(function() {
 		
 	}).done(function(data) {
 		for(var i=0; i<data.length; i++){
-			var bm = data[i];
-			$('.bookmarktable').dataTable().fnAddData(['1', bm.bookMarkName, bm.bookMarkUrl, bm.bookMarkDescript, bm.frequency]);
+			bm = data[i];
+			$('.bookmarktable').dataTable().fnAddData([bm.bookMarkId, bm.bookMarkName, bm.bookMarkUrl, bm.bookMarkDescript, bm.frequency]);
+		}
+		
+		$("#setting_bookmarkList tbody tr").on('click', function( e ) {
+			keke = $(this);
+		    if ( $(this).hasClass('row_selected') ) {
+		        $(this).removeClass('row_selected');
+		    }
+		    else {
+		    	//$('.bookmarktable').dataTable().$('tr.row_selected').removeClass('row_selected');
+		        $(this).addClass('row_selected');
+		    }
+		    
+		    if ( $(this).find('td').hasClass('td_selected') ) {
+		        $(this).find('td').removeClass('td_selected');
+		    }
+		    else {
+		    	$('.bookmarktable').dataTable().$('tr.td_selected').find('td').removeClass('td_selected');
+		        $(this).find('td').addClass('td_selected');
+		    }
+		});
+	});
+});
+
+//북마크 리스트에서 삭제 버튼을 클릭했을 때
+var bookmarkListDelete = function(e){
+	
+	// 선택된 row를 읽어온다.
+	selectedRow = $('.bookmarktable').dataTable().$('tr.row_selected');
+	selectedId = new Array();
+	
+	// 선택된 북마크의 아이디를 배열에 삽입한다.
+	for(var i=0; i<selectedRow.length; i++){
+		selectedId.push($(selectedRow[i]).find('td:first').text());
+	}
+	
+	$.ajax({
+		url:'deleteBookMarks',
+		dataType:'json',
+		data:{
+			bookmarks:selectedId.toString()
+		}
+	}).done(function(data){
+		for(var i=0; i<selectedRow.length; i++){
+			// 북마크 리스트에서 해당 row를 삭제한다.
+			$('.bookmarktable').dataTable().fnDeleteRow(selectedRow[i]);
+			// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
+			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('td:first').text() + '"]'));
 		}
 	});
-	
-	 
-
-});
+};
 
 // 배경화면 파일을 선택했을 때 호출
 $('#backgroundImgFile').change(function() {

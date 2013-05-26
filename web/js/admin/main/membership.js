@@ -38,7 +38,7 @@ $('#memberTableAllSelect').click(function(e){
 	}
 });
 
-// 회원 테이블에서 전체 삭제를 클릭했을 때
+// 회원 테이블에서 선택 삭제를 클릭했을 때
 $('#selectDelete').click(function(e){
 	kaka = $('input[name=memberSelector]');
 	var data = $('input[name=memberSelector]').serialize();
