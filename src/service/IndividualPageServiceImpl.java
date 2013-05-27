@@ -96,6 +96,10 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	public void deleteIcons(ArrayList<Integer> selectedIdList) {
 		BookMarkDAO.getInstance().deleteIcons(selectedIdList);
 	}
+
+	public void increaseFrequency(String bookmarkId) {
+		BookMarkDAO.getInstance().increaseFrequency(bookmarkId);
+	}
 	
 	
 

@@ -122,5 +122,14 @@ public class BookMarkDAO {
 			e.printStackTrace();
 		}
 	}
+
+	public void increaseFrequency(String bookmarkId) {
+		try {
+			sqlMapper.queryForObject("increaseFrequency", bookmarkId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }
