@@ -169,10 +169,10 @@
 		SELECT 
 			'' basis,
 			1 count_result,
-			(SELECT ROUND(SUM(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time) AS total_connection,
-			(SELECT ROUND(AVG(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time) AS avg_connection,
+			NVL((SELECT ROUND(SUM(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time), 0) AS total_connection,
+			NVL((SELECT ROUND(AVG(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time), 0) AS avg_connection,
 			(SELECT COUNT(bookmark_id) FROM bookmark) AS total_bookmarkCount,
-			(SELECT AVG(cnt) FROM (SELECT COUNT(bookmark_id) AS cnt FROM bookmark GROUP BY user_id) AS c) AS avg_bookMarkCount
+			NVL((SELECT AVG(cnt) FROM (SELECT COUNT(bookmark_id) AS cnt FROM bookmark GROUP BY user_id) AS c), 0) AS avg_bookMarkCount
 	</select>
 	
 	<select id="getDashboardCount" resultClass="DashboardCount">

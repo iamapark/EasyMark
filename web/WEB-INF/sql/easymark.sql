@@ -157,11 +157,13 @@ INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('ka
 
 CREATE TABLE "login_time" 
 (
+   "login_id" INTEGER AUTO_INCREMENT(1, 1) NOT NULL, 
    "user_id" CHARACTER VARYING(30) NOT NULL, 
-   "login_time" DATE, 
-   "logout_time" DATE, 
-   CONSTRAINT pk_login_time_user_id PRIMARY KEY("user_id") 
+   "login_time" DATETIME, 
+   "logout_time" DATETIME, 
+   CONSTRAINT pk_login_time_login_id_user_id PRIMARY KEY("login_id", "user_id") 
 );
+
 
 
 
