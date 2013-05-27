@@ -310,7 +310,7 @@ var gridsterInitial = function() {
 	gridster = $(".gridster > ul").gridster({
 		widget_margins : [ 10, 10 ],
 		widget_base_dimensions : [ 140, 140 ],
-		min_cols : 6,
+		min_cols : 8,
 		avoid_overlapped_widgets : true,
 		serialize_params : function($w, wgd) {
 			return {
