@@ -8,12 +8,15 @@
 	<meta charset="UTF-8">
 	<title>EasyMark-${MEMBERID}</title>
 	<LINK REL="SHORTCUT ICON" HREF="http://sciactive.github.io/pnotify/includes/github-icon.png" />
+	<link rel="stylesheet" href="css/superslide/superslide.css">
+  	<link rel="stylesheet" href="css/superslide/layout.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/gridster/jquery.gridster.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
 	<link rel="stylesheet" href="css/bookmark/jquery.contextmenu.css" type="text/css" >
 	<link href="css/dataTables/jquery.dataTables_themeroller.css" rel="stylesheet">
 	<link href="css/dataTables/jquery.dataTables.css" rel="stylesheet">
+	
 	<!-- design:main -->
 	<%
 		String designType = (String)request.getAttribute("designType");
@@ -41,18 +44,43 @@
 	</jsp:include>
 	<!-- Main Design Template End-->
 	
+	
 	<!-- BookMark List -->
-	<div>
-	<div id="gridster" class="gridster">
-    	<ul>
-			<c:forEach items="${requestScope.bookMarkList}"	var="bookMark">
-			<li style="" data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
-            	<img id="img" href="${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
-            	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
-            </li> 
-			</c:forEach>
-    	</ul>
-    </div>
+	<div id="slides">
+	<ul class="slides-container">
+		<li>
+			<div id="gridster" class="gridster">
+		    	<ul>
+					<c:forEach items="${requestScope.bookMarkList}"	var="bookMark">
+					<li style="" data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
+		            	<img id="img" href="${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
+		            	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
+		            </li> 
+					</c:forEach>
+		    	</ul>
+		    </div>
+		</li>
+		<li>
+			<div id="gridster" class="gridster">
+				<ul>
+					<c:forEach items="${requestScope.bookMarkList}"	var="bookMark" begin="1" end="2">
+					<li style="" data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
+		            	<img id="img" href="${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
+		            	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
+		            </li> 
+					</c:forEach>
+				</ul>
+			</div>
+		</li>
+	</ul>
+	<nav class="slides-navigation">
+      <a href="#" class="next">
+        &gt;
+      </a>
+      <a href="#" class="prev">
+        &lt;
+      </a>
+    </nav>
     </div>
 	<!-- BookMark List END -->
 	
@@ -73,6 +101,9 @@
 	
 	
 	<script src="js/jquery.js"></script>
+	<script src="js/superslide/jquery.easing.1.3.js"></script>
+  	<script src="js/superslide/jquery.superslide.js" type="text/javascript" charset="utf-8"></script>
+  	<script src="js/superslide/application.js"></script>
 	<script src="js/jquery.form.js"></script>
 	<script src="js/dataTables/jquery.dataTables.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
@@ -82,6 +113,7 @@
 	<script src="js/friendship/friendship.js"></script>
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
 	
+  
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
 	<script src="tipJS/tipJS-MVC.js"></script>
