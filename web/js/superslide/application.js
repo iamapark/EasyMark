@@ -11,5 +11,4 @@ $(document).ready(function() {
     hashchange: true,
     scrollable: false
   });
-  alert('kakad');
 });

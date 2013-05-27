@@ -213,7 +213,7 @@
       }
       if ((width / height) >= $img.data('aspect-ratio')) {
         $img.css({
-          height: "auto",
+          height: "100%",
           width: "100%"
         });
       } else {
