@@ -90,7 +90,7 @@
 	
 		var timer = function(){
 			sleepTime++;
-			if(sleepTime === 100000){
+			if(sleepTime === 1){
 				location.replace('sleepPage');
 			}
 		};

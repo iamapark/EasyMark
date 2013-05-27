@@ -5,6 +5,7 @@
 /*	0.	CSS Reset
 /*-----------------------------------------------------------------------------------*/
 
+
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } :focus { outline: 0; } ins { text-decoration: none; } del { text-decoration: line-through; } table { border-collapse: collapse; border-spacing: 0; }
 
 ::-moz-selection { background:rgba(124,196,255,0.7); }
@@ -25,9 +26,6 @@ html, body {
 }
 
 
-/*-----------------------------------------------------------------------------------*/
-/*	02.	Login
-/*-----------------------------------------------------------------------------------*/
 
 #pageLogin {
 	background: url(../img/gradient.png) no-repeat center, url(../img/background.png) repeat left top #000;
@@ -37,8 +35,8 @@ html, body {
 	z-index:0;
 	visibility:hidden;
 	opacity:1;
-	-webkit-animation:initLoginWindow 0.5s 12s linear forwards;
-	-moz-animation:initLoginWindow 0.5s 12s linear forwards;
+	-webkit-animation:initLoginWindow 0.5s 1s linear forwards;
+	-moz-animation:initLoginWindow 0.5s 1s linear forwards;
 }
 #headlogin {
 	background:transparent;
@@ -88,13 +86,13 @@ html, body {
 	margin-left:-60px;
 	margin-top:-60px;
 	background:url(../img/apple-logo-login.png) center no-repeat;
-	-webkit-animation:initAppleLoginWindow 0.5s 13.5s linear forwards;
-	-moz-animation:initAppleLoginWindow 0.5s 13.5s linear forwards;
+	-webkit-animation:initAppleLoginWindow 0.5s 0.5s linear forwards;
+	-moz-animation:initAppleLoginWindow 0.5s 0.5s linear forwards;
 }
 #pageLogin .user-avatar {
 	opacity:0;
-	-webkit-animation:initUserAvatar 0.3s 13.7s linear forwards;
-	-moz-animation:initUserAvatar 0.3s 13.7s linear forwards;
+	-webkit-animation:initUserAvatar 0.3s 0.7s linear forwards;
+	-moz-animation:initUserAvatar 0.3s 0.7s linear forwards;
 }
 #pageLogin #avatar {
 	position:absolute;
@@ -105,6 +103,8 @@ html, body {
 	margin-left:-49px;
 	margin-top:-49px;
 }
+
+
 .ava-css {
 	height:90px;
     width:90px;
@@ -359,9 +359,12 @@ input[type=password]:focus ~ .tooltip-pass {
 	-moz-animation:initDesktop 0.3s 1.6s linear forwards;
 }
 
-/*-----------------------------------------------------------------------------------*/
-/*	03.	Desktop
-/*-----------------------------------------------------------------------------------*/
+
+
+
+
+/*
+
 
 #page {
 	background:url(../img/Andromeda-Galaxy.jpg);
