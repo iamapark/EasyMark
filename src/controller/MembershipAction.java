@@ -43,6 +43,7 @@ public class MembershipAction {
 			new MembershipServiceImpl().registerDesign(member);
 			new MembershipServiceImpl().registerRegisterTime(member);
 		}
+		System.out.println("ss");
 		mav.setViewName("index");
 		return mav;
 	}
@@ -142,17 +143,22 @@ public class MembershipAction {
 	public ModelAndView login(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "loginId") String userId,
-			@RequestParam(value = "loginPassword") String password) {
+			@RequestParam(value = "loginPassword") String password,
+			@RequestParam(value = "r", required=false) String r) {
 		ModelAndView mav = new ModelAndView();
 		Login login = new Login(userId, password);
-
-		boolean flag = new MembershipServiceImpl().login(login);
-		Member m = new MembershipServiceImpl().getMemberInfo(userId); // 회원 정보를
-																		// 받아온다.
-
-		if (flag) {
-			HttpSession session = request.getSession();
-
+		boolean flag = false;
+		
+		/*if(r.equals("true"))
+			flag = true;
+		else*/
+			flag = new MembershipServiceImpl().login(login);
+		
+		 if (flag) {
+		 		Member m = new MembershipServiceImpl().getMemberInfo(userId);
+			
+		 		HttpSession session = request.getSession();
+			
 			if (!userId.equals(session.getAttribute("MEMBERID"))) {
 				new MembershipServiceImpl().loginCount(userId); // 로그인 카운트를 1
 																// 증가시킨다.
@@ -165,8 +171,14 @@ public class MembershipAction {
 			session.setAttribute("designType",
 					new MembershipServiceImpl().getDesignType(userId));
 			session.setAttribute("MEMBERINFO", m);
+
+			request.getSession().setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+			//bookMar add 할때 categoryList option 가져오기
+			request.getSession().setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
+
 			request.getSession().setAttribute("bookMarkList",
 					new IndividualPageServiceImpl().bookMarkList(userId));
+
 			mav.setViewName("main");
 		} else {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");

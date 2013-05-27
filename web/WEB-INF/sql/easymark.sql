@@ -117,11 +117,14 @@ CREATE TABLE "member_info"
 
 CREATE TABLE "register_time" 
 (
-   "user_id" CHARACTER VARYING(30) NOT NULL, 
+   "register_id" INTEGER AUTO_INCREMENT(1, 1) NOT NULL, 
+   "user_id" CHARACTER VARYING(30), 
    "register_time" DATE, 
    "leave_time" DATE, 
-   CONSTRAINT pk_register_time_user_id PRIMARY KEY("user_id") 
+   CONSTRAINT pk_register_time_register_id PRIMARY KEY("register_id") 
 );
+
+
 INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('iamapark89@me2day', DATE'01/01/2013', NULL);
 INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('pkwlfkf89@me2day', DATE'01/05/2013', NULL);
 INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('kaka', DATE'02/01/2013', NULL);
@@ -201,6 +204,7 @@ INSERT INTO speech_site (url, speech) VALUES ('http://www.daum.net', '다음');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.naver.com', '네이버');
 INSERT INTO speech_site (url, speech) VALUES ('http://nate.com', '네이트');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.facebook.com', '페이스북');
+INSERT INTO speech_site (url, speech) VALUES ('http://www.facebook.com', 'facebook');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.linkedin.com', '링크드인');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.twitter.com', '트위터');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.donga.com/', '동아일보');
@@ -213,3 +217,15 @@ INSERT INTO speech_site (url, speech) VALUES ('http://www.mk.co.kr/', '매일경
 INSERT INTO speech_site (url, speech) VALUES ('http://www.auction.co.kr/', '옥션');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.khan.co.kr/', '경향신문');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.nate.com/?f=cymain', '싸이월드');
+
+/**category 테이블*/
+CREATE TABLE "category"(
+"category_id" integer AUTO_INCREMENT(1,1) NOT NULL,
+"category_name" character varying(255),
+"user_id" character varying(30),
+CONSTRAINT pk_category_category_id PRIMARY KEY("category_id"),
+FOREIGN KEY ("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+
+
+

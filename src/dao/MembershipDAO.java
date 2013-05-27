@@ -2,10 +2,10 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import dto.Count;
 import dto.Member;
 import dto.MemberInfo;
 
@@ -49,15 +49,41 @@ public class MembershipDAO {
 	}
 
 	public void deleteMembers(ArrayList<String> idList) {
-		HashMap hm = new HashMap();
-		hm.put("idList", idList);
 		try{
 			sqlMapper.delete("deleteMemberInfo", idList);
 			sqlMapper.delete("deleteBookMark", idList);
 			sqlMapper.delete("deleteDesign", idList);
 			sqlMapper.delete("deleteMember", idList);
+			sqlMapper.update("leaveMember", idList);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+	}
+
+	public void deleteMembers(String userId) {
+		ArrayList<String> idList = new ArrayList<String>();
+		idList.add(userId);
+		try{
+			sqlMapper.delete("deleteMemberInfo", idList);
+			sqlMapper.delete("deleteBookMark", idList);
+			sqlMapper.delete("deleteDesign", idList);
+			sqlMapper.delete("deleteMember", idList);
+			sqlMapper.update("leaveMember", idList);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Count> getRegisterCount(String selectedMonth) {
+		ArrayList<Count> c = new ArrayList<Count>();
+		
+		try{
+			c = (ArrayList<Count>)sqlMapper.queryForList("getRegisterCount", selectedMonth);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return c;
 	}
 }

@@ -2,12 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
-<c:if test="${sessionScope.MEMBERID == null}">
-	<%
-		response.sendRedirect("/EasyMark/");
-	
-	%>
-</c:if>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +12,8 @@
 	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
 	<link rel="stylesheet" href="css/bookmark/jquery.contextmenu.css" type="text/css" >
+	<link href="css/dataTables/jquery.dataTables_themeroller.css" rel="stylesheet">
+	<link href="css/dataTables/jquery.dataTables.css" rel="stylesheet">
 	<!-- design:main -->
 	<%
 		String designType = (String)session.getAttribute("designType");
@@ -79,13 +75,17 @@
 	
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.form.js"></script>
+	<script src="js/dataTables/jquery.dataTables.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
 	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/bookmark/bookmark.js"></script>
 	<script src="js/membership/membership.js"></script>
 	<script src="js/friendship/friendship.js"></script>
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
+<<<<<<< HEAD
 	<script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.nightly.js"></script>
+=======
+>>>>>>> 75331ab1a295baf1062359aa45dcd8e8f988eb73
 	
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>

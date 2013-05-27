@@ -106,6 +106,6 @@
     	INSERT INTO 
     		login_time(user_id, login_time) 
    		VALUES 
-   			(#userId#, SYS_TIMESTAMP);
+   			(#userId#, SYSTIMESTAMP);
     </insert>
 </sqlMap>

@@ -30,4 +30,8 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
   
+  <listener>
+  	<listener-class>util.SessionManagerListener</listener-class>
+  </listener>
+  
 </web-app>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import dao.LoginDAO;
 import dao.MembershipDAO;
+import dto.Count;
 import dto.Login;
 import dto.Member;
 import dto.MemberInfo;
@@ -25,5 +26,13 @@ public class AdminServiceImpl implements AdminServiceIF {
 
 	public void deleteMembers(ArrayList<String> idList) {
 		MembershipDAO.getInstance().deleteMembers(idList);
+	}
+
+	public void deleteMembers(String userId) {
+		MembershipDAO.getInstance().deleteMembers(userId);
+	}
+
+	public ArrayList<Count> getRegisterCount(String selectedMonth) {
+		return MembershipDAO.getInstance().getRegisterCount(selectedMonth);
 	}
 }
