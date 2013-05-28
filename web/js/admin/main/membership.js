@@ -1,6 +1,7 @@
 // 회원관리 메뉴에서 Action-View 를 클릭하면 해당 회원에 관한 정보를 받아온다.
 var getMemberInfo = function(e){
 	var userId = $(e).data('id'); //$(this).data('id');
+	console.log(userId);
 	$.ajax({
 		url: 'getMemberInfo_admin',
 		dataType:'json',

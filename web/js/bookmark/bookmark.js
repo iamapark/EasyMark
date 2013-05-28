@@ -14,6 +14,14 @@ var init = function() {
 
 	// 북마크 아이콘을 더블 클릭했을 때 호출
 	$('img').dblclick(function() {
+		var bookmarkId = $(this).parent().data('id');
+		$.ajax({
+			url:'increaseFrequency',
+			dataType:'json',
+			data:{
+				bookmarkId: bookmarkId
+			}
+		});
 		var openwindow = window.open('about:blank');
 		openwindow.location.href = $(this).attr('href');
 	});
@@ -22,25 +30,25 @@ var init = function() {
 		title : '북마크',
 		items : [ {
 			label : '북마크 변경',
-			icon : '',
+			icon : 'images/change.png',
 			action : function() {
 				$('.contextMenuPlugin').remove();
 				bookmarkUpdate();
 			}
 		}, {
+			label : '북마크 추천',
+			icon : 'images/octo.png',
+			action : function() {
+				$('.contextMenuPlugin').remove();
+				bookmarkRecommand();
+			}
+		}, {
 			label : '북마크 삭제',
-			icon : '',
+			icon : 'images/delete.png',
 			action : function() {
 				$('.contextMenuPlugin').remove();
 				$('#invisibleDiv').remove();
 				bookmarkDelete();
-			}
-		}, {
-			label : '북마크 추천',
-			icon : '',
-			action : function() {
-				$('.contextMenuPlugin').remove();
-				bookmarkRecommand();
 			}
 		} ]
 	});
@@ -302,7 +310,7 @@ var gridsterInitial = function() {
 	gridster = $(".gridster > ul").gridster({
 		widget_margins : [ 10, 10 ],
 		widget_base_dimensions : [ 140, 140 ],
-		min_cols : 6,
+		min_cols : 8,
 		avoid_overlapped_widgets : true,
 		serialize_params : function($w, wgd) {
 			return {

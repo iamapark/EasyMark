@@ -484,4 +484,22 @@ public class IndividualPageAction {
 		traffic();
 		return nextPage;
 	}
+	
+	// 사용자가 북마크 아이콘을 더블 클릭하여 즐겨찾기 URL 페이지에 접속할 경우 해당 북마크 frequency를 +1 한다.
+	@RequestMapping("/increaseFrequency")
+	public ModelAndView increaseFrequency(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "bookmarkId") String bookmarkId) {
+
+		ModelAndView nextPage = new ModelAndView();
+
+		new IndividualPageServiceImpl().increaseFrequency(bookmarkId);
+		
+		request.setAttribute("result", "true");
+		nextPage.setViewName("result");
+		
+		traffic();
+		return nextPage;
+	}
 }

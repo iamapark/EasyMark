@@ -17,14 +17,14 @@
 		<result property="status" column="status" />
 	</resultMap>
 
-	<!-- <resultMap id="messageList" class="Message">
+	<resultMap id="messageList" class="Message">
 		<result property="messageId" column="message_id" />
 		<result property="userId" column="user_id" />
 		<result property="friendId" column="friend_id" />
 		<result property="title" column="title" />
 		<result property="contents" column="contents" />
 		<result property="messageDate" column="message_date" />
-	</resultMap> -->
+	</resultMap>
 
 	<resultMap id="statusList" class="FriendStatus">
 		<result property="userId" column="user_id" />
@@ -93,6 +93,79 @@
 		WHERE
 		user_id=#userId# AND friend_id=#friendId# AND bookmark_url=#bookMarkUrl#;
 	</select>
+	
+	<select id="outBox" parameterClass="String" resultClass="Message">
+    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
+    	from message
+    	where user_id=#userId#
+  	</select>
+  	
+  	<select id="inBox" parameterClass="String" resultClass="Message">
+    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
+    	from message
+    	where friend_id=#userId#
+  	</select>
+  	
+  	<insert id="sendMessage" parameterClass="Message">
+		INSERT INTO message
+		(user_id, friend_id, title, contents, message_date)
+		VALUES (#userId#, #friendId#, #title#, #contents#, #messageDate#)
+	</insert>
+	
+	<delete id="deleteFriend" parameterClass="Friendship">
+		delete from friendship
+		WHERE (user_id=#userId# AND friend_id=#friendId# AND status=#status#)
+		OR (user_id=#friendId# AND friend_id=#userId# AND status=#status#)
+	</delete>
+	
+	<update id="accept" parameterClass="Friendship">
+		update friendship
+		set
+		status=#status#
+		where user_id=#userId# AND friend_id=#friendId#
+	</update>
+
+	<delete id="reject" parameterClass="Friendship">
+		delete from friendship
+		WHERE
+		user_id=#userId# AND friend_id=#friendId#
+	</delete>
+
+	<delete id="cancel" parameterClass="Friendship">
+		delete from friendship
+		WHERE
+		user_id=#userId# AND friend_id=#friendId#
+	</delete>
+	
+	<delete id="bookMarkCancel" parameterClass="String">
+		delete from bookmarkship
+		WHERE
+		bookmark_id=#bookMarkId#
+	</delete>
+	
+	<select id="getFriendStatus" parameterClass="FriendStatus" resultClass="FriendStatus">
+		SELECT f.user_id userId, f.friend_id friendId, m.name name, f.status status
+		FROM member_info m, friendship f
+		WHERE
+		(m.user_id=f.friend_id AND (m.user_id IN (SELECT friend_id FROM
+		friendship WHERE user_id=#userId# AND friend_id=#friendId#) ) )
+		OR
+		(m.user_id=f.user_id AND (m.user_id IN (SELECT user_id FROM
+		friendship
+		WHERE friend_id=#userId# AND user_id=#friendId#) ) )
+	</select>
+	
+	<select id="getMemberById" parameterClass="User" resultClass="Member">
+		SELECT user_id userId, name name
+		FROM member_info
+		WHERE user_id not in (#loginId#) and user_id LIKE '%' + #keyword# + '%'
+	</select>
+	
+	<insert id="insertFriend" parameterClass="Friendship">
+		insert into friendship
+		(user_id, friend_id, status)
+		values (#userId#, #friendId#, #status#)
+	</insert>
   	<!-- <select id="getFriendBar" parameterClass="Friendship" resultClass="Member">
     	select m.user_id userId, m.name firstName, m.email email
     	from member_info m, friendship f
@@ -111,87 +184,10 @@
     	where message_id=#messageId#
   	</select>
    	
-  	<select id="outBox" parameterClass="String" resultClass="Message">
-    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
-    	from message
-    	where user_id=#userId#
-  	</select>
-  	
-  	<select id="inBox" parameterClass="String" resultClass="Message">
-    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
-    	from message
-    	where friend_id=#userId#
-  	</select>
-  	
- 	<select id="getFriendStatus" parameterClass="FriendStatus" resultClass="FriendStatus">
-		SELECT f.user_id userId, f.friend_id friendId, m.name firstName, f.status status
-		FROM member_info m, friendship f
-		WHERE
-		(m.user_id=f.friend_id AND (m.user_id IN (SELECT friend_id FROM
-		friendship WHERE user_id=#userId# AND friend_id=#friendId#) ) )
-		OR
-		(m.user_id=f.user_id AND (m.user_id IN (SELECT user_id FROM
-		friendship
-		WHERE friend_id=#userId# AND user_id=#friendId#) ) )
-	</select>
-
-	<select id="getMemberById" parameterClass="User" resultClass="Member">
-		SELECT user_id userId, name firstName
-		FROM member_info
-		WHERE user_id not
-		in (#loginId#) and user_id LIKE '%' + #keyword# + '%'
-	</select>
-
-	<insert id="insertFriend" parameterClass="Friendship">
-		insert into friendship
-		(user_id, friend_id, status)
-		values (#userId#, #friendId#, #status#)
-	</insert>
-	
-	<update id="accept" parameterClass="Friendship">
-		update friendship
-		set
-		status=#status#
-		where user_id=#friendId# AND friend_id=#userId#
-	</update>
-
-	<delete id="reject" parameterClass="Friendship">
-		delete from friendship
-		WHERE
-		user_id=#friendId# AND friend_id=#userId#
-	</delete>
-
-	<delete id="cancel" parameterClass="Friendship">
-		delete from friendship
-		WHERE
-		user_id=#userId# AND friend_id=#friendId#
-	</delete>
-
-	<delete id="deleteFriend" parameterClass="Friendship">
-		delete from friendship
-		WHERE (user_id=#userId# AND friend_id=#friendId# AND status=#status#)
-		OR (user_id=#friendId# AND friend_id=#userId# AND status=#status#)
-	</delete>
-
-	<insert id="sendMessage" parameterClass="Message">
-		INSERT INTO message
-		(user_id, friend_id, title, contents, message_date)
-		VALUES (#userId#, #friendId#, #title#, #contents#, #messageDate#)
-	</insert>
-	
 	<delete id="deleteMessage" parameterClass="String">
 		delete from message 
     	WHERE message_id=#messageId#
 	</delete>	
-
-	
-	
-
-	<delete id="bookMarkCancel" parameterClass="String">
-		delete from bookmarkship
-		WHERE
-		bookmark_id=#bookMarkId#
-	</delete>
 
 	 -->
 </sqlMap>
