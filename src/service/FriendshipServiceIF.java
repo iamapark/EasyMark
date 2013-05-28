@@ -133,6 +133,6 @@ public interface FriendshipServiceIF {
 	
 	public BookMark selectBookMark(int bookMarkId);
 	
-	
+	public boolean bookMarkExist(BookMarkShip bookmarkship);
 	
 }

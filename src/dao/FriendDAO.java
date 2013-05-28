@@ -262,6 +262,22 @@ public class FriendDAO {
 		return memberKey;
 
 	}
+	
+	public boolean bookMarkExist(BookMarkShip bookmarkship){
+		boolean flag = false;
+		
+		BookMarkShip bookmark = null;
+		try {
+			bookmark = (BookMarkShip)sqlMapper.queryForObject("bookMarkExist", bookmarkship);
+			if(bookmark == null)
+				flag = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return flag;
+	}
 
 	public void recommendSite(BookMarkShip bookmarkship) {
 		try {

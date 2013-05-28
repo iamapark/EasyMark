@@ -461,3 +461,9 @@ article:not(:last-child),
 	background-image:url(http://www.thomaserben.com/wp-content/themes/thomaserben/images/loading.gif);
 	background-repeat: no-repeat;
 }
+
+.td_selected{
+	background-color:rgb(83, 91, 145) !important;
+	color:white !important;
+	border: 1px solid;	
+}

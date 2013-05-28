@@ -1,15 +1,14 @@
-var getMemberInfo = function(){
-	var userId = $(this).data('id');
-	console.log(userId);
+// 회원관리 메뉴에서 Action-View 를 클릭하면 해당 회원에 관한 정보를 받아온다.
+var getMemberInfo = function(e){
+	var userId = $(e).data('id'); //$(this).data('id');
 	$.ajax({
 		url: 'getMemberInfo_admin',
+		dataType:'json',
 		data:{
 			userId: userId
-		},
-		dataType:'json'
+		}
 	}).done(function(data){
 		console.log(data);
-		kaka = data;
 		
 		$('#info_userId').val(data.userId);
 		$('#info_name').val(data.name);
@@ -39,7 +38,7 @@ $('#memberTableAllSelect').click(function(e){
 	}
 });
 
-// 회원 테이블에서 전체 삭제를 클릭했을 때
+// 회원 테이블에서 선택 삭제를 클릭했을 때
 $('#selectDelete').click(function(e){
 	kaka = $('input[name=memberSelector]');
 	var data = $('input[name=memberSelector]').serialize();
@@ -60,9 +59,9 @@ $('#selectDelete').click(function(e){
 });
 
 // 회원 테이블에서 각 목록의 삭제 버튼을 클릭했을 때
-var memberDelete = function(){
-	var userId = $(this).data('id');
-	var count = $(this).data('count');
+var memberDelete = function(e){
+	var userId = $(e).data('id');
+	var count = $(e).data('count');
 	
 	$.ajax({
 		url:'deleteMember',

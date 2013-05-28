@@ -82,4 +82,8 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 		return bookMarkList;
 	}
 
+	public void logoutCount(String userId) {
+		RegisterDAO.getInstance().logoutCount(userId);
+	}
+
 }

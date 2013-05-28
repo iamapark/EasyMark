@@ -67,9 +67,9 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		return CategoryDAO.getInstance().addCategory(category);
 	}
 	//user의 category delete
-		public void deleteCategory(BookMark bookmark){
-			BookMarkDAO.getInstance().deleteCategory(bookmark);
-		}
+	public void deleteCategory(BookMark bookmark){
+		BookMarkDAO.getInstance().deleteCategory(bookmark);
+	}
 	//user의 categoryList
 	public ArrayList<Category> categoryList(String userId){
 		return CategoryDAO.getInstance().categoryList(userId);
@@ -91,6 +91,10 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	public void informEasyMark(String userId) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void deleteIcons(ArrayList<Integer> selectedIdList) {
+		BookMarkDAO.getInstance().deleteIcons(selectedIdList);
 	}
 	
 	

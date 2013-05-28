@@ -5,8 +5,10 @@
 <script>
 		function deleteFriend(friendId){
 			
+			/*
+		} */	
+			console.log("friend");
 			console.log("friendId: " + friendId);
-		}	
 			/* var clickedRow = $("#delete").parent().parent();
 			
 			$.ajax({
@@ -26,13 +28,13 @@
 	        }
 	
 	        clickedRow.remove();
-	        resizeRowspan(friendId);  
+	        resizeRowspan(friendId);   */
 		}
 		
 		function resizeRowspan(cls){
 	        var rowspan = $("."+cls).length;
 	        $("."+cls+":first td:eq(0)").attr("rowspan", rowspan);
-	    }*/	
+	    }
 		
 </script>
 
@@ -43,6 +45,7 @@
 		<h3 id="settingLabel">친구 관리-${MEMBERID}</h3>
 	</div>
 	<div class="modal-body">
+		
 		<div class="setting_nav" style="float:left; margin-right:20px;">
 			<ul class="nav nav-tabs nav-stacked" id="friendTab">
 			  <li><a href="#friend_myFriend" data-toggle="tab">친구 리스트</a></li>
@@ -52,21 +55,30 @@
 			  <li><a href="#e" data-toggle="tab">미투데이 친구 리스트</a></li>
 			</ul>
 		</div>
+		
 		<div class="setting_content" >
+			
 			<div class="tab-content" style="border:1px solid #ddd; padding-left:10px;">
-			  	
-			  	<!-- 친구 리스트 -->
-			  	<div class="tab-pane active" id="friend_myFriend">
-			  		<h3>친구 리스트</h3>
-			  		<form class="form-search" style="text-align:right; margin-right:24px; float:right;" action="memberList" id="friendForm" method="post">
-						<!-- <div class="input-prepend"> -->
+			  	<form class="form-search" style="text-align:right; margin-right:24px; float:right;" action="memberList" id="friendForm" method="post">
+						
 						<div class="input-append"> 
 							User ID
 							<input class="span2 search-query" name="keyword" id="keyword" type="text" placeholder="User ID">
 							<button type="submit" class="btn btn-info">Search</button>
 						</div>
 					</form>
-					
+			  	<!-- 친구 리스트 -->
+			  	<div class="tab-pane active" id="friend_myFriend">
+			  		<h3>친구 리스트</h3>
+			  		<!-- 
+					<form class="form-search" style="text-align:right; margin-right:24px; float:right;" action="memberList" id="friendForm" method="post">
+						<div class="input-prepend">
+						<div class="input-append"> 
+							User ID
+							<input class="span2 search-query" name="keyword" id="keyword" type="text" placeholder="User ID">
+							<button type="submit" class="btn btn-info">Search</button>
+						</div>
+					</form> -->
 					<div class = "box-content">
 					<table class="table table-striped table-bordered bootstrap-datatable friendtable">
 						<thead>
@@ -247,101 +259,50 @@
 		  		
 		  		<!-- 추천받은 북마크 리스트 -->
 		  		<div class="tab-pane" id="friend_BookMark">
-		  			<h3>추천받은 북마크 리스트</h3>
+		  			<h3>추천 북마크 리스트</h3>
 		  			<ul class="nav nav-tabs" id="webSiteTab">
 					  <li class="active"><a href="#inWeb" data-toggle="tab">추천 받은 WEB</a></li>
 					  <li><a href="#outWeb" data-toggle="tab">추천 한 WEB</a></li>
 					</ul>
 					<div class="tab-content">
-					  <div class="tab-pane active" id="inweb">
-					  	<div class = "box-content">
-							<table class="table table-striped table-bordered bootstrap-datatable inwebtable">
-								<thead>
-									<tr>
-							          	<th>ID</th>
-										<th>URL</th>
-										<th>NAME</th>
-										<th>RECOMMENDATION</th>                                        
-							     	</tr>
-								</thead>
-								<tbody>
-								
-								
-								</tbody>
-								
-								
-							</table>
-						</div>
-				  		<%-- <div id="memberId" align="right">${sessionScope.MEMBERID}</div> --%>
-				 	 	<%-- <table class="table table-bordered">
-							<tr>
-								<th>ID</th>
-								<th>URL</th>
-								<th>NAME</th>
-								<th>RECOMMENDATION</th>
-							</tr>
+					  	<div class="tab-pane active" id="inweb">
+						  	<div class = "box-content">
+								<table class="table table-striped table-bordered bootstrap-datatable inwebtable">
+									<thead>
+										<tr>
+								          	<th>ID</th>
+											<th>URL</th>
+											<th>NAME</th>
+											<th>RECOMMENDATION</th>                                        
+								     	</tr>
+									</thead>
+									<tbody>
 									
-							<!-- <tr id="inMessage">
-							
-							<tr> -->
-							
-							<c:forEach items="${requestScope.inWebList}" var="inWeb">
-								<tr id="${inWeb.bookMarkId}" class="${inWeb.bookMarkId}">
-									<td>
-										${inWeb.userId}
-									</td>
 									
-									<td>
-										${inWeb.bookMarkUrl}
-									</td>
+									</tbody>
 									
-									<td>
-										${inWeb.bookMarkName}
-									</td>
-									
-									<td>
-										<button id="accept" class="btn btn-small btn btn-primary" onclick="acceptWeb('${inWeb.bookMarkId}','${inWeb.bookMarkUrl}','${inWeb.bookMarkName}','${inWeb.bookMarkDescript}','${inWeb.friendId}')">수락</button>
-										<button id="cancel" class="btn btn-small btn btn-danger">거절</button>
-									</td>
-								</tr>
-							</c:forEach>
-					 		
-					 	</table> --%>
-				 
-					  </div>
+								</table>
+							</div>
+				  		</div>
 					  
-					  <div class="tab-pane" id="outWeb">
-					  	<div class = "box-content">
-							<table class="table table-striped table-bordered bootstrap-datatable outwebtable">
-								<thead>
-									<tr>
-							          	<th>ID</th>
-										<th>URL</th>
-										<th>NAME</th>
-										<th>RECOMMENDATION</th>                                        
-							     	</tr>
-								</thead>
-								<tbody>
-								
-								
-								</tbody>
-								
-								
-							</table>
-						</div>
-					  	<!-- <table class="table table-bordered">
-							<tr>
-								<th>ID</th>
-								<th>URL</th>
-								<th>NAME</th>
-								<th></th>
-							</tr>
-							
-							<tr id="outWebList">
-							</tr>
-					 	</table> -->	
-					 		
-					  </div>
+					  	<div class="tab-pane" id="outWeb">
+						  	<div class = "box-content">
+								<table class="table table-striped table-bordered bootstrap-datatable outwebtable">
+									<thead>
+										<tr>
+								          	<th>ID</th>
+											<th>URL</th>
+											<th>NAME</th>
+											<th>RECOMMENDATION</th>                                        
+								     	</tr>
+									</thead>
+									<tbody>
+																		
+									</tbody>
+									
+								</table>
+							</div>
+					  	</div>
 					</div>
 		  		</div>
 		  		<!-- 추천받은 북마크 리스트 종료 -->

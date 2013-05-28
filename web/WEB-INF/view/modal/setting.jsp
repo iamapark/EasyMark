@@ -61,6 +61,10 @@
 						</div>
 						<button type="submit" class="btn btn-primary"
 							id="updateMemberButton">회원정보 수정</button>
+						<button class="btn btn-danger"
+							id="leaveMembership">회원 탈퇴</button>
+						<button class="btn btn-inverse"
+							id="logoutButton">로그 아웃</button>														
 					</form>
 				</div>
 				<div class="tab-pane" id="setting_settings">
@@ -98,28 +102,26 @@
 				  	<div class="row-fluid sortable">		
 					<div class="box span12">
 					<div class="box-content">
-						<table class="table table-striped table-bordered bootstrap-datatable bookmarktable">
+						<table id="setting_bookmarkList" class="table table-striped table-bordered bootstrap-datatable bookmarktable">
 						  <thead>
 							  <tr>
-							  	  <th>선택</th>
+							  	  <th>번호</th>
 								  <th>이름</th>
 								  <th>URL</th>
 								  <th>설명</th>
 								  <th>접속 횟수</th>
 							  </tr>
 						  </thead>
-						  <tbody id="MemberDataTable">
-							<!-- 여기에 회원 정보가 들어간다. -->
-						  </tbody>
-					  </table>            
+						  <!-- <tbody id="MemberDataTable">
+							여기에 회원 정보가 들어간다.
+						  </tbody> -->
+					  </table>    
 					</div>
 					</div>
 					</div>	
-
-
-
-
-
+					<a onclick='bookmarkListDelete(this)' class='btn btn-danger' href='#bookmarkDeleteButton'>
+						선택 삭제
+					</a> 
 
 				</div>
 				<div class="tab-pane" id="setting_categoryChange">

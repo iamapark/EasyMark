@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 var init = function() {
 	// 북마크 아이콘에 마우스를 올릴 때와 벗어날 때 이벤트 핸들러 등록
-	$('.bookmarkIcon').mouseover(bookMarkDelete).mouseout(bookMarkOut);
+	$('.bookmarkIcon').mouseover(mouseOverBookmarkInfo).mouseout(bookMarkOut);
 
 	// 그리드스터 초기화
 	gridsterInitial();
@@ -48,7 +48,7 @@ var init = function() {
 	$('#addBookMarkUrl').focusout(bookmarkUrlFocusOut);
 };
 var bookMarkInit = function(newEntry) {
-	$(newEntry).mouseover(bookMarkDelete).mouseout(bookMarkOut);
+	$(newEntry).mouseover(mouseOverBookmarkInfo).mouseout(bookMarkOut);
 };
 
 var bookMarkArrange = function(e) {
@@ -105,7 +105,7 @@ var bookMarkInfor = function(e) {
 	alert('좋아');
 
 };
-var bookMarkDelete = function(e) {
+var mouseOverBookmarkInfo = function(e) {
 	$id = $(this).attr('data-id');
 	$(this).find('.bookmarkIconInfo').show();
 };
@@ -243,8 +243,13 @@ var bookmarkUpdate = function() {
 };
 
 // 북마크에서 마우스 오른쪽 버튼을 누르고 북마크 삭제 탭을 클릭했을 때
-var bookmarkDelete = function() {
-	var $bookId = $(this).attr('$id');
+var bookmarkDelete = function(id) {
+	var $bookId;
+	
+	if(id == null)
+		$bookId = $(this).attr('$id');
+	else
+		$bookId = id;
 
 	var flag = confirm('정말 삭제하시겠습니까??');
 	if (flag == true) {
@@ -257,6 +262,7 @@ var bookmarkDelete = function() {
 		}).done(function(data) {
 			gridster.remove_widget($('li[data-id="' + $bookId + '"]'));
 			// init();
+			return true;
 		});
 	}
 };
@@ -276,7 +282,7 @@ var bookmarkRecommand = function() {
 	
 		console.log("123돌아가나?");
 		
-		
+		$('#recommend_friendId').val = "";
 		$('#recommend_url').val($(data).attr('bookMarkUrl'));
 		$('#recommend_name').val($(data).attr('bookMarkName'));
 		$('#recommend_descript').val($(data).attr('bookMarkDescript'));
@@ -378,20 +384,44 @@ $('#category')
 $('#sendButton').click(function(){
 			
 		console.log("hi");
+		
+		/*var filename = $('#bookmarkIconImageFile').val();
+		var name = $('#modifyBookmarkName').val();
+		var url = $('#modifyBookmarkUrl').val();
+		var desc = $('#modifyBookmarkDescription').val();
+		var bookmarkId = $('#modifyBookMarkId').val();
+*/
+		var recommend_friendId = $('#recommend_friendId').val();
+		var recommend_url = $('#recommend_url').val();
+		var recommend_name = $('#recommend_name').val();
+		var recommend_descript = $('#recommend_descript').val();
+		
+		/*
+		alert('즐겨찾기를 친구에게 추천했습니다.');*/
+		console.log(recommend_friendId+";"+recommend_url+";"+recommend_name+";"+recommend_descript);
+		$.ajax({
+			url:'recommend',
+			dataType : 'json',
+			type:'POST',
+			data:{
+				recommend_friendId:$('#recommend_friendId').val(),
+				recommend_url: $('#recommend_url').val(),
+				recommend_name:$('#recommend_name').val(),
+				recommend_descript:$('#recommend_descript').val()
+			}
+		}).done(function(data){
+			console.log(data);
 			
-			$.ajax({
-				url:'recommend',
-				dataType:'json',
-				type:'POST',
-				data:{
-					recommend_friendId:$('#recommend_friendId').val(),
-					recommend_url: $('#recommend_url').val(),
-					recommend_name:$('#recommend_name').val(),
-					recommend_descript:$('#recommend_descript').val()
-				}
-			}).done(function(data){
+			/*if(data < 3){
+				alert('친구와의 북마크 추천을 확인하세요.');
+			}
+			else {
 				alert('즐겨찾기를 친구에게 추천했습니다.');
 				$('#bookMarkRecommand').modal('hide');
-			});
+			}*/
+		});
+		/*alert('즐겨찾기를 친구에게 추천했습니다.');
+		$('#bookMarkRecommand').modal('hide');*/
 	
 });
+

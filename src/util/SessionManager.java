@@ -1,5 +1,6 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.servlet.http.HttpSession;
@@ -29,6 +30,22 @@ public class SessionManager {
 	
 	public void remove(HttpSession httpSession){
 		session.remove(httpSession.getId());
+	}
+	
+	public HttpSession get(String id){
+		return session.get(id);
+	}
+	
+	public ArrayList<String> getLoginId(){
+		ArrayList<String> ar = new ArrayList<String>();
+		
+		System.out.println("getLoginId");
+		
+		for(String key:session.keySet()){
+			ar.add((String)session.get(key).getAttribute("MEMBERID"));
+		}
+		
+		return ar;
 	}
 	
 	public int count(){

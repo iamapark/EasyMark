@@ -223,4 +223,10 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 		
 	}
 
+	@Override
+	public boolean bookMarkExist(BookMarkShip bookmarkship) {
+		boolean flag = FriendDAO.getInstance().bookMarkExist(bookmarkship);
+		return flag;
+	}
+
 }

@@ -16,7 +16,7 @@
 	<link href="css/dataTables/jquery.dataTables.css" rel="stylesheet">
 	<!-- design:main -->
 	<%
-		String designType = (String)session.getAttribute("designType");
+		String designType = (String)request.getAttribute("designType");
 		if(designType.equals("MacOS")){
 			%>
 			<link href="css/main/MacOS.css" rel="stylesheet" type="text/css" id="designSelectedCss">
@@ -31,7 +31,6 @@
 </head>
 <body style="background:url(${MEMBERINFO.bgImgUrl}) no-repeat center center fixed;
              -webkit-background-size:cover; background-size:cover">
- 	
  	<!-- Main Design Template -->
  	<jsp:include page="template/MacOS.jsp">
  		<jsp:param value="${designType}" name="flag"/>
@@ -46,7 +45,7 @@
 	<div>
 	<div id="gridster" class="gridster">
     	<ul>
-			<c:forEach items="${sessionScope.bookMarkList}"	var="bookMark">
+			<c:forEach items="${requestScope.bookMarkList}"	var="bookMark">
 			<li style="" data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
             	<img id="img" href="${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
             	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
@@ -82,20 +81,27 @@
 	<script src="js/membership/membership.js"></script>
 	<script src="js/friendship/friendship.js"></script>
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
-<<<<<<< HEAD
+
 	<script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.nightly.js"></script>
-=======
->>>>>>> 75331ab1a295baf1062359aa45dcd8e8f988eb73
-	
+
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
 	<script src="tipJS/tipJS-MVC.js"></script>
 	<script>
-	window.onload=function(){
-		tipJS.loadApp(["EasyMark"]); // EasyMark.. load
-		
-		  //  EasyMark.fill 이름 controller 실행
-	};
+		var sleepTime = 0;
+	
+		var timer = function(){
+			sleepTime++;
+			if(sleepTime === 100){
+				location.replace('sleepPage');
+			}
+		};
+	
+		setInterval("timer()", 1000);
+	
+		$(document).mousemove(function(e){
+			sleepTime = 0;
+		});
 	</script>
 </body>
 </html>

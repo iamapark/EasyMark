@@ -6,7 +6,7 @@ $('a[data-toggle="modal"]').click(function(){
 <!-- friend 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. -->*/
 $('a[href="#friendInfo"]').click(function(){
 	$('.friendtable').dataTable().fnClearTable();
-	
+	memberId = null;
 	$.ajax({
 		url: 'friend'
 	}).done(function(data){
@@ -16,7 +16,11 @@ $('a[href="#friendInfo"]').click(function(){
 		var action = null;
 		
 		for(var i=0; i<memberData.length; i++){
-			action = "<button id='delete' class='btn btn-small btn btn-danger' onclick='deleteFriend('"+memberData[i].userId+"');'>친구삭제</button>";
+			memberId = memberData[i].userId;
+			/*action = "<a id='delete' onclick='deleteFriend("+memberId+")' class='btn btn-danger'>"
+					 +"Delete"+
+					 "</a>";*/
+			action = "<button id='delete' class='btn btn-small btn btn-danger' onclick='deleteFriend("+memberId+");'>친구삭제</button>";
 			$('.friendtable').dataTable().fnAddData([memberData[i].userId, memberData[i].name, memberData[i].email, action]);
 		}
 	});
@@ -81,8 +85,8 @@ $('#friendTab li:eq(2) a').click(function (e){
 });
 
 $('#friendTab li:eq(3) a').click(function (e){	
-	$('.inwebtable').dataTable().fnClearTable();
-	
+	/*$('.inwebtable').dataTable().fnClearTable();
+	*/
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
@@ -100,6 +104,7 @@ $('#friendTab li:eq(3) a').click(function (e){
 });
 
 $('#webSiteTab li:eq(0) a').click(function (e){	
+	
 	$('.inwebtable').dataTable().fnClearTable();
 	
 	$.ajax({
@@ -119,6 +124,7 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 });
 
 $('#webSiteTab li:eq(1) a').click(function (e){	
+	
 	$('.outwebtable').dataTable().fnClearTable();
 	
 	$.ajax({

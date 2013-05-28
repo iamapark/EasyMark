@@ -86,7 +86,13 @@
 		(bookmark_name, bookmark_url, bookmark_descript, user_id, friend_id, status)
 		VALUES (#bookMarkName#, #bookMarkUrl#, #bookMarkDescript#, #userId#, #friendId#, #status#)
 	</insert>
-  	
+  	  	
+  	<select id="bookMarkExist" parameterClass="BookMarkShip" resultClass="BookMarkShip">
+		SELECT bookmark_url bookMarkUrl, user_id userId, friend_id friendId
+		FROM bookmarkship
+		WHERE
+		user_id=#userId# AND friend_id=#friendId# AND bookmark_url=#bookMarkUrl#;
+	</select>
   	<!-- <select id="getFriendBar" parameterClass="Friendship" resultClass="Member">
     	select m.user_id userId, m.name firstName, m.email email
     	from member_info m, friendship f
