@@ -679,6 +679,8 @@ var recommendAccept = function(e){
 		}
 	}).done(function(data){
 		$('.inwebtable').dataTable().fnDeleteRow(count);
+		
+		// 바탕화면에 북마크 아이콘을 생성하는 부분이 들어가야 함.
 	}); 
 };
 

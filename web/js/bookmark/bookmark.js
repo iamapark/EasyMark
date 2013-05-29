@@ -282,28 +282,37 @@ var bookmarkDelete = function(id) {
 
 // 북마크에서 마우스 오른쪽 버튼을 누르고 북마크 추천 탭을 클릭했을 때
 var bookmarkRecommand = function() {
-	keke = $(this);
 	var $bookid = $(this).attr('$id');
+	var optionTag = '';
+	$('#recommend_friendId').empty();
+	
 	$.ajax({
-		url : 'getBookmarkInfo',
+		url : 'getRecommendInfo',
 		dataType : 'json',
-		async : false,
 		data : {
 			bookMarkId : $bookid
 		}
 	}).done(function(data) {
-	
-		console.log("123돌아가나?");
 		
-		$('#recommend_friendId').val = "";
-		$('#recommend_url').val($(data).attr('bookMarkUrl'));
-		$('#recommend_name').val($(data).attr('bookMarkName'));
-		$('#recommend_descript').val($(data).attr('bookMarkDescript'));
+		console.log(data);
+		keke = data;
 		
-	
+		for(var i=0; i<data[1].length; i++){
+			optionTag += "<option value='" + data[1][i].userId +"'>";
+				optionTag += data[1][i].userId;
+			optionTag += "</option>";
+		}
 		
-
+		$('#recommend_url').val($(data[0]).attr('bookMarkUrl'));
+		$('#recommend_name').val($(data[0]).attr('bookMarkName'));
+		$('#recommend_descript').val($(data[0]).attr('bookMarkDescript'));
+		
+		$('#recommend_friendId').append(optionTag);
+		
+	}).fail(function(e){
+		console.log('fail');
 	});
+	
 	$('#bookMarkRecommand').modal('show');
 };
 
@@ -433,10 +442,10 @@ $('#sendButton').click(function(){
 			dataType : 'json',
 			type:'POST',
 			data:{
-				recommend_friendId:$('#recommend_friendId').val(),
-				recommend_url: $('#recommend_url').val(),
-				recommend_name:$('#recommend_name').val(),
-				recommend_descript:$('#recommend_descript').val()
+				recommend_friendId:recommend_friendId,
+				recommend_url: recommend_url,
+				recommend_name: recommend_name,
+				recommend_descript: recommend_descript
 			}
 		}).done(function(data){
 			console.log(data);

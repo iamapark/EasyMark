@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
@@ -33,6 +34,7 @@ import util.FileWriter;
 import dto.BookMark;
 import dto.Category;
 import dto.Design;
+import dto.Friendship;
 import dto.Img;
 import dto.Member;
 
@@ -173,6 +175,7 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 
+	// 북마크 수정 탭을 눌렀을 때 호출되는 메소드. 북마크에 관한 정보를 가져온다.
 	@RequestMapping("/getBookmarkInfo")
 	public ModelAndView getBookmarkInfo(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -190,6 +193,37 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 
+	// 북마크 추천을 눌렀을 때 호출되는 메소드. 북마크에 관한 정보와 로그인 중인 사용자의 친구 리스트를 가져온다.
+	@RequestMapping("/getRecommendInfo")
+	public ModelAndView getRecommendInfo(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView nextPage = new ModelAndView();
+		BookMark bookMark = new BookMark();
+		
+		int bookMarkId = Integer.parseInt(request.getParameter("bookMarkId"));
+		String userId = (String) request.getSession().getAttribute("MEMBERID");
+		
+		bookMark = new IndividualPageServiceImpl().getBookMark(bookMarkId);
+		Friendship friend = new Friendship(userId, "", "친구");
+		ArrayList<Member> friendList = new FriendshipServiceImpl().getFriendList(friend);
+		
+		JSONArray bookMarkJ = JSONArray.fromObject(bookMark);
+		JSONArray friendListJ = JSONArray.fromObject(friendList);
+		JSONArray dataJ  = new JSONArray();
+		dataJ.add(bookMarkJ);
+		dataJ.add(friendListJ);
+		
+		String data = "{" + bookMarkJ.toString() + ", " + friendListJ.toString() + "}";
+		System.out.println(dataJ.toString());
+		System.out.println(data);
+		
+		request.setAttribute("result", dataJ.toString());
+		nextPage.setViewName("result");
+
+		traffic();
+		return nextPage;
+	}
+	
 	@RequestMapping("/modifyMark")
 	public ModelAndView modifymark(
 			HttpServletRequest request,
