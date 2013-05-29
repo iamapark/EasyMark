@@ -34,9 +34,11 @@
 		// 북마크 리스트의 개수를 체크하여 슬라이드 개수를 계산한다.
 		// 한 화면 당 북마크 아이콘이 18개 들어간다고 가정.
 		ArrayList<BookMark> bookmarkList = (ArrayList<BookMark>)request.getAttribute("bookMarkList");
-		int numOfSlides = bookmarkList.size() / 18;
-		if(bookmarkList.size() % 18 != 0)
+		int numOfSlides = bookmarkList.size() / 24;
+		if(bookmarkList.size() % 24 != 0)
 			numOfSlides++;
+		if(numOfSlides==0)
+			numOfSlides = 1;
 	%>
 
 </head>
@@ -58,9 +60,9 @@
 	<ul class="slides-container">
 		<c:forEach begin="0" end="${numOfSlides}" varStatus="status">
 		<li>
-			<div id="gridster" class="gridster">
+			<div id="gridster${status.count}" class="gridster">
 				<ul>
-					<c:forEach items="${requestScope.bookMarkList}"	var="bookMark" begin="${(status.count-1)*18}" end="${(status.count-1)*18 + 17}">
+					<c:forEach items="${requestScope.bookMarkList}"	var="bookMark" begin="${(status.count-1)*24}" end="${(status.count-1)*24 + 23}">
 					<li style="" data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
 		            	<img id="img" href="${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
 		            	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>

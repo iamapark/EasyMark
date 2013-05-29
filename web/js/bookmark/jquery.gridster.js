@@ -1501,7 +1501,11 @@
 
         this.$player.coords().grid.row = this.placeholder_grid_data.row;
         this.$player.coords().grid.col = this.placeholder_grid_data.col;
-
+        
+        /*console.log('this.$player.coords().grid.row: ' + this.$player.coords().grid.row);
+        console.log('this.$player.coords().grid.col: ' + this.$player.coords().grid.col);
+        console.log(this.$player);*/
+        
         if (this.options.draggable.stop) {
           this.options.draggable.stop.call(this, event, ui);
         }
@@ -2391,7 +2395,8 @@
                 this.add_to_gridmap(widget_grid_data);
                 $widget.attr('data-row', widget_grid_data.row);
                 this.$changed = this.$changed.add($widget);
-
+                console.log(this.$changed);
+                kaka = this.$changed;
                 moved.push($widget);
 
                 $next_widgets.each($.proxy(function(i, widget) {

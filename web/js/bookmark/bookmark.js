@@ -63,6 +63,9 @@ var bookMarkArrange = function(e) {
 
 	var wgd = gridster.serialize_changed();
 	var location = toJSONString(wgd);
+	mama = this;
+	
+	console.log('location: ' + location);
 
 	function toJSONString(json) {
 		var ary = new Array();
