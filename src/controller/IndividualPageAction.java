@@ -427,13 +427,14 @@ public class IndividualPageAction {
 	//isExistCategory 써서 중복된 category add 안되게 해야한다
 	@RequestMapping("/addCategory")
 	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
-															   @RequestParam(value="userId",required=false)String userId){
+															   @RequestParam(value="userId",required=false)String userId) throws UnsupportedEncodingException{
 		System.out.println("addCategory()!!");
 		ModelAndView nextPage = new ModelAndView();
 		if(userId == null)
 			userId = (String)request.getSession().getAttribute("MEMBERID");
 		String imgUrl = "images/folder.png";
 		System.out.println("userID :"+userId);
+		System.out.println("categoryName: " + URLDecoder.decode(categoryName, "utf-8"));
 		String status="false";
 		int posx=0;
 		int posy=0;
@@ -464,8 +465,8 @@ public class IndividualPageAction {
 		}
 		
 
-		BookMark bookMark = new BookMark(0,categoryName, "", "", userId, status, posx, posy, imgUrl, 0,"");
-		Category category=new Category(0, categoryName, userId);
+		BookMark bookMark = new BookMark(0,URLDecoder.decode(categoryName, "utf-8"), "", "", userId, status, posx, posy, imgUrl, 0,"");
+		Category category=new Category(0, URLDecoder.decode(categoryName, "utf-8"), userId);
 		//category폴더 bookmark Table에 저장
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		//User에 대한 category 내용 category Table에 저장
