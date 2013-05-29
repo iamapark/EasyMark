@@ -419,7 +419,7 @@ public class FriendshipAction {
 		// 날짜 변경함수
 		public static String StringFromCalendar(Date date) {
 			// 날짜를 통신용 문자열로 변경
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			return formatter.format(date.getTime());
 		}
 	
@@ -450,11 +450,28 @@ public class FriendshipAction {
 
 				// msgServer.sendMessage(friendId, message);
 
-				//relayServer.sendMessage(friendId, contents);
+				relayServer.sendMessage(friendId, contents);
 
 			} else { // 메시지 DB 등록 실패
 				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
 			}
+		}
+		
+		@RequestMapping("/isContains")
+		public ModelAndView isContains(HttpServletRequest request, HttpServletResponse response){
+			String userId = (String)request.getSession().getAttribute("MEMBERID");
+			boolean flag = relayServer.isContains(userId);
+			/*request.setAttribute("result", Boolean.toString(flag));
+			nextPage.setViewName("/views/result.jsp");
+			
+			return nextPage;*/
+			ModelAndView mav = new ModelAndView();
+		
+			request.setAttribute("result", Boolean.toString(flag));
+			mav.setViewName("result");
+			
+			traffic();
+			return mav;
 		}
 
 		// 북마크 추천 받은 것 거절, 보낸 것 취소
@@ -600,6 +617,65 @@ public class FriendshipAction {
 			ModelAndView mav = new ModelAndView();
 			
 			JSONArray dataJ = JSONArray.fromObject(friendStatusList);
+			System.out.println(dataJ);
+			request.setAttribute("result", dataJ);
+			mav.setViewName("result");
+			
+			traffic();
+			return mav;
+		}	
+		
+		
+		// 메시지 삭제
+		@RequestMapping("/deleteMessage")
+		public ModelAndView deleteMessage(HttpServletRequest request,
+				HttpServletResponse response,
+				@RequestParam(value = "messageId") String messageId) {
+			
+			ArrayList<String> deleteMessageId = new ArrayList<String>();
+			System.out.println(messageId);
+
+			String[] deleteId = messageId.split(",");
+			for (int i = 0; i < deleteId.length; i++) {
+				deleteMessageId.add(deleteId[i]);
+				new FriendshipServiceImpl().deleteMessage(deleteId[i]);
+			}
+
+			ModelAndView mav = new ModelAndView();
+			request.setAttribute("result", "true");
+			mav.setViewName("result");
+			
+			return mav;
+		}	
+		
+		
+		// 메시지 상세 보기
+		@RequestMapping("/messageView")
+		public ModelAndView messageView(HttpServletRequest request,
+				HttpServletResponse response,
+				@RequestParam(value = "messageId") String messageId) {
+
+			
+			System.out.println(messageId);
+
+			Message message = new Message();
+		
+			message = new FriendshipServiceImpl().getMessage(messageId);
+
+			String dateTime = StringFromCalendar(message.getMessageDate());
+
+			message = new Message(message.getMessageId(), message.getUserId(),
+					message.getFriendId(), message.getTitle(),
+					message.getContents(), message.getMessageDate(), dateTime);
+
+			/*JSONArray getMessage = JSONArray.fromObject(message);
+			request.setAttribute("result", getMessage.toString());
+			System.out.println(getMessage.toString());
+
+			nextPage.setViewName("/views/result.jsp");
+			return nextPage;*/
+			ModelAndView mav = new ModelAndView();
+			JSONArray dataJ = JSONArray.fromObject(message);
 			System.out.println(dataJ);
 			request.setAttribute("result", dataJ);
 			mav.setViewName("result");

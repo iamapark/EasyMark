@@ -166,6 +166,18 @@
 		(user_id, friend_id, status)
 		values (#userId#, #friendId#, #status#)
 	</insert>
+	
+	<delete id="deleteMessage" parameterClass="String">
+		delete from message 
+    	WHERE message_id=#messageId#
+	</delete>
+	
+	<select id="getMessage" parameterClass="String" resultClass="Message">
+    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
+    	from message
+    	where message_id=#messageId#
+  	</select>
+   	
   	<!-- <select id="getFriendBar" parameterClass="Friendship" resultClass="Member">
     	select m.user_id userId, m.name firstName, m.email email
     	from member_info m, friendship f
@@ -178,16 +190,8 @@
     	where user_id=#userId#
   	</select>
   	
-  	<select id="getMessage" parameterClass="String" resultClass="Message">
-    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
-    	from message
-    	where message_id=#messageId#
-  	</select>
-   	
-	<delete id="deleteMessage" parameterClass="String">
-		delete from message 
-    	WHERE message_id=#messageId#
-	</delete>	
+  	
+		
 
 	 -->
 </sqlMap>

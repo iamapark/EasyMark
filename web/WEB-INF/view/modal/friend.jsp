@@ -119,8 +119,10 @@
 		  		<div class="tab-pane" id="friend_BookMark">
 		  			<h3>추천 북마크 리스트</h3>
 		  			<ul class="nav nav-tabs" id="webSiteTab">
-					  <li class="active"><a href="#inWeb" data-toggle="tab">추천 받은 WEB</a></li>
-					  <li><a href="#outWeb" data-toggle="tab">추천 한 WEB</a></li>
+					  <li class="active">
+					  	<a href="#inWeb" data-toggle="tab">추천 받은 WEB</a></li>
+					  <li>
+					  	<a href="#outWeb" data-toggle="tab">추천 한 WEB</a></li>
 					</ul>
 					<div class="tab-content">
 					  	<div class="tab-pane active" id="inweb">
@@ -177,5 +179,7 @@
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">닫기</button>
 	</div>
+	
+	
 	
 </div>

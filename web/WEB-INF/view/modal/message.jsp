@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-
 <div id="messages" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" 
 	 style="width: 60%; left:10%; right:10%; margin-left:0;">	
 	<div class="modal-header">
@@ -23,11 +22,18 @@
 				<!-- 받은 쪽지 리스트 -->
 				<div class="tab-pane active" id="message_takeList">
 					<h3>받은 쪽지</h3>
+					
 						<div class = "box-content">
-							<table id="checkboxTbl" class="table table-striped table-bordered bootstrap-datatable takemessagetable">
+							<a onclick='messageDelete(this)' class='btn btn-small' href='#messageDeleteButton'>
+								선택삭제
+							</a>
+							<br/>
+							<br/>
+							<table id="takeMessageTbl" class="table table-striped table-bordered bootstrap-datatable takemessagetable">
 								<thead>
 									<tr>
-							          <th><button class="btn btn-small btn-primary" id="messageTableAllSelect">전체 선택</button></th>
+									<!-- <input type="button" id="chk_all"> -->
+							          <th>No.</th>
 							          <th>ID</th>
 							          <th>Contents</th>
 							          <th>Date</th>                                          
@@ -47,10 +53,15 @@
 				<div class="tab-pane" id="message_sendList">
 			  		<h3>보낸 쪽지</h3>
 			  			<div class = "box-content">
-							<table class="table table-striped table-bordered bootstrap-datatable sendmessagetable">
+			  				<a onclick='sendmessageDelete(this)' class='btn btn-small' href='#messageDeleteButton'>
+								선택삭제
+							</a>
+							<br/>
+							<br/>
+							<table id="sendMessageTbl" class="table table-striped table-bordered bootstrap-datatable sendmessagetable">
 								<thead>
 									<tr>
-							          <th></th>
+							          <th>No.</th>
 							          <th>ID</th> 
 							          <th>Contents</th> 
 							          <th>Date</th>                                          
@@ -62,6 +73,7 @@
 								</tbody>
 							</table>
 						</div>	
+						
 		  		</div>
 		  		<!-- 보낸 쪽지 리스트 종료-->
 				
@@ -69,9 +81,10 @@
 				<div class="tab-pane" id="message_sending">
 			  		<h3>쪽지 보내기</h3>
 			  			<div class = "box-content">
+			  				
 							<div class="input-prepend">
-								<span class="add-on">받는 사람</span>
-								  <input id="messageFriendId" type="text" onkeyup="doAutoComplete()" name="searchName" placeholder="친구 아이디">
+								<span class="add-on" style="padding:14px">받는 사람</span>
+								<input class="span2" id="messageFriendId" style="padding:14px" type="text" name="searchName" placeholder="친구 아이디">
 							</div>
 							<div>
 								<textarea id="messageContents" style="width:90%;" rows="4" cols="20"></textarea>
@@ -79,10 +92,10 @@
 							
 							<button id="messageSendButton" class="btn btn-primary" >보내기</button>
 							<button id="messageSendingButton" class="btn btn-primary" style="display:none;">보내는 중...</button>
+							<br/>
 						</div>	
 		  		</div>
 		  		<!-- 쪽지 보내기 종료 -->
-				
 				
 			</div>
 		</div>
@@ -93,3 +106,31 @@
 	
 </div>
 
+<div id="messageView" class="modal hide fade" tabindex="-1">
+	
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3>Message View</h3>
+	  </div>
+	
+	  <div class="modal-body">
+	  
+		<div id="messageViewDetail">
+			<div class="input-prepend">
+				<span class="add-on">I D</span> 
+				<input class="span2" id="messageViewFriend" type="text" readonly>
+			</div>
+			<span id="messageViewDate">
+			</span>
+			<div>
+				<textarea id="messageViewText" style="width: 90%" rows="4" cols="20"></textarea>
+			</div>
+		</div>
+		
+	  </div>
+	
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn">Close</button>
+	  </div>
+	  
+</div>

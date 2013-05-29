@@ -69,7 +69,7 @@ public interface FriendshipServiceIF {
 	public ArrayList<Member> sendFriendReqList(Friendship friendship);
 	
 	public void deleteMessage(String messageId);
-	//public Message getMessage(String contents);
+	public Message getMessage(String contents);
 	
 	public ArrayList<Message> getOutBox(String userId);
 

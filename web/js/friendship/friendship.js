@@ -87,17 +87,14 @@ $('#friendTab li:eq(2) a').click(function (e){
 					 "거절"+
 					 "</a>";
 			
-			//action = "<button id='accept' class='btn btn-small btn btn-primary' onclick='acceptFriend('"+memberData[i].userId+"');'>수락</button>"+
-			//		 "<button id='reject' class='btn btn-small btn btn-danger'  onclick='rejectFriend('"+memberData[i].userId+"');'>거절</button>";
-			
 			$('.takefriendtable').dataTable().fnAddData([memberData[i].userId, action]);
 		}
 	});
 });
 
 $('#friendTab li:eq(3) a').click(function (e){	
-	$('.inwebtable').dataTable().fnClearTable();
-	
+	//$('.inwebtable').dataTable().fnClearTable();
+	console.log("받은");
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
@@ -116,11 +113,14 @@ $('#friendTab li:eq(3) a').click(function (e){
 		}
 	});
 });
-//recommendReject
+
+
 $('#webSiteTab li:eq(0) a').click(function (e){	
-	
-	$('.inwebtable').dataTable().fnClearTable();
-	
+	console.log("받은");
+	//$('.inwebtable').dataTable().fnClearTable();
+	$('.outwebtable').dataTable().fnClearTable();
+	//$('.inwebtable').dataTable().fnClearTable();
+	$('.inwebtable').dataTable().fnOpen();
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
@@ -130,10 +130,6 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 		var action = null;
 		
 		for(var i=0; i<memberData.length; i++){
-			/*bookMarkUrl: bookMarkUrl,
-			bookMarkName: bookMarkName,
-			bookMarkDescript: bookMarkDescript,
-			friendId: friendId,*/
 			action = "<a id='accept' onclick='recommendAccept(this)' class='btn btn-small btn btn-primary' data-id='"+ memberData[i].bookMarkId + "' data-url='"+ memberData[i].bookMarkUrl + "' data-name='"+ memberData[i].bookMarkName + "' data-descript='"+ memberData[i].bookMarkDescript+"' data-count='"+ i + "'>"+
 					 "수락"+
 					 "</a>"+
@@ -143,10 +139,11 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 			$('.inwebtable').dataTable().fnAddData([memberData[i].userId, memberData[i].bookMarkUrl, memberData[i].bookMarkName, action]);
 		}
 	});
+	
 });
 
 $('#webSiteTab li:eq(1) a').click(function (e){	
-	
+	console.log("보낸");
 	$('.outwebtable').dataTable().fnClearTable();
 	
 	$.ajax({
@@ -180,17 +177,33 @@ $('a[href="#messages"]').click(function(){
 		console.log(data);
 		
 		var memberData = JSON.parse(data);
-		var action = null;
 		
 		for(var i=0; i<memberData.length; i++){
-			action = "<input name='select' type='checkbox' value='" + memberData[i].userId + "'></input>";
-
-			//	action = "<input type='checkbox'>";
-			$('.takemessagetable').dataTable().fnAddData([action, memberData[i].userId, memberData[i].contents, memberData[i].messageDate2]);
+			//action = "<input type='checkbox'>";
+			//	action = "<input type='checkbox'>"; // onclick="messageDetail('+item.messageId+');" href="#messageView" data-toggle="modal"
+			$('.takemessagetable').dataTable().fnAddData([memberData[i].messageId, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
+		
+		$("#takeMessageTbl tbody tr").on('click', function( e ) {
+			keke = $(this);
+		    if ( $(this).hasClass('row_selected') ) {
+		        $(this).removeClass('row_selected');
+		    }
+		    else {
+		    	//$('.bookmarktable').dataTable().$('tr.row_selected').removeClass('row_selected');
+		        $(this).addClass('row_selected');
+		    }
+		    
+		    if ( $(this).find('td').hasClass('td_selected') ) {
+		        $(this).find('td').removeClass('td_selected');
+		    }
+		    else {
+		    	$('.takemessagetable').dataTable().$('tr.td_selected').find('td').removeClass('td_selected');
+		        $(this).find('td').addClass('td_selected');
+		    }
+		});
 	});
 });
-
 
 $('#messageTab li:eq(0) a').click(function (e){	
 	$('.takemessagetable').dataTable().fnClearTable();
@@ -201,14 +214,77 @@ $('#messageTab li:eq(0) a').click(function (e){
 		console.log(data);
 		
 		var memberData = JSON.parse(data);
-		var action = null;
-		var action2 = null;
+		/*var action = null;
+		var action2 = null;*/
 		for(var i=0; i<memberData.length; i++){
-			action = "<input name='select' type='checkbox' value='" + memberData[i].userId + "'></input>";
-			$('.takemessagetable').dataTable().fnAddData([action, memberData[i].userId, memberData[i].contents, memberData[i].messageDate2]);
+			//action = "<input type='checkbox'></input>";
+			$('.takemessagetable').dataTable().fnAddData([memberData[i].messageId, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
+		
+		$("#takeMessageTbl tbody tr").on('click', function( e ) {
+			//keke = $(this);
+		    if ( $(this).hasClass('row_selected') ) {
+		        $(this).removeClass('row_selected');
+		    }
+		    else {
+		    	//$('.bookmarktable').dataTable().$('tr.row_selected').removeClass('row_selected');
+		        $(this).addClass('row_selected');
+		    }
+		    
+		    if ( $(this).find('td').hasClass('td_selected') ) {
+		        $(this).find('td').removeClass('td_selected');
+		    }
+		    else {
+		    	$('.takemessagetable').dataTable().$('tr.td_selected').find('td').removeClass('td_selected');
+		        $(this).find('td').addClass('td_selected');
+		    }
+		});
 	});
 });
+
+
+function takeMessageDetail(messageId){
+	
+	$.ajax({
+		url: 'messageView',
+		dataType:'json',
+		data: {
+			messageId: messageId,
+		}
+	}).done(function(data){
+		fillTakeMessageDetail(data);
+		$('#contents').remove();
+	});
+};
+
+var fillTakeMessageDetail = function(data){
+	//kaka = data;
+	$('#messageViewFriend').val(data[0].userId);
+	$('#messageViewDate').text(data[0].messageDate2);
+	$('#messageViewText').text(data[0].contents);
+};
+
+
+function sendMessageDetail(messageId){
+	
+	$.ajax({
+		url: 'messageView',
+		dataType:'json',
+		data: {
+			messageId: messageId,
+		}
+	}).done(function(data){
+		fillSendMessageDetail(data);
+		$('#contents').remove();
+	});
+};
+
+var fillSendMessageDetail = function(data){
+	//kaka = data;
+	$('#messageViewFriend').val(data[0].friendId);
+	$('#messageViewDate').text(data[0].messageDate2);
+	$('#messageViewText').text(data[0].contents);
+};
 
 $('#messageTab li:eq(1) a').click(function (e){	
 	$('.sendmessagetable').dataTable().fnClearTable();
@@ -219,40 +295,163 @@ $('#messageTab li:eq(1) a').click(function (e){
 		console.log(data);
 		
 		var memberData = JSON.parse(data);
-		var action = null;
-		
+	
 		for(var i=0; i<memberData.length; i++){
-			action = "<input name='select' type='checkbox'>";
-			$('.sendmessagetable').dataTable().fnAddData([action, memberData[i].friendId, memberData[i].contents, memberData[i].messageDate2]);
+			//action = "<input type='checkbox'>";
+			$('.sendmessagetable').dataTable().fnAddData([memberData[i].messageId, memberData[i].friendId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
+		
+		$("#sendMessageTbl tbody tr").on('click', function( e ) {
+			keke = $(this);
+		    if ( $(this).hasClass('row_selected') ) {
+		        $(this).removeClass('row_selected');
+		    }
+		    else {
+		    	//$('.bookmarktable').dataTable().$('tr.row_selected').removeClass('row_selected');
+		        $(this).addClass('row_selected');
+		    }
+		    
+		    if ( $(this).find('td').hasClass('td_selected') ) {
+		        $(this).find('td').removeClass('td_selected');
+		    }
+		    else {
+		    	$('.sendmessagetable').dataTable().$('tr.td_selected').find('td').removeClass('td_selected');
+		        $(this).find('td').addClass('td_selected');
+		    }
+		});
 	});
 });
+
+var messageDelete = function(e){
+	
+	// 선택된 row를 읽어온다.
+	selectedRow = $('.takemessagetable').dataTable().$('tr.row_selected');
+	selectedId = new Array();
+	
+	// 선택된 북마크의 아이디를 배열에 삽입한다.
+	for(var i=0; i<selectedRow.length; i++){
+		selectedId.push($(selectedRow[i]).find('td:first').text());
+	}
+	
+	$.ajax({
+		url:'deleteMessage',
+		dataType:'json',
+		data:{
+			messageId:selectedId.toString()
+		}
+	}).done(function(data){
+		for(var i=0; i<selectedRow.length; i++){
+			$('.takemessagetable').dataTable().fnDeleteRow(selectedRow[i]);
+		}
+	});
+};
+
+var sendmessageDelete = function(e){
+	
+	// 선택된 row를 읽어온다.
+	selectedRow = $('.sendmessagetable').dataTable().$('tr.row_selected');
+	selectedId = new Array();
+	
+	// 선택된 북마크의 아이디를 배열에 삽입한다.
+	for(var i=0; i<selectedRow.length; i++){
+		selectedId.push($(selectedRow[i]).find('td:first').text());
+	}
+	
+	$.ajax({
+		url:'deleteMessage',
+		dataType:'json',
+		data:{
+			messageId:selectedId.toString()
+		}
+	}).done(function(data){
+		for(var i=0; i<selectedRow.length; i++){
+			$('.sendmessagetable').dataTable().fnDeleteRow(selectedRow[i]);
+		}
+	});
+};
 
 
 $('#messageSendButton').click(function(e){
 	var messageFriendId = $('#messageFriendId').val();
 	var messageContents = $('#messageContents').val();
 
-	console.log('받는 사람: ' + friendId);
-	console.log('내용: ' + message);
+	console.log('받는 사람: ' + messageFriendId);
+	console.log('내용: ' + messageContents);
 	
-	$(this).hide();
+	if(messageFriendId == ""){
+		alert("받는 아이디를 입력하세요.");
+	}
+	
+	else if(messageContents == ""){
+		alert("메시지 내용을 입력하세요.");
+	}
+	
+	else {
+		//$(this).hide();
 
-	$('#messageSendingButton').show();
+		//$('#messageSendingButton').show();
+		
+		$.ajax({
+			url: 'sendMessage',
+			dataType:'json',
+			data: {
+					messageFriendId:messageFriendId,
+					messageContents:messageContents
+		   		  }
+		}).done(function(data){
+			console.log(data);
+			$('#messageSendingButton').hide();
+			$(this).show();
+		});
+	}
 	
-	$.ajax({
-		url: 'sendMessage',
-		dataType:'json',
-		data: {
-				messageFriendId:messageFriendId,
-				messageContents:messageContents
-	   		  }
-	}).done(function(data){
-		console.log(data);
-		$('#messageSendingButton').hide();
-		$(this).show();
-	});
 });
+
+
+var socket;
+
+$(window).load(function(){
+	var userId = $('li[id="memberId"]').text().trim();
+	if(userId){
+		/**
+		사용자는 로그인할때만 메시지 서버에 등록한다.*/
+		$.ajax({
+			url: 'isContains',
+			dataType:'json',
+			data:{
+				userId:userId,
+			}
+		}).done(function(data){
+			if(data == false){ // 로그인 시
+				socketioConnection(userId);
+			}
+		});
+	}
+	
+	window.onbeforeunload = goodbye;
+
+	function goodbye() {
+	    socket.emit('exit', {id:userId});
+	}
+	
+});	
+
+
+var socketioConnection = function(userId){
+	socket = io.connect('http://localhost:9090/message', {'sync disconnect on unload' : true});
+	socket.emit('userId', {id:userId});
+	socket.on('message', function(data){
+		console.log('쪽지: ' + data.msg);
+		$.noty.consumeAlert({
+			layout : 'topRight',
+			type : 'success',
+			dismissQueue : true
+		});
+		
+		alert('쪽지가 도착했습니다.');
+		$.noty.stopConsumeAlert();
+	});
+};
 
 
 /*$('#messageTableAllSelect').click(function(e){
@@ -265,28 +464,38 @@ $('#messageSendButton').click(function(e){
 	}
 });*/
 
-$(document).ready(function(){
+/*$(document).ready(function(){
 	
 		//var $checkTbl = $('#checkboxTbl');
-	var $checkTbl = $('.table table-striped table-bordered bootstrap-datatable takemessagetable');
+	var $checkTbl = $('#checkboxTestTbl');
+	//var $checkTbl = $('#checkboxTestTbl');
 		//$('.table table-hovor');
 	var num = 1;
-  	$('button#messageTableAllSelect').click(function(){
+  	$('#checkAll').click(function(){
   		console.log("클릭!!");
   		console.log("전:"+num);          		
+  		
   		if(num==1){
-  			$($('input:checkbox'),$checkTbl).attr('checked','checked');
+  			
   			//$('input[name=select]').attr('checked','checked');
+  			for(var i=0; i<messageForm.select.length; i++) {
+  	  			messageForm.select[i].checked = true;
+  	  		}
+  			$($('input:checkbox'),$checkTbl).attr('checked', 'checked');
+  			$('#checkAll').text('선택 해제');
   			num = num+1;
-  			$('button#messageTableAllSelect').text('선택 해제');
   		}
   		else{
-  			$($('input:checkbox'),$checkTbl).attr('checked', false);
+  			
   			//$('input[name=select]').attr('checked',false);
-  			num = num-1;
+  			for(var i=0; i<messageForm.select.length; i++) {
+  	  			messageForm.select[i].checked = false;
+  	  		}
+  			$($('input:checkbox'),$checkTbl).attr('checked', false);
   			$('button#messageTableAllSelect').text('전체 선택');
+  			num = num-1;
   		}
-  		console.log("후:"+num);     
+  		
   	});
   	
   	$("button#messageDelete").click(function(){
@@ -295,6 +504,15 @@ $(document).ready(function(){
     		alert("삭제할 리스트가 없습니다.");
     		
     	}
+    	
+    	// 1. 메시지 상세보기
+    	// 2. 메시지 보내기
+    	// 3. 메시지 선택, 전체 삭제
+    	
+    	// 4. 북마크 추천에서 친구 아이디 선택하기
+    	// 5. 북마크 이미 추천 되어있는 것 구분(alert)
+    	// 6. 미투데이 친구 불러오기
+    	
     	else {
     		var select = confirm("삭제하시겠습니까?");
     		if(select){
@@ -329,7 +547,7 @@ $(document).ready(function(){
 			
 		});
     };
-});
+});*/
 
 
 var deleteFriend = function(e){
@@ -473,7 +691,7 @@ function searchMember(userId) {
 	console.log(userId);
 	
 	$.ajax({
-		url: 'memberList', //// javascript same origin policy를 해결하기 위한 프록시
+		url: 'memberList', 
 		data: {
 			keyword:keyword,
 		}

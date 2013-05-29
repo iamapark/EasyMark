@@ -167,18 +167,20 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 	public void cancel(Friendship friendship) {
 		FriendDAO.getInstance().cancel(friendship);
 	}
+	
+	@Override
+	public void deleteMessage(String messageId) {
+		MessageDAO.getInstance().deleteMessage(messageId);
+	}
 
-	/*@Override
+	@Override
 	public Message getMessage(String messageId) {
 		Message message = new Message();
 		message = MessageDAO.getInstance().getMessage(messageId);
 		return message;
 	}
 
-	@Override
-	public void deleteMessage(String messageId) {
-		MessageDAO.getInstance().deleteMessage(messageId);
-	}*/
+	
 
 	// 신보미가 시킨것
 	@Override
@@ -217,12 +219,6 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 	public Member getKey(String userId) {
 		Member memberKey = FriendDAO.getInstance().getKey(userId);
 		return memberKey;
-	}
-
-	@Override
-	public void deleteMessage(String messageId) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

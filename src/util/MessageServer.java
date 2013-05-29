@@ -17,7 +17,7 @@ import com.nhncorp.mods.socket.io.impl.Namespace;
 import dto.Member;
 
 public class MessageServer {
-	/*private Vertx vt;
+	private Vertx vt;
 	private SocketIOServer io;
 	private HashMap<String, SocketIOSocket> sockets;
 	public static MessageServer server = null;
@@ -118,5 +118,5 @@ public class MessageServer {
 		}
 		
 		return loginMemberIdArray;
-	}*/
+	}
 }
