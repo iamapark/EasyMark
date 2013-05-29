@@ -295,7 +295,7 @@ var bookmarkRecommand = function() {
 	
 		console.log("123돌아가나?");
 		
-		
+		$('#recommend_friendId').val = "";
 		$('#recommend_url').val($(data).attr('bookMarkUrl'));
 		$('#recommend_name').val($(data).attr('bookMarkName'));
 		$('#recommend_descript').val($(data).attr('bookMarkDescript'));
@@ -413,20 +413,44 @@ $('#category').click(function(){
 $('#sendButton').click(function(){
 			
 		console.log("hi");
+		
+		/*var filename = $('#bookmarkIconImageFile').val();
+		var name = $('#modifyBookmarkName').val();
+		var url = $('#modifyBookmarkUrl').val();
+		var desc = $('#modifyBookmarkDescription').val();
+		var bookmarkId = $('#modifyBookMarkId').val();
+*/
+		var recommend_friendId = $('#recommend_friendId').val();
+		var recommend_url = $('#recommend_url').val();
+		var recommend_name = $('#recommend_name').val();
+		var recommend_descript = $('#recommend_descript').val();
+		
+		/*
+		alert('즐겨찾기를 친구에게 추천했습니다.');*/
+		console.log(recommend_friendId+";"+recommend_url+";"+recommend_name+";"+recommend_descript);
+		$.ajax({
+			url:'recommend',
+			dataType : 'json',
+			type:'POST',
+			data:{
+				recommend_friendId:$('#recommend_friendId').val(),
+				recommend_url: $('#recommend_url').val(),
+				recommend_name:$('#recommend_name').val(),
+				recommend_descript:$('#recommend_descript').val()
+			}
+		}).done(function(data){
+			console.log(data);
 			
-			$.ajax({
-				url:'recommend',
-				dataType:'json',
-				type:'POST',
-				data:{
-					recommend_friendId:$('#recommend_friendId').val(),
-					recommend_url: $('#recommend_url').val(),
-					recommend_name:$('#recommend_name').val(),
-					recommend_descript:$('#recommend_descript').val()
-				}
-			}).done(function(data){
+			/*if(data < 3){
+				alert('친구와의 북마크 추천을 확인하세요.');
+			}
+			else {
 				alert('즐겨찾기를 친구에게 추천했습니다.');
 				$('#bookMarkRecommand').modal('hide');
-			});
+			}*/
+		});
+		/*alert('즐겨찾기를 친구에게 추천했습니다.');
+		$('#bookMarkRecommand').modal('hide');*/
 	
 });
+

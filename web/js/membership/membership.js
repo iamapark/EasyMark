@@ -183,7 +183,6 @@ var bookmarkListDelete = function(e){
 			// 북마크 리스트에서 해당 row를 삭제한다.
 			$('.bookmarktable').dataTable().fnDeleteRow(selectedRow[i]);
 			// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
-			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('td:first').text() + '"]'));
 		}
 	});
 };
