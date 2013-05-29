@@ -55,8 +55,6 @@ CREATE TABLE "bookmark"
    FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT 
 );
 
-/*Called only by DBA or members of DBA group */
-CALL change_owner('design', 'DBA') ON CLASS db_authorizations;
 
 CREATE TABLE "friendship" 
 (
@@ -206,7 +204,6 @@ INSERT INTO speech_site (url, speech) VALUES ('http://www.daum.net', '다음');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.naver.com', '네이버');
 INSERT INTO speech_site (url, speech) VALUES ('http://nate.com', '네이트');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.facebook.com', '페이스북');
-INSERT INTO speech_site (url, speech) VALUES ('http://www.facebook.com', 'facebook');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.linkedin.com', '링크드인');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.twitter.com', '트위터');
 INSERT INTO speech_site (url, speech) VALUES ('http://www.donga.com/', '동아일보');
