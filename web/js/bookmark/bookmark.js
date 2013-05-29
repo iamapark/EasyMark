@@ -165,7 +165,7 @@ $('#modify').click(
 			}
 		});
 
-<<<<<<< HEAD
+
 //add 눌렀을 때 북마크 정보 추가
 $('#add').bind('click',function(e){
 	e.preventDefault();
@@ -218,104 +218,7 @@ $('#add').bind('click',function(e){
 			}
     	});
 	}
-});
-=======
-// add 눌렀을 때 북마크 정보 추가
-$('#add')
-		.bind(
-				'click',
-				function(e) {
-					e.preventDefault();
-					var filename = $('#addMarkForm').find('#addBookMarkImage')
-							.val();
-					var newLi;
-					var id, x, y, url;
->>>>>>> 66796410e78628aed81ba40be2961cad980ceadf
-
-					dataInfo = {
-						name : $('#addBookMarkName').val(),
-						url : $('#addBookMarkUrl').val(),
-						description : $('#addBookMarkDescription').val(),
-						category : $('#addBookMarkCategory').val()
-					};
-					if (filename == '') {
-						$
-								.ajax({
-									url : 'addMark',
-									dataType : 'json',
-									type : 'POST',
-									data : dataInfo
-
-								})
-								.done(
-										function(data) {
-											kaka = data;
-											id = data.id;
-											x = data.x;
-											y = data.y;
-											url = data.url;
-											$('#bookmarkAdd').modal('hide');
-											alert('북마크가 추가되었습니다!!');
-											newLi = '<li data-id="'
-													+ id
-													+ '" data-toggle="tooltip" title="'
-													+ dataInfo.name
-													+ '" data-row="'
-													+ x
-													+ '" data-col="'
-													+ y
-													+ '" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-											newLi += '<img id="img" href="'
-													+ url
-													+ '" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
-											newLi += '<div class="bookmarkIconInfo">'
-													+ dataInfo.name + '</div>';
-											newLi += '</li>';
-											gridster.add_widget(newLi, 1, 1);
-
-											kakaka.unbind('contextmenu');
-											init();
-											kaka = this;
-											keke = $(this);
-											kiki = newLi;
-
-										});
-					} else {
-						$("#addMarkForm")
-								.ajaxSubmit(
-										{
-											dataType : 'html',
-											success : function(data, rst) {
-												id = JSON.parse(data).id;
-												x = JSON.parse(data).x;
-												y = JSON.parse(data).y;
-												alert('북마크가 추가되었습니다.');
-												$('#bookmarkAdd').modal('hide');
-												newLi = '<li data-id="'
-														+ id
-														+ '" data-toggle="tooltip" title="'
-														+ dataInfo.name
-														+ '" data-row="'
-														+ x
-														+ '" data-col="'
-														+ y
-														+ '" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-												newLi += '<img id="img" href="'
-														+ dataInfo.url
-														+ '" src="'
-														+ JSON.parse(data).imgUrl
-														+ '" style="width:100%; height:100%;border-radius:20px;">';
-												newLi += '<div class="bookmarkIconInfo">'
-														+ dataInfo.name
-														+ '</div>';
-												newLi += '</li>';
-												gridster
-														.add_widget(newLi, 1, 1);
-												init();
-											}
-										});
-					}
-				});
+})
 
 // 북마크에서 마우스 오른쪽 버튼을 누르고 북마크 변경 탭을 클릭했을 때
 var bookmarkUpdate = function() {
@@ -432,7 +335,6 @@ var bookmarkUrlFocusOut = function() {
 		});
 	}
 };
-<<<<<<< HEAD
 //category 버튼 클릭
 $('#category').click(function(){
 	var categoryName=$('#categoryName').val();
@@ -456,46 +358,6 @@ $('#category').click(function(){
 				
 		});
 	});
-=======
-// category 버튼 클릭
-$('#category')
-		.click(
-				function() {
-
-					var i;
-					var category;
-
-					$
-							.ajax({
-								url : 'viewCategory',
-								dataType : 'json',
-							})
-							.done(
-									function(data) {
-										// 모든 아이콘 제거
-										gridster
-												.remove_widget($('li.bookmarkIcon'));
-										console.log(data.length);
-										// category 마다 아이콘 만들기
-										for (i = 0; i < data.length; i++) {
-											category = data[i];
-											newLi = '<li data-id="#" data-toggle="tooltip" title="'
-													+ category
-													+ '" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-											newLi += '<img id="img" href="#" src="#" style="width:100%; height:100%;border-radius:20px;">';
-											newLi += '<div class="bookmarkIconInfo">'
-													+ category + '</div>';
-											newLi += '</li>';
-											gridster.add_widget(newLi, 1, 1);
->>>>>>> 66796410e78628aed81ba40be2961cad980ceadf
-
-										}
-										$('#setting').modal('hide');
-										init();
-
-									});
-				});
-
 
 $('#sendButton').click(function(){
 			
