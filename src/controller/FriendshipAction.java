@@ -453,7 +453,7 @@ public class FriendshipAction {
 
 				// msgServer.sendMessage(friendId, message);
 
-				relayServer.sendMessage(friendId, contents);
+				//relayServer.sendMessage(friendId, contents);
 
 			} else { // 메시지 DB 등록 실패
 				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
