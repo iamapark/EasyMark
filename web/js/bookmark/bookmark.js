@@ -7,13 +7,21 @@ $(document).ready(function() {
 
 var init = function() {
 	// 북마크 아이콘에 마우스를 올릴 때와 벗어날 때 이벤트 핸들러 등록
-	$('.bookmarkIcon').mouseover(bookMarkDelete).mouseout(bookMarkOut);
+	$('.bookmarkIcon').mouseover(mouseOverBookmarkInfo).mouseout(bookMarkOut);
 
 	// 그리드스터 초기화
 	gridsterInitial();
 
 	// 북마크 아이콘을 더블 클릭했을 때 호출
 	$('img').dblclick(function() {
+		var bookmarkId = $(this).parent().data('id');
+		$.ajax({
+			url:'increaseFrequency',
+			dataType:'json',
+			data:{
+				bookmarkId: bookmarkId
+			}
+		});
 		var openwindow = window.open('about:blank');
 		openwindow.location.href = $(this).attr('href');
 	});
@@ -22,25 +30,25 @@ var init = function() {
 		title : '북마크',
 		items : [ {
 			label : '북마크 변경',
-			icon : '',
+			icon : 'images/change.png',
 			action : function() {
 				$('.contextMenuPlugin').remove();
 				bookmarkUpdate();
 			}
 		}, {
+			label : '북마크 추천',
+			icon : 'images/octo.png',
+			action : function() {
+				$('.contextMenuPlugin').remove();
+				bookmarkRecommand();
+			}
+		}, {
 			label : '북마크 삭제',
-			icon : '',
+			icon : 'images/delete.png',
 			action : function() {
 				$('.contextMenuPlugin').remove();
 				$('#invisibleDiv').remove();
 				bookmarkDelete();
-			}
-		}, {
-			label : '북마크 추천',
-			icon : '',
-			action : function() {
-				$('.contextMenuPlugin').remove();
-				bookmarkRecommand();
 			}
 		} ]
 	});
@@ -48,7 +56,7 @@ var init = function() {
 	$('#addBookMarkUrl').focusout(bookmarkUrlFocusOut);
 };
 var bookMarkInit = function(newEntry) {
-	$(newEntry).mouseover(bookMarkDelete).mouseout(bookMarkOut);
+	$(newEntry).mouseover(mouseOverBookmarkInfo).mouseout(bookMarkOut);
 };
 
 var bookMarkArrange = function(e) {
@@ -105,7 +113,7 @@ var bookMarkInfor = function(e) {
 	alert('좋아');
 
 };
-var bookMarkDelete = function(e) {
+var mouseOverBookmarkInfo = function(e) {
 	$id = $(this).attr('data-id');
 	$(this).find('.bookmarkIconInfo').show();
 };
@@ -166,6 +174,7 @@ $('#modify').click(
 		});
 
 
+
 //add 눌렀을 때 북마크 정보 추가
 $('#add').bind('click',function(e){
 	e.preventDefault();
@@ -218,7 +227,7 @@ $('#add').bind('click',function(e){
 			}
     	});
 	}
-})
+
 
 // 북마크에서 마우스 오른쪽 버튼을 누르고 북마크 변경 탭을 클릭했을 때
 var bookmarkUpdate = function() {
@@ -243,8 +252,13 @@ var bookmarkUpdate = function() {
 };
 
 // 북마크에서 마우스 오른쪽 버튼을 누르고 북마크 삭제 탭을 클릭했을 때
-var bookmarkDelete = function() {
-	var $bookId = $(this).attr('$id');
+var bookmarkDelete = function(id) {
+	var $bookId;
+	
+	if(id == null)
+		$bookId = $(this).attr('$id');
+	else
+		$bookId = id;
 
 	var flag = confirm('정말 삭제하시겠습니까??');
 	if (flag == true) {
@@ -257,6 +271,7 @@ var bookmarkDelete = function() {
 		}).done(function(data) {
 			gridster.remove_widget($('li[data-id="' + $bookId + '"]'));
 			// init();
+			return true;
 		});
 	}
 };
@@ -296,7 +311,7 @@ var gridsterInitial = function() {
 	gridster = $(".gridster > ul").gridster({
 		widget_margins : [ 10, 10 ],
 		widget_base_dimensions : [ 140, 140 ],
-		min_cols : 6,
+		min_cols : 8,
 		avoid_overlapped_widgets : true,
 		serialize_params : function($w, wgd) {
 			return {
@@ -335,6 +350,7 @@ var bookmarkUrlFocusOut = function() {
 		});
 	}
 };
+
 //category 버튼 클릭
 $('#category').click(function(){
 	var categoryName=$('#categoryName').val();
@@ -358,6 +374,37 @@ $('#category').click(function(){
 				
 		});
 	});
+
+
+// category 버튼 클릭
+$('#category').click(function() {
+
+	var i;
+	var category;
+
+		$.ajax({
+				url : 'viewCategory',
+				dataType : 'json',
+			}).done(function(data) {
+				// 모든 아이콘 제거
+				gridster.remove_widget($('li.bookmarkIcon'));
+				console.log(data.length);
+				// category 마다 아이콘 만들기
+				for (i = 0; i < data.length; i++) {
+					category = data[i];
+					newLi = '<li data-id="#" data-toggle="tooltip" title="'+ category+'" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+					newLi += '<img id="img" href="#" src="#" style="width:100%; height:100%;border-radius:20px;">';
+					newLi += '<div class="bookmarkIconInfo">'+category+'</div>';
+					newLi += '</li>';
+					gridster.add_widget(newLi, 1, 1);
+					}
+					$('#setting').modal('hide');
+					init();
+
+					});
+				});
+
+
 
 $('#sendButton').click(function(){
 			

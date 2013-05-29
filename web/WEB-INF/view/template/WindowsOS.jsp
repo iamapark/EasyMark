@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="dto.Member" %>    
 <% 
-	Member m = (Member)session.getAttribute("MEMBERINFO");
+	Member m = (Member)request.getAttribute("MEMBERINFO");
 	String imgUrl = m.getImgUrl(); 
 	String flag = request.getParameter("flag");
 	String display = null;

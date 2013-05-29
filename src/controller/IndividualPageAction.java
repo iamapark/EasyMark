@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
+import util.AdminServer;
 import util.FileWriter;
 import dto.BookMark;
 import dto.Category;
@@ -37,6 +38,10 @@ import dto.Member;
 
 @Controller
 public class IndividualPageAction {
+	
+	private void traffic(){
+		AdminServer.getInstance().trafficCount();
+	}
 
 	@RequestMapping("/addMark")
 	public ModelAndView addBookMark(
@@ -147,6 +152,7 @@ public class IndividualPageAction {
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
 
+		traffic();
 		return nextPage;
 	}
 
@@ -163,6 +169,8 @@ public class IndividualPageAction {
 		JSONArray dataJ = JSONArray.fromObject(bookMarkList);
 		request.setAttribute("result", dataJ);
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -179,6 +187,7 @@ public class IndividualPageAction {
 		request.setAttribute("result", bookMarkJ.toString());
 		nextPage.setViewName("result");
 
+		traffic();
 		return nextPage;
 	}
 
@@ -221,6 +230,8 @@ public class IndividualPageAction {
 		jobj.put("imgUrl", imgUrl);
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -242,8 +253,35 @@ public class IndividualPageAction {
 
 		request.setAttribute("result", Boolean.toString(true));
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
+	
+	// 북마크 한 번에 여러 개 지울 때
+	@RequestMapping("/deleteBookMarks")
+	public ModelAndView deleteMarks(HttpServletRequest request,
+			HttpServletResponse response, Img img,
+			@RequestParam(value = "bookmarks") String bookmarks) {
+		
+		ModelAndView nextPage = new ModelAndView();
+		
+		ArrayList<Integer> selectedIdList = new ArrayList<Integer>();
+		String[] selectedBookmarkId = bookmarks.split(",");
+		
+		for(String selectedId: selectedBookmarkId){
+			selectedIdList.add(Integer.parseInt(selectedId));
+		}
+		
+		new IndividualPageServiceImpl().deleteIcons(selectedIdList);
+		
+		request.setAttribute("result", Boolean.toString(true));
+		nextPage.setViewName("result");
+		
+		traffic();
+		return nextPage;
+	}
+	
 
 	@RequestMapping("/arrange")
 	public ModelAndView arrange(HttpServletRequest request,
@@ -270,6 +308,8 @@ public class IndividualPageAction {
 
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -330,6 +370,8 @@ public class IndividualPageAction {
 
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -355,6 +397,8 @@ public class IndividualPageAction {
 
 		request.setAttribute("result", "true");
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 	}
 
@@ -375,6 +419,8 @@ public class IndividualPageAction {
 		System.out.println("userId: " + userId);
 
 		nextPage.setViewName("result");
+		
+		traffic();
 		return nextPage;
 	}
 
@@ -435,11 +481,25 @@ public class IndividualPageAction {
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
 		
+		traffic();
 		return nextPage;
 	}
 	
-	
+	// 사용자가 북마크 아이콘을 더블 클릭하여 즐겨찾기 URL 페이지에 접속할 경우 해당 북마크 frequency를 +1 한다.
+	@RequestMapping("/increaseFrequency")
+	public ModelAndView increaseFrequency(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "bookmarkId") String bookmarkId) {
 
+		ModelAndView nextPage = new ModelAndView();
 
-
+		new IndividualPageServiceImpl().increaseFrequency(bookmarkId);
+		
+		request.setAttribute("result", "true");
+		nextPage.setViewName("result");
+		
+		traffic();
+		return nextPage;
+	}
 }

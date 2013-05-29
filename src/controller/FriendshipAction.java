@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
+import util.AdminServer;
 import dto.BookMark;
 import dto.BookMarkShip;
 import dto.Friendship;
@@ -24,6 +25,10 @@ import dto.Member;
 
 @Controller
 public class FriendshipAction {
+	
+	private void traffic(){
+		AdminServer.getInstance().trafficCount();
+	}
 	
 	@RequestMapping("/friend")
 	public ModelAndView friend(HttpServletRequest request, HttpServletResponse response) {
@@ -51,6 +56,8 @@ public class FriendshipAction {
 		JSONArray dataJ = JSONArray.fromObject(friendList);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 		
 		/*ModelAndView nextPage = new ModelAndView();
@@ -77,6 +84,8 @@ public class FriendshipAction {
 		JSONArray dataJ = JSONArray.fromObject(sendFriendReqList);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
+		
+		traffic();
 		return mav;
 		
 		/*ModelAndView nextPage = new ModelAndView();
@@ -104,6 +113,7 @@ public class FriendshipAction {
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 		
+		traffic();
 		return mav;
 			
 			/*ModelAndView nextPage = new ModelAndView();
@@ -126,6 +136,7 @@ public class FriendshipAction {
 		
 		mav.setViewName("result");
 		
+		traffic();
 		return mav;
 		
 		/*request.setAttribute("inWebList", recommendedWeb);
@@ -155,6 +166,7 @@ public class FriendshipAction {
 		System.out.println(dataJ.toString());
 		mav.setViewName("result");
 		
+		traffic();
 		return mav;
 		
 		
@@ -202,6 +214,7 @@ public class FriendshipAction {
 		request.setAttribute("result", "true");
 		nextPage.setViewName("result");
 
+		traffic();
 		return nextPage;
 	}
 	

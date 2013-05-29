@@ -552,8 +552,9 @@ function docReady(){
 
 	 // we use an inline data source in the example, usually data would
 	// be fetched from a server
-	var data = [], totalPoints = 300;
-	function getRandomData() {
+	var data = [], totalPoints = 1000;
+	getRandomData = function () {
+		console.log('getRandomData');
 		if (data.length > 0)
 			data = data.slice(1);
 
@@ -567,24 +568,31 @@ function docReady(){
 				y = 100;
 			data.push(y);
 		}
+		papa = data;
 
 		// zip the generated y values with the x values
-		var res = [];
-		for (var i = 0; i < data.length; ++i)
-			res.push([i, data[i]])
+		res = [];
+		for (var i = 0; i < data.length - 100; ++i)
+			res.push([i, 50]);
 		return res;
+	};
+	
+	j = function(){
+		for(var i=0; i<800; i++){
+			res.push([i, i]);
+		}
 	}
 
 	// setup control widget
-	var updateInterval = 30;
+	var updateInterval = 1000;
 	$("#updateInterval").val(updateInterval).change(function () {
 		var v = $(this).val();
 		if (v && !isNaN(+v)) {
 			updateInterval = +v;
 			if (updateInterval < 1)
 				updateInterval = 1;
-			if (updateInterval > 2000)
-				updateInterval = 2000;
+			//if (updateInterval > 2000)
+			//	updateInterval = 2000;
 			$(this).val("" + updateInterval);
 		}
 	});
@@ -597,7 +605,9 @@ function docReady(){
 			yaxis: { min: 0, max: 100 },
 			xaxis: { show: false }
 		};
+		
 		var plot = $.plot($("#realtimechart"), [ getRandomData() ], options);
+		
 		function update() {
 			plot.setData([ getRandomData() ]);
 			// since the axes don't change, we don't need to call plot.setupGrid()

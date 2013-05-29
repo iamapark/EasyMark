@@ -14,7 +14,7 @@
 				<li><a href="#setting_memberInfo" data-toggle="tab">회원정보</a></li>
 				<li><a href="#setting_bookmarkInfo" data-toggle="tab">북마크</a></li>
 				<li><a href="#setting_settings" data-toggle="tab">설정</a></li>
-				<li><a href="#setting_category" data-toggle="tab">카테고리</a></li>
+				<li><a href="#setting_categoryChange" data-toggle="tab">카테고리</a></li>
 
 			</ul>
 		</div>
@@ -23,7 +23,6 @@
 				style="border: 1px solid #ddd; padding-left: 10px;">
 				<div class="tab-pane active" id="setting_memberInfo">
 					<!-- 회원 개인 정보  & 탈퇴 신청<-->
-					</-->
 					<h4>회원정보</h4>
 					<form class="form-horizontal" action="updateMemberInfo"
 						id="updateMemberInfoForm" method="POST"
@@ -62,40 +61,12 @@
 						</div>
 						<button type="submit" class="btn btn-primary"
 							id="updateMemberButton">회원정보 수정</button>
+						<button class="btn btn-danger"
+							id="leaveMembership">회원 탈퇴</button>
+						<button class="btn btn-inverse"
+							id="logoutButton">로그 아웃</button>														
 					</form>
 				</div>
-
-
-				<div class="tab-pane" id="setting_bookmarkInfo">
-					<!-- 북마크 리스트 -->
-					<h4>북마크</h4>
-
-					<input type="text" name="bookMarkUrl" id="bookMarkUrl">
-
-
-
-
-
-				</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				<div class="tab-pane" id="setting_settings">
 					<!-- 비밀번호 변경, 디자인 변경 -->
 					<div>
@@ -115,52 +86,51 @@
 							<input type="file" id="backgroundImgFile"
 								name="backgroundImgFile">
 						</form>
-<<<<<<< HEAD
 			  	  	</div>
-				  	<div class="tab-pane" id="setting_bookmarkInfo">
-				  		<!-- 북마크 리스트 -->
-					  	북마크
-				  	</div>
-					<div class="tab-pane" id="setting_settings">
-						<!-- 비밀번호 변경, 디자인 변경 -->
-					  	<div>
-					  		<!-- 디자인 변경 -->
-					  		<h5>디자인 변경</h5>
-							<select id="designSelect" name="style">
-								<option value="MacOS">디자인 1: MacOS</option>
-								<option value="WindowsOS">디자인 2: WindowsOS</option>
-							</select>
-							<span id="designSelectNoti"></span>
-					 	</div>
-					 	<div>
-					  		<!-- 배경화면 변경 -->
-					  		<h5>배경화면 변경</h5>
-							<img id="bgImg" src="images/calendar.png" style="width:15%;"/><br>
-							<form action="updateBgImg" name="bgImgForm" id="bgImgForm" method="post" enctype="multipart/form-data">
-								<input type="file" id="backgroundImgFile" name="backgroundImgFile">
-							</form>
-							<span id="backgroundImgNoti"></span>
-					 	</div>
-				  	</div>
-				  	<div class="tab-pane" id="setting_category">
+			  	  	<div class="tab-pane" id="setting_category">
 				  		<h5>카테고리 추가</h5>
 				  		<form action="addCategory" name="addCategory" id="addCategory" method="post" enctype="multipart/form-data">
 				  			<input type="text" id="categoryName" name="categoryName">
 					  		<input type="button" id="category" name="category" value="add">
 					  	</form>
 				  	</div>
-=======
-						<span id="backgroundImgNoti"></span>
+		  	  	</div>
+				<div class="tab-pane" id="setting_bookmarkInfo">
+				  	<!-- 북마크 리스트 -->
+				  	<h1>북마크 리스트</h1>
+				  	
+				  	<div class="row-fluid sortable">		
+					<div class="box span12">
+					<div class="box-content">
+						<table id="setting_bookmarkList" class="table table-striped table-bordered bootstrap-datatable bookmarktable">
+						  <thead>
+							  <tr>
+							  	  <th>번호</th>
+								  <th>이름</th>
+								  <th>URL</th>
+								  <th>설명</th>
+								  <th>접속 횟수</th>
+							  </tr>
+						  </thead>
+						  <!-- <tbody id="MemberDataTable">
+							여기에 회원 정보가 들어간다.
+						  </tbody> -->
+					  </table>    
 					</div>
+					</div>
+					</div>	
+					<a onclick='bookmarkListDelete(this)' class='btn btn-danger' href='#bookmarkDeleteButton'>
+						선택 삭제
+					</a> 
+
 				</div>
-				<div class="tab-pane" id="setting_category">
+				<div class="tab-pane" id="setting_categoryChange">
 					<h5>카테고리 변경</h5>
 					<form action="viewCategory" name="viewCategory" id="viewCategory"
 						method="post" enctype="multipart/form-data">
 						<input type="button" id="category" name="category"
 							value="category">
 					</form>
->>>>>>> 66796410e78628aed81ba40be2961cad980ceadf
 				</div>
 			</div>
 		</div>

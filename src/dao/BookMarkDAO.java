@@ -113,5 +113,23 @@ public class BookMarkDAO {
 			e.printStackTrace();
 		}
 	}
+
+	public void deleteIcons(ArrayList<Integer> selectedIdList) {
+		try {
+			sqlMapper.delete("deleteIcons", selectedIdList);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void increaseFrequency(String bookmarkId) {
+		try {
+			sqlMapper.queryForObject("increaseFrequency", bookmarkId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }
