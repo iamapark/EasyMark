@@ -52,10 +52,9 @@ public class IndividualPageAction {
 			@RequestParam(value = "url") String url,
 			@RequestParam(value = "description") String description,
 			@RequestParam(value = "category") String category,
-			@RequestParam(value = "userId", required = false) String userId) {
+			@RequestParam(value = "userId", required = false) String userId) throws UnsupportedEncodingException {
 		System.out.println("addMark()!!");
 
-		System.out.println("name"+name);
 
 		System.out.println("userId: " + userId);
 
@@ -124,7 +123,7 @@ public class IndividualPageAction {
 
 		}
 
-		BookMark bookMark = new BookMark(0, name, url, description, userId,
+		BookMark bookMark = new BookMark(0, URLDecoder.decode(name, "utf-8"), url, description, userId,
 				status, posx, posy, imgUrl, 0, category);
 
 		try {
@@ -284,10 +283,10 @@ public class IndividualPageAction {
 	
 
 	@RequestMapping("/arrange")
-	public ModelAndView arrange(HttpServletRequest request,
+	public ModelAndView ararrangerange(HttpServletRequest request,
 			@RequestParam(value = "location") String location) {
 		ModelAndView nextPage = new ModelAndView();
-
+		System.out.println("location: " + location);
 		JSONObject json = (JSONObject) JSONSerializer.toJSON(location);
 
 		JSONObject result = null;
