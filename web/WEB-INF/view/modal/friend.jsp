@@ -23,8 +23,26 @@
 			  <li><a href="#friend_sendRequest" data-toggle="tab">내가 친구 요청한 리스트</a></li>
 			  <li><a href="#friend_takeRequest" data-toggle="tab">내가 친구 요청받은 리스트</a></li>
 			  <li><a href="#friend_BookMark" data-toggle="tab">추천받은 북마크 리스트</a></li>
-			  <li><a href="#e" data-toggle="tab">미투데이 친구 리스트</a></li>
-			</ul>
+			  <li><a href="#friend_me2day" data-toggle="tab">미투데이 친구 리스트</a><li>	
+			  	<%-- <%	String me2dayId1 = (String)session.getAttribute("MEMBERID"); 
+	               	String []me2dayId2 = me2dayId1.split("@"); 
+	                				
+	                String me2dayKey = (String)session.getAttribute("memberKey");
+	                
+					if(me2dayKey == "me2dayLogin"){
+	            %>
+	            	<%= me2dayKey %>
+			     	
+				<% 	}
+	                else {%>
+	                
+	          
+	                <%= me2dayKey %>
+	                <%} 
+	            %>	 --%>
+			  </ul>	
+			 
+			
 		</div>
 		
 		<div class="setting_content" >
@@ -169,7 +187,7 @@
 		  		
 		  				  		
 		  		<!-- 미투데이 친구 리스트 -->
-		  		<div class="tab-pane" id="e">
+		  		<div class="tab-pane" id="friend_me2day">
 		  			미투데이 친구 리스트
 		  		</div>
 		  		<!-- 미투데이 친구 리스트 종료 -->

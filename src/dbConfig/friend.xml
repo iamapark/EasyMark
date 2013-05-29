@@ -189,9 +189,6 @@
     	from member_info
     	where user_id=#userId#
   	</select>
-  	
-  	
-		
-
+  
 	 -->
 </sqlMap>

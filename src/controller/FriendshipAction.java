@@ -54,6 +54,9 @@ public class FriendshipAction {
 		else
 			me2dayKey = "Me2Login";	
 		
+		System.out.println(me2dayKey);
+		request.getSession().setAttribute("memberKey", me2dayKey);
+		
 		ArrayList<Member> friendList = null;
 		Friendship friend = new Friendship(userId, "", "친구");
 		friendList = new FriendshipServiceImpl().getFriendList(friend);
