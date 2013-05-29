@@ -126,7 +126,7 @@ public class RegisterDAO {
 
 	public boolean registerMe2DayMember(Member member) {
 		boolean flag = true;
-
+		
 		if (isExistMe2DayMember(member.getUserId())) {
 			System.out.println("이미 존재하는 미투데이 계정입니다.");
 			flag = false;

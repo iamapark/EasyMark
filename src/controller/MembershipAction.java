@@ -76,8 +76,8 @@ public class MembershipAction {
 
 		// dto Member 클래스를 사용하여 회원에 관한 정보를 객체에 담아 ibatis에 보낸다.
 		// 미투데이 계정으로 가입할 때는 일반 계정 사용자와 구분하기 위해 아이디에 @me2day를 붙인다.
-		Member member = new Member(userId + "@me2day", null, null, null, null,
-				userKey);
+		Member member = new Member(userId + "@me2day", null, null, null,
+				userKey, null, null);
 
 		// 사용자가 '수락합니다' 버튼을 눌렀을 경우
 		if (result.equals("true")) {
