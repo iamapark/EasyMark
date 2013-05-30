@@ -425,8 +425,29 @@ $('#sendButton').click(function(){
 		var recommend_name = $('#recommend_name').val();
 		var recommend_descript = $('#recommend_descript').val();
 		
-		/*
-		alert('즐겨찾기를 친구에게 추천했습니다.');*/
+		
+		/*$.ajax({
+			url:'recommendExist',
+			dataType : 'json',
+			type:'POST',
+			data:{
+				recommend_friendId:$('#recommend_friendId').val(),
+				recommend_url: $('#recommend_url').val(),
+				recommend_descript:$('#recommend_descript').val()
+			}
+		}).done(function(data){
+			console.log(data);
+			
+			if(data < 3){
+				alert('친구와의 북마크 추천을 확인하세요.');
+			}
+			else {
+				alert('즐겨찾기를 친구에게 추천했습니다.');
+				$('#bookMarkRecommand').modal('hide');
+			}
+		});*/
+		
+		alert('즐겨찾기를 친구에게 추천했습니다.');
 		console.log(recommend_friendId+";"+recommend_url+";"+recommend_name+";"+recommend_descript);
 		$.ajax({
 			url:'recommend',
@@ -441,13 +462,13 @@ $('#sendButton').click(function(){
 		}).done(function(data){
 			console.log(data);
 			
-			/*if(data < 3){
+			if(data < 3){
 				alert('친구와의 북마크 추천을 확인하세요.');
 			}
 			else {
 				alert('즐겨찾기를 친구에게 추천했습니다.');
 				$('#bookMarkRecommand').modal('hide');
-			}*/
+			}
 		});
 		/*alert('즐겨찾기를 친구에게 추천했습니다.');
 		$('#bookMarkRecommand').modal('hide');*/
