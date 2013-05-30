@@ -568,4 +568,15 @@ public class IndividualPageAction {
 		nextPage.setViewName("result");
 		return nextPage;
 	}
+	@RequestMapping("/categoryOptionUpdate")
+	public ModelAndView categoryUpdate(HttpServletRequest request,HttpServletResponse response){
+		ModelAndView nextPage = new ModelAndView();
+		String userId=(String)request.getSession().getAttribute("MEMBERID");
+		ArrayList<Category> categoryList=new ArrayList<>();
+		categoryList=new IndividualPageServiceImpl().categoryList(userId);
+		JSONArray dataJ = JSONArray.fromObject(categoryList);
+		request.setAttribute("result",dataJ);
+		nextPage.setViewName("result");
+		return nextPage;
+	}
 }

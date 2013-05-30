@@ -33,10 +33,7 @@
         	<label class="control-label" for="addBookMarkCategory">Category</label>
          	<div class="controls">
               	<select name="category" id="addBookMarkCategory">
-              		<option value="none">none</option>
-              		<c:forEach items="${sessionScope.categoryList}" var="category">
-              		<option value="${category.categoryName}">${category.categoryName}</option>
-              		</c:forEach>
+             	<!-- 이 위치에 옵션이 appendTO 된다 -->
               	</select>
             </div>
         </div>

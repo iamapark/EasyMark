@@ -74,6 +74,7 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	public ArrayList<Category> categoryList(String userId){
 		return CategoryDAO.getInstance().categoryList(userId);
 	}
+	//해당 카테고리 유무
 	public boolean isExistCategory(HashMap<String, Object> categoryInfo){
 		boolean flag=false;
 		flag=CategoryDAO.getInstance().isExistCategory(categoryInfo);
