@@ -17,6 +17,7 @@
 		<result property="category" column="category" />
 	</resultMap>
 
+
 	<insert id="addBookMark" parameterClass="BookMark">
 		insert into bookmark
 		(bookMark_name,bookmark_url,bookmark_descript,user_id,status,pos_x,pos_y,img_url,frequency,category)
@@ -155,9 +156,6 @@
 		order by
 		frequency
 	</select>
-	<delete id="deleteCategory" parameterClass="BookMark">
-		DELETE FROM category WHERE categoy_name=#bookMarkName# and user_id=#userId#
-	</delete>
 	
 	<select id="increaseFrequency" parameterClass="String">
 		SELECT 

@@ -105,6 +105,7 @@
 						<table id="setting_bookmarkList" class="table table-striped table-bordered bootstrap-datatable bookmarktable">
 						  <thead>
 							  <tr>
+							  	  <th>선택</th>
 							  	  <th>번호</th>
 								  <th>이름</th>
 								  <th>URL</th>
@@ -119,13 +120,16 @@
 					</div>
 					</div>
 					</div>	
+					<a onclick='bookmarkListAllSelection(this)' class='btn btn-primary' href='#bookmarkSelectionButton'>
+						전체 선택
+					</a> 
 					<a onclick='bookmarkListDelete(this)' class='btn btn-danger' href='#bookmarkDeleteButton'>
 						선택 삭제
 					</a> 
 
 				</div>
 				<div class="tab-pane" id="setting_categoryChange">
-					<h5>카테고리 변경</h5>
+					<h5>카테고리 추가</h5>
 					<form action="viewCategory" name="viewCategory" id="viewCategory"
 						method="post" enctype="multipart/form-data">
 						<input type="button" id="category" name="category"

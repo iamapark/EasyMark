@@ -104,16 +104,7 @@ public class BookMarkDAO {
 			e.printStackTrace();
 		}
 	}
-	//카테고리 북마크 삭제
-	public void deleteCategory(BookMark bookmark ){
-		try {
-			sqlMapper.delete("deleteCategory",bookmark);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
+	
 	public void deleteIcons(ArrayList<Integer> selectedIdList) {
 		try {
 			sqlMapper.delete("deleteIcons", selectedIdList);

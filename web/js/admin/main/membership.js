@@ -33,15 +33,19 @@ $('#memberTableAllSelect').click(function(e){
 	if($(this).text() == '전체 선택'){
 		$('input[name=memberSelector]').attr('checked', true);
 		$(this).text('선택 해제');
+		$('input[name=memberSelector]').parent().parent().addClass('row_selected');
 	}else{
 		$('input[name=memberSelector]').attr('checked', false);
+		$('input[name=memberSelector]').parent().parent().removeClass('row_selected');
 		$(this).text('전체 선택');
 	}
 });
 
 // 회원 테이블에서 선택 삭제를 클릭했을 때
 $('#selectDelete').click(function(e){
-	kaka = $('input[name=memberSelector]');
+	
+	selectedRow = $('.datatable').dataTable().$('tr.row_selected');
+
 	var data = $('input[name=memberSelector]').serialize();
 	
 	$.ajax({
@@ -50,14 +54,25 @@ $('#selectDelete').click(function(e){
 			members:data
 		}
 	}).done(function(data){
-		
-		for(var i=0; i<$('input[name=memberSelector]').length; i++){
-			if($('input[name=memberSelector]')[i].checked){
-				$('.datatable').dataTable().fnDeleteRow(i);
-			}
+		for(var i=0; i<selectedRow.length; i++){
+			// 북마크 리스트에서 해당 row를 삭제한다.
+			$('.datatable').dataTable().fnDeleteRow(selectedRow[i]);
+			// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
 		}
 	});
 });
+
+// 회원 테이블에서 왼쪽 셀렉트 박스를 선택했을 때 클래스를 각 row에 추가한다.
+// 삭제할 때 어떤 row가 선택되었는지 판별하기 위함임.
+var memberSelect = function(selected){
+	if ( $(selected).parent().parent().hasClass('row_selected') ) {
+		$(selected).parent().parent().removeClass('row_selected');
+    }
+    else {
+    	//$('.bookmarktable').dataTable().$('tr.row_selected').removeClass('row_selected');
+    	$(selected).parent().parent().addClass('row_selected');
+    }
+};
 
 // 회원 테이블에서 각 목록의 삭제 버튼을 클릭했을 때
 var memberDelete = function(e){
