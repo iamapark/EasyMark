@@ -19,12 +19,14 @@
 		<div class="setting_content" >
 			<div class="tab-content" style="border:1px solid #ddd; padding-left:10px;">
 				
+				
 				<!-- 받은 쪽지 리스트 -->
 				<div class="tab-pane active" id="message_takeList">
 					<h3>받은 쪽지</h3>
 					
 						<div class = "box-content">
-							<a onclick='messageDelete(this)' class='btn btn-small' href='#messageDeleteButton'>
+							<button id="takeMessageAllSelect" class="btn btn-primary btn-small">전체 선택</button>
+							<a id="takeMessageDelete" class='btn btn-small'>
 								선택삭제
 							</a>
 							<br/>
@@ -32,8 +34,7 @@
 							<table id="takeMessageTbl" class="table table-striped table-bordered bootstrap-datatable takemessagetable">
 								<thead>
 									<tr>
-									<!-- <input type="button" id="chk_all"> -->
-							          <th>No.</th>
+							          <th>선택</th>
 							          <th>ID</th>
 							          <th>Contents</th>
 							          <th>Date</th>                                          
@@ -49,11 +50,14 @@
 				</div>
 				<!-- 받은 쪽지 리스트 종료 -->
 				
+				
+				
 				<!-- 보낸 쪽지 리스트 -->
 				<div class="tab-pane" id="message_sendList">
 			  		<h3>보낸 쪽지</h3>
 			  			<div class = "box-content">
-			  				<a onclick='sendmessageDelete(this)' class='btn btn-small' href='#messageDeleteButton'>
+			  				<button id="sendMessageAllSelect" class="btn btn-primary btn-small">전체 선택</button>
+			  				<a id="sendMessageDelete" class='btn btn-small'>
 								선택삭제
 							</a>
 							<br/>
@@ -61,7 +65,7 @@
 							<table id="sendMessageTbl" class="table table-striped table-bordered bootstrap-datatable sendmessagetable">
 								<thead>
 									<tr>
-							          <th>No.</th>
+							          <th>선택</th>
 							          <th>ID</th> 
 							          <th>Contents</th> 
 							          <th>Date</th>                                          
@@ -76,6 +80,7 @@
 						
 		  		</div>
 		  		<!-- 보낸 쪽지 리스트 종료-->
+				
 				
 				<!-- 쪽지 보내기 -->
 				<div class="tab-pane" id="message_sending">
