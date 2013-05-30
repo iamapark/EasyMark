@@ -7,7 +7,7 @@ import dto.BookMarkShip;
 import dto.FriendStatus;
 import dto.Friendship;
 import dto.Member;
-//import dto.Message;
+import dto.Message;
 import dto.User;
 
 /**
@@ -69,23 +69,23 @@ public interface FriendshipServiceIF {
 	public ArrayList<Member> sendFriendReqList(Friendship friendship);
 	
 	public void deleteMessage(String messageId);
-	//public Message getMessage(String contents);
+	public Message getMessage(String contents);
 	
-	//public ArrayList<Message> getOutBox(String userId);
+	public ArrayList<Message> getOutBox(String userId);
 
 	/**
 	 * 받은 쪽지 리스트
 	 * @param String 사용자 아이디
 	 * @return ArrayList<Message> 쪽지 리스트
 	 */
-	//public ArrayList<Message> getInBox(String userId);
+	public ArrayList<Message> getInBox(String userId);
 
 	/**
 	 * 특정 사용자에게 쪽지를 보낸다.
 	 * @param Message 보내는 쪽지에 대한 정보가 담겨 있는 변수
 	 * @return int
 	 */
-	//public boolean sendMessage(Message message);
+	public boolean sendMessage(Message message);
 	//public void sendMessage(Message message);
 	/**
 	 * 쪽지 상세 내용을 불러온다.
@@ -133,6 +133,6 @@ public interface FriendshipServiceIF {
 	
 	public BookMark selectBookMark(int bookMarkId);
 	
-	
+	public boolean bookMarkExist(BookMarkShip bookmarkship);
 	
 }

@@ -136,10 +136,11 @@ $('a[href="#setting_bookmarkInfo"]').click(function() {
 	}).done(function(data) {
 		for(var i=0; i<data.length; i++){
 			bm = data[i];
-			$('.bookmarktable').dataTable().fnAddData([bm.bookMarkId, bm.bookMarkName, bm.bookMarkUrl, bm.bookMarkDescript, bm.frequency]);
+			var select = "<input type='checkbox' onchange='bookmarkSelect(this)' name='bookmarkSelector' value='" + bm.bookMarkId + "'></input>";
+			$('.bookmarktable').dataTable().fnAddData([select, bm.bookMarkId, bm.bookMarkName, bm.bookMarkUrl, bm.bookMarkDescript, bm.frequency]);
 		}
 		
-		$("#setting_bookmarkList tbody tr").on('click', function( e ) {
+		/*$("#setting_bookmarkList tbody tr").on('click', function( e ) {
 			keke = $(this);
 		    if ( $(this).hasClass('row_selected') ) {
 		        $(this).removeClass('row_selected');
@@ -156,34 +157,41 @@ $('a[href="#setting_bookmarkInfo"]').click(function() {
 		    	$('.bookmarktable').dataTable().$('tr.td_selected').find('td').removeClass('td_selected');
 		        $(this).find('td').addClass('td_selected');
 		    }
-		});
+		});*/
 	});
 });
+
+var bookmarkSelect = function(selected){
+	console.log('selec');
+	if ( $(selected).parent().parent().hasClass('row_selected') ) {
+		$(selected).parent().parent().removeClass('row_selected');
+    }
+    else {
+    	$(selected).parent().parent().addClass('row_selected');
+    }
+};
 
 //북마크 리스트에서 삭제 버튼을 클릭했을 때
 var bookmarkListDelete = function(e){
 	
 	// 선택된 row를 읽어온다.
 	selectedRow = $('.bookmarktable').dataTable().$('tr.row_selected');
-	selectedId = new Array();
 	
-	// 선택된 북마크의 아이디를 배열에 삽입한다.
-	for(var i=0; i<selectedRow.length; i++){
-		selectedId.push($(selectedRow[i]).find('td:first').text());
-	}
-	
+	var data = $('input[name=bookmarkSelector]').serialize();
+
 	$.ajax({
 		url:'deleteBookMarks',
 		dataType:'json',
 		data:{
-			bookmarks:selectedId.toString()
+			bookmarks:data
 		}
 	}).done(function(data){
 		for(var i=0; i<selectedRow.length; i++){
 			// 북마크 리스트에서 해당 row를 삭제한다.
 			$('.bookmarktable').dataTable().fnDeleteRow(selectedRow[i]);
+			
 			// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
-			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('td:first').text() + '"]'));
+			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('input').attr('value') + '"]'));
 		}
 	});
 };
@@ -216,3 +224,16 @@ $('#logoutButton').click(function(e){
 	e.preventDefault();
 	location.href = 'logout';
 });
+
+//북마크 테이블에서 전체 선택을 클릭했을 때
+var bookmarkListAllSelection = function(e){
+	if($(e).text().trim() == '전체 선택'){
+		$('input[name=bookmarkSelector]').attr('checked', true);
+		$('input[name=bookmarkSelector]').parent().parent().addClass('row_selected');
+		$(e).text('선택 해제');
+	}else{
+		$('input[name=bookmarkSelector]').attr('checked', false);
+		$('input[name=bookmarkSelector]').parent().parent().removeClass('row_selected');
+		$(e).text('전체 선택');
+	}
+};

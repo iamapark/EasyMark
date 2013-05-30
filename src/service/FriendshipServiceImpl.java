@@ -8,11 +8,13 @@ package service;
 import java.util.ArrayList;
 
 import dao.FriendDAO;
+import dao.MessageDAO;
 import dto.BookMark;
 import dto.BookMarkShip;
 import dto.FriendStatus;
 import dto.Friendship;
 import dto.Member;
+import dto.Message;
 import dto.User;
 
 public class FriendshipServiceImpl implements FriendshipServiceIF {
@@ -118,14 +120,14 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 		FriendDAO.getInstance().deleteFriend(friendship);
 	}
 
-	/*@Override
+	@Override
 	public ArrayList<Message> getOutBox(String userId) {
 		ArrayList<Message> outBoxList = null;
 		outBoxList = MessageDAO.getInstance().outBox(userId);
 		return outBoxList;
-	}*/
+	}
 
-	/*@Override
+	@Override
 	public ArrayList<Message> getInBox(String userId) {
 		ArrayList<Message> inBoxList = null;
 		inBoxList = MessageDAO.getInstance().inBox(userId);
@@ -137,7 +139,7 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 		return MessageDAO.getInstance().sendMessage(message);
 	}
 
-	@Override
+	/*	@Override
 	public Message getMessageDatail(int num) {
 		// TODO Auto-generated method stub
 		return null;
@@ -165,18 +167,20 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 	public void cancel(Friendship friendship) {
 		FriendDAO.getInstance().cancel(friendship);
 	}
+	
+	@Override
+	public void deleteMessage(String messageId) {
+		MessageDAO.getInstance().deleteMessage(messageId);
+	}
 
-	/*@Override
+	@Override
 	public Message getMessage(String messageId) {
 		Message message = new Message();
 		message = MessageDAO.getInstance().getMessage(messageId);
 		return message;
 	}
 
-	@Override
-	public void deleteMessage(String messageId) {
-		MessageDAO.getInstance().deleteMessage(messageId);
-	}*/
+	
 
 	// 신보미가 시킨것
 	@Override
@@ -218,9 +222,9 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 	}
 
 	@Override
-	public void deleteMessage(String messageId) {
-		// TODO Auto-generated method stub
-		
+	public boolean bookMarkExist(BookMarkShip bookmarkship) {
+		boolean flag = FriendDAO.getInstance().bookMarkExist(bookmarkship);
+		return flag;
 	}
 
 }

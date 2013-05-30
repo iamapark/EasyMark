@@ -1,0 +1,78 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import dto.Friendship;
+import dto.Member;
+import dto.Message;
+
+public class MessageDAO {
+	private static MessageDAO instance = null;
+	private SqlMapClient sqlMapper = null;
+
+	public static MessageDAO getInstance(){
+		if(instance == null)
+			instance = new MessageDAO();
+		return instance;
+	}
+
+	private MessageDAO(){
+		sqlMapper = DAOParser.getParser();
+	}
+		
+
+	public ArrayList<Message> outBox(String userId){
+		ArrayList<Message> outBoxList = null;
+		try {
+			outBoxList = (ArrayList<Message>) sqlMapper.queryForList("outBox", userId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return outBoxList;
+	}
+	
+	public ArrayList<Message> inBox(String userId){
+		ArrayList<Message> inBoxList = null;
+		try {
+			inBoxList = (ArrayList<Message>) sqlMapper.queryForList("inBox", userId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return inBoxList;
+	}
+
+	public Message getMessage(String contents){
+		Message message = new Message();
+		try {
+			message = (Message) sqlMapper.queryForObject("getMessage", contents);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return message;
+	}
+		
+	public boolean sendMessage(Message message) {
+		boolean flag = false;
+		try {
+			sqlMapper.insert("sendMessage", message);
+			flag = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return flag;
+	}
+	
+	public void deleteMessage(String messageId){
+		try {
+			sqlMapper.delete("deleteMessage", messageId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}

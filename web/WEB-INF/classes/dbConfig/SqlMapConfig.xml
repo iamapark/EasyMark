@@ -13,7 +13,7 @@
 	<typeAlias alias="BookMark" type="dto.BookMark"/>
 
 	<typeAlias alias="Category" type="dto.Category"/>
-
+	<typeAlias alias="Message" type="dto.Message"/>
 
 	<typeAlias alias="MemberTable" type="dto.MemberTable"/>
 	<typeAlias alias="MemberInfo" type="dto.MemberInfo"/>

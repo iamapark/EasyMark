@@ -34,6 +34,7 @@ $('#menu_membership').click(function(e){
 	$.ajax({
 		url:'fillMemberTable'
 	}).done(function(data){
+		console.log(data);
 		var memberData = JSON.parse(data);
 		var action = null;
 		var select = null;
@@ -46,13 +47,12 @@ $('#menu_membership').click(function(e){
 						"<i class='icon-trash icon-white'></i>"+ 
 							"Delete"+
 					"</a>";
-			select = "<input type='checkbox' name='memberSelector' value='" + memberData[i].userId + "'></input>";
+			select = "<input type='checkbox' onchange='memberSelect(this)' name='memberSelector' value='" + memberData[i].userId + "'></input>";
 			$('.datatable').dataTable().fnAddData([select, memberData[i].userId, memberData[i].name, memberData[i].registerDate, memberData[i].email, memberData[i].bookMarkCount, action]);
 		}
 		
 		//$('a[href="#memberInfo"]').click(getMemberInfo);
 		//$('a[href="#memberDeleteButton"]').click(memberDelete);
-		
 	});
 	
 	// 회원 테이블을 화면에 뿌린다.
