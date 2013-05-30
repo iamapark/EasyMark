@@ -29,14 +29,19 @@
 		WHERE user_id=#userId#
 	</select>
 	
-	
-	
-	<select id="isExistCategory" parameterClass="String" resultClass="String">
+	<select id="isExistCategory" parameterClass="java.util.HashMap" resultClass="Category">
 		SELECT 
-		* 
+			category_id,
+			category_name,
+			user_id
 		FROM category 
-		WHERE category_name=#categoryName#
+		WHERE category_name=#categoryName# AND user_id=#userId#
 	</select>
+	
+	<delete id="deleteCategory" parameterClass="java.util.HashMap">
+		DELETE FROM category WHERE category_name=#categoryName# AND user_id=#userId#
+	</delete>
+	
 	
 	
 </sqlMap>

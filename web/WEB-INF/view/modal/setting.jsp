@@ -125,7 +125,7 @@
 
 				</div>
 				<div class="tab-pane" id="setting_categoryChange">
-					<h5>카테고리 변경</h5>
+					<h5>카테고리 추가</h5>
 					<form action="viewCategory" name="viewCategory" id="viewCategory"
 						method="post" enctype="multipart/form-data">
 						<input type="button" id="category" name="category"

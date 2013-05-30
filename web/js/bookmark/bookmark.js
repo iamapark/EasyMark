@@ -355,7 +355,7 @@ var bookmarkUrlFocusOut = function() {
 	}
 };
 
-//category 버튼 클릭
+//category add 버튼 클릭
 $('#category').click(function(){
 	var categoryName=$('#categoryName').val();
 		$.ajax({
@@ -368,8 +368,8 @@ $('#category').click(function(){
 			id = data.id; x = data.x; y = data.y; imgUrl = data.imgUrl, categoryName=data.categoryName;
 			$('#setting').modal('hide');
 			alert('카테고리가 추가되었습니다!!');
-			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+categoryName+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-				newLi += '<img id="img" src="'+imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
+			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+ categoryName +'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+				newLi += '<img id="img" src="'+ imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">' + categoryName +'</div>';
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
@@ -380,7 +380,7 @@ $('#category').click(function(){
 	});
 
 
-// category 버튼 클릭
+// category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
 $('#category').click(function() {
 
 	var i;
@@ -430,4 +430,27 @@ $('#sendButton').click(function(){
 			});
 	
 });
+
+$('#categoryName').keyup(function(){
+	console.log("isExistCategoryName");
+	var categoryName=$('#categoryName').val();
+		
+	$.ajax({
+				url:'isExistCategory',
+				dataType:'json',
+				data:{
+					categoryName: categoryName
+				}
+		}).done(function(data){
+			if(data.flag==true){//카터고리 겹치면 비활성화
+				alert('카테고리 이름 겹쳐용');
+				$('#category').attr('disabled','disabled');
+			}else{//카터고리 추가 가능하면
+				$('#category').removeAttr('disabled');
+			}
+			
+		});
+	
+});
+
 

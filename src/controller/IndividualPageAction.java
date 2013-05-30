@@ -244,8 +244,12 @@ public class IndividualPageAction {
 		//만약 category 삭제하는 거면 category Table에서도 제거
 		bookmark=new IndividualPageServiceImpl().getBookMark(bookMarkId);
 		if(bookmark.getCategory().equals("")){
+			HashMap<String, Object> category=new HashMap<>();
+			category.put("categoryName",bookmark.getBookMarkName());
+			category.put("userId",bookmark.getUserId());
 			//category 삭제
-			new IndividualPageServiceImpl().deleteCategory(bookmark);
+			System.out.println("category삭제()");
+			new IndividualPageServiceImpl().deleteCategory(category);
 		}
 
 		new IndividualPageServiceImpl().deleteIcon(bookMarkId);
@@ -424,7 +428,6 @@ public class IndividualPageAction {
 	}
 
 	//카테고리 추가
-	//isExistCategory 써서 중복된 category add 안되게 해야한다
 	@RequestMapping("/addCategory")
 	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
 															   @RequestParam(value="userId",required=false)String userId){
@@ -499,6 +502,26 @@ public class IndividualPageAction {
 		nextPage.setViewName("result");
 		
 		traffic();
+		return nextPage;
+	}
+	//카테고리 추가할 때 겹치면 추가 안함
+	@RequestMapping("/isExistCategory")
+	public ModelAndView isExistCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName){
+		System.out.println("isExistCategory()");
+		ModelAndView nextPage = new ModelAndView();
+		boolean flag=false;
+		String userId=(String)request.getSession().getAttribute("MEMBERID");
+		HashMap<String, Object> categoryInfo = new HashMap<String, Object>();
+		categoryInfo.put("userId", userId);
+		categoryInfo.put("categoryName", categoryName);
+		flag=new IndividualPageServiceImpl().isExistCategory(categoryInfo);
+		System.out.println("categoryName : "+categoryName);
+		System.out.println("flag : "+flag);
+		JSONObject jobj = new JSONObject();
+		jobj.put("flag", flag);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
 		return nextPage;
 	}
 }

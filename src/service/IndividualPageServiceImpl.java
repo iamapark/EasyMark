@@ -67,16 +67,16 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		return CategoryDAO.getInstance().addCategory(category);
 	}
 	//user의 category delete
-	public void deleteCategory(BookMark bookmark){
-		BookMarkDAO.getInstance().deleteCategory(bookmark);
+	public void deleteCategory(HashMap<String, Object> category){
+		CategoryDAO.getInstance().deleteCategory(category);
 	}
 	//user의 categoryList
 	public ArrayList<Category> categoryList(String userId){
 		return CategoryDAO.getInstance().categoryList(userId);
 	}
-	public boolean isExistCategory(String categoryName){
+	public boolean isExistCategory(HashMap<String, Object> categoryInfo){
 		boolean flag=false;
-		flag=CategoryDAO.getInstance().isExistCategory(categoryName);
+		flag=CategoryDAO.getInstance().isExistCategory(categoryInfo);
 		return flag;
 	}
 	

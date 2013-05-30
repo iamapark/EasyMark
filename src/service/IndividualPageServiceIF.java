@@ -52,8 +52,8 @@ public interface IndividualPageServiceIF {
 	 */
 	public void informEasyMark(String userId);
 	public int addCategory(Category category);
-	public void deleteCategory(BookMark bookmark);
+	public void deleteCategory(HashMap<String, Object> category);
 	public ArrayList<Category> categoryList(String userId);
-	public boolean isExistCategory(String categoryName);
+	public boolean isExistCategory(HashMap<String, Object> categoryInfo);
 	
 }
