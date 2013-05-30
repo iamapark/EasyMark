@@ -105,6 +105,7 @@
 						<table id="setting_bookmarkList" class="table table-striped table-bordered bootstrap-datatable bookmarktable">
 						  <thead>
 							  <tr>
+							  	  <th>선택</th>
 							  	  <th>번호</th>
 								  <th>이름</th>
 								  <th>URL</th>
@@ -119,6 +120,9 @@
 					</div>
 					</div>
 					</div>	
+					<a onclick='bookmarkListAllSelection(this)' class='btn btn-primary' href='#bookmarkSelectionButton'>
+						전체 선택
+					</a> 
 					<a onclick='bookmarkListDelete(this)' class='btn btn-danger' href='#bookmarkDeleteButton'>
 						선택 삭제
 					</a> 

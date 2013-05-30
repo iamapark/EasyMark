@@ -99,6 +99,7 @@ public class AdminAction {
 		
 		for(String a:ar){
 			idList.add(a.split("=")[1]);
+			System.out.println("id: " + a.split("=")[1]);
 		}
 		
 		new AdminServiceImpl().deleteMembers(idList);

@@ -56,27 +56,27 @@ CREATE TABLE "bookmark"
 );
 
 
-CREATE TABLE "friendship" 
+CREATE TABLE friendship 
 (
-   "friendship_id" INTEGER AUTO_INCREMENT(1, 1) NOT NULL, 
-   "user_id" CHARACTER VARYING(30), 
-   "friend_id" CHARACTER VARYING(30), 
-   "status" CHARACTER VARYING(30), 
-   CONSTRAINT pk_friendship_friendship_id PRIMARY KEY("friendship_id"), 
-   FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT 
+	friendship_id INTEGER AUTO_INCREMENT(1, 1)NOT NULL, 
+	user_id CHARACTER VARYING(30), 
+	friend_id CHARACTER VARYING(30), 
+	[status] CHARACTER VARYING(30), 
+	FOREIGN KEY(user_id)REFERENCES member(user_id)ON DELETE CASCADE ON UPDATE RESTRICT, 
+	CONSTRAINT pk_friendship_friendship_id PRIMARY KEY(friendship_id)
 );
 
 
-CREATE TABLE "message" 
+CREATE TABLE message 
 (
-   "message_id" INTEGER AUTO_INCREMENT NOT NULL, 
-   "user_id" CHARACTER VARYING(30), 
-   "friend_id" CHARACTER VARYING(30), 
-   "title" CHARACTER VARYING(50), 
-   "contents" CHARACTER VARYING(1073741823), 
-   "message_date" DATE, 
-   FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT, 
-   CONSTRAINT pk_message_message_id PRIMARY KEY("message_id") 
+	message_id INTEGER AUTO_INCREMENT(1, 1)NOT NULL, 
+	user_id CHARACTER VARYING(30), 
+	friend_id CHARACTER VARYING(30), 
+	title CHARACTER VARYING(50), 
+	contents CHARACTER VARYING(1073741823), 
+	message_date DATE, 
+	FOREIGN KEY(user_id)REFERENCES member(user_id)ON DELETE CASCADE ON UPDATE RESTRICT, 
+	CONSTRAINT pk_message_message_id PRIMARY KEY(message_id)
 );
 
 

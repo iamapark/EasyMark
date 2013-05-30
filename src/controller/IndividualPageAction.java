@@ -302,9 +302,18 @@ public class IndividualPageAction {
 		ArrayList<Integer> selectedIdList = new ArrayList<Integer>();
 		String[] selectedBookmarkId = bookmarks.split(",");
 		
-		for(String selectedId: selectedBookmarkId){
-			selectedIdList.add(Integer.parseInt(selectedId));
+		String ar[] = bookmarks.split("&");
+		
+		for(String a:ar){
+			selectedIdList.add(Integer.parseInt(a.split("=")[1]));
+			System.out.println("id: " + a.split("=")[1]);
 		}
+		
+		
+		/*for(String selectedId: selectedBookmarkId){
+			selectedIdList.add(Integer.parseInt(selectedId));
+			System.out.println("selectedId: " + selectedId);
+		}*/
 		
 		new IndividualPageServiceImpl().deleteIcons(selectedIdList);
 		
