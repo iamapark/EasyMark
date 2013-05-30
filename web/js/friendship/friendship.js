@@ -118,6 +118,7 @@ $('#friendTab li:eq(3) a').click(function (e){
 			 		 "거절"+
 			 		 "</a>";
 			$('.inwebtable').dataTable().fnAddData([memberData[i].userId, memberData[i].bookMarkUrl, memberData[i].bookMarkName, action]);
+		
 		}
 	});
 });
@@ -127,10 +128,9 @@ $('#friendTab li:eq(3) a').click(function (e){
 <!-- friend MODAL의 네번째 tab(첫번째 tab) : 북마크 추천 받은 목록 -->*/
 $('#webSiteTab li:eq(0) a').click(function (e){	
 	console.log("받은");
-	//$('.inwebtable').dataTable().fnClearTable();
 	//$('.outwebtable').dataTable().fnClearTable();
-	//$('.inwebtable').dataTable().fnClearTable();
-	//$('.inwebtable').dataTable().fnOpen();
+	$('.inwebtable').dataTable().fnClearTable();
+	
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
@@ -148,6 +148,7 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 					 "</a>";
 			$('.inwebtable').dataTable().fnAddData([memberData[i].userId, memberData[i].bookMarkUrl, memberData[i].bookMarkName, action]);
 		}
+		$('.inwebtable').dataTable().fnOpen();
 	});
 	
 });
@@ -331,6 +332,8 @@ var recommendAccept = function(e){
 		}
 	}).done(function(data){
 		$('.inwebtable').dataTable().fnDeleteRow(count);
+		
+		// 바탕화면에 북마크 아이콘을 생성하는 부분이 들어가야 함.
 	}); 
 };
 

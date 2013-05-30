@@ -36,6 +36,7 @@ public class FriendshipAction {
 		AdminServer.getInstance().trafficCount();
 	}
 	
+	// 친구 목록 불러오기
 	@RequestMapping("/friend")
 	public ModelAndView friend(HttpServletRequest request, HttpServletResponse response) {
 	
@@ -71,14 +72,9 @@ public class FriendshipAction {
 		
 		traffic();
 		return mav;
-		
-		/*ModelAndView nextPage = new ModelAndView();
-		nextPage.setViewName("view/modal/friend");
-		request.setAttribute("friendList", friendList);
-		request.getSession().setAttribute("memberKey", me2dayKey);
-		return nextPage;*/
 	}
 	
+	// 친구 요청 보낸 사용자 목록
 	@RequestMapping("/sendFriendReq")
 	public ModelAndView sendFriendReq(HttpServletRequest request, HttpServletResponse response) {
 
@@ -99,11 +95,6 @@ public class FriendshipAction {
 		
 		traffic();
 		return mav;
-		
-		/*ModelAndView nextPage = new ModelAndView();
-		nextPage.setViewName("views/friendship/sendFriendReq");
-		request.setAttribute("sendFriendReqList", sendFriendReqList);
-		return nextPage;*/
 	}
 	
 	// 친구 요청 받은 사용자 목록
@@ -127,13 +118,9 @@ public class FriendshipAction {
 		
 		traffic();
 		return mav;
-			
-			/*ModelAndView nextPage = new ModelAndView();
-			nextPage.setViewName("views/friendship/takeFriendReq.jsp");
-			request.setAttribute("takeFriendReqList", takeFriendReqList);
-			return nextPage;*/
 	}
 	
+	// 추천 받은 북마크 목록 불러오기
 	@RequestMapping("/recommendInWeb")
 	public ModelAndView recommendInWeb(HttpServletRequest request, HttpServletResponse response) {
 
@@ -144,8 +131,7 @@ public class FriendshipAction {
 		recommendedWeb = new FriendshipServiceImpl().inWeb(userId);
 		
 		ModelAndView mav = new ModelAndView();
-		/*request.setAttribute("result", "true");
-		*/
+	
 		JSONArray dataJ = JSONArray.fromObject(recommendedWeb);
 		request.setAttribute("result", dataJ);
 		
@@ -153,14 +139,9 @@ public class FriendshipAction {
 		
 		traffic();
 		return mav;
-		
-		/*request.setAttribute("inWebList", recommendedWeb);
-		ModelAndView nextPage = new ModelAndView();
-		nextPage.setViewName("views/friendship/recommendWeb.jsp");
-
-		return nextPage;*/
 	}
 
+	// 추천 보낸 북마크 목록 불러오기
 	@RequestMapping("/recommendOutWeb")
 	public ModelAndView recommendOutWeb(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -183,69 +164,14 @@ public class FriendshipAction {
 		
 		traffic();
 		return mav;
-		
-		
-		/*request.setAttribute("outWebList", recommendWeb);
-
-		JSONArray inList = JSONArray.fromObject(recommendWeb);
-		request.setAttribute("result", inList.toString());
-		System.out.println(inList.toString());
-
-		ModelAndView nextPage = new ModelAndView();
-		nextPage.setViewName("/views/result.jsp");
-
-		
-		return nextPage;*/
 	}
 
-	@RequestMapping("/recommendExist")
-	public ModelAndView recommendExist(HttpServletRequest request,
-			HttpServletResponse response, @RequestParam(value="recommend_friendId")String friendId,
-										  @RequestParam(value="recommend_url")String url,
-			  				
-			  							  @RequestParam(value="recommend_descript")String descript) {
-		// 사용자ID 가져오기
-		
-		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		
-		String status = "추천";
-		
-		//System.out.println("name :" + name + ", url :" + url);
-		
-		BookMarkShip bookmarkship = new BookMarkShip();
-		String[] selectFriend = friendId.split(",");
-		boolean flag = false;
-		int num = 0;
-		for (int i = 0; i < selectFriend.length; i++) {
-
-			bookmarkship = new BookMarkShip(0, "", url, descript, userId, selectFriend[i], status);
-			
-			flag = new FriendshipServiceImpl().bookMarkExist(bookmarkship);
-			System.out.println("flag:"+flag);
-			if(flag){
-				num = 5;
-				new FriendshipServiceImpl().recommendSite(bookmarkship);
-			}
-			else{
-				num = 1;
-			}
-			System.out.println(bookmarkship.toString());
-		}
-
-		ModelAndView nextPage = new ModelAndView();
-
-		request.setAttribute("result", num);
-		nextPage.setViewName("result");
-		traffic();
-		return nextPage;
-	}
-	
-	
+	// 북마크 추천하기
 	@RequestMapping("/recommend")
 	public ModelAndView recommend(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam(value="recommend_friendId")String friendId,
 										  @RequestParam(value="recommend_url")String url,
-			  							  @RequestParam(value="recommend_name")String name,
+										  @RequestParam(value="recommend_name")String name,
 			  							  @RequestParam(value="recommend_descript")String descript) {
 		// 사용자ID 가져오기
 		
@@ -253,40 +179,32 @@ public class FriendshipAction {
 		
 		String status = "추천";
 		
-		System.out.println("name :" + name + ", url :" + url);
-		
 		BookMarkShip bookmarkship = new BookMarkShip();
 		String[] selectFriend = friendId.split(",");
 		boolean flag = false;
-		int num = 0;
+		ModelAndView mav = new ModelAndView();
+		
 		for (int i = 0; i < selectFriend.length; i++) {
-
+			selectFriend[i] = selectFriend[i].trim();
 			bookmarkship = new BookMarkShip(0, name, url, descript, userId, selectFriend[i], status);
 			
 			flag = new FriendshipServiceImpl().bookMarkExist(bookmarkship);
 			System.out.println("flag:"+flag);
 			if(flag){
-				num = 5;
 				new FriendshipServiceImpl().recommendSite(bookmarkship);
+				
 			}
 			else{
-				num = 1;
 			}
 			System.out.println(bookmarkship.toString());
-		}
-
-		ModelAndView mav = new ModelAndView();
-		request.setAttribute("result", "true");
-		mav.setViewName("result");
-		
-		return mav;
-		/*ModelAndView nextPage = new ModelAndView();
-
-		request.setAttribute("result", num);
-		nextPage.setViewName("result");
-		traffic();
-		return nextPage;*/
+			
+			request.setAttribute("result", flag);
+			mav.setViewName("result");
+			traffic();
+			
+		}return mav;
 	}
+	
 	
 	// 친구 삭제
 	@RequestMapping("/deleteFriend")
@@ -296,10 +214,8 @@ public class FriendshipAction {
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		
-		//String friendshipId = request.getParameter("friendshipId");
 		System.out.println(friendId);
 		
-			//Friendship friendship = new Friendship(Integer.parseInt(friendshipId), userId, friendId, "친구");
 		Friendship friendship = new Friendship(userId, friendId, "친구");
 		new FriendshipServiceImpl().deleteFriend(friendship);
 		
@@ -319,14 +235,6 @@ public class FriendshipAction {
 		
 		String friendId = (String)request.getSession().getAttribute("MEMBERID");
 		
-		//String friendshipId = request.getParameter("friendshipId");
-		
-		/*if(friendshipId==null)
-			friendshipId = "";*/
-		
-		
-		
-			//Friendship friendship = new Friendship(Integer.parseInt(friendshipId), userId, friendId, "친구");
 		Friendship friendship = new Friendship(userId, friendId, "친구");
 		
 		new FriendshipServiceImpl().accept(friendship);
@@ -341,21 +249,14 @@ public class FriendshipAction {
 		return mav;
 	}
 
-		// 친구 요청 거절
+	// 친구 요청받은 것 거절
 	@RequestMapping("/reject")
 	public ModelAndView reject(HttpServletRequest request,
 			HttpServletResponse response, 
 			@RequestParam(value="userId")String userId) {
 		
 		String friendId = (String)request.getSession().getAttribute("MEMBERID");
-		
-		
-		/*String friendshipId = request.getParameter("friendshipId");
-		
-		if(friendshipId==null)
-			friendshipId = "";*/
-		
-		//	Friendship friendship = new Friendship(Integer.parseInt(friendshipId), userId, friendId, "친구요청");
+	
 		Friendship friendship = new Friendship(userId, friendId, "친구요청");
 		new FriendshipServiceImpl().reject(friendship);
 		
@@ -365,7 +266,8 @@ public class FriendshipAction {
 		
 		return mav;
 	}
-		// 내가 친구 요청 보낸 것 취소하기
+	
+	// 내가 친구 요청 보낸 것 취소하기
 	@RequestMapping("/cancel")
 	public ModelAndView cancel(HttpServletRequest request,
 			HttpServletResponse response,
@@ -385,415 +287,377 @@ public class FriendshipAction {
 		return mav;
 	}
 		
-	
 	// 친구 요청 보내기(친구 추가 버튼)
-		@RequestMapping("/requestFriend")
-		public ModelAndView requestFriend(HttpServletRequest request,
-				HttpServletResponse response,
-				@RequestParam(value="friendId")String friendId) {
+	@RequestMapping("/requestFriend")
+	public ModelAndView requestFriend(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value="friendId")String friendId) {
 			
-			String userId = (String)request.getSession().getAttribute("MEMBERID");
-			
-			System.out.println(userId + ";" + friendId);
-			
-			//String friendshipId = null;
-			Friendship friendship = new Friendship(userId, friendId, "친구요청");
-
-			new FriendshipServiceImpl().requestFriend(friendship);
-
-			ModelAndView mav = new ModelAndView();
-			request.setAttribute("result", "true");
-			mav.setViewName("result");
-			
-			return mav;
-		}
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		
-		// 받은 편지함
-		@RequestMapping("/inBox")
-		public ModelAndView inBox(HttpServletRequest request,
-				HttpServletResponse response) {
-
-			String userId = (String)request.getSession().getAttribute("MEMBERID");
-			System.out.println(userId);
-
-			ArrayList<Message> inMessage = null;
-
-			inMessage = new FriendshipServiceImpl().getInBox(userId);
-			for (int i = 0; i < inMessage.size(); i++) {
-				System.out.println(inMessage.get(i).getMessageDate());
-				String dateTime = StringFromCalendar(inMessage.get(i)
-						.getMessageDate());
-				inMessage.get(i).setMessageDate2(dateTime);
-			}
-
-			ModelAndView mav = new ModelAndView();
+		System.out.println(userId + ";" + friendId);
 			
-			JSONArray dataJ = JSONArray.fromObject(inMessage);
-			System.out.println(dataJ);
-			request.setAttribute("result", dataJ);
-			mav.setViewName("result");
+		Friendship friendship = new Friendship(userId, friendId, "친구요청");
+
+		new FriendshipServiceImpl().requestFriend(friendship);
+
+		ModelAndView mav = new ModelAndView();
+		request.setAttribute("result", "true");
+		mav.setViewName("result");
 			
-			traffic();
-			return mav;
-		}
-
-		// 보낸 편지함
-		@RequestMapping("/outBox")
-		public ModelAndView outBox(HttpServletRequest request,
-				HttpServletResponse response) {
-
-			ModelAndView nextPage = new ModelAndView();
-			String userId = (String)request.getSession().getAttribute("MEMBERID");
-			System.out.println(userId);
-
-			ArrayList<Message> outMessage = null;
-
-			outMessage = new FriendshipServiceImpl().getOutBox(userId);
-
-			for (int i = 0; i < outMessage.size(); i++) {
-				System.out.println(outMessage.get(i).getMessageDate());
-				String dateTime = StringFromCalendar(outMessage.get(i)
-						.getMessageDate());
-				outMessage.get(i).setMessageDate2(dateTime);
-			}
-
-			ModelAndView mav = new ModelAndView();
-			
-			JSONArray dataJ = JSONArray.fromObject(outMessage);
-			System.out.println(dataJ);
-			request.setAttribute("result", dataJ);
-			mav.setViewName("result");
-			
-			traffic();
-			return mav;
-		}	
+		return mav;
+	}
 		
-		// 날짜 변경함수
-		public static String StringFromCalendar(Date date) {
-			// 날짜를 통신용 문자열로 변경
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			return formatter.format(date.getTime());
+	// 받은 편지 목록 불러오기
+	@RequestMapping("/inBox")
+	public ModelAndView inBox(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		System.out.println(userId);
+
+		ArrayList<Message> inMessage = null;
+
+		inMessage = new FriendshipServiceImpl().getInBox(userId);
+		for (int i = 0; i < inMessage.size(); i++) {
+			System.out.println(inMessage.get(i).getMessageDate());
+			String dateTime = StringFromCalendar(inMessage.get(i).getMessageDate());
+			inMessage.get(i).setMessageDate2(dateTime);
 		}
+
+		ModelAndView mav = new ModelAndView();
+			
+		JSONArray dataJ = JSONArray.fromObject(inMessage);
+		System.out.println(dataJ);
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
+			
+		traffic();
+		return mav;
+	}
+
+	// 보낸 편지 목록 불러오기
+	@RequestMapping("/outBox")
+	public ModelAndView outBox(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		System.out.println(userId);
+		ArrayList<Message> outMessage = null;
+		outMessage = new FriendshipServiceImpl().getOutBox(userId);
+		for (int i = 0; i < outMessage.size(); i++) {
+			System.out.println(outMessage.get(i).getMessageDate());
+			String dateTime = StringFromCalendar(outMessage.get(i).getMessageDate());
+			outMessage.get(i).setMessageDate2(dateTime);
+		}
+
+		ModelAndView mav = new ModelAndView();
+		
+		JSONArray dataJ = JSONArray.fromObject(outMessage);
+		System.out.println(dataJ);
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
+		
+		traffic();
+		return mav;
+	}	
+		
+	// 날짜 변경함수
+	public static String StringFromCalendar(Date date) {
 	
-		// 메시지 보내기
-		@RequestMapping("/sendMessage")
-		public void sendMessage(HttpServletRequest request,
-				HttpServletResponse response, @RequestParam(value="messageFriendId")String friendId,
-				  							  @RequestParam(value="messageContents")String contents) {
-			System.out.println("sendMessage() 호출!!");
+		// 날짜를 통신용 문자열로 변경
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter.format(date.getTime());
+	}
+	
+	// 메시지 보내기
+	@RequestMapping("/sendMessage")
+	public void sendMessage(HttpServletRequest request,
+			HttpServletResponse response, @RequestParam(value="messageFriendId")String friendId,
+			  							  @RequestParam(value="messageContents")String contents) {
+		System.out.println("sendMessage() 호출!!");
 			
-		
-			String userId = (String)request.getSession().getAttribute("MEMBERID");
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
 			
-			int messageNum = 0;
+		int messageNum = 0;
 
-			System.out.println("userId :" + userId);
-			System.out.println("friendId :" + friendId);
-			System.out.println("message: " + contents);
+		Message msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "");
 
-			Message msg = new Message(messageNum, userId, friendId, null, contents,
-					new Date(), "");
+		System.out.println(new Date());
 
-			System.out.println(new Date());
+		boolean flag = new FriendshipServiceImpl().sendMessage(msg);
+		// boolean flag = true;
+		if (flag) { // 메시지 DB 등록 성공
 
-			boolean flag = new FriendshipServiceImpl().sendMessage(msg);
-			// boolean flag = true;
-			if (flag) { // 메시지 DB 등록 성공
+			// msgServer.sendMessage(friendId, message);
 
-				// msgServer.sendMessage(friendId, message);
+			//relayServer.sendMessage(friendId, contents);
 
-				relayServer.sendMessage(friendId, contents);
-
-			} else { // 메시지 DB 등록 실패
+		} else { // 메시지 DB 등록 실패
 				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
-			}
 		}
+	}
 		
-		@RequestMapping("/isContains")
-		public ModelAndView isContains(HttpServletRequest request, HttpServletResponse response){
-			String userId = (String)request.getSession().getAttribute("MEMBERID");
-			boolean flag = relayServer.isContains(userId);
-			/*request.setAttribute("result", Boolean.toString(flag));
-			nextPage.setViewName("/views/result.jsp");
-			
-			return nextPage;*/
-			ModelAndView mav = new ModelAndView();
-		
-			request.setAttribute("result", Boolean.toString(flag));
-			mav.setViewName("result");
-			
-			traffic();
-			return mav;
-		}
-
-		// 북마크 추천 받은 것 거절, 보낸 것 취소
-		@RequestMapping("/recommendCancel")
-		public ModelAndView recommendCancel(HttpServletRequest request,
-				HttpServletResponse response,
-				@RequestParam(value="bookMarkId")String bookMarkId) {
-			
-			new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
-
-			ModelAndView mav = new ModelAndView();
-			request.setAttribute("result", "true");
-			mav.setViewName("result");
-			
-			return mav;
-		}
-		
-		
-		@RequestMapping("/recommendAccept")
-		public ModelAndView recommendAccept(HttpServletRequest request,
-				HttpServletResponse response,
-				@RequestParam(value="bookMarkId")String bookMarkId,
-				@RequestParam(value="bookMarkUrl")String bookMarkUrl,
-				@RequestParam(value="bookMarkName")String bookMarkName,
-				@RequestParam(value="bookMarkDescript")String bookMarkDescript) {
-		
-			String friendId = (String)request.getSession().getAttribute("MEMBERID");
-			String status = "false";
-			int posx = 0;
-			int posy = 0;
-
-			ArrayList<BookMark> bookMarkList = null;
-			// 현재 사용자의 북마크 리스트 가져오기
-			bookMarkList = new IndividualPageServiceImpl().bookMarkList(friendId);
-
-			// 만약 처음 북마크 추가이면 1,1 위치 삽입
-			if (bookMarkList.size() == 0) {
-				posx = 1;
-				posy = 1;
-			} else {// //////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
-				posx = new IndividualPageServiceImpl().bookMarkPosx(friendId);
-				System.out.println("x=" + posx);
-				// ParameterClass 2개라서 HashMap 이용 맞나?
-				HashMap<String, Object> pos = new HashMap<String, Object>();
-				pos.put("userId", friendId);
-				pos.put("posX", posx);
-				posy = new IndividualPageServiceImpl().bookMarkPosy(pos); // x 줄에 제일
-																			// 마지막
-																			// y 값
-				System.out.println("by=" + posy);
-				posy++; // +1해서 다음에 놓을 곳 배치
-				System.out.println("ay=" + posy);
-
-				if (posy == 7) {// 다음줄로 넘기기
-					posx++;
-					posy = 1;
-				}
-
-			}
-
-			// 위치가 여기 저기 떨어져 있으면 북마크 추가할때 어디다 배치해야되나??
-			
-			BookMark bookMark = new BookMark(0, bookMarkName, bookMarkUrl,
-					bookMarkDescript, friendId, status, posx, posy);
-
-			new IndividualPageServiceImpl().addBookMark(bookMark);
-
-			new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
-
-			ModelAndView mav = new ModelAndView();
-			request.setAttribute("result", "true");
-			mav.setViewName("result");
-			
-			return mav;
-		}
+	@RequestMapping("/isContains")
+	public ModelAndView isContains(HttpServletRequest request, HttpServletResponse response){
 	
-		// 아이디 검색했을 때 결과 목록
-		@RequestMapping("/memberList")
-		public ModelAndView memberList(HttpServletRequest request,
-				HttpServletResponse response,
-				@RequestParam(value="keyword")String keyword) {
+		String userId = (String)request.getSession().getAttribute("MEMBERID");
+		boolean flag = relayServer.isContains(userId);
+		/*request.setAttribute("result", Boolean.toString(flag));
+		nextPage.setViewName("/views/result.jsp");
 			
+		return nextPage;*/
+		ModelAndView mav = new ModelAndView();
+		
+		request.setAttribute("result", Boolean.toString(flag));
+		mav.setViewName("result");
 			
-			String loginId = (String)request.getSession().getAttribute("MEMBERID");
+		traffic();
+		return mav;
+	}
 
-			System.out.println(loginId);
+	// 북마크 추천 받은 것 거절, 보낸 것 취소
+	@RequestMapping("/recommendCancel")
+	public ModelAndView recommendCancel(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value="bookMarkId")String bookMarkId) {
+		
+		new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
+		ModelAndView mav = new ModelAndView();
+		request.setAttribute("result", "true");
+		mav.setViewName("result");
+			
+		return mav;
+	}
+		
+	// 북마크 추천 받은 것 수락	
+	@RequestMapping("/recommendAccept")
+	public ModelAndView recommendAccept(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value="bookMarkId")String bookMarkId,
+			@RequestParam(value="bookMarkUrl")String bookMarkUrl,
+			@RequestParam(value="bookMarkName")String bookMarkName,
+			@RequestParam(value="bookMarkDescript")String bookMarkDescript) {
+		
+		String friendId = (String)request.getSession().getAttribute("MEMBERID");
+		String status = "false";
+		int posx = 0;
+		int posy = 0;
+		ArrayList<BookMark> bookMarkList = null;
+		// 현재 사용자의 북마크 리스트 가져오기
+		bookMarkList = new IndividualPageServiceImpl().bookMarkList(friendId);
 
-			User userSearch = new User(loginId, keyword); // 사용자Id, keyword
+		// 만약 처음 북마크 추가이면 1,1 위치 삽입
+		if (bookMarkList.size() == 0) {
+			posx = 1;
+			posy = 1;
+		} else {// //////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
+			posx = new IndividualPageServiceImpl().bookMarkPosx(friendId);
+			System.out.println("x=" + posx);
+			// ParameterClass 2개라서 HashMap 이용 맞나?
+			HashMap<String, Object> pos = new HashMap<String, Object>();
+			pos.put("userId", friendId);
+			pos.put("posX", posx);
+			posy = new IndividualPageServiceImpl().bookMarkPosy(pos); // x 줄에 제일
+																		// 마지막
+																		// y 값
+			System.out.println("by=" + posy);
+			posy++; // +1해서 다음에 놓을 곳 배치
+			System.out.println("ay=" + posy);
+			if (posy == 7) {// 다음줄로 넘기기
+				posx++;
+				posy = 1;
+			}
 
-			ArrayList<Member> searchList = new ArrayList<Member>();
-			searchList = new FriendshipServiceImpl().searchFriend(userSearch);
-			// keyword 를 포함하는 ID를 ArrayList로 불러온다.
+		}
+		
+		BookMark bookMark = new BookMark(0, bookMarkName, bookMarkUrl, bookMarkDescript, friendId, status, posx, posy);
 
-			ArrayList<FriendStatus> friendStatusList = new ArrayList<FriendStatus>();
+		new IndividualPageServiceImpl().addBookMark(bookMark);
+		new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
+		ModelAndView mav = new ModelAndView();
+		request.setAttribute("result", "true");
+		mav.setViewName("result");
+		
+		return mav;
+	}
+	
+	// 아이디 검색했을 때 결과 목록
+	@RequestMapping("/memberList")
+	public ModelAndView memberList(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value="keyword")String keyword) {
+		
+		
+		String loginId = (String)request.getSession().getAttribute("MEMBERID");
+		System.out.println(loginId);
+		User userSearch = new User(loginId, keyword); // 사용자Id, keyword
 
-			ArrayList<FriendStatus> friend = new ArrayList<FriendStatus>();
+		ArrayList<Member> searchList = new ArrayList<Member>();
+		searchList = new FriendshipServiceImpl().searchFriend(userSearch);
+		// keyword 를 포함하는 ID를 ArrayList로 불러온다.
+		ArrayList<FriendStatus> friendStatusList = new ArrayList<FriendStatus>();
+
+		ArrayList<FriendStatus> friend = new ArrayList<FriendStatus>();
 			// 사용자Id, key가 포함된 아이디 -> keyword 포함된 아이디와 userId 제외한 Id 검색하여 사용자 정보 출력
 
-			for (int i = 0; i < searchList.size(); i++) { // keyword 포함하는 ID를 검사한다.
-				FriendStatus friendStatus = new FriendStatus(loginId, searchList
-						.get(i).getUserId(), searchList.get(i).getName(), "");
+		for (int i = 0; i < searchList.size(); i++) { // keyword 포함하는 ID를 검사한다.
+			FriendStatus friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), "");
 				// keyword 포함 ID 1개씩 friendStatus로 넣는다.
 
-				System.out.println("**" + searchList.get(i).getUserId());
+			System.out.println("**" + searchList.get(i).getUserId());
 
-				friend = new FriendshipServiceImpl().getFriendStatus(friendStatus);
+			friend = new FriendshipServiceImpl().getFriendStatus(friendStatus);
 
-				if (friend.size() == 0) {
-					System.out.println("친구아님");
-					String status = "친구아님";
-					friendStatus = new FriendStatus(loginId, searchList.get(i)
-							.getUserId(), searchList.get(i).getName(), status);
-					friendStatusList.add(friendStatus);
-					System.out.println(friendStatus.getUserId() + ":"
+			if (friend.size() == 0) {
+				System.out.println("친구아님");
+				String status = "친구아님";
+				friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), status);
+				friendStatusList.add(friendStatus);
+				System.out.println(friendStatus.getUserId() + ":"
 							+ friendStatus.getFriendId() + ":"
 							+ friendStatus.getStatus());
-				}
-
-				else {
-					for (int k = 0; k < friend.size(); k++) {
-						System.out.println(friend.get(k).getStatus());
-
-						if (friend.get(k).getUserId().equals(loginId)
-								|| friend.get(k).getFriendId().equals(loginId)) {
-
-							friendStatusList.add(friend.get(k));
-							System.out.println(friendStatus.getUserId() + ":"
-									+ friendStatus.getFriendId() + ":"
-									+ friendStatus.getStatus());
-						}
-
-					}
-				}
-
 			}
-			ModelAndView mav = new ModelAndView();
-			
-			JSONArray dataJ = JSONArray.fromObject(friendStatusList);
-			System.out.println(dataJ);
-			request.setAttribute("result", dataJ);
-			mav.setViewName("result");
-			
-			traffic();
-			return mav;
-		}	
-		
-		
-		// 메시지 삭제
-		@RequestMapping("/deleteMessage")
-		public ModelAndView deleteMessage(HttpServletRequest request,
-				HttpServletResponse response,
-				@RequestParam(value = "messageId") String messageId) {
-			System.out.println(messageId);
-			
-			String ar[] = messageId.split("&");
-			ArrayList<String> idList = new ArrayList<String>();
-			for(String a:ar){
-				idList.add(a.split("=")[1]);
-			}
-			
-			for (int i = 0; i < idList.size(); i++) {
-				new FriendshipServiceImpl().deleteMessage(idList.get(i));
-			}
-			
-			ModelAndView mav = new ModelAndView();
-			request.setAttribute("result", "true");
-			mav.setViewName("result");
-			
-			return mav;
-		}	
-		
-		
-		// 메시지 상세 보기
-		@RequestMapping("/messageView")
-		public ModelAndView messageView(HttpServletRequest request,
-				HttpServletResponse response,
-				@RequestParam(value = "messageId") String messageId) {
 
-			System.out.println(messageId);
-
-			Message message = new Message();
-		
-			message = new FriendshipServiceImpl().getMessage(messageId);
-
-			String dateTime = StringFromCalendar(message.getMessageDate());
-
-			message = new Message(message.getMessageId(), message.getUserId(),
-					message.getFriendId(), message.getTitle(),
-					message.getContents(), message.getMessageDate(), dateTime);
-
-			ModelAndView mav = new ModelAndView();
-			JSONArray dataJ = JSONArray.fromObject(message);
-			System.out.println(dataJ);
-			request.setAttribute("result", dataJ);
-			mav.setViewName("result");
-			
-			traffic();
-			return mav;
-		}	
-		
-		@RequestMapping("/me2dayFriend")
-		public ModelAndView me2dayFriend(HttpServletRequest request,
-				HttpServletResponse response,
-				@RequestParam(value = "friendsId") String friendsId) {
-			
-			String loginId = (String)request.getSession().getAttribute("MEMBERID");
-			
-			System.out.println("===" + loginId + "===");
-
-			String[] me2Friends = friendsId.split(",");
-			ArrayList<Member> me2FriendList = new ArrayList<Member>();
-			ArrayList<FriendStatus> friendStatusList = new ArrayList<FriendStatus>();
-			Member member = new Member();
-			System.out.println(me2Friends.length);
-			for (int i = 0; i < me2Friends.length; i++) {
-				
-				me2Friends[i] = me2Friends[i] + "@me2day";
-				String userId = me2Friends[i];
-				System.out.println("userid : "+userId);
-				member = new FriendshipServiceImpl().me2Friend(userId);
-
-				if (member != null) {
-					System.out.println(member.getUserId());
-					me2FriendList.add(member);
-
-				} else
-					System.out.println("가입 된 친구 아님!!");
-			}
-			
-			ArrayList<FriendStatus> friend = new ArrayList<FriendStatus>();
-			
-			for (int i = 0; i < me2FriendList.size(); i++) {
-
-				FriendStatus friendStatus = new FriendStatus(loginId, me2FriendList
-						.get(i).getUserId(), me2FriendList.get(i).getName(),"");
-				
-				System.out.println(i+','+friendStatus.getFriendId()+','+friendStatus.getName());
-				
-				friend = new FriendshipServiceImpl().getFriendStatus(friendStatus);
-
-				if (friend.size() == 0) {
-					String status = "친구아님";
-					friendStatus = new FriendStatus(loginId, me2FriendList.get(i)
-							.getUserId(), me2FriendList.get(i).getName(),
-							status);
-					friendStatusList.add(friendStatus);
-
-					System.out.println(status);
-				}
-
+			else {
 				for (int k = 0; k < friend.size(); k++) {
-
-					System.out.println(friend.get(k).getUserId()+','+friend.get(k).getFriendId());
-					
-					if (friend.get(k).getUserId().equals(loginId)
-							|| friend.get(k).getFriendId().equals(loginId)) {
-						System.out.println("친구?");
+					System.out.println(friend.get(k).getStatus());
+					if (friend.get(k).getUserId().equals(loginId) || friend.get(k).getFriendId().equals(loginId)) {
 						friendStatusList.add(friend.get(k));
 					}
 				}
 			}
-			System.out.println("status : "+friendStatusList);
+		}
+		ModelAndView mav = new ModelAndView();
 		
-			ModelAndView mav = new ModelAndView();
-			JSONArray dataJ = JSONArray.fromObject(friendStatusList);
-			System.out.println(dataJ);
-			request.setAttribute("result", dataJ);
-			mav.setViewName("result");
+		JSONArray dataJ = JSONArray.fromObject(friendStatusList);
+		System.out.println(dataJ);
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
+		
+		traffic();
+		return mav;
+	}	
+		
+		
+	// 메시지 삭제
+	@RequestMapping("/deleteMessage")
+	public ModelAndView deleteMessage(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "messageId") String messageId) {
+		System.out.println(messageId);
 			
-			traffic();
-			return mav;
-		}	
+		String ar[] = messageId.split("&");
+		ArrayList<String> idList = new ArrayList<String>();
+		for(String a:ar){
+			idList.add(a.split("=")[1]);
+		}
+			
+		for (int i = 0; i < idList.size(); i++) {
+			new FriendshipServiceImpl().deleteMessage(idList.get(i));
+		}
+			
+		ModelAndView mav = new ModelAndView();
+		request.setAttribute("result", "true");
+		mav.setViewName("result");
+		
+		return mav;
+	}	
+		
+		
+	// 메시지 상세 보기
+	@RequestMapping("/messageView")
+	public ModelAndView messageView(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "messageId") String messageId) {
+		System.out.println(messageId);
+		Message message = new Message();
+	
+		message = new FriendshipServiceImpl().getMessage(messageId);
+
+		String dateTime = StringFromCalendar(message.getMessageDate());
+		message = new Message(message.getMessageId(), message.getUserId(),
+							  message.getFriendId(), message.getTitle(),
+							  message.getContents(), message.getMessageDate(), dateTime);
+
+		ModelAndView mav = new ModelAndView();
+		JSONArray dataJ = JSONArray.fromObject(message);
+		System.out.println(dataJ);
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
+		
+		traffic();
+		return mav;
+	}	
+	
+	// 미투데이친구 + EasyMark 회원 목록 불러오기
+	@RequestMapping("/me2dayFriend")
+	public ModelAndView me2dayFriend(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "friendsId") String friendsId) {
+			
+		String loginId = (String)request.getSession().getAttribute("MEMBERID");
+		
+		System.out.println("===" + loginId + "===");
+
+		String[] me2Friends = friendsId.split(",");
+		ArrayList<Member> me2FriendList = new ArrayList<Member>();
+		ArrayList<FriendStatus> friendStatusList = new ArrayList<FriendStatus>();
+		Member member = new Member();
+		System.out.println(me2Friends.length);
+		for (int i = 0; i < me2Friends.length; i++) {
+			
+			me2Friends[i] = me2Friends[i] + "@me2day";
+			String userId = me2Friends[i];
+			System.out.println("userid : "+userId);
+			member = new FriendshipServiceImpl().me2Friend(userId);
+
+			if (member != null) {
+				System.out.println(member.getUserId());
+				me2FriendList.add(member);
+			} else
+				System.out.println("가입 된 친구 아님!!");
+			}
+			
+		ArrayList<FriendStatus> friend = new ArrayList<FriendStatus>();
+			
+		for (int i = 0; i < me2FriendList.size(); i++) {
+
+			FriendStatus friendStatus = new FriendStatus(loginId, me2FriendList
+					.get(i).getUserId(), me2FriendList.get(i).getName(),"");
+				
+			System.out.println(i+','+friendStatus.getFriendId()+','+friendStatus.getName());
+				
+			friend = new FriendshipServiceImpl().getFriendStatus(friendStatus);
+
+			if (friend.size() == 0) {
+				String status = "친구아님";
+				friendStatus = new FriendStatus(loginId, me2FriendList.get(i)
+						.getUserId(), me2FriendList.get(i).getName(), status);
+				friendStatusList.add(friendStatus);
+
+				System.out.println(status);
+			}
+
+			for (int k = 0; k < friend.size(); k++) {
+
+				System.out.println(friend.get(k).getUserId()+','+friend.get(k).getFriendId());
+				
+				if (friend.get(k).getUserId().equals(loginId) || friend.get(k).getFriendId().equals(loginId)) {
+						System.out.println("친구?");
+						friendStatusList.add(friend.get(k));
+				}
+			}
+		}
+		System.out.println("status : "+friendStatusList);
+		
+		ModelAndView mav = new ModelAndView();
+		JSONArray dataJ = JSONArray.fromObject(friendStatusList);
+		System.out.println(dataJ);
+		request.setAttribute("result", dataJ);
+		mav.setViewName("result");
+		
+		traffic();
+		return mav;
+	}		
 }

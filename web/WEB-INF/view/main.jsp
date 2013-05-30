@@ -115,11 +115,11 @@
 	<script src="js/friendship/friendship.js"></script>
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
 	
-	<script src='js/admin/jquery-1.7.2.min.js'></script>
-	
+	<!-- <script src='js/admin/jquery-1.7.2.min.js'></script>
+	 -->
+	 
 	<script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.nightly.js"></script>
-	<!-- 
- -->
+	
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
 	<script src="tipJS/tipJS-MVC.js"></script>

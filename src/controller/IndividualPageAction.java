@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
@@ -33,6 +34,7 @@ import util.FileWriter;
 import dto.BookMark;
 import dto.Category;
 import dto.Design;
+import dto.Friendship;
 import dto.Img;
 import dto.Member;
 
@@ -173,6 +175,7 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 
+	// 북마크 수정 탭을 눌렀을 때 호출되는 메소드. 북마크에 관한 정보를 가져온다.
 	@RequestMapping("/getBookmarkInfo")
 	public ModelAndView getBookmarkInfo(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -190,6 +193,37 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 
+	// 북마크 추천을 눌렀을 때 호출되는 메소드. 북마크에 관한 정보와 로그인 중인 사용자의 친구 리스트를 가져온다.
+	@RequestMapping("/getRecommendInfo")
+	public ModelAndView getRecommendInfo(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView nextPage = new ModelAndView();
+		BookMark bookMark = new BookMark();
+		
+		int bookMarkId = Integer.parseInt(request.getParameter("bookMarkId"));
+		String userId = (String) request.getSession().getAttribute("MEMBERID");
+		
+		bookMark = new IndividualPageServiceImpl().getBookMark(bookMarkId);
+		Friendship friend = new Friendship(userId, "", "친구");
+		ArrayList<Member> friendList = new FriendshipServiceImpl().getFriendList(friend);
+		
+		JSONArray bookMarkJ = JSONArray.fromObject(bookMark);
+		JSONArray friendListJ = JSONArray.fromObject(friendList);
+		JSONArray dataJ  = new JSONArray();
+		dataJ.add(bookMarkJ);
+		dataJ.add(friendListJ);
+		
+		String data = "{" + bookMarkJ.toString() + ", " + friendListJ.toString() + "}";
+		System.out.println(dataJ.toString());
+		System.out.println(data);
+		
+		request.setAttribute("result", dataJ.toString());
+		nextPage.setViewName("result");
+
+		traffic();
+		return nextPage;
+	}
+	
 	@RequestMapping("/modifyMark")
 	public ModelAndView modifymark(
 			HttpServletRequest request,
@@ -427,13 +461,14 @@ public class IndividualPageAction {
 	//isExistCategory 써서 중복된 category add 안되게 해야한다
 	@RequestMapping("/addCategory")
 	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
-															   @RequestParam(value="userId",required=false)String userId){
+															   @RequestParam(value="userId",required=false)String userId) throws UnsupportedEncodingException{
 		System.out.println("addCategory()!!");
 		ModelAndView nextPage = new ModelAndView();
 		if(userId == null)
 			userId = (String)request.getSession().getAttribute("MEMBERID");
 		String imgUrl = "images/folder.png";
 		System.out.println("userID :"+userId);
+		System.out.println("categoryName: " + URLDecoder.decode(categoryName, "utf-8"));
 		String status="false";
 		int posx=0;
 		int posy=0;
@@ -464,8 +499,8 @@ public class IndividualPageAction {
 		}
 		
 
-		BookMark bookMark = new BookMark(0,categoryName, "", "", userId, status, posx, posy, imgUrl, 0,"");
-		Category category=new Category(0, categoryName, userId);
+		BookMark bookMark = new BookMark(0,URLDecoder.decode(categoryName, "utf-8"), "", "", userId, status, posx, posy, imgUrl, 0,"");
+		Category category=new Category(0, URLDecoder.decode(categoryName, "utf-8"), userId);
 		//category폴더 bookmark Table에 저장
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		//User에 대한 category 내용 category Table에 저장

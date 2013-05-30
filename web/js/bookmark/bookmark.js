@@ -282,28 +282,37 @@ var bookmarkDelete = function(id) {
 
 // 북마크에서 마우스 오른쪽 버튼을 누르고 북마크 추천 탭을 클릭했을 때
 var bookmarkRecommand = function() {
-	keke = $(this);
 	var $bookid = $(this).attr('$id');
+	var optionTag = '';
+	$('#recommend_friendId').empty();
+	
 	$.ajax({
-		url : 'getBookmarkInfo',
+		url : 'getRecommendInfo',
 		dataType : 'json',
-		async : false,
 		data : {
 			bookMarkId : $bookid
 		}
 	}).done(function(data) {
-	
-		console.log("123돌아가나?");
 		
-		$('#recommend_friendId').val = "";
-		$('#recommend_url').val($(data).attr('bookMarkUrl'));
-		$('#recommend_name').val($(data).attr('bookMarkName'));
-		$('#recommend_descript').val($(data).attr('bookMarkDescript'));
+		console.log(data);
+		keke = data;
 		
-	
+		for(var i=0; i<data[1].length; i++){
+			optionTag += "<option value='" + data[1][i].userId +"'>";
+				optionTag += data[1][i].userId;
+			optionTag += "</option>";
+		}
 		
-
+		$('#recommend_url').val($(data[0]).attr('bookMarkUrl'));
+		$('#recommend_name').val($(data[0]).attr('bookMarkName'));
+		$('#recommend_descript').val($(data[0]).attr('bookMarkDescript'));
+		
+		$('#recommend_friendId').append(optionTag);
+		
+	}).fail(function(e){
+		console.log('fail');
 	});
+	
 	$('#bookMarkRecommand').modal('show');
 };
 
@@ -357,112 +366,79 @@ var bookmarkUrlFocusOut = function() {
 
 //category 버튼 클릭
 $('#category').click(function(){
-	var categoryName=$('#categoryName').val();
-		$.ajax({
-			url: 'addCategory',
-			dataType:'json',
-			data:{
-				categoryName:categoryName
-			}
-		}).done(function(data){
-			id = data.id; x = data.x; y = data.y; imgUrl = data.imgUrl, categoryName=data.categoryName;
-			$('#setting').modal('hide');
-			alert('카테고리가 추가되었습니다!!');
-			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+categoryName+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-				newLi += '<img id="img" src="'+imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
-				newLi += '<div class="bookmarkIconInfo">' + categoryName +'</div>';
-			newLi += '</li>';
-			gridster.add_widget(newLi, 1, 1);
-			init();
-			$('<option value="'+categoryName+'">' + categoryName + '</option>').appendTo('#addBookMarkCategory');
-				
-		});
+	var categoryName = $('#categoryName').val();
+	$.ajax({
+		url: 'addCategory',
+		dataType:'json',
+		data:{
+			categoryName: encodeURI(categoryName)
+		}
+	}).done(function(data){
+		id = data.id; x = data.x; y = data.y; imgUrl = data.imgUrl, categoryName=decodeURI(data.categoryName);
+		$('#setting').modal('hide');
+		alert('카테고리가 추가되었습니다!!');
+		newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+categoryName+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+			newLi += '<img id="img" src="'+imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
+			newLi += '<div class="bookmarkIconInfo">' + categoryName +'</div>';
+		newLi += '</li>';
+		gridster.add_widget(newLi, 1, 1);
+		init();
+		$('<option value="'+categoryName+'">' + categoryName + '</option>').appendTo('#addBookMarkCategory');
+			
 	});
+});
 
 
 // category 버튼 클릭
-$('#category').click(function() {
+/*$('#category').click(function() {
 
 	var i;
 	var category;
 
-		$.ajax({
-				url : 'viewCategory',
-				dataType : 'json',
-			}).done(function(data) {
-				// 모든 아이콘 제거
-				gridster.remove_widget($('li.bookmarkIcon'));
-				console.log(data.length);
-				// category 마다 아이콘 만들기
-				for (i = 0; i < data.length; i++) {
-					category = data[i];
-					newLi = '<li data-id="#" data-toggle="tooltip" title="'+ category+'" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-					newLi += '<img id="img" href="#" src="#" style="width:100%; height:100%;border-radius:20px;">';
-					newLi += '<div class="bookmarkIconInfo">'+category+'</div>';
-					newLi += '</li>';
-					gridster.add_widget(newLi, 1, 1);
-					}
-					$('#setting').modal('hide');
-					init();
-
-					});
-				});
-
+	$.ajax({
+		url : 'viewCategory',
+		dataType : 'json',
+	}).done(function(data) {
+		// 모든 아이콘 제거
+		gridster.remove_widget($('li.bookmarkIcon'));
+		console.log(data.length);
+		// category 마다 아이콘 만들기
+		for (i = 0; i < data.length; i++) {
+			category = data[i];
+			newLi = '<li data-id="#" data-toggle="tooltip" title="'+ category+'" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+			newLi += '<img id="img" href="#" src="#" style="width:100%; height:100%;border-radius:20px;">';
+			newLi += '<div class="bookmarkIconInfo">'+category+'</div>';
+			newLi += '</li>';
+			gridster.add_widget(newLi, 1, 1);
+			}
+			$('#setting').modal('hide');
+			init();
+	
+			});
+});*/
 
 
 $('#sendButton').click(function(){
-			
-		console.log("hi");
 		
-		/*var filename = $('#bookmarkIconImageFile').val();
-		var name = $('#modifyBookmarkName').val();
-		var url = $('#modifyBookmarkUrl').val();
-		var desc = $('#modifyBookmarkDescription').val();
-		var bookmarkId = $('#modifyBookMarkId').val();
-*/
 		var recommend_friendId = $('#recommend_friendId').val();
 		var recommend_url = $('#recommend_url').val();
 		var recommend_name = $('#recommend_name').val();
 		var recommend_descript = $('#recommend_descript').val();
 		
-		
-		/*$.ajax({
-			url:'recommendExist',
-			dataType : 'json',
-			type:'POST',
-			data:{
-				recommend_friendId:$('#recommend_friendId').val(),
-				recommend_url: $('#recommend_url').val(),
-				recommend_descript:$('#recommend_descript').val()
-			}
-		}).done(function(data){
-			console.log(data);
-			
-			if(data < 3){
-				alert('친구와의 북마크 추천을 확인하세요.');
-			}
-			else {
-				alert('즐겨찾기를 친구에게 추천했습니다.');
-				$('#bookMarkRecommand').modal('hide');
-			}
-		});*/
-		
-		alert('즐겨찾기를 친구에게 추천했습니다.');
-		console.log(recommend_friendId+";"+recommend_url+";"+recommend_name+";"+recommend_descript);
 		$.ajax({
 			url:'recommend',
 			dataType : 'json',
 			type:'POST',
 			data:{
-				recommend_friendId:$('#recommend_friendId').val(),
-				recommend_url: $('#recommend_url').val(),
-				recommend_name:$('#recommend_name').val(),
-				recommend_descript:$('#recommend_descript').val()
+				recommend_friendId:recommend_friendId,
+				recommend_url: recommend_url,
+				recommend_name: recommend_name,
+				recommend_descript: recommend_descript
 			}
 		}).done(function(data){
-			console.log(data);
+			console.log("data :"+data);
 			
-			if(data < 3){
+			if(data.toString() == "false"){
 				alert('친구와의 북마크 추천을 확인하세요.');
 			}
 			else {
@@ -470,8 +446,5 @@ $('#sendButton').click(function(){
 				$('#bookMarkRecommand').modal('hide');
 			}
 		});
-		/*alert('즐겨찾기를 친구에게 추천했습니다.');
-		$('#bookMarkRecommand').modal('hide');*/
-	
 });
 
