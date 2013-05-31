@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.vertx.java.core.json.JsonObject;
 
 import service.AdminServiceImpl;
+import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
@@ -125,6 +126,21 @@ public class MembershipAction {
 				
 		 		HttpSession session = request.getSession();
 		 		session.setAttribute("MEMBERID", userId + "@me2day");
+		 		
+		 				 		
+		 		Member memberKey = new FriendshipServiceImpl().getKey(login.getUserId());
+				
+				String me2dayKey = null;
+				if(memberKey.getMe2DayKey() == null)
+					me2dayKey = "NotMe2Login";
+				else
+					me2dayKey = "Me2Login";	
+				
+				System.out.println("me2dayKey는? "+me2dayKey);
+				
+				request.getSession().setAttribute("me2dayKey", me2dayKey);
+			 	
+				
 		 		
 				request.setAttribute("designType",
 						new MembershipServiceImpl().getDesignType(userId + "@me2day"));
@@ -361,18 +377,19 @@ public class MembershipAction {
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		
+		
 		System.out.println("로그인 아이디: " + request.getSession().getAttribute("MEMBERID"));
 		
 		 if (userId != null) {
 		 	Member m = new MembershipServiceImpl().getMemberInfo(userId);
-			
+		
 			request.setAttribute("designType",
 					new MembershipServiceImpl().getDesignType(userId));
 			request.setAttribute("MEMBERINFO", m);
 			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
 			//bookMar add 할때 categoryList option 가져오기
 			request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
-
+			
 			mav.setViewName("main");
 		} else {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");

@@ -23,19 +23,19 @@
 			  <li><a href="#friend_sendRequest" data-toggle="tab">내가 친구 요청한 리스트</a></li>
 			  <li><a href="#friend_takeRequest" data-toggle="tab">내가 친구 요청받은 리스트</a></li>
 			  <li><a href="#friend_BookMark" data-toggle="tab">추천받은 북마크 리스트</a></li>
-			 <%	String me2dayId1 = (String)request.getSession().getAttribute("MEMBERID"); 
-	               	String []me2dayId2 = me2dayId1.split("@"); 
-	                				
-	                String me2dayKey = (String)request.getSession().getAttribute("memberKey");
-	                
-					if(me2dayKey == "Me2Login"){
-	            %>
-			     	<li><a href="#friend_me2day" data-toggle="tab" onclick="me2dayConnect('<%=me2dayId2[0]%>')">미투데이 친구 리스트</a><li>		
-				<% 	}
-	                else {} 
-	            %>	
+				
+		<%	String me2dayId = (String)request.getSession().getAttribute("MEMBERID"); 
+	        String me2dayKey = (String)request.getSession().getAttribute("me2dayKey");
+	            	
+			if(me2dayKey == "Me2Login"){
+	    %>
+			  <li><a href="#friend_me2day" data-toggle="tab" onclick="me2dayConnect('<%=me2dayId%>')">미투데이 친구 리스트</a><li>		
+					
+		<% 	}
+	        else {} 
+	    %>	
 	            
-			  </ul>	
+			</ul>	
 			 
 		</div>
 		

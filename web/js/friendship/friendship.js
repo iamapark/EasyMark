@@ -1,3 +1,5 @@
+/*document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
+*/
 $('a[data-toggle="modal"]').click(function(){
 	clearForm();
 });
@@ -17,6 +19,7 @@ $('a[href="#friendInfo"]').click(function(){
 		
 		for(var i=0; i<memberData.length; i++){
 			memberId = memberData[i].userId;
+			
 			
 			action = "<a id='delete' onclick='deleteFriend(this)' class='btn btn-small btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 					 "친구삭제"+
@@ -343,7 +346,6 @@ var recommendAccept = function(e){
 function searchMember(userId) {
 	var keyword = $('input[name="keyword"]').val();
 	$('.friendtable').dataTable().fnClearTable();
-	memberId = null;
 	console.log(userId);
 	
 	$.ajax({
@@ -409,16 +411,18 @@ function searchMember(userId) {
 <!-- 미투데이 연동 : 미투데이친구 + EasyMark 회원 불러오기 -->*/
 var friendInfo;
 
-function me2dayConnect(userId){
+function me2dayConnect(me2dayId){
 	console.log('me2dayConnect6');
-	var me2Id = userId + "@me2day";
+	var userId = me2dayId.split("@"); 
+	console.log(userId[0]);
 	
+	console.log(userId);
 	$.ajax({
 		url: 'Proxy/proxy.jsp',
 		dataType:'json',
 		async:'false',
 		data:{
-			url:'http://me2day.net/api/get_friends/'+userId+'.json?akey=8d41ef461f4c6e08dc8e235c2337db37'
+			url:'http://me2day.net/api/get_friends/'+userId[0]+'.json?akey=8d41ef461f4c6e08dc8e235c2337db37'
 		}
 	}).done(function(data){
 		
@@ -506,7 +510,6 @@ function me2dayConnect(userId){
 
 $('a[href="#messages"]').click(function(){
 	$('.takemessagetable').dataTable().fnClearTable();
-	memberId = null;
 	$.ajax({
 		url: 'inBox'
 	}).done(function(data){
@@ -526,7 +529,6 @@ $('a[href="#messages"]').click(function(){
 <!-- friend MODAL의 첫번째 tab : 받은 메시지 목록 -->*/
 $('#messageTab li:eq(0) a').click(function (e){	
 	$('.takemessagetable').dataTable().fnClearTable();
-	memberId = null;
 	$.ajax({
 		url: 'inBox'
 	}).done(function(data){
