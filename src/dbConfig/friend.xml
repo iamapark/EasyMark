@@ -178,17 +178,18 @@
     	where message_id=#messageId#
   	</select>
    	
+   	<select id="me2dayFriend" parameterClass="String" resultClass="Member">
+    	select user_id userId, name name
+    	from member_info
+    	where user_id=#userId#
+  	</select>
   	<!-- <select id="getFriendBar" parameterClass="Friendship" resultClass="Member">
     	select m.user_id userId, m.name firstName, m.email email
     	from member_info m, friendship f
     	where (f.user_id=#userId# AND m.user_id=f.friend_id AND f.status=#status#) OR (f.friend_id=#userId# AND m.user_id=f.user_id AND f.status=#status#) 
   	</select>
   	
-  	<select id="me2dayFriend" parameterClass="String" resultClass="Member">
-    	select user_id userId, name firstName
-    	from member_info
-    	where user_id=#userId#
-  	</select>
+  	
   
 	 -->
 </sqlMap>

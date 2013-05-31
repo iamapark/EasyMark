@@ -389,11 +389,10 @@ $('#category').click(function(){
 	});
 });
 
-
 // category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
 // category 버튼 클릭
 /*$('#category').click(function() {
->>>>>>> 3d899d01c2dab48d44d2fb4b94a3d550ff6eb0a9
+
 
 	var i;
 	var category;
@@ -421,25 +420,13 @@ $('#category').click(function(){
 });*/
 
 
-
 $('#sendButton').click(function(){
-			
-		console.log("hi");
 		
-		/*var filename = $('#bookmarkIconImageFile').val();
-		var name = $('#modifyBookmarkName').val();
-		var url = $('#modifyBookmarkUrl').val();
-		var desc = $('#modifyBookmarkDescription').val();
-		var bookmarkId = $('#modifyBookMarkId').val();
-*/
 		var recommend_friendId = $('#recommend_friendId').val();
 		var recommend_url = $('#recommend_url').val();
 		var recommend_name = $('#recommend_name').val();
 		var recommend_descript = $('#recommend_descript').val();
 		
-		/*
-		alert('즐겨찾기를 친구에게 추천했습니다.');*/
-		console.log(recommend_friendId+";"+recommend_url+";"+recommend_name+";"+recommend_descript);
 		$.ajax({
 			url:'recommend',
 			dataType : 'json',
@@ -451,22 +438,20 @@ $('#sendButton').click(function(){
 				recommend_descript: recommend_descript
 			}
 		}).done(function(data){
-			console.log(data);
+			console.log("data :"+data);
 			
-			/*if(data < 3){
+			if(data.toString() == "false"){
 				alert('친구와의 북마크 추천을 확인하세요.');
 			}
 			else {
 				alert('즐겨찾기를 친구에게 추천했습니다.');
 				$('#bookMarkRecommand').modal('hide');
-			}*/
+			}
 		});
-		/*alert('즐겨찾기를 친구에게 추천했습니다.');
-		$('#bookMarkRecommand').modal('hide');*/
-	
 });
 
 
+//카테고리 추가 할때 실시간 카테고리 중복체크 중복이면 버튼없어진다
 $('#categoryName').keyup(function(){
 	console.log("isExistCategoryName");
 	var categoryName=$('#categoryName').val();
@@ -487,4 +472,21 @@ $('#categoryName').keyup(function(){
 			
 		});
 	
+
+});
+
+//
+$('#mark_button').click(function(){
+	console.log("categoryOPtion");
+	$.ajax({
+		url:'categoryOptionUpdate',
+		dataType:'json'	
+	}).done(function(data){
+		$('option').remove();
+		$('<option value="none" class="option">none</option>').appendTo('#addBookMarkCategory');
+		for(var i=0;i<data.length;i++){
+			$('<option value="'+data[i].categoryName+'" class="option">' + data[i].categoryName + '</option>').appendTo('#addBookMarkCategory');
+		}
+		
+	});
 });

@@ -68,8 +68,7 @@ public class FriendDAO {
 		Member me2friend = null;
 
 		try {
-			me2friend = (Member) sqlMapper.queryForObject("me2dayFriend",
-					me2FriendId);
+			me2friend = (Member) sqlMapper.queryForObject("me2dayFriend", me2FriendId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

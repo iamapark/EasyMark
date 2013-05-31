@@ -12,16 +12,6 @@
 		</div>
 		<div class="modal-body">
 
-
-			<!-- <form class="send" name="sendBookMark" action="" method="post">
-				<div class="control-group">
-					<label class="control-label" for="inputUrl">FriendList</label>
-					<div class="controls">
-						<input type="text" id="friendList2" name="friendList">
-					</div>
-				</div>
-			</form> -->
-			<!-- action="recommend" method="post" -->
 			<form name="sendBookMark" id="sendBookMark">
 
 
@@ -30,11 +20,15 @@
 					
 					<label class="control-label" for="inputId">Friend ID</label>
 						<div class="controls">
+
+							<input type="text" name="recommend_friendId" id="recommend_friendId" placeholder="FriendList" style="width:90%;" value=<%= request.getAttribute("friendId") %>>
+
 							<select id="recommend_friendId">
 								
 							</select>
 							<%-- <input type="text" name="recommend_friendId" id="recommend_friendId" placeholder="FriendList" style="width:90%;" value=<%= request.getAttribute("friendId") %>> --%>
 							<%-- <BUTTON class=btn-small href="#FriendList" data-toggle="modal" onclick="friend('${sessionScope.MEMBERID}')">Friend</BUTTON> --%>
+
 						</div>
 				</div>
 					
