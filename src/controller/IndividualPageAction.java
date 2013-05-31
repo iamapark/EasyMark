@@ -159,13 +159,18 @@ public class IndividualPageAction {
 
 	@RequestMapping("/getBookMarkList")
 	public ModelAndView getBookMarkList(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,
+			@RequestParam(value = "userId", required=false) String userId) {
+		
 		ModelAndView nextPage = new ModelAndView();
-
+		
+		if(userId == null){
+			userId = (String) request.getSession().getAttribute("MEMBERID");
+		}
+		
 		// 현재 사용자의 북마크 리스트 가져오기
 		ArrayList<BookMark> bookMarkList = new IndividualPageServiceImpl()
-				.bookMarkList((String) request.getSession().getAttribute(
-						"MEMBERID"));
+				.bookMarkList(userId);
 
 		JSONArray dataJ = JSONArray.fromObject(bookMarkList);
 		request.setAttribute("result", dataJ);
