@@ -159,13 +159,18 @@ public class IndividualPageAction {
 
 	@RequestMapping("/getBookMarkList")
 	public ModelAndView getBookMarkList(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,
+			@RequestParam(value = "userId", required=false) String userId) {
+		
 		ModelAndView nextPage = new ModelAndView();
-
+		
+		if(userId == null){
+			userId = (String) request.getSession().getAttribute("MEMBERID");
+		}
+		
 		// 현재 사용자의 북마크 리스트 가져오기
 		ArrayList<BookMark> bookMarkList = new IndividualPageServiceImpl()
-				.bookMarkList((String) request.getSession().getAttribute(
-						"MEMBERID"));
+				.bookMarkList(userId);
 
 		JSONArray dataJ = JSONArray.fromObject(bookMarkList);
 		request.setAttribute("result", dataJ);
@@ -565,6 +570,17 @@ public class IndividualPageAction {
 		jobj.put("flag", flag);
 		
 		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+		return nextPage;
+	}
+	@RequestMapping("/categoryOptionUpdate")
+	public ModelAndView categoryUpdate(HttpServletRequest request,HttpServletResponse response){
+		ModelAndView nextPage = new ModelAndView();
+		String userId=(String)request.getSession().getAttribute("MEMBERID");
+		ArrayList<Category> categoryList=new ArrayList<>();
+		categoryList=new IndividualPageServiceImpl().categoryList(userId);
+		JSONArray dataJ = JSONArray.fromObject(categoryList);
+		request.setAttribute("result",dataJ);
 		nextPage.setViewName("result");
 		return nextPage;
 	}

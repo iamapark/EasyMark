@@ -203,9 +203,6 @@ public class MembershipAction {
 			request.setAttribute("MEMBERINFO", m);
 
 			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
-			//bookMar add 할때 categoryList option 가져오기
-			request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
-
 			mav.setViewName("main");
 		} else {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");

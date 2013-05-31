@@ -8,7 +8,7 @@
 	String display = null;
 	
 	if(imgUrl != null && !imgUrl.equals("")){
-		imgUrl = "users/img/" + m.getUserId() + "/" + imgUrl;
+
 	}else{
 		imgUrl = "images/settings.png";
 	}
