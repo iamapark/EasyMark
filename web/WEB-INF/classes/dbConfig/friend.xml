@@ -183,13 +183,5 @@
     	from member_info
     	where user_id=#userId#
   	</select>
-  	<!-- <select id="getFriendBar" parameterClass="Friendship" resultClass="Member">
-    	select m.user_id userId, m.name firstName, m.email email
-    	from member_info m, friendship f
-    	where (f.user_id=#userId# AND m.user_id=f.friend_id AND f.status=#status#) OR (f.friend_id=#userId# AND m.user_id=f.user_id AND f.status=#status#) 
-  	</select>
   	
-  	
-  
-	 -->
 </sqlMap>

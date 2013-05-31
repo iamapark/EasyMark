@@ -68,6 +68,7 @@ public class FriendshipAction {
 		JSONArray dataJ = JSONArray.fromObject(friendList);
 		System.out.println(dataJ);
 		request.setAttribute("result", dataJ);
+		
 		mav.setViewName("result");
 		
 		traffic();
@@ -366,7 +367,7 @@ public class FriendshipAction {
 	public static String StringFromCalendar(Date date) {
 	
 		// 날짜를 통신용 문자열로 변경
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return formatter.format(date.getTime());
 	}
 	
@@ -488,7 +489,6 @@ public class FriendshipAction {
 			HttpServletResponse response,
 			@RequestParam(value="keyword")String keyword) {
 		
-		
 		String loginId = (String)request.getSession().getAttribute("MEMBERID");
 		System.out.println(loginId);
 		User userSearch = new User(loginId, keyword); // 사용자Id, keyword
@@ -510,7 +510,7 @@ public class FriendshipAction {
 			friend = new FriendshipServiceImpl().getFriendStatus(friendStatus);
 
 			if (friend.size() == 0) {
-				System.out.println("친구아님");
+				
 				String status = "친구아님";
 				friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), status);
 				friendStatusList.add(friendStatus);
@@ -531,7 +531,7 @@ public class FriendshipAction {
 		ModelAndView mav = new ModelAndView();
 		
 		JSONArray dataJ = JSONArray.fromObject(friendStatusList);
-		System.out.println(dataJ);
+		//System.out.println(dataJ);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 		
