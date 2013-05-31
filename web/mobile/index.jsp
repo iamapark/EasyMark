@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
-<script src="js/jquery.js"></script>
-<script src="js/mobile/jquery.mobile-1.3.1.js"></script>
-<link href="css/mobile/jquery.mobile-1.3.1.css" rel="stylesheet" media="screen">
+<script src="../js/jquery.js"></script>
+<script src="../js/mobile/jquery.mobile-1.3.1.js"></script>
+<link href="../css/mobile/jquery.mobile-1.3.1.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="//cdn.jsdelivr.net/knockout/2.2.1/knockout-2.2.1.js"></script>
 
 
@@ -100,5 +100,5 @@
 
 </body>
 
-<script src="js/mobile/index.js"></script>
+<script src="../js/mobile/index.js"></script>
 </html>

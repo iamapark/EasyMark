@@ -21,8 +21,6 @@
 					<label class="control-label" for="inputId">Friend ID</label>
 						<div class="controls">
 
-							<input type="text" name="recommend_friendId" id="recommend_friendId" placeholder="FriendList" style="width:90%;" value=<%= request.getAttribute("friendId") %>>
-
 							<select id="recommend_friendId">
 								
 							</select>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-
+2.dtd">
+
+<sqlMap namespace="admin">
+	
+	<resultMap id="MemberList" class="Member">
+		<result property="userId" column="user_id" />
+		<result property="email" column="email" />
+		<!-- <result property="password" column="password" /> -->
+		<result property="name" column="name" />
+		<result property="me2DayKey" column="me2day_key" />
+		<result property="imgUrl" column="img_url" />
+		<result property="bgImgUrl" column="bg_img_url" />
+	</resultMap>
+	
+	<resultMap id="MemberTableList" class="MemberTable">
+		<result property="userId" column="user_id" />
+		<result property="name" column="name" />
+		<result property="registerDate" column="register_time" />
+		<result property="email" column="email" />
+		<result property="bookMarkCount" column="bookmark_count" />
+	</resultMap>
+	
+	<resultMap id="MemberInfoList" class="MemberInfo">
+		<result property="userId" column="user_id" />
+		<result property="name" column="name" />
+		<result property="registerDate" column="register_time" />
+		<result property="email" column="email" />
+		<result property="bookmarkCount" column="bookmark_count" />
+		<result property="loginCount" column="login_count" />
+		<result property="imgUrl" column="img_url" />
+		<result property="bgImgUrl" column="bg_img_url" />
+	</resultMap>
+	
+	<resultMap id="CountList" class="Count">
+		<result property="basis" column="basis" />
+		<result property="countResult" column="count_result" />
+		<result property="totalConnection" column="total_connection" />
+		<result property="avgConnection" column="avg_connection" />
+		<result property="totalBookMarkCount" column="total_bookMarkCount" />
+		<result property="avgBookMarkCount" column="avg_bookMarkCount" />
+	</resultMap>
+    
+    <select id="adminLogin" parameterClass="Login" resultClass="String">
+        SELECT 
+        	admin_id
+        FROM
+        	admin
+        where
+        	admin_id=#userId# AND password=#password#
+    </select>
+    
+    <select id="fillMemberTable" resultMap="MemberTableList">
+    	SELECT 
+    		member_info.user_id, member_info.name, register_time.register_time, member_info.email, COUNT(bookmark.user_id) AS bookmark_count
+		FROM 
+			member_info LEFT OUTER JOIN bookmark ON member_info.user_id = bookmark.user_id JOIN register_time ON register_time.user_id = member_info.user_id
+		GROUP BY 
+			member_info.user_id, register_time.register_id
+		HAVING 
+			register_time.leave_time IS NULL
+    </select>
+    
+    <select id="getMemberInfo_admin" parameterClass="String" resultClass="MemberInfo">
+		SELECT 
+    		member_info.user_id userId, member_info.name, register_time.register_time registerDate, member_info.email, COUNT(bookmark.user_id) AS bookmarkCount,
+    		NVL((SELECT COUNT(login_id) FROM login_time GROUP BY user_id HAVING user_id=#userId#), 0)						
+    		AS loginCount	, 
+			member_info.img_url AS imgUrl, member_info.bg_img_url AS bgImgUrl
+		FROM 
+			member_info LEFT OUTER JOIN bookmark ON member_info.user_id = bookmark.user_id JOIN register_time ON register_time.user_id = member_info.user_id
+		GROUP BY 
+			member_info.user_id, register_time.register_id
+		HAVING 
+			member_info.user_id = #userId# AND register_time.leave_time IS NULL	
+    </select>
+	
+	<delete id="deleteMemberInfo" parameterClass="List">
+		delete from member_info
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<delete id="deleteBookMark" parameterClass="List">
+		delete from bookmark
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<delete id="deleteDesign" parameterClass="List">
+		delete from design
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<delete id="deleteMember" parameterClass="List">
+		delete from member
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<delete id="deleteLoginInfo" parameterClass="List">
+		delete from login_time
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<update id="leaveMember" parameterClass="List">
+		update register_time
+		
+		<!-- CUBRID -->
+		set leave_time = CURRENT_TIMESTAMP
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</update>
+	
+	<select id="getRegisterCount" parameterClass="String" resultMap="CountList">
+		SELECT 
+			register_time basis, COUNT(DAY(register_time)) count_result,
+			1 total_connection,
+			1 avg_connection,
+			1 total_bookmarkCount,
+			1 avg_bookMarkCount
+		FROM 
+			register_time
+		GROUP BY 
+			MONTH(register_time), YEAR(register_time), DAY(register_time)
+		HAVING 
+			YEAR(register_time)=2013 AND MONTH(register_time)=#selectedMonth#
+	</select>
+	
+	<select id="getLoginCounterHourly" resultMap="CountList">
+		SELECT 
+			HOUR(TIME(login_time)) basis, 
+			COUNT(HOUR(TIME(login_time))) count_result,
+			1 total_connection,
+			1 avg_connection,
+			1 total_bookmarkCount,
+			1 avg_bookMarkCount
+		FROM 
+			login_time
+		GROUP BY 
+			HOUR(TIME(login_time));
+	</select>
+	
+	<select id="getTotalStatistics" resultMap="CountList">
+		SELECT 
+			'' basis,
+			1 count_result,
+			NVL((SELECT ROUND(SUM(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time), 0) AS total_connection,
+			NVL((SELECT ROUND(AVG(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time), 0) AS avg_connection,
+			(SELECT COUNT(bookmark_id) FROM bookmark) AS total_bookmarkCount,
+			NVL((SELECT AVG(cnt) FROM (SELECT COUNT(bookmark_id) AS cnt FROM bookmark GROUP BY user_id) AS c), 0) AS avg_bookMarkCount
+	</select>
+	
+	<select id="getDashboardCount" resultClass="DashboardCount">
+		SELECT 
+			(SELECT COUNT(user_id) FROM member ) AS memberCount ,
+			(SELECT COUNT(*) FROM member m , register_time r WHERE m.user_id = r.user_id AND leave_time IS NULL AND register_time = curdate()) AS todayRegisterCount,
+			(SELECT COUNT(*) FROM message) AS messageCount
+	</select>
+	
+	<select id="getLoginMembersInfoList" parameterClass="List" resultMap="MemberList">
+		SELECT *
+		FROM 
+		member_info
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</select>
+	
+	<select id="getLoginMemberInfo" parameterClass="String" resultClass="Member">
+		SELECT *
+		FROM 
+			member_info
+		WHERE
+			user_id = #userId#
+	</select>
+	
+</sqlMap>

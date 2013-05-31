@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-
+2.dtd">
+
+<sqlMap namespace="Member">
+    <resultMap id="MemberList" class="Member">
+		<result property="userId" column="user_id" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="name" column="name" />
+		<result property="me2DayKey" column="me2day_key" />
+		<result property="imgUrl" column="img_url" />
+		<result property="bgImgUrl" column="bg_img_url" />
+	</resultMap>
+    
+    <insert id="registerMember" parameterClass="Member">
+        INSERT
+       	INTO member	VALUES (#userId#, #password#);
+    </insert>
+    
+    <insert id="registerMemberInfo" parameterClass="Member">
+		INSERT INTO 
+			member_info (user_id, name, email, me2day_key) 
+		VALUES (#userId#, #name#, #email#, #me2DayKey#)
+    </insert>
+    
+    <insert id="registerDesign" parameterClass="Member">
+		INSERT INTO 
+			design(user_id)
+		VALUES (#userId#)
+    </insert>
+    
+    <insert id="registerRegisterTime" parameterClass="Member">
+    	INSERT INTO
+    		register_time(user_id, register_time)
+    	VALUES
+    		(#userId#, SYS_TIMESTAMP)
+    </insert>
+    
+    <select id="checkId" parameterClass="String" resultClass="String">
+        SELECT 
+        	user_id
+        FROM
+        	member
+        WHERE	
+        	user_id = #userId#	        
+    </select>
+    
+    <select id="login" parameterClass="Login" resultClass="String">
+        SELECT 
+        	user_id
+        FROM
+        	member
+        where
+        	user_id=#userId# AND password=#password#
+    </select>
+    
+    <select id="me2DayLoginCheck" parameterClass="Login" resultClass="Login">
+		select user_id from member
+		where user_id=#userId#
+	</select>
+    
+    <select id="getDesignType" parameterClass="String" resultClass="String">
+        SELECT
+        	type
+        FROM
+        	design
+        WHERE
+        	user_id=#userId#
+    </select>
+    
+    <select id="getMemberInfo" parameterClass="String" resultClass="Member">
+		SELECT user_id userId, email email, name name, img_url imgUrl, bg_img_url bgImgUrl
+		FROM
+			member_info
+		WHERE
+			user_id=#userId#        
+    </select>
+    
+    <update id="updateMemberInfo" parameterClass="Member">
+		update 
+			member_info 
+		set 
+			name=#name#, email=#email#
+			<isNotNull property="imgUrl">
+				, img_url=#imgUrl# 
+			</isNotNull>
+		where 
+			user_id=#userId#       
+    </update>
+    
+    <update id="changeDesign" parameterClass="Design">
+   		update 
+   			design 
+ 		set 
+ 			type=#type# 
+ 		where 
+ 			user_id=#userId#
+    </update>
+    
+    <update id="updateBgImg" parameterClass="Member">
+    	UPDATE
+    		member_info
+    	SET
+    		bg_img_url=#bgImgUrl#
+    	WHERE
+    		user_id=#userId#
+    </update>
+    
+    <insert id="loginCount" parameterClass="String">
+    	INSERT INTO 
+    		login_time(user_id, login_time) 
+   		VALUES 
+   			(#userId#, SYSTIMESTAMP);
+    </insert>
+    
+    <update id="logoutCount" parameterClass="String">
+    	UPDATE 
+    		login_time 
+    	SET 
+    		logout_time = SYSTIMESTAMP WHERE user_id=#userId# AND logout_time IS NULL;
+    </update>
+    
+    <select id="isExistMe2DayMember" parameterClass="String"
+		resultClass="Member">
+		select * from member
+		where user_id=#userId#
+	</select>
+</sqlMap>
