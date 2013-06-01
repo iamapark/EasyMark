@@ -14,7 +14,7 @@
 				<li><a href="#setting_memberInfo" data-toggle="tab">회원정보</a></li>
 				<li><a href="#setting_bookmarkInfo" data-toggle="tab">북마크</a></li>
 				<li><a href="#setting_settings" data-toggle="tab">설정</a></li>
-				<li><a href="#setting_categoryChange" data-toggle="tab">카테고리</a></li>
+			
 
 			</ul>
 		</div>
@@ -90,6 +90,9 @@
 			  	  	<div class="tab-pane" id="setting_category">
 				  		<h5>카테고리 추가</h5>
 				  		<form action="addCategory" name="addCategory" id="addCategory" method="post" enctype="multipart/form-data">
+				  			<select id="categorySelect" name="style">
+							<!-- categorySelect option appendTo -->
+							</select>
 				  			<input type="text" id="categoryName" name="categoryName">
 					  		<input type="button" id="category" name="category" value="add">
 					  	</form>
@@ -128,14 +131,7 @@
 					</a> 
 
 				</div>
-				<div class="tab-pane" id="setting_categoryChange">
-					<h5>카테고리 추가</h5>
-					<form action="viewCategory" name="viewCategory" id="viewCategory"
-						method="post" enctype="multipart/form-data">
-						<input type="button" id="category" name="category"
-							value="category">
-					</form>
-				</div>
+				
 			</div>
 		</div>
 

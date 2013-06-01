@@ -48,6 +48,25 @@
 		FROM bookmark
 		WHERE user_id=#userId#
 	</select>
+	
+	<!-- Select with no parameters using the result map for Account class. -->
+	<select id="bookMarkListByCategory" parameterClass="String" resultMap="BookMarkList">
+		SELECT
+		bookmark_id,
+		bookmark_name,
+		bookmark_url,
+		bookmark_descript,
+		user_id,
+		status,
+		pos_x,
+		pos_y,
+		img_url,
+		frequency frequency,
+		category
+		category
+		FROM bookmark
+		WHERE user_id=#userId# AND category=#category#
+	</select>
 
 	<select id="bookMarkPosx" parameterClass="String" resultClass="Integer">
 		SELECT MAX(pos_x) from bookmark WHERE user_id=#userId#
@@ -166,5 +185,9 @@
 			bookmark_id=#bookmarkId#
 		WITH 
 			INCREMENT FOR frequency;
+	</select>
+	
+	<select id="listByCategory" parameterClass="java.util.HashMap" resultMap="BookMarkList">
+		SELECT * FROM bookmark WHERE user_id=#userId# AND category=#categoryName#
 	</select>
 </sqlMap>

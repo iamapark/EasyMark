@@ -97,8 +97,12 @@ public class IndividualPageAction {
 		int posy = 0;
 
 		ArrayList<BookMark> bookMarkList = null;
-		// 현재 사용자의 북마크 리스트 가져오기
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
+		// 사용자의 현재 카테고리 북마크 리스트 가져오기
+		HashMap<String, Object> bookMarkInfo = new HashMap<>();
+		bookMarkInfo.put("userId", userId);
+		bookMarkInfo.put("category", category);
+		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);  
+		
 
 		// 만약 처음 북마크 추가이면 1,1 위치 삽입
 		if (bookMarkList.size() == 0) {
@@ -118,7 +122,7 @@ public class IndividualPageAction {
 			posy++; // +1해서 다음에 놓을 곳 배치
 			System.out.println("ay=" + posy);
 
-			if (posy == 7) {// 다음줄로 넘기기
+			if (posy == 9) {// 다음줄로 넘기기
 				posx++;
 				posy = 1;
 			}
@@ -137,8 +141,9 @@ public class IndividualPageAction {
 
 		int maxBookmarkId = new IndividualPageServiceImpl()
 				.addBookMark(bookMark);
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
-		request.getSession().setAttribute("bookMarkList", bookMarkList);
+		//수정전
+		//bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
+		//request.getSession().setAttribute("bookMarkList", bookMarkList);
 
 		Member m = new MembershipServiceImpl().getMemberInfo(userId);
 		request.getSession().setAttribute("MEMBERINFO", m);
@@ -156,7 +161,7 @@ public class IndividualPageAction {
 		traffic();
 		return nextPage;
 	}
-
+/*
 	@RequestMapping("/getBookMarkList")
 	public ModelAndView getBookMarkList(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -174,7 +179,7 @@ public class IndividualPageAction {
 		traffic();
 		return nextPage;
 	}
-
+*/
 	// 북마크 수정 탭을 눌렀을 때 호출되는 메소드. 북마크에 관한 정보를 가져온다.
 	@RequestMapping("/getBookmarkInfo")
 	public ModelAndView getBookmarkInfo(HttpServletRequest request,
@@ -473,7 +478,8 @@ public class IndividualPageAction {
 	//카테고리 추가
 	@RequestMapping("/addCategory")
 	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
-															   @RequestParam(value="userId",required=false)String userId) throws UnsupportedEncodingException{
+															   @RequestParam(value="userId",required=false)String userId,
+															   @RequestParam(value="categorySelect") String categorySelect) throws UnsupportedEncodingException{
 		System.out.println("addCategory()!!");
 		ModelAndView nextPage = new ModelAndView();
 		if(userId == null)
@@ -485,8 +491,11 @@ public class IndividualPageAction {
 		int posx=0;
 		int posy=0;
 		ArrayList<BookMark> bookMarkList = null;
-		//현재 사용자의 북마크 리스트 가져오기
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
+		//사용자의 현재 해당하는 카테고리 북마크 리스트 가져오기
+		HashMap<String, Object> bookMarkInfo = new HashMap<>();
+		bookMarkInfo.put("userId", userId);
+		bookMarkInfo.put("category", categorySelect);
+		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);
 		
 		//만약 처음 북마크 추가이면 1,1 위치 삽입
 		if(bookMarkList.size()==0){
@@ -503,7 +512,7 @@ public class IndividualPageAction {
 			System.out.println("by="+posy);
 			posy++; //+1해서 다음에 놓을 곳 배치
 			System.out.println("ay="+posy);
-			if(posy==7){//다음줄로 넘기기
+			if(posy==9){//다음줄로 넘기기
 				posx++;
 				posy=1;
 			}
@@ -511,7 +520,7 @@ public class IndividualPageAction {
 		}
 		
 
-		BookMark bookMark = new BookMark(0,URLDecoder.decode(categoryName, "utf-8"), "", "", userId, status, posx, posy, imgUrl, 0,"");
+		BookMark bookMark = new BookMark(0,URLDecoder.decode(categoryName, "utf-8"), "", "", userId, status, posx, posy, imgUrl, 0,categorySelect);
 		Category category=new Category(0, URLDecoder.decode(categoryName, "utf-8"), userId);
 		//category폴더 bookmark Table에 저장
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
@@ -568,6 +577,7 @@ public class IndividualPageAction {
 		nextPage.setViewName("result");
 		return nextPage;
 	}
+	//setting 북마크 추가 탭에서 카테고리 항목 업데이트
 	@RequestMapping("/categoryOptionUpdate")
 	public ModelAndView categoryUpdate(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView nextPage = new ModelAndView();
@@ -576,6 +586,22 @@ public class IndividualPageAction {
 		categoryList=new IndividualPageServiceImpl().categoryList(userId);
 		JSONArray dataJ = JSONArray.fromObject(categoryList);
 		request.setAttribute("result",dataJ);
+		nextPage.setViewName("result");
+		return nextPage;
+	}
+	//카테고리 더블클릭시 해당하는 북마크 리스트 가져오기
+	@RequestMapping("/viewCategory")
+	public ModelAndView viewCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName){
+		ModelAndView nextPage = new ModelAndView();
+		ArrayList<BookMark> list=null;
+		String userId=(String)request.getSession().getAttribute("MEMBERID");
+		HashMap<String, Object> category=new HashMap<String, Object>();
+		category.put("userId", userId);
+		category.put("categoryName", categoryName);
+		list=new IndividualPageServiceImpl().listByCategory(category);
+		System.out.println(list.size());
+		JSONArray dataJ = JSONArray.fromObject(list);
+		request.setAttribute("result", dataJ);
 		nextPage.setViewName("result");
 		return nextPage;
 	}

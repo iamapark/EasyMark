@@ -29,6 +29,12 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		bookMarkList=BookMarkDAO.getInstance().bookMarkList(userId);
 		return bookMarkList;
 	}
+	@Override
+	public ArrayList<BookMark> bookMarkList(HashMap<String, Object> bookMarkInfo) {
+		ArrayList<BookMark> bookMarkList=null;
+		bookMarkList=BookMarkDAO.getInstance().bookMarkList(bookMarkInfo);
+		return bookMarkList;
+	}
 
 
 	@Override
@@ -101,7 +107,11 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	public void increaseFrequency(String bookmarkId) {
 		BookMarkDAO.getInstance().increaseFrequency(bookmarkId);
 	}
-	
+	public ArrayList<BookMark> listByCategory(HashMap<String, Object> category){
+		ArrayList<BookMark> categoryList=null;
+		categoryList=BookMarkListDAO.getInstance().listByCategory(category);
+		return categoryList;
+	}
 	
 
 

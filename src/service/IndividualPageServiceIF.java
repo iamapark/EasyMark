@@ -23,6 +23,7 @@ public interface IndividualPageServiceIF {
 	 */
 	public int addBookMark(BookMark bookMark);	
 	public ArrayList<BookMark> bookMarkList(String userId);
+	public ArrayList<BookMark> bookMarkList(HashMap<String, Object> bookMarkInfo);
 	public BookMark getBookMark(int bookMarkId);
 	public int bookMarkPosx(String userId);
 	public int bookMarkPosy(HashMap<String, Object> pos);
@@ -55,5 +56,6 @@ public interface IndividualPageServiceIF {
 	public void deleteCategory(HashMap<String, Object> category);
 	public ArrayList<Category> categoryList(String userId);
 	public boolean isExistCategory(HashMap<String, Object> categoryInfo);
+	public ArrayList<BookMark> listByCategory(HashMap<String, Object> category);
 	
 }
