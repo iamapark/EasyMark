@@ -1,5 +1,37 @@
 /*document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
 */
+/*$(document).ready(function(){
+	var userId = 'bdbd';
+	console.log("loginId:"+userId);
+	socketioConnection(userId);
+	$.ajax({
+		url: 'isContains',
+		dataType:'json',
+		data:{
+		//	userId:userId,
+		}
+	}).done(function(data){
+		console.log("loginId:"+data);
+		//socketioConnection(userId);
+	});
+	
+});*/
+var socketioConnection = function(userId){ // 시작 : 
+	socket = io.connect('http://localhost:9090/message', {'sync disconnect on unload' : true}); // 이 주소로 커넥션 맺기
+	socket.emit('userId', {id:userId}); // emit으로 보내고
+	socket.on('message', function(data){ // on으로 받는것
+		console.log('쪽지: ' + data.msg); // 쪽지 내용만 보낸 것 / 누가 보냈는지도 포함
+		$.noty.consumeAlert({
+			layout : 'topRight', 
+			type : 'success',
+			dismissQueue : true
+		});
+		
+		alert('쪽지가 도착했습니다.');
+		$.noty.stopConsumeAlert();
+	});
+};
+
 $('a[data-toggle="modal"]').click(function(){
 	clearForm();
 });

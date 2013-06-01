@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import util.AdminServer;
+import util.MessageServer;
 import util.RelayServer;
 import dto.BookMark;
 import dto.BookMarkShip;
@@ -34,7 +35,7 @@ import dto.User;
 @Controller
 public class FriendshipAction {
 	private RelayServer relayServer;
-	
+	//private MessageServer msgServer;
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
 	}
@@ -392,10 +393,11 @@ public class FriendshipAction {
 		boolean flag = new FriendshipServiceImpl().sendMessage(msg);
 		// boolean flag = true;
 		if (flag) { // 메시지 DB 등록 성공
-
+			
+			MessageServer.getInstance().sendMessage(friendId, contents);
 			// msgServer.sendMessage(friendId, message);
 
-			//relayServer.sendMessage(friendId, contents);
+			//relayServer.sendMessage(friendId, contents);  X
 
 		} else { // 메시지 DB 등록 실패
 				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
@@ -406,14 +408,14 @@ public class FriendshipAction {
 	public ModelAndView isContains(HttpServletRequest request, HttpServletResponse response){
 	
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		boolean flag = relayServer.isContains(userId);
+		//boolean flag = relayServer.isContains(userId);
 		/*request.setAttribute("result", Boolean.toString(flag));
 		nextPage.setViewName("/views/result.jsp");
 			
 		return nextPage;*/
 		ModelAndView mav = new ModelAndView();
 		
-		request.setAttribute("result", Boolean.toString(flag));
+		request.setAttribute("result", userId);
 		mav.setViewName("result");
 			
 		traffic();

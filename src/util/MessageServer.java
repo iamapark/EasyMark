@@ -19,7 +19,7 @@ import dto.Member;
 public class MessageServer {
 	private Vertx vt;
 	private SocketIOServer io;
-	private HashMap<String, SocketIOSocket> sockets;
+	private HashMap<String, SocketIOSocket> sockets; // a(사용자), socket 생기는 것 담기
 	public static MessageServer server = null;
 	private AdminServer adminServer = null;
 	
@@ -44,7 +44,7 @@ public class MessageServer {
 		message.onConnection(new Handler<SocketIOSocket>(){
 			@Override
 			public void handle(final SocketIOSocket socket) {
-				socket.on("userId", new Handler<JsonObject>(){
+				socket.on("userId", new Handler<JsonObject>(){ // userId 값이 넘어온다
 					@Override
 					public void handle(JsonObject data) {
 						register(data.getString("id"), socket);
@@ -95,7 +95,8 @@ public class MessageServer {
 		System.out.println("(전송)id: " + id + ", msg: " + msg);
 		JsonObject data = new JsonObject();
 		data.putString("msg", msg);
-		sockets.get(id).emit("message", data);
+		System.out.println(sockets.get(id));
+		//sockets.get(id).emit("message", data);
 	}
 
 	public boolean isContains(String userId) {

@@ -19,7 +19,7 @@
 		<span for="tab-1" class="tab-label-1">Login</span>
 		
 		<input id="tab-2" type="radio" name="radio-set" class="tab-selector-2"  />
-		<span for="tab-2" class="tab-label-2">Signup</span>
+		<span for="tab-2" class="tab-label-2">Sign up</span>
 
 		<input id="tab-3" type="radio" name="radio-set" class="tab-selector-3" />
 		<span for="tab-3" class="tab-label-3">Forget Password</span>
@@ -69,7 +69,7 @@
 				</p>
 				<form  action="login" autocomplete="on" method="POST" name="loginForm">
 				  <p>
-					<label for="username" class="uname" data-icon="u" > Your email or username </label>
+					<label for="username" class="uname" data-icon="u" > Your email or user name </label>
 					<input class="field" name="loginId" required="required" type="text" placeholder="사용자 아이디" id="loginId"/>
 				  </p>
 				  <p>	
