@@ -367,7 +367,6 @@ var bookmarkUrlFocusOut = function() {
 //category add 버튼 클릭
 $('#category').click(function(){
 
-<<<<<<< HEAD
 	var categoryName=$('#categoryName').val();
 		$.ajax({
 			url: 'addCategory',
@@ -389,8 +388,6 @@ $('#category').click(function(){
 				
 		});
 
-=======
->>>>>>> 56663183e03a717f3a468d5e185440e1e8144e6b
 	var categoryName = $('#categoryName').val();
 	$.ajax({
 		url: 'addCategory',
@@ -413,15 +410,12 @@ $('#category').click(function(){
 	});
 });
 
-<<<<<<< HEAD
 
 
 // category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
 //$('#category').click(function() {
 
-=======
 // category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
->>>>>>> 56663183e03a717f3a468d5e185440e1e8144e6b
 // category 버튼 클릭
 /*$('#category').click(function() {
 
@@ -483,10 +477,8 @@ $('#sendButton').click(function(){
 });
 
 
-<<<<<<< HEAD
-=======
+
 //카테고리 추가 할때 실시간 카테고리 중복체크 중복이면 버튼없어진다
->>>>>>> 56663183e03a717f3a468d5e185440e1e8144e6b
 $('#categoryName').keyup(function(){
 	console.log("isExistCategoryName");
 	var categoryName=$('#categoryName').val();
@@ -507,8 +499,6 @@ $('#categoryName').keyup(function(){
 			
 		});
 	
-<<<<<<< HEAD
-=======
 
 });
 
@@ -526,5 +516,4 @@ $('#mark_button').click(function(){
 		}
 		
 	});
->>>>>>> 56663183e03a717f3a468d5e185440e1e8144e6b
 });
