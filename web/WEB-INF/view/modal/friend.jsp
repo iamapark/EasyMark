@@ -7,7 +7,7 @@
 		
 </script>
 
-<div id="friendInfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:80%; left:10%; right:10%; 	margin-left:0;">	
+<div id="friendInfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
 	<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">X</button>

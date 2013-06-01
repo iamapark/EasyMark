@@ -367,30 +367,6 @@ var bookmarkUrlFocusOut = function() {
 //category add 버튼 클릭
 $('#category').click(function(){
 
-<<<<<<< HEAD
-	var categoryName=$('#categoryName').val();
-		$.ajax({
-			url: 'addCategory',
-			dataType:'json',
-			data:{
-				categoryName:categoryName
-			}
-		}).done(function(data){
-			id = data.id; x = data.x; y = data.y; imgUrl = data.imgUrl, categoryName=data.categoryName;
-			$('#setting').modal('hide');
-			alert('카테고리가 추가되었습니다!!');
-			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+ categoryName +'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-				newLi += '<img id="img" src="'+ imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
-				newLi += '<div class="bookmarkIconInfo">' + categoryName +'</div>';
-			newLi += '</li>';
-			gridster.add_widget(newLi, 1, 1);
-			init();
-			$('<option value="'+categoryName+'">' + categoryName + '</option>').appendTo('#addBookMarkCategory');
-				
-		});
-
-=======
->>>>>>> 56663183e03a717f3a468d5e185440e1e8144e6b
 	var categoryName = $('#categoryName').val();
 	$.ajax({
 		url: 'addCategory',
@@ -413,15 +389,8 @@ $('#category').click(function(){
 	});
 });
 
-<<<<<<< HEAD
-
 
 // category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
-//$('#category').click(function() {
-
-=======
-// category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
->>>>>>> 56663183e03a717f3a468d5e185440e1e8144e6b
 // category 버튼 클릭
 /*$('#category').click(function() {
 
@@ -483,10 +452,8 @@ $('#sendButton').click(function(){
 });
 
 
-<<<<<<< HEAD
-=======
+
 //카테고리 추가 할때 실시간 카테고리 중복체크 중복이면 버튼없어진다
->>>>>>> 56663183e03a717f3a468d5e185440e1e8144e6b
 $('#categoryName').keyup(function(){
 	console.log("isExistCategoryName");
 	var categoryName=$('#categoryName').val();
@@ -506,9 +473,6 @@ $('#categoryName').keyup(function(){
 			}
 			
 		});
-	
-<<<<<<< HEAD
-=======
 
 });
 
@@ -526,5 +490,5 @@ $('#mark_button').click(function(){
 		}
 		
 	});
->>>>>>> 56663183e03a717f3a468d5e185440e1e8144e6b
+
 });

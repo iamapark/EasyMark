@@ -540,7 +540,12 @@ $('#messageTab li:eq(0) a').click(function (e){
 			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
 	});
+	
+	
 });
+
+//<a onclick="sendMessageDetail(2);" href="#messageView" data-toggle="modal">aaaa</a>
+//<a onclick="sendMessageDetail(3);" href="#messageView" data-toggle="modal">asdfasdf</a>
 
 
 /**
