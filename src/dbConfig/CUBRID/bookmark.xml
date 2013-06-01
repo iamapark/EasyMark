@@ -50,7 +50,7 @@
 	</select>
 	
 	<!-- Select with no parameters using the result map for Account class. -->
-	<select id="bookMarkListByCategory" parameterClass="String" resultMap="BookMarkList">
+	<select id="bookMarkListByCategory" parameterClass="java.util.HashMap" resultMap="BookMarkList">
 		SELECT
 		bookmark_id,
 		bookmark_name,
