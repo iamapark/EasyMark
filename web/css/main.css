@@ -300,4 +300,27 @@ textarea {
 }
 
 
+#bookmarkAdd{
+	
+}
 
+#messages{
+	width: 70%; 
+	left: 15%; 
+	right:15%; 	
+	margin-left: 0;
+}
+
+#friendInfo{
+	width: 70%; 
+	left: 15%; 
+	right:15%; 	
+	margin-left: 0;
+}
+
+#setting{
+	width: 70%; 
+	left: 15%; 
+	right:15%; 	
+	margin-left: 0;
+}

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div id="messages" class="modal hide fade" tabindex="-1" data-focus-on="input:first">	
+<div id="messages" class="modal hide fade" tabindex="-1" data-focus-on="input:first" aria-hidden="true">	
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">X</button>

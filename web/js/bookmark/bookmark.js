@@ -416,6 +416,8 @@ $('#category').click(function(){
 //$('#category').click(function() {
 
 // category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
+
+// category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
 // category 버튼 클릭
 /*$('#category').click(function() {
 
@@ -516,4 +518,5 @@ $('#mark_button').click(function(){
 		}
 		
 	});
+
 });

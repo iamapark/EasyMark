@@ -8,16 +8,23 @@
 <head>
 	<meta charset="UTF-8">
 	<title>EasyMark-${MEMBERID}</title>
+<<<<<<< HEAD
 	<!-- bm <link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" /> -->
+=======
+>>>>>>> 76f24967d182d67c335ba65ace6c098714c227af
 	<LINK REL="SHORTCUT ICON" HREF="http://sciactive.github.io/pnotify/includes/github-icon.png" />
 	<link rel="stylesheet" href="css/superslide/superslide.css">
   	<link rel="stylesheet" href="css/superslide/layout.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/gridster/jquery.gridster.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
+	
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
+	<link rel="stylesheet" href="css/bootstrap/bootstrap-modal.css" type="text/css" >
+	
 	<link rel="stylesheet" href="css/bookmark/jquery.contextmenu.css" type="text/css" >
 	<link href="css/dataTables/jquery.dataTables_themeroller.css" rel="stylesheet">
 	<link href="css/dataTables/jquery.dataTables.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
 	
 	<!-- design:main -->
 	<%
@@ -109,6 +116,8 @@
 	<script src="js/jquery.form.js"></script>
 	<script src="js/dataTables/jquery.dataTables.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
+	<script src="js/bootstrap/bootstrap-modalmanager.js"></script>
+	<script src="js/bootstrap/bootstrap-modal.js"></script>
 	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/bookmark/bookmark.js"></script>
 	<script src="js/membership/membership.js"></script>
