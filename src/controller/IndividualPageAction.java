@@ -287,7 +287,7 @@ public class IndividualPageAction {
 		BookMark bookmark=null;
 		//만약 category 삭제하는 거면 category Table에서도 제거
 		bookmark=new IndividualPageServiceImpl().getBookMark(bookMarkId);
-		if(bookmark.getCategory().equals("")){
+		if(bookmark.getBookMarkUrl().equals("")){// bookmark에 url이 없으면 -> 카테고리라면
 			HashMap<String, Object> category=new HashMap<>();
 			category.put("categoryName",bookmark.getBookMarkName());
 			category.put("userId",bookmark.getUserId());
