@@ -544,7 +544,7 @@ public class IndividualPageAction {
 			@RequestParam(value = "bookmarkId") String bookmarkId) {
 
 		ModelAndView nextPage = new ModelAndView();
-
+		System.out.println("bookmarkId: " + bookmarkId);
 		new IndividualPageServiceImpl().increaseFrequency(bookmarkId);
 		
 		request.setAttribute("result", "true");
@@ -573,6 +573,7 @@ public class IndividualPageAction {
 		nextPage.setViewName("result");
 		return nextPage;
 	}
+	
 	@RequestMapping("/categoryOptionUpdate")
 	public ModelAndView categoryUpdate(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView nextPage = new ModelAndView();

@@ -48,7 +48,7 @@
       		<property name="JDBC.Username"      value="root"/>
       		<property name="JDBC.Password"      value=""/>
     	</dataSource>
-  	</transactionManager> -->  
+  	</transactionManager>  --> 
   
   	<!-- MySQL Setting cafe24.com -->
 	<!-- <transactionManager type="JDBC">
@@ -63,14 +63,25 @@
   <!-- List the SQL Map XML files. They can be loaded from the 
        classpath, as they are here (com.domain.data...) -->
        
-  <sqlMap resource="dbConfig/member.xml"/>
-  <sqlMap resource="dbConfig/bookmark.xml"/>
-  <sqlMap resource="dbConfig/speech.xml"/>
+  <!-- CUBRID -->
+  <sqlMap resource="dbConfig/CUBRID/member.xml"/>
+  <sqlMap resource="dbConfig/CUBRID/bookmark.xml"/>
+  <sqlMap resource="dbConfig/CUBRID/speech.xml"/>
 
-  <sqlMap resource="dbConfig/category.xml"/>
+  <sqlMap resource="dbConfig/CUBRID/category.xml"/>
 
-  <sqlMap resource="dbConfig/admin.xml"/>
-  <sqlMap resource="dbConfig/friend.xml"/>
+  <sqlMap resource="dbConfig/CUBRID/admin.xml"/>
+  <sqlMap resource="dbConfig/CUBRID/friend.xml"/>
+  
+  <!-- MySQL -->
+  <!-- <sqlMap resource="dbConfig/MySQL/member.xml"/>
+  <sqlMap resource="dbConfig/MySQL/bookmark.xml"/>
+  <sqlMap resource="dbConfig/MySQL/speech.xml"/>
+
+  <sqlMap resource="dbConfig/MySQL/category.xml"/>
+
+  <sqlMap resource="dbConfig/MySQL/admin.xml"/>
+  <sqlMap resource="dbConfig/MySQL/friend.xml"/> -->
 
 
 </sqlMapConfig>

@@ -122,6 +122,13 @@ public class Member {
 				+ password + ", name=" + name + ", me2DayKey=" + me2DayKey
 				+ "imgUrl= " + imgUrl + " bgImgUrl= " + bgImgUrl + "]";
 	}
+
+	public boolean isContentEmpty() {
+		return getUserId().equals("");
+				//|| getName().equals("") 
+				//|| getEmail().equals("") ;
+				//|| getPassword().equals(""); 
+	}
 	
 	
 }
