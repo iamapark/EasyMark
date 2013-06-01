@@ -7,7 +7,7 @@
 		
 </script>
 
-<div id="friendInfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:80%; left:10%; right:10%; 	margin-left:0;">	
+<div id="friendInfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
 	<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">X</button>
@@ -23,19 +23,19 @@
 			  <li><a href="#friend_sendRequest" data-toggle="tab">내가 친구 요청한 리스트</a></li>
 			  <li><a href="#friend_takeRequest" data-toggle="tab">내가 친구 요청받은 리스트</a></li>
 			  <li><a href="#friend_BookMark" data-toggle="tab">추천받은 북마크 리스트</a></li>
-			 <%	String me2dayId1 = (String)request.getSession().getAttribute("MEMBERID"); 
-	               	String []me2dayId2 = me2dayId1.split("@"); 
-	                				
-	                String me2dayKey = (String)request.getSession().getAttribute("memberKey");
-	                
-					if(me2dayKey == "Me2Login"){
-	            %>
-			     	<li><a href="#friend_me2day" data-toggle="tab" onclick="me2dayConnect('<%=me2dayId2[0]%>')">미투데이 친구 리스트</a><li>		
-				<% 	}
-	                else {} 
-	            %>	
+				
+		<%	String me2dayId = (String)request.getSession().getAttribute("MEMBERID"); 
+	        String me2dayKey = (String)request.getSession().getAttribute("me2dayKey");
+	            	
+			if(me2dayKey == "Me2Login"){
+	    %>
+			  <li><a href="#friend_me2day" data-toggle="tab" onclick="me2dayConnect('<%=me2dayId%>')">미투데이 친구 리스트</a><li>		
+					
+		<% 	}
+	        else {} 
+	    %>	
 	            
-			  </ul>	
+			</ul>	
 			 
 		</div>
 		
@@ -137,7 +137,7 @@
 					  	<a href="#outWeb" data-toggle="tab">추천 한 WEB</a></li>
 					</ul>
 					<div class="tab-content">
-					  	<div class="tab-pane active" id="inweb">
+					  	<div class="tab-pane active" id="inWeb">
 						  	<div class = "box-content">
 								<table class="table table-striped table-bordered bootstrap-datatable inwebtable">
 									<thead>
@@ -145,7 +145,7 @@
 								          	<th>ID</th>
 											<th>URL</th>
 											<th>NAME</th>
-											<th>RECOMMENDATION</th>                                        
+											<th>ree</th>                                        
 								     	</tr>
 									</thead>
 									<tbody>

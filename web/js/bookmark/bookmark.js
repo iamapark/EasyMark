@@ -373,6 +373,7 @@ var bookmarkUrlFocusOut = function() {
 //category add 버튼 클릭
 $('#category').click(function(){
 
+
 	var categoryName=$('#categoryName').val();
 	var categorySelect=$('#categorySelect').val();
 		$.ajax({
@@ -392,12 +393,11 @@ $('#category').click(function(){
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
 			init();
+		
+
 			
-				
-		});
-
+	});
 });
-
 
 
 // category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
@@ -461,6 +461,8 @@ $('#sendButton').click(function(){
 		});
 });
 
+
+
 //카테고리 추가 할때 실시간 카테고리 중복체크 중복이면 버튼없어진다
 $('#categoryName').keyup(function(){
 	console.log("isExistCategoryName");
@@ -481,9 +483,11 @@ $('#categoryName').keyup(function(){
 			}
 			
 		});
-	
+
 });
+
 //bookmark add 버튼 눌렀을 시 북마크 옵션 업데이트
+
 $('#mark_button').click(function(){
 	console.log("categoryOPtion");
 	$.ajax({
@@ -538,4 +542,5 @@ $('#setting_button').click(function(){
 		}
 		
 	});
+
 });

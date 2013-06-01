@@ -13,10 +13,14 @@
   	<link rel="stylesheet" href="css/superslide/layout.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/gridster/jquery.gridster.css">
 	<link rel="stylesheet" type="text/css" href="css/bookmark/bookmark.css">
+	
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css" type="text/css" >
+	<link rel="stylesheet" href="css/bootstrap/bootstrap-modal.css" type="text/css" >
+	
 	<link rel="stylesheet" href="css/bookmark/jquery.contextmenu.css" type="text/css" >
 	<link href="css/dataTables/jquery.dataTables_themeroller.css" rel="stylesheet">
 	<link href="css/dataTables/jquery.dataTables.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
 	
 	<!-- design:main -->
 	<%
@@ -100,8 +104,7 @@
 		<jsp:include page="modal/message.jsp"></jsp:include>		
 		
  	<!-- MODAL END -->
-	
-	
+		
 	<script src="js/jquery.js"></script>
 	<script src="js/superslide/jquery.easing.1.3.js"></script>
   	<script src="js/superslide/jquery.superslide.js" type="text/javascript" charset="utf-8"></script>
@@ -109,15 +112,14 @@
 	<script src="js/jquery.form.js"></script>
 	<script src="js/dataTables/jquery.dataTables.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
+	<script src="js/bootstrap/bootstrap-modalmanager.js"></script>
+	<script src="js/bootstrap/bootstrap-modal.js"></script>
 	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/bookmark/bookmark.js"></script>
 	<script src="js/membership/membership.js"></script>
 	<script src="js/friendship/friendship.js"></script>
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
 	
-	<!-- <script src='js/admin/jquery-1.7.2.min.js'></script>
-	 -->
-	 
 	<script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.nightly.js"></script>
 	
 	<!-- design:main -->

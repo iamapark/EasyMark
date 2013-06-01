@@ -1,3 +1,5 @@
+/*document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
+*/
 $('a[data-toggle="modal"]').click(function(){
 	clearForm();
 });
@@ -17,6 +19,7 @@ $('a[href="#friendInfo"]').click(function(){
 		
 		for(var i=0; i<memberData.length; i++){
 			memberId = memberData[i].userId;
+			
 			
 			action = "<a id='delete' onclick='deleteFriend(this)' class='btn btn-small btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 					 "친구삭제"+
@@ -130,7 +133,7 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 	console.log("받은");
 	//$('.outwebtable').dataTable().fnClearTable();
 	$('.inwebtable').dataTable().fnClearTable();
-	
+	$(this).tab('show');
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
@@ -159,7 +162,7 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 $('#webSiteTab li:eq(1) a').click(function (e){	
 	console.log("보낸");
 	$('.outwebtable').dataTable().fnClearTable();
-	
+	$(this).tab('show');
 	$.ajax({
 		url: 'recommendOutWeb',
 	}).done(function(data){
@@ -343,7 +346,6 @@ var recommendAccept = function(e){
 function searchMember(userId) {
 	var keyword = $('input[name="keyword"]').val();
 	$('.friendtable').dataTable().fnClearTable();
-	memberId = null;
 	console.log(userId);
 	
 	$.ajax({
@@ -409,16 +411,18 @@ function searchMember(userId) {
 <!-- 미투데이 연동 : 미투데이친구 + EasyMark 회원 불러오기 -->*/
 var friendInfo;
 
-function me2dayConnect(userId){
+function me2dayConnect(me2dayId){
 	console.log('me2dayConnect6');
-	var me2Id = userId + "@me2day";
+	var userId = me2dayId.split("@"); 
+	console.log(userId[0]);
 	
+	console.log(userId);
 	$.ajax({
 		url: 'Proxy/proxy.jsp',
 		dataType:'json',
 		async:'false',
 		data:{
-			url:'http://me2day.net/api/get_friends/'+userId+'.json?akey=8d41ef461f4c6e08dc8e235c2337db37'
+			url:'http://me2day.net/api/get_friends/'+userId[0]+'.json?akey=8d41ef461f4c6e08dc8e235c2337db37'
 		}
 	}).done(function(data){
 		
@@ -506,7 +510,6 @@ function me2dayConnect(userId){
 
 $('a[href="#messages"]').click(function(){
 	$('.takemessagetable').dataTable().fnClearTable();
-	memberId = null;
 	$.ajax({
 		url: 'inBox'
 	}).done(function(data){
@@ -515,7 +518,7 @@ $('a[href="#messages"]').click(function(){
 		var memberData = JSON.parse(data);
 		
 		for(var i=0; i<memberData.length; i++){
-			select = "<input type='checkbox' name='selector' value='" + memberData[i].messageId + "'></input>";
+			select = "<input type='checkbox' onchange='messageSelect(this)' name='selector' value='" + memberData[i].messageId + "'></input>";
 			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
 	});
@@ -526,7 +529,6 @@ $('a[href="#messages"]').click(function(){
 <!-- friend MODAL의 첫번째 tab : 받은 메시지 목록 -->*/
 $('#messageTab li:eq(0) a').click(function (e){	
 	$('.takemessagetable').dataTable().fnClearTable();
-	memberId = null;
 	$.ajax({
 		url: 'inBox'
 	}).done(function(data){
@@ -534,11 +536,16 @@ $('#messageTab li:eq(0) a').click(function (e){
 		
 		var memberData = JSON.parse(data);
 		for(var i=0; i<memberData.length; i++){
-			select = "<input type='checkbox' name='selector' value='" + memberData[i].messageId + "'></input>";
+			select = "<input type='checkbox' name='selector' onchange='messageSelect(this)' value='" + memberData[i].messageId + "'></input>";
 			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
 	});
+	
+	
 });
+
+//<a onclick="sendMessageDetail(2);" href="#messageView" data-toggle="modal">aaaa</a>
+//<a onclick="sendMessageDetail(3);" href="#messageView" data-toggle="modal">asdfasdf</a>
 
 
 /**
@@ -554,7 +561,7 @@ $('#messageTab li:eq(1) a').click(function (e){
 		var memberData = JSON.parse(data);
 	
 		for(var i=0; i<memberData.length; i++){
-			select = "<input type='checkbox' name='selector' value='" + memberData[i].messageId + "'></input>";
+			select = "<input type='checkbox' onchange='messageSelect(this)' name='selector' value='" + memberData[i].messageId + "'></input>";
 			$('.sendmessagetable').dataTable().fnAddData([select, memberData[i].friendId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
 	});
@@ -564,7 +571,6 @@ $('#messageTab li:eq(1) a').click(function (e){
 /**
 <!-- 받은 메시지 상세 보기 -->*/
 function takeMessageDetail(messageId){
-	
 	$.ajax({
 		url: 'messageView',
 		dataType:'json',
@@ -695,10 +701,12 @@ var socketioConnection = function(userId){
 
 $('#takeMessageAllSelect').click(function(e){
 	if($(this).text() == '전체 선택'){
-		$($('input:checkbox'), $('#takeMessageTbl')).attr('checked', 'checked');
+		$($('input:checkbox'), $('#takeMessageTbl')).prop('checked', true);
+		$($('input:checkbox'), $('#takeMessageTbl')).parent().parent().addClass('row_selected_message');
 		$(this).text('선택 해제');
 	}else{
-		$($('input:checkbox'), $('#takeMessageTbl')).attr('checked', false);
+		$($('input:checkbox'), $('#takeMessageTbl')).prop('checked', false);
+		$($('input:checkbox'), $('#takeMessageTbl')).parent().parent().removeClass('row_selected_message');
 		$(this).text('전체 선택');
 	}
 });
@@ -706,6 +714,7 @@ $('#takeMessageAllSelect').click(function(e){
 $('#takeMessageDelete').click(function(e){
 	
 	var data = $('input[name=selector]').serialize();
+	selectedRow = $('.takemessagetable').dataTable().$('tr.row_selected_message');
 	
 	if(data == ""){
 		alert("삭제 할 메시지를 선택하세요.");
@@ -719,10 +728,8 @@ $('#takeMessageDelete').click(function(e){
 			}
 		}).done(function(data){
 			
-			for(var i=0; i<$('input[name=selector]').length; i++){
-				if($('input[name=selector]')[i].checked){
-					$('.takemessagetable').dataTable().fnDeleteRow(i);
-				}
+			for(var i=0; i<selectedRow.length; i++){
+				$('.takemessagetable').dataTable().fnDeleteRow(selectedRow[i]);
 			}
 		});
 	}
@@ -735,9 +742,11 @@ $('#takeMessageDelete').click(function(e){
 $('#sendMessageAllSelect').click(function(e){
 	if($(this).text() == '전체 선택'){
 		$($('input:checkbox'), $('#sendMessageTbl')).attr('checked', 'checked');
+		$($('input:checkbox'), $('#sendMessageTbl')).parent().parent().addClass('row_selected_message');
 		$(this).text('선택 해제');
 	}else{
 		$($('input:checkbox'), $('#sendMessageTbl')).attr('checked', false);
+		$($('input:checkbox'), $('#sendMessageTbl')).parent().parent().removeClass('row_selected_message');
 		$(this).text('전체 선택');
 	}
 });
@@ -745,7 +754,7 @@ $('#sendMessageAllSelect').click(function(e){
 $('#sendMessageDelete').click(function(e){
 	
 	var data = $('input[name=selector]').serialize();
-	
+	selectedRow = $('.sendmessagetable').dataTable().$('tr.row_selected_message');
 	if(data == ""){
 		alert("삭제 할 메시지를 선택하세요.");
 	}
@@ -757,13 +766,19 @@ $('#sendMessageDelete').click(function(e){
 				messageId:data
 			}
 		}).done(function(data){
-			
-			for(var i=0; i<$('input[name=selector]').length; i++){
-				if($('input[name=selector]')[i].checked){
-					$('.sendmessagetable').dataTable().fnDeleteRow(i);
-				}
+			for(var i=0; i<selectedRow.length; i++){
+				$('.sendmessagetable').dataTable().fnDeleteRow(selectedRow[i]);
 			}
 		});
 	}
 });
 	
+var messageSelect = function(selected){
+	console.log('selec');
+	if ( $(selected).parent().parent().hasClass('row_selected_message') ) {
+		$(selected).parent().parent().removeClass('row_selected_message');
+    }
+    else {
+    	$(selected).parent().parent().addClass('row_selected_message');
+    }
+};

@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-   <c:if test="${sessionScope.MEMBERID != null}">
-   	<% response.sendRedirect("loginSession"); %>
-   </c:if>
+   
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,5 +103,27 @@
 
 <script src="js/jquery.js"></script>
 <script src="js/membership/index.js"></script>
+<script>
+	
+	/*모바일로 접속할 경우 모바일 페이지로 이동*/
+	var connectionFilter = "win16|win32|win64|mac";
+	 
+	if( navigator.platform  ){
+	    if( connectionFilter.indexOf(navigator.platform.toLowerCase())<0 ){
+	        location.href="mobile";
+	    }
+	}
+	
+	var mobileKeyWords = new Array('iPhone', 'iPod', 'BlackBerry', 'Android', 'Windows CE', 'LG', 'MOT', 'SAMSUNG', 'SonyEricsson');
+	for (var word in mobileKeyWords){
+	    if (navigator.userAgent.match(mobileKeyWords[word]) != null){
+	        location.href = "mobile";
+	        break;
+	    }
+	}
+</script>
+<c:if test="${sessionScope.MEMBERID != null}">
+	<% response.sendRedirect("loginSession"); %>
+</c:if>
 </body>
 </html>

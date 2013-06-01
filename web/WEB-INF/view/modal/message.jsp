@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<div id="messages" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" 
-	 style="width: 60%; left:10%; right:10%; margin-left:0;">	
+<div id="messages" class="modal hide fade" tabindex="-1" data-focus-on="input:first" aria-hidden="true">	
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">X</button>
@@ -40,9 +38,9 @@
 							          <th>Date</th>                                          
 							     	</tr>
 								</thead>
-								<tbody>
+								<!-- <tbody>
 						
-								</tbody>
+								</tbody> -->
 							</table>
 							
 						</div>
@@ -71,10 +69,10 @@
 							          <th>Date</th>                                          
 							     	</tr>
 								</thead>
-								<tbody>
+								<!-- <tbody>
 								
 								
-								</tbody>
+								</tbody> -->
 							</table>
 						</div>	
 						
@@ -111,7 +109,7 @@
 	
 </div>
 
-<div id="messageView" class="modal hide fade" tabindex="-1">
+<div id="messageView" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
 	
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -123,7 +121,7 @@
 		<div id="messageViewDetail">
 			<div class="input-prepend">
 				<span class="add-on">I D</span> 
-				<input class="span2" id="messageViewFriend" type="text" readonly>
+				<input class="span2" id="messageViewFriend" style="width: 80%" type="text" readonly>
 			</div>
 			<span id="messageViewDate">
 			</span>
