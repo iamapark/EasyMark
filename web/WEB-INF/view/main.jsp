@@ -8,6 +8,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>EasyMark-${MEMBERID}</title>
+	<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
 	<LINK REL="SHORTCUT ICON" HREF="http://sciactive.github.io/pnotify/includes/github-icon.png" />
 	<link rel="stylesheet" href="css/superslide/superslide.css">
   	<link rel="stylesheet" href="css/superslide/layout.css">
@@ -100,8 +101,7 @@
 		<jsp:include page="modal/message.jsp"></jsp:include>		
 		
  	<!-- MODAL END -->
-	
-	
+		
 	<script src="js/jquery.js"></script>
 	<script src="js/superslide/jquery.easing.1.3.js"></script>
   	<script src="js/superslide/jquery.superslide.js" type="text/javascript" charset="utf-8"></script>
@@ -115,9 +115,6 @@
 	<script src="js/friendship/friendship.js"></script>
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
 	
-	<!-- <script src='js/admin/jquery-1.7.2.min.js'></script>
-	 -->
-	 
 	<script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.nightly.js"></script>
 	
 	<!-- design:main -->

@@ -133,7 +133,7 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 	console.log("받은");
 	//$('.outwebtable').dataTable().fnClearTable();
 	$('.inwebtable').dataTable().fnClearTable();
-	
+	$(this).tab('show');
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
@@ -162,7 +162,7 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 $('#webSiteTab li:eq(1) a').click(function (e){	
 	console.log("보낸");
 	$('.outwebtable').dataTable().fnClearTable();
-	
+	$(this).tab('show');
 	$.ajax({
 		url: 'recommendOutWeb',
 	}).done(function(data){
@@ -518,7 +518,7 @@ $('a[href="#messages"]').click(function(){
 		var memberData = JSON.parse(data);
 		
 		for(var i=0; i<memberData.length; i++){
-			select = "<input type='checkbox' name='selector' value='" + memberData[i].messageId + "'></input>";
+			select = "<input type='checkbox' onchange='messageSelect(this)' name='selector' value='" + memberData[i].messageId + "'></input>";
 			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
 	});
@@ -536,7 +536,7 @@ $('#messageTab li:eq(0) a').click(function (e){
 		
 		var memberData = JSON.parse(data);
 		for(var i=0; i<memberData.length; i++){
-			select = "<input type='checkbox' name='selector' value='" + memberData[i].messageId + "'></input>";
+			select = "<input type='checkbox' name='selector' onchange='messageSelect(this)' value='" + memberData[i].messageId + "'></input>";
 			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
 	});
@@ -556,7 +556,7 @@ $('#messageTab li:eq(1) a').click(function (e){
 		var memberData = JSON.parse(data);
 	
 		for(var i=0; i<memberData.length; i++){
-			select = "<input type='checkbox' name='selector' value='" + memberData[i].messageId + "'></input>";
+			select = "<input type='checkbox' onchange='messageSelect(this)' name='selector' value='" + memberData[i].messageId + "'></input>";
 			$('.sendmessagetable').dataTable().fnAddData([select, memberData[i].friendId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
 		}
 	});
@@ -566,7 +566,6 @@ $('#messageTab li:eq(1) a').click(function (e){
 /**
 <!-- 받은 메시지 상세 보기 -->*/
 function takeMessageDetail(messageId){
-	
 	$.ajax({
 		url: 'messageView',
 		dataType:'json',
@@ -697,10 +696,12 @@ var socketioConnection = function(userId){
 
 $('#takeMessageAllSelect').click(function(e){
 	if($(this).text() == '전체 선택'){
-		$($('input:checkbox'), $('#takeMessageTbl')).attr('checked', 'checked');
+		$($('input:checkbox'), $('#takeMessageTbl')).prop('checked', true);
+		$($('input:checkbox'), $('#takeMessageTbl')).parent().parent().addClass('row_selected_message');
 		$(this).text('선택 해제');
 	}else{
-		$($('input:checkbox'), $('#takeMessageTbl')).attr('checked', false);
+		$($('input:checkbox'), $('#takeMessageTbl')).prop('checked', false);
+		$($('input:checkbox'), $('#takeMessageTbl')).parent().parent().removeClass('row_selected_message');
 		$(this).text('전체 선택');
 	}
 });
@@ -708,6 +709,7 @@ $('#takeMessageAllSelect').click(function(e){
 $('#takeMessageDelete').click(function(e){
 	
 	var data = $('input[name=selector]').serialize();
+	selectedRow = $('.takemessagetable').dataTable().$('tr.row_selected_message');
 	
 	if(data == ""){
 		alert("삭제 할 메시지를 선택하세요.");
@@ -721,10 +723,8 @@ $('#takeMessageDelete').click(function(e){
 			}
 		}).done(function(data){
 			
-			for(var i=0; i<$('input[name=selector]').length; i++){
-				if($('input[name=selector]')[i].checked){
-					$('.takemessagetable').dataTable().fnDeleteRow(i);
-				}
+			for(var i=0; i<selectedRow.length; i++){
+				$('.takemessagetable').dataTable().fnDeleteRow(selectedRow[i]);
 			}
 		});
 	}
@@ -737,9 +737,11 @@ $('#takeMessageDelete').click(function(e){
 $('#sendMessageAllSelect').click(function(e){
 	if($(this).text() == '전체 선택'){
 		$($('input:checkbox'), $('#sendMessageTbl')).attr('checked', 'checked');
+		$($('input:checkbox'), $('#sendMessageTbl')).parent().parent().addClass('row_selected_message');
 		$(this).text('선택 해제');
 	}else{
 		$($('input:checkbox'), $('#sendMessageTbl')).attr('checked', false);
+		$($('input:checkbox'), $('#sendMessageTbl')).parent().parent().removeClass('row_selected_message');
 		$(this).text('전체 선택');
 	}
 });
@@ -747,7 +749,7 @@ $('#sendMessageAllSelect').click(function(e){
 $('#sendMessageDelete').click(function(e){
 	
 	var data = $('input[name=selector]').serialize();
-	
+	selectedRow = $('.sendmessagetable').dataTable().$('tr.row_selected_message');
 	if(data == ""){
 		alert("삭제 할 메시지를 선택하세요.");
 	}
@@ -759,13 +761,19 @@ $('#sendMessageDelete').click(function(e){
 				messageId:data
 			}
 		}).done(function(data){
-			
-			for(var i=0; i<$('input[name=selector]').length; i++){
-				if($('input[name=selector]')[i].checked){
-					$('.sendmessagetable').dataTable().fnDeleteRow(i);
-				}
+			for(var i=0; i<selectedRow.length; i++){
+				$('.sendmessagetable').dataTable().fnDeleteRow(selectedRow[i]);
 			}
 		});
 	}
 });
 	
+var messageSelect = function(selected){
+	console.log('selec');
+	if ( $(selected).parent().parent().hasClass('row_selected_message') ) {
+		$(selected).parent().parent().removeClass('row_selected_message');
+    }
+    else {
+    	$(selected).parent().parent().addClass('row_selected_message');
+    }
+};

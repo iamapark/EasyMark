@@ -137,7 +137,7 @@
 					  	<a href="#outWeb" data-toggle="tab">추천 한 WEB</a></li>
 					</ul>
 					<div class="tab-content">
-					  	<div class="tab-pane active" id="inweb">
+					  	<div class="tab-pane active" id="inWeb">
 						  	<div class = "box-content">
 								<table class="table table-striped table-bordered bootstrap-datatable inwebtable">
 									<thead>
@@ -145,7 +145,7 @@
 								          	<th>ID</th>
 											<th>URL</th>
 											<th>NAME</th>
-											<th>RECOMMENDATION</th>                                        
+											<th>ree</th>                                        
 								     	</tr>
 									</thead>
 									<tbody>
