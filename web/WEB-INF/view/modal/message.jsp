@@ -25,7 +25,7 @@
 						<div class = "box-content">
 							<button id="takeMessageAllSelect" class="btn btn-primary btn-small">전체 선택</button>
 							<a id="takeMessageDelete" class='btn btn-small'>
-								선택삭제
+								선택 삭제
 							</a>
 							<br/>
 							<br/>
@@ -35,7 +35,7 @@
 							          <th>선택</th>
 							          <th>ID</th>
 							          <th>Contents</th>
-							          <th>Date</th>                                          
+							          <th>Date Time</th>                                          
 							     	</tr>
 								</thead>
 								<!-- <tbody>
@@ -56,7 +56,7 @@
 			  			<div class = "box-content">
 			  				<button id="sendMessageAllSelect" class="btn btn-primary btn-small">전체 선택</button>
 			  				<a id="sendMessageDelete" class='btn btn-small'>
-								선택삭제
+								선택 삭제
 							</a>
 							<br/>
 							<br/>
@@ -66,7 +66,7 @@
 							          <th>선택</th>
 							          <th>ID</th> 
 							          <th>Contents</th> 
-							          <th>Date</th>                                          
+							          <th>Date Time</th>                                          
 							     	</tr>
 								</thead>
 								<!-- <tbody>
@@ -95,6 +95,7 @@
 							
 							<button id="messageSendButton" class="btn btn-primary" >보내기</button>
 							<button id="messageSendingButton" class="btn btn-primary" style="display:none;">보내는 중...</button>
+							<br/>
 							<br/>
 						</div>	
 		  		</div>

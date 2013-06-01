@@ -199,6 +199,7 @@ $('#add').bind('click',function(e){
 			data: dataInfo
 			
 		}).done(function(data){
+			console.log(data);
 			kaka = data;
 			id = data.id; x = data.x; y = data.y; url = data.url;
 			$('#bookmarkAdd').modal('hide');

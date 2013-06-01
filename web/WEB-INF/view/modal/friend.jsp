@@ -63,8 +63,8 @@
 					<table class="table table-striped table-bordered bootstrap-datatable friendtable">
 						<thead>
 							<tr>
-					          <th>UserID</th>
-					          <th>UserName</th>
+					          <th>User ID</th>
+					          <th>User Name</th>
 					          <th>E-mail</th>
 					          <th>Action</th>                                          
 					     	</tr>
@@ -88,8 +88,8 @@
 							<table class="table table-striped table-bordered bootstrap-datatable sendfriendtable">
 								<thead>
 									<tr>
-							          <th>UserID</th>
-							          <th>Status</th>                                          
+							          <th>User ID</th>
+							          <th>Action</th>                                          
 							     	</tr>
 								</thead>
 								<tbody>
@@ -111,8 +111,8 @@
 							<table class="table table-striped table-bordered bootstrap-datatable takefriendtable">
 								<thead>
 									<tr>
-							          <th>UserID</th>
-							          <th>Status</th>                                          
+							          <th>User ID</th>
+							          <th>Action</th>                                          
 							     	</tr>
 								</thead>
 								<tbody>
@@ -142,10 +142,10 @@
 								<table class="table table-striped table-bordered bootstrap-datatable inwebtable">
 									<thead>
 										<tr>
-								          	<th>ID</th>
-											<th>URL</th>
-											<th>NAME</th>
-											<th>ree</th>                                        
+								          	<th>Friend ID</th>
+											<th>BookMark URL</th>
+											<th>BookMark NAME</th>
+											<th>Recommend Action</th>                                        
 								     	</tr>
 									</thead>
 									<tbody>
@@ -162,10 +162,10 @@
 								<table class="table table-striped table-bordered bootstrap-datatable outwebtable">
 									<thead>
 										<tr>
-								          	<th>ID</th>
-											<th>URL</th>
-											<th>NAME</th>
-											<th>RECOMMENDATION</th>                                        
+								          	<th>Friend ID</th>
+											<th>BookMark URL</th>
+											<th>BookMark NAME</th>
+											<th>Recommend Action</th>                                        
 								     	</tr>
 									</thead>
 									<tbody>
@@ -187,8 +187,8 @@
 							<table class="table table-striped table-bordered bootstrap-datatable me2friendtable">
 								<thead>
 									<tr>
-							          <th>UserID</th>
-							          <th>Status</th>                                          
+							          <th>User ID</th>
+							          <th>Action</th>                                          
 							     	</tr>
 								</thead>
 								<tbody>

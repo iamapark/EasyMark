@@ -8,10 +8,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>EasyMark-${MEMBERID}</title>
-<<<<<<< HEAD
-	<!-- bm <link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" /> -->
-=======
->>>>>>> 76f24967d182d67c335ba65ace6c098714c227af
 	<LINK REL="SHORTCUT ICON" HREF="http://sciactive.github.io/pnotify/includes/github-icon.png" />
 	<link rel="stylesheet" href="css/superslide/superslide.css">
   	<link rel="stylesheet" href="css/superslide/layout.css">
@@ -125,11 +121,6 @@
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
 	
 	<script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.nightly.js"></script>
-	
-	<!-- bm <script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
-	<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modal.js"></script>
-	<script src="http://twitter.github.io/bootstrap/assets/js/bootstrap.js"></script> -->
-	
 	
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>

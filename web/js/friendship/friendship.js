@@ -22,7 +22,7 @@ $('a[href="#friendInfo"]').click(function(){
 			
 			
 			action = "<a id='delete' onclick='deleteFriend(this)' class='btn btn-small btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
-					 "친구삭제"+
+					 "친구 삭제"+
 					 "</a>";
 			$('.friendtable').dataTable().fnAddData([memberData[i].userId, memberData[i].name, memberData[i].email, action]);
 		}
@@ -44,7 +44,7 @@ $('#friendTab li:eq(0) a').click(function (e){
 		
 		for(var i=0; i<memberData.length; i++){
 			action = "<a id='delete' onclick='deleteFriend(this)' class='btn btn-small btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
-					 "친구삭제"+
+					 "친구 삭제"+
 					 "</a>";
 			$('.friendtable').dataTable().fnAddData([memberData[i].userId, memberData[i].name, memberData[i].email, action]);
 		}
@@ -67,7 +67,7 @@ $('#friendTab li:eq(1) a').click(function (e){
 		for(var i=0; i<memberData.length; i++){
 			
 			action = "<a id='cancel' onclick='cancel(this)' class='btn btn-small btn btn-warning' data-id='"+ memberData[i].friendId + "' data-count='"+ i + "'>"+
-			 		 "요청취소"+
+			 		 "친구 요청 취소"+
 			 		 "</a>";
 			
 			$('.sendfriendtable').dataTable().fnAddData([memberData[i].friendId, action]);
@@ -91,7 +91,7 @@ $('#friendTab li:eq(2) a').click(function (e){
 		for(var i=0; i<memberData.length; i++){
 			action = "<a id='accept' onclick='acceptFriend(this)' class='btn btn-small btn btn-primary' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 					 "수락"+
-					 "</a>"+
+					 "</a>"+"&nbsp&nbsp&nbsp"+
 					 "<a id='reject' onclick='rejectFriend(this)' class='btn btn-small btn btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 					 "거절"+
 					 "</a>";
@@ -116,7 +116,7 @@ $('#friendTab li:eq(3) a').click(function (e){
 		for(var i=0; i<memberData.length; i++){
 			action = "<a id='accept' onclick='recommendAccept(this)' class='btn btn-small btn btn-primary' data-id='"+memberData[i].bookMarkId+"' data-url='"+memberData[i].bookMarkUrl+"' data-name='"+memberData[i].bookMarkName+"' data-descript='"+memberData[i].bookMarkDescript+"' data-friend='"+memberData[i].friendId +"' data-count='"+i+"'>"+
 			 		 "수락"+
-			 		 "</a>"+
+			 		 "</a>"+"&nbsp&nbsp&nbsp"+
 			 		 "<a id='reject' onclick='recommendReject(this)' class='btn btn-small btn btn-danger' data-id='"+ memberData[i].bookMarkId + "' data-count='"+ i + "'>"+
 			 		 "거절"+
 			 		 "</a>";
@@ -145,7 +145,7 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 		for(var i=0; i<memberData.length; i++){
 			action = "<a id='accept' onclick='recommendAccept(this)' class='btn btn-small btn btn-primary' data-id='"+ memberData[i].bookMarkId + "' data-url='"+ memberData[i].bookMarkUrl + "' data-name='"+ memberData[i].bookMarkName + "' data-descript='"+ memberData[i].bookMarkDescript+"' data-count='"+ i + "'>"+
 					 "수락"+
-					 "</a>"+
+					 "</a>"+"&nbsp&nbsp&nbsp"+
 					 "<a id='reject' onclick='recommendReject(this)' class='btn btn-small btn btn-danger' data-id='"+ memberData[i].bookMarkId + "' data-count='"+ i + "'>"+
 					 "거절"+
 					 "</a>";
@@ -172,7 +172,7 @@ $('#webSiteTab li:eq(1) a').click(function (e){
 		var action = null;
 		for(var i=0; i<memberData.length; i++){
 			action = "<a id='cancel' onclick='recommendCancel(this)' class='btn btn-small btn btn-warning' data-id='"+ memberData[i].bookMarkId + "' data-count='"+ i + "'>"+
-	 		 		 "취소"+
+	 		 		 "북마크 추천 취소"+
 	 		 		 "</a>";
 			$('.outwebtable').dataTable().fnAddData([memberData[i].friendId, memberData[i].bookMarkUrl, memberData[i].bookMarkName, action]);
 		}
@@ -322,10 +322,18 @@ var recommendAccept = function(e){
 	var bookMarkDescript = $(e).data('descript');
 	
 	var count = $(e).data('count');
+	var newLi;
+	var id, x, y, url;
 	
+	dataInfo = {
+		name:       $(e).data('name'),
+		url: 		$(e).data('url'),
+		description:$(e).data('descript')
+	};
 	console.log(bookMarkId+":"+bookMarkUrl+":"+bookMarkName+":"+bookMarkDescript);
 	$.ajax({
 		url: 'recommendAccept',
+		dataType:'json',
 		data: {
 			bookMarkId: bookMarkId,
 			bookMarkUrl : bookMarkUrl,
@@ -335,8 +343,16 @@ var recommendAccept = function(e){
 		}
 	}).done(function(data){
 		$('.inwebtable').dataTable().fnDeleteRow(count);
-		
+		console.log(data);
 		// 바탕화면에 북마크 아이콘을 생성하는 부분이 들어가야 함.
+		id = data.id; x = data.x; y = data.y; url = data.url;
+		alert('북마크가 추가되었습니다!!');
+		newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+			newLi += '<img id="img" href="'+ url +'" src="images/Bookmark.png" style="width:100%; height:100%;border-radius:20px;">';
+			newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
+		newLi += '</li>';
+		gridster.add_widget(newLi, 1, 1);
+		init();
 	}); 
 };
 
@@ -362,44 +378,44 @@ function searchMember(userId) {
 			if(memberData[i].status == "친구"){
 				if(memberData[i].userId == userId){
 					action = "<a id='delete' onclick='deleteFriend(this)' class='btn btn-small btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
-							 "친구삭제"+
+							 "친구 삭제"+
 							 "</a>";
 			
-					$('.friendtable').dataTable().fnAddData([memberData[i].friendId, memberData[i].name, "", action]);
+					$('.friendtable').dataTable().fnAddData([memberData[i].friendId, memberData[i].name, memberData[i].email, action]);
 				}
 				else {
 					action = "<a id='delete' onclick='deleteFriend(this)' class='btn btn-small btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
-							 "친구삭제"+
+							 "친구 삭제"+
 							 "</a>";
 			
-					$('.friendtable').dataTable().fnAddData([memberData[i].userId, memberData[i].name, "", action]);
+					$('.friendtable').dataTable().fnAddData([memberData[i].userId, memberData[i].name, memberData[i].email, action]);
 				}
 			}
 			
 			else if(memberData[i].status == "친구요청"){
 				if(memberData[i].userId == userId){
 					action = "<a id='cancel' onclick='cancel(this)' class='btn btn-small btn btn-warning' data-id='"+ memberData[i].friendId + "' data-count='"+ i + "'>"+
-							 "취소"+
+							 "친구 요청 취소"+
 							 "</a>";
 			
-					$('.friendtable').dataTable().fnAddData([memberData[i].friendId, memberData[i].name, "", action]);
+					$('.friendtable').dataTable().fnAddData([memberData[i].friendId, memberData[i].name,  memberData[i].email, action]);
 				}
 				else {
 					action = "<a id='accept' onclick='acceptFriend(this)' class='btn btn-small btn btn-primary' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 							 "수락"+
-							 "</a>"+
+							 "</a>"+"&nbsp&nbsp&nbsp"+
 							 "<a id='reject' onclick='rejectFriend(this)' class='btn btn-small btn btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 							 "거절"+
 							 "</a>";
-					$('.friendtable').dataTable().fnAddData([memberData[i].userId, memberData[i].name, "", action]);
+					$('.friendtable').dataTable().fnAddData([memberData[i].userId, memberData[i].name,  memberData[i].email, action]);
 				}
 			}
 			
 			else if(memberData[i].status == "친구아님"){
 				action = "<a id='add' onclick='addFriend(this)' class='btn btn-small btn btn-primary' data-id='"+ memberData[i].friendId + "' data-count='"+ i + "'>"+
-						 "친구요청"+
+						 "친구 요청"+
 						 "</a>";
-				$('.friendtable').dataTable().fnAddData([memberData[i].friendId, memberData[i].name, "", action]);
+				$('.friendtable').dataTable().fnAddData([memberData[i].friendId, memberData[i].name,  memberData[i].email, action]);
 				
 			}
 		}
@@ -451,7 +467,7 @@ function me2dayConnect(me2dayId){
 			for(var i=0; i<memberData.length; i++){
 				
 				if(memberData[i].status == "친구"){
-					if(memberData[i].userId == me2Id){
+					if(memberData[i].userId == me2dayId){
 						action = "<a id='delete' onclick='deleteFriend(this)' class='btn btn-small btn-danger' data-id='"+ memberData[i].friendId + "' data-count='"+ i + "'>"+
 								 "친구삭제"+
 								 "</a>";
@@ -468,9 +484,9 @@ function me2dayConnect(me2dayId){
 				}
 				
 				else if(memberData[i].status == "친구요청"){
-					if(memberData[i].userId == me2Id){
+					if(memberData[i].userId == me2dayId){
 						action = "<a id='cancel' onclick='cancel(this)' class='btn btn-small btn btn-warning' data-id='"+ memberData[i].friendId + "' data-count='"+ i + "'>"+
-								 "취소"+
+								 "친구 요청 취소"+
 								 "</a>";
 				
 						$('.me2friendtable').dataTable().fnAddData([memberData[i].friendId, action]);
@@ -478,7 +494,7 @@ function me2dayConnect(me2dayId){
 					else {
 						action = "<a id='accept' onclick='acceptFriend(this)' class='btn btn-small btn btn-primary' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 								 "수락"+
-								 "</a>"+
+								 "</a>"+"&nbsp&nbsp&nbsp"+
 								 "<a id='reject' onclick='rejectFriend(this)' class='btn btn-small btn btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 								 "거절"+
 								 "</a>";
@@ -488,7 +504,7 @@ function me2dayConnect(me2dayId){
 				
 				else if(memberData[i].status == "친구아님"){
 					action = "<a id='add' onclick='addFriend(this)' class='btn btn-small btn btn-primary' data-id='"+ memberData[i].friendId + "' data-count='"+ i + "'>"+
-							 "친구요청"+
+							 "친구 요청"+
 							 "</a>";
 					$('.me2friendtable').dataTable().fnAddData([memberData[i].friendId, action]);
 					
