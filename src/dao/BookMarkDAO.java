@@ -41,6 +41,16 @@ public class BookMarkDAO {
 		}
 		return bookMarkList;
 	}
+	public ArrayList<BookMark> bookMarkList(HashMap<String, Object> bookMarkInfo){
+		ArrayList<BookMark> bookMarkList=null;
+		try {
+			bookMarkList=(ArrayList<BookMark>)sqlMapper.queryForList("bookMarkListByCategory",bookMarkInfo);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bookMarkList;
+	}
 	public int bookMarkPosx(String userId){
 		int posx=0;
 		try {

@@ -22,8 +22,14 @@ var init = function() {
 				bookmarkId: bookmarkId
 			}
 		});
-		var openwindow = window.open('about:blank');
-		openwindow.location.href = $(this).attr('href');
+		if($(this).attr('href')==""){ // url이 없다면 카테고리로 인식
+			viewCategory($(this).parent().attr('title'));
+		}else{ //url이 있다면 북마크로 인식
+			var openwindow = window.open('about:blank');
+			openwindow.location.href = $(this).attr('href');
+		}	
+			
+	
 	});
 
 	$('.bookmarkIcon').contextPopup({
@@ -369,11 +375,14 @@ var bookmarkUrlFocusOut = function() {
 $('#category').click(function(){
 
 	var categoryName=$('#categoryName').val();
+	var categorySelect=$('#categorySelect').val();
 		$.ajax({
 			url: 'addCategory',
 			dataType:'json',
 			data:{
-				categoryName:categoryName
+
+				categoryName:categoryName,
+				categorySelect:categorySelect
 			}
 		}).done(function(data){
 			id = data.id; x = data.x; y = data.y; imgUrl = data.imgUrl, categoryName=data.categoryName;
@@ -388,27 +397,6 @@ $('#category').click(function(){
 			$('<option value="'+categoryName+'">' + categoryName + '</option>').appendTo('#addBookMarkCategory');
 				
 		});
-
-	var categoryName = $('#categoryName').val();
-	$.ajax({
-		url: 'addCategory',
-		dataType:'json',
-		data:{
-			categoryName: encodeURI(categoryName)
-		}
-	}).done(function(data){
-		id = data.id; x = data.x; y = data.y; imgUrl = data.imgUrl, categoryName=decodeURI(data.categoryName);
-		$('#setting').modal('hide');
-		alert('카테고리가 추가되었습니다!!');
-		newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+categoryName+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-			newLi += '<img id="img" src="'+imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
-			newLi += '<div class="bookmarkIconInfo">' + categoryName +'</div>';
-		newLi += '</li>';
-		gridster.add_widget(newLi, 1, 1);
-		init();
-		$('<option value="'+categoryName+'">' + categoryName + '</option>').appendTo('#addBookMarkCategory');
-			
-	});
 });
 
 
@@ -505,7 +493,8 @@ $('#categoryName').keyup(function(){
 
 });
 
-//
+//bookmark add 버튼 눌렀을 시 북마크 옵션 업데이트
+
 $('#mark_button').click(function(){
 	console.log("categoryOPtion");
 	$.ajax({
@@ -513,9 +502,50 @@ $('#mark_button').click(function(){
 		dataType:'json'	
 	}).done(function(data){
 		$('option').remove();
-		$('<option value="none" class="option">none</option>').appendTo('#addBookMarkCategory');
+		$('<option value="none">none</option>').appendTo('#addBookMarkCategory');
 		for(var i=0;i<data.length;i++){
-			$('<option value="'+data[i].categoryName+'" class="option">' + data[i].categoryName + '</option>').appendTo('#addBookMarkCategory');
+			$('<option value="'+data[i].categoryName+'">' + data[i].categoryName + '</option>').appendTo('#addBookMarkCategory');
+		}
+		
+	});
+});
+//카테고리 더블클릭 시 해당하는 북마크 목록 보여준다
+var viewCategory = function(categoryName){
+	var newLi;
+	console.log("카테고리 눌렀넹");
+	console.log("카테고리네임 :"+categoryName);
+	$.ajax({
+		url:'viewCategory',
+		dataType:'json',
+		data:{
+			categoryName:categoryName,
+		}
+	}).done(function(data){
+		gridster.remove_widget($('li.bookmarkIcon'));
+		for(var i=0;i<data.length;i++){
+			var bookMark=data[i];
+			newLi = '<li data-id="' + bookMark.bookMarkId + '" data-toggle="tooltip" title="'+bookMark.bookMarkName+'" data-row="'+bookMark.posX+'" data-col="'+bookMark.posY+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
+			newLi += '<img id="img" href="'+ bookMark.bookMarkUrl +'" src="'+ bookMark.imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
+			newLi += '<div class="bookmarkIconInfo">' + bookMark.bookMarkName +'</div>';
+			newLi += '</li>';
+			gridster.add_widget(newLi, 1, 1);
+			init();
+		}
+		
+	});
+};
+
+//setting 설정에 categorySelect 옵션 업데이트
+$('#setting_button').click(function(){
+	console.log("categorySelect option");
+	$.ajax({
+		url:'categoryOptionUpdate',
+		dataType:'json'	
+	}).done(function(data){
+		$('option').remove();
+		$('<option value="none">none</option>').appendTo('#categorySelect');
+		for(var i=0;i<data.length;i++){
+			$('<option value="'+data[i].categoryName+'">' + data[i].categoryName + '</option>').appendTo('#categorySelect');
 		}
 		
 	});

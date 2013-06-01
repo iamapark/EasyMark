@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
@@ -64,6 +65,17 @@ public class BookMarkListDAO {
 		ArrayList<String> categoryList = null;
 		try {
 			categoryList=(ArrayList<String>)sqlMapper.queryForList("categoryList", userId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return categoryList;
+	}
+	//카테고리에 따른 북마크 목록
+	public ArrayList<BookMark> listByCategory(HashMap<String, Object> category){
+		ArrayList<BookMark> categoryList=null;
+		try {
+			categoryList=(ArrayList<BookMark>)sqlMapper.queryForList("listByCategory", category);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
