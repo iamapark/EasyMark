@@ -205,6 +205,7 @@ $('#add').bind('click',function(e){
 			data: dataInfo
 			
 		}).done(function(data){
+			console.log(data);
 			kaka = data;
 			id = data.id; x = data.x; y = data.y; url = data.url;
 			$('#bookmarkAdd').modal('hide');
@@ -373,13 +374,13 @@ var bookmarkUrlFocusOut = function() {
 //category add 버튼 클릭
 $('#category').click(function(){
 
-
 	var categoryName=$('#categoryName').val();
 	var categorySelect=$('#categorySelect').val();
 		$.ajax({
 			url: 'addCategory',
 			dataType:'json',
 			data:{
+
 				categoryName:categoryName,
 				categorySelect:categorySelect
 			}
@@ -393,12 +394,17 @@ $('#category').click(function(){
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
 			init();
-		
-
-			
-	});
+			$('<option value="'+categoryName+'">' + categoryName + '</option>').appendTo('#addBookMarkCategory');
+				
+		});
 });
 
+
+
+// category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
+//$('#category').click(function() {
+
+// category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
 
 // category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
 // category 버튼 클릭
@@ -483,6 +489,7 @@ $('#categoryName').keyup(function(){
 			}
 			
 		});
+	
 
 });
 

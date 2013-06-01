@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -438,7 +441,7 @@ public class FriendshipAction {
 			@RequestParam(value="bookMarkId")String bookMarkId,
 			@RequestParam(value="bookMarkUrl")String bookMarkUrl,
 			@RequestParam(value="bookMarkName")String bookMarkName,
-			@RequestParam(value="bookMarkDescript")String bookMarkDescript) {
+			@RequestParam(value="bookMarkDescript")String bookMarkDescript) throws UnsupportedEncodingException {
 		
 		String friendId = (String)request.getSession().getAttribute("MEMBERID");
 		String status = "false";
@@ -471,13 +474,29 @@ public class FriendshipAction {
 			}
 
 		}
-		
-		BookMark bookMark = new BookMark(0, bookMarkName, bookMarkUrl, bookMarkDescript, friendId, status, posx, posy);
-
-		new IndividualPageServiceImpl().addBookMark(bookMark);
+		String imgUrl = null;
+		imgUrl = "images/Bookmark.png";
+		//BookMark bookMark = new BookMark(0, bookMarkName, bookMarkUrl, bookMarkDescript, friendId, status, posx, posy);
+		BookMark bookMark = new BookMark(0, URLDecoder.decode(bookMarkName, "utf-8"), bookMarkUrl, bookMarkDescript, friendId,
+				status, posx, posy, imgUrl, 0, "");
+		//new IndividualPageServiceImpl().addBookMark(bookMark);
 		new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
-		ModelAndView mav = new ModelAndView();
+		/*ModelAndView mav = new ModelAndView();
+		
 		request.setAttribute("result", "true");
+		mav.setViewName("result");
+		*/
+		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
+		
+		ModelAndView mav = new ModelAndView();
+		JSONObject jobj = new JSONObject();
+		jobj.put("x", posx);
+		jobj.put("y", posy);
+		jobj.put("id", maxBookmarkId);
+		jobj.put("imgUrl", imgUrl);
+		jobj.put("url", bookMarkUrl);
+
+		request.setAttribute("result", jobj);
 		mav.setViewName("result");
 		
 		return mav;
@@ -502,7 +521,7 @@ public class FriendshipAction {
 			// 사용자Id, key가 포함된 아이디 -> keyword 포함된 아이디와 userId 제외한 Id 검색하여 사용자 정보 출력
 
 		for (int i = 0; i < searchList.size(); i++) { // keyword 포함하는 ID를 검사한다.
-			FriendStatus friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), "");
+			FriendStatus friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), searchList.get(i).getEmail(), "");
 				// keyword 포함 ID 1개씩 friendStatus로 넣는다.
 
 			System.out.println("**" + searchList.get(i).getUserId());
@@ -512,7 +531,7 @@ public class FriendshipAction {
 			if (friend.size() == 0) {
 				
 				String status = "친구아님";
-				friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), status);
+				friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), searchList.get(i).getEmail(), status);
 				friendStatusList.add(friendStatus);
 				System.out.println(friendStatus.getUserId() + ":"
 							+ friendStatus.getFriendId() + ":"
@@ -624,7 +643,7 @@ public class FriendshipAction {
 		for (int i = 0; i < me2FriendList.size(); i++) {
 
 			FriendStatus friendStatus = new FriendStatus(loginId, me2FriendList
-					.get(i).getUserId(), me2FriendList.get(i).getName(),"");
+					.get(i).getUserId(), me2FriendList.get(i).getName(), me2FriendList.get(i).getEmail(), "");
 				
 			System.out.println(i+','+friendStatus.getFriendId()+','+friendStatus.getName());
 				
@@ -633,23 +652,21 @@ public class FriendshipAction {
 			if (friend.size() == 0) {
 				String status = "친구아님";
 				friendStatus = new FriendStatus(loginId, me2FriendList.get(i)
-						.getUserId(), me2FriendList.get(i).getName(), status);
+						.getUserId(), me2FriendList.get(i).getName(), me2FriendList.get(i).getEmail(), status);
 				friendStatusList.add(friendStatus);
 
 				System.out.println(status);
 			}
-
+			
 			for (int k = 0; k < friend.size(); k++) {
-
+				System.out.println("id:"+friend.get(k).getUserId()+":"+friend.get(k).getStatus());
 				System.out.println(friend.get(k).getUserId()+','+friend.get(k).getFriendId());
 				
 				if (friend.get(k).getUserId().equals(loginId) || friend.get(k).getFriendId().equals(loginId)) {
-						System.out.println("친구?");
-						friendStatusList.add(friend.get(k));
+					friendStatusList.add(friend.get(k));
 				}
 			}
 		}
-		System.out.println("status : "+friendStatusList);
 		
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(friendStatusList);

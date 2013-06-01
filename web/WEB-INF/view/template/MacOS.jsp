@@ -24,7 +24,6 @@
  	<div id="designMainContainer" style="display:<%=display%>;">
 	 	<div id="dock-container">
 			<div id="dock">
-
 			<ul>
 				<li><span style="color:white;">${sessionScope.MEMBERID}</span><a href="#setting" role="button" data-toggle="modal"><img id="setting_button" src="<%=imgUrl%>" id="settingImg" style="border-radius: 20px;"/></a></li>
 				<li><span style="color:white;">북마크 추가</span><a href="#bookmarkAdd" role="button" data-toggle="modal"><img id="mark_button" src="images/Bookmark.png"/></a></li>

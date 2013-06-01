@@ -74,12 +74,10 @@ CREATE TABLE message
 	friend_id CHARACTER VARYING(30), 
 	title CHARACTER VARYING(50), 
 	contents CHARACTER VARYING(1073741823), 
-	message_date DATE, 
+	message_date DATETIME, 
 	FOREIGN KEY(user_id)REFERENCES member(user_id)ON DELETE CASCADE ON UPDATE RESTRICT, 
 	CONSTRAINT pk_message_message_id PRIMARY KEY(message_id)
 );
-
-
 
 
 
