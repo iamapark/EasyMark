@@ -389,12 +389,12 @@ $('#category').click(function(){
 			$('#setting').modal('hide');
 			alert('카테고리가 추가되었습니다!!');
 			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+ categoryName +'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-				newLi += '<img id="img" src="'+ imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
+				newLi += '<img id="img" href="" src="'+ imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">' + categoryName +'</div>';
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
 			init();
-			$('<option value="'+categoryName+'">' + categoryName + '</option>').appendTo('#addBookMarkCategory');
+			
 				
 		});
 });
