@@ -5,13 +5,6 @@ CREATE TABLE "member"
    CONSTRAINT pk_member_user_id PRIMARY KEY("user_id") 
 );
 
-/**
- * MySQL 버전 
- * CREATE  TABLE `member` (
-  `user_id` VARCHAR(30) NOT NULL ,
-  `password` VARCHAR(30) NULL ,
-  PRIMARY KEY (`user_id`) );
-*/
 
 CREATE TABLE "admin" 
 (
@@ -20,24 +13,7 @@ CREATE TABLE "admin"
    CONSTRAINT pk_admin_admin_id PRIMARY KEY("admin_id") 
 );
 
-/***
- * MySQL 버전
- * delimiter $$
 
-CREATE TABLE `bookmark` (
-  `bookmark_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bookmark_name` varchar(255) DEFAULT NULL,
-  `bookmark_url` varchar(255) DEFAULT NULL,
-  `bookmark_descript` varchar(4096) DEFAULT NULL,
-  `user_id` varchar(30) DEFAULT NULL,
-  `status` varchar(30) DEFAULT NULL,
-  `pos_x` int(11) DEFAULT NULL,
-  `pos_y` int(11) DEFAULT NULL,
-  `img_url` varchar(100) DEFAULT NULL,
-  `frequency` int(11) DEFAULT NULL,
-  PRIMARY KEY (`bookmark_id`)
-);
-*/
 CREATE TABLE "bookmark" 
 (
    "bookmark_id" INTEGER AUTO_INCREMENT(1, 1) NOT NULL, 
@@ -81,24 +57,6 @@ CREATE TABLE message
 
 
 
-//2013-05-06 추가분
-/**MySQL 버전
- *
-delimiter $$
-
-CREATE TABLE `member_info` (
-  `user_id` varchar(30) NOT NULL,
-  `name` varchar(30) DEFAULT NULL,
-  `email` varchar(30) DEFAULT NULL,
-  `me2day_key` varchar(15) DEFAULT NULL,
-  `status` varchar(30) DEFAULT '회원',
-  `img_url` varchar(500) DEFAULT NULL,
-  `bg_img_url` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-);
-
-*/
-
 CREATE TABLE "member_info" 
 (
    "user_id" CHARACTER VARYING(30), 
@@ -120,37 +78,6 @@ CREATE TABLE "register_time"
    CONSTRAINT pk_register_time_register_id PRIMARY KEY("register_id") 
 );
 
-
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('iamapark89@me2day', DATE'01/01/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('pkwlfkf89@me2day', DATE'01/05/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('kaka', DATE'02/01/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('test1', DATE'02/08/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('test2', DATE'02/15/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('dd', DATE'02/28/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('aa', DATE'03/01/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('ww', DATE'03/05/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('ee', DATE'04/01/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('rr', DATE'04/02/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('riot', DATE'04/03/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('1', DATE'04/03/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('2', DATE'04/03/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('4', DATE'04/04/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('5', DATE'04/04/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('6', DATE'04/05/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('7', DATE'04/06/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('8', DATE'04/06/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('9', DATE'04/07/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('0', DATE'04/08/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('z', DATE'04/08/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('x', DATE'04/08/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('c', DATE'04/08/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('v', DATE'04/09/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('b', DATE'04/05/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('bdbd827@me2day', DATE'01/05/2013', NULL);
-INSERT INTO register_time ("user_id", "register_time", "leave_time") VALUES ('kaka2', DATE'01/05/2014', NULL);
-
-
-
 CREATE TABLE "login_time" 
 (
    "login_id" INTEGER AUTO_INCREMENT(1, 1) NOT NULL, 
@@ -161,13 +88,6 @@ CREATE TABLE "login_time"
 );
 
 
-
-
-/**MySQL 버전
- * CREATE  TABLE `nhneasymark`.`design` (
-  `user_id` VARCHAR(30) NOT NULL ,
-  `type` VARCHAR(100) NULL DEFAULT 'MacOS' ,
-  PRIMARY KEY (`user_id`) );*/
 CREATE TABLE "design" 
 (
    "user_id" CHARACTER VARYING(30) NOT NULL, 
