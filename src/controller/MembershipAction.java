@@ -37,7 +37,6 @@ public class MembershipAction {
 	
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
-		MessageServer.getInstance().start();
 	}
 
 	@RequestMapping("/register")

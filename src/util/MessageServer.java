@@ -86,13 +86,14 @@ public class MessageServer {
 	}
 	
 	private void register(String id, SocketIOSocket socket){
-		if(!isContains(id)){
+		//if(!isContains(id)){
 			sockets.put(id,  socket);
-		}
+		//}
 		adminServer.pushLoginMemberInfo(id);
 		adminServer.pushLoginMemberCount(getLoginMemberCount());
 		System.out.println("(등록)id:" + id);
 		System.out.println("접속 회원 수: " + sockets.size());
+		System.out.println("등록된 socket: " + socket);
 	}
 	
 	public void sendMessage(String id, String msg){
@@ -107,6 +108,7 @@ public class MessageServer {
 		System.out.println(sockets.size());
 		System.out.println(sockets.get(id));
 		
+		System.out.println("보내는 socket: " + sockets.get(id));
 		sockets.get(id).emit("message", data);
 	}
 
