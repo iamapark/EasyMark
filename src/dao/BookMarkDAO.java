@@ -3,6 +3,7 @@ package dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
@@ -78,6 +79,7 @@ public class BookMarkDAO {
 	}
 	
 	public void arrangeIcon(BookMark bookMark){
+		System.out.println("arrangeIcon");
 		try {
 			sqlMapper.update("arrangeIcon",bookMark);
 		} catch (SQLException e) {
@@ -129,6 +131,15 @@ public class BookMarkDAO {
 	public void increaseFrequency(String bookmarkId) {
 		try {
 			sqlMapper.queryForObject("increaseFrequency", bookmarkId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void arrangeIcon(List<BookMark> bookmarkList) {
+		try {
+			sqlMapper.update("arrangeIconList", bookmarkList);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

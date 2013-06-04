@@ -330,11 +330,20 @@ var gridsterInitial = function() {
 		serialize_params : function($w, wgd) {
 			keke = $w;
 			kaka = wgd;
-			return {
-				col : wgd.col, //$w.data('col'),
-				row : wgd.row, //$w.data('row'),
-				id : $w.data('id')
-			};
+			if(wgd){
+				return {
+					col : wgd.col, //$w.data('col'),
+					row : wgd.row, //$w.data('row'),
+					id : wgd.id
+				};
+			}else{
+				return {
+					col : $w.data('col'),
+					row : $w.data('row'),
+					id : $w.data('id')
+				};
+			}
+			
 		}
 	}).data('gridster');
 };

@@ -347,17 +347,24 @@ public class IndividualPageAction {
 		JSONObject json = (JSONObject) JSONSerializer.toJSON(location);
 
 		JSONObject result = null;
-
+		ArrayList<BookMark> bookmarkList = new ArrayList<BookMark>();
+		
 		for (int i = 0; i < json.size(); i++) {
 			result = (JSONObject) json.get(String.valueOf(i));
-
+			
+			System.out.println("id: " + result.get("id") + ", row: " + result.get("row") + ", col: " + result.get("col"));
+			
 			int bookMarkId = Integer.parseInt(result.get("id").toString());
 			int posX = Integer.parseInt(result.get("row").toString());
 			int posY = Integer.parseInt(result.get("col").toString());
 			BookMark bookMark = new BookMark(bookMarkId, "", "", "", "", "",
 					posX, posY);
+			
+			bookmarkList.add(bookMark);
 			new IndividualPageServiceImpl().arrangeIcon(bookMark);
 		}
+		/*System.out.println(bookmarkList.size());
+		new IndividualPageServiceImpl().arrangeIcon(bookmarkList);*/
 
 		JSONObject jobj = new JSONObject();
 		jobj.put("location", location);

@@ -1203,8 +1203,12 @@
             result.push(this.options.serialize_params(
                 $(widget), $(widget).coords().grid ) );
         }, this));
-
+        
         return result;
+    };
+    
+    fn.remove_change = function(){
+    	this.$changed = $([]);
     };
 
 
@@ -1217,14 +1221,18 @@
     *  the serialize_params option.
     */
     fn.serialize_changed = function() {
-    	console.log(this);
     	papa = this;
+    	
+    	//return this.serialize(this.$changed);
+    	
+    	if($([papa.$changed[0]]).data('id') == 0){
+    		return this.serialize(this.$changed);
+    	}
+    	
     	if(this.$changed.length>1){
-    		console.log('2이상');
-    		return this.serialize($([this.$changed[0]]));
+    		return this.serialize(this.$changed);
     		
     	}else{
-    		console.log('1이하');
     		return this.serialize(this.$changed);
     	}
         
@@ -1241,6 +1249,7 @@
     fn.register_widget = function($el) {
 
         var wgd = {
+        	'id' : parseInt($el.attr('data-id'), 10),
             'col': parseInt($el.attr('data-col'), 10),
             'row': parseInt($el.attr('data-row'), 10),
             'size_x': parseInt($el.attr('data-sizex'), 10),

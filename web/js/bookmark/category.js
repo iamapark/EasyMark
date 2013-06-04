@@ -172,7 +172,7 @@ var viewCategory = function(category){
 	}).done(function(data){
 		kaka = data;
 		gridster.remove_all_widgets();
-		
+		gridster.remove_change();
 		// 상위 카테고리로 올라가는 아이콘, 부모 카테고리 아이디가 있을 경우에만 화면에 띄운다.
 		if(data.parentId != null){
 			newLi = '<li data-id="0" data-categoryId="' + data.parentId + '" data-toggle="tooltip" title="상위 카테고리로" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon">';
