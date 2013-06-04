@@ -210,7 +210,6 @@ public class MembershipAction {
 			
 			Member m = new MembershipServiceImpl().getMemberInfo(userId);
 			request.setAttribute("MEMBERINFO", m);
-<<<<<<< HEAD
 
 			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
 			
@@ -218,10 +217,8 @@ public class MembershipAction {
 			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
 			int newMessageCount = newMessage.size();
 			request.getSession().setAttribute("newMessageCount", newMessageCount);
-=======
 	
 			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
->>>>>>> fabedbb5c93bd496ddcef2b003c7fb45eaac4171
 			mav.setViewName("main");
 		} else {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");
