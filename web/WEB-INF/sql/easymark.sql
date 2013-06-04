@@ -147,3 +147,15 @@ FOREIGN KEY ("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPD
 
 
 
+
+CREATE TABLE "bookmark_category" 
+(
+   "category_id" INTEGER AUTO_INCREMENT(1, 1) NOT NULL, 
+   "category_name" CHARACTER VARYING(255), 
+   "user_id" CHARACTER VARYING(30), 
+   "parent_category_id" INTEGER DEFAULT 0, 
+   CONSTRAINT "fk_user_id_member_bookmark_category" FOREIGN KEY("user_id") REFERENCES "member"("user_id") ON DELETE RESTRICT ON UPDATE RESTRICT, 
+   CONSTRAINT pk PRIMARY KEY("category_id") 
+);
+
+
