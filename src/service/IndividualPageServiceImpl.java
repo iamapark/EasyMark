@@ -132,13 +132,6 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		return CategoryDAO.getInstance().getParentId(categoryId);
 	}
 
-	public void arrangeIcon(ArrayList<BookMark> bookmarkList) {
-		BookMarkDAO.getInstance().arrangeIcon(bookmarkList);
-	}
-	
 
-
-
-	
 
 }

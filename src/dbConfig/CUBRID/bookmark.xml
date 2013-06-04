@@ -206,18 +206,5 @@
 	<select id="listByCategory" parameterClass="java.util.HashMap" resultMap="BookMarkList">
 		SELECT * FROM bookmark WHERE user_id=#userId# AND category=#categoryName#
 	</select>
-	
-	<!-- 추가 6/5 -->
-	<update id="arrangeIconList" parameterClass="Map">
-	
-		<dynamic>
-			<iterate>
-				UPDATE bookmark
-				SET
-				pos_x=#posX[]#,
-				pos_y=#posY[]#
-				WHERE bookmark_id=#bookMarkId[]#
-			</iterate>
-		</dynamic>
-	</update>
+
 </sqlMap>

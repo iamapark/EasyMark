@@ -136,14 +136,5 @@ public class BookMarkDAO {
 			e.printStackTrace();
 		}
 	}
-
-	public void arrangeIcon(List<BookMark> bookmarkList) {
-		try {
-			sqlMapper.update("arrangeIconList", bookmarkList);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 }
