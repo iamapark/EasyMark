@@ -158,11 +158,10 @@ $('#deleteCategoryButton').click(function(e){
 //카테고리 더블클릭 시 해당하는 북마크 목록 보여준다
 var viewCategory = function(category){
 	newLi = '';
-	console.log(category);
-	kaka = category;
 	
 	var categoryId = $(category).parent().data('categoryid');
-	console.log('categoryId: ' + categoryId + '로 접속합니다.');
+	currentPageCategoryId = categoryId;
+
 	$.ajax({
 		url:'viewCategory',
 		dataType:'json',

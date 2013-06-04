@@ -176,10 +176,9 @@ var bookmarkListDelete = function(e){
 	
 	// 선택된 row를 읽어온다.
 	selectedRow = $('.bookmarktable').dataTable().$('tr.row_selected');
-	console.log("select:"+selectedRow[0]);
 	var data = $('input[name=bookmarkSelector]').serialize();
 
-	/*$.ajax({
+	$.ajax({
 		url:'deleteBookMarks',
 		dataType:'json',
 		data:{
@@ -193,7 +192,7 @@ var bookmarkListDelete = function(e){
 			// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
 			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('input').attr('value') + '"]'));
 		}
-	});*/
+	});
 };
 
 // 배경화면 파일을 선택했을 때 호출

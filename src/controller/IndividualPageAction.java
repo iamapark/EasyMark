@@ -411,9 +411,11 @@ public class IndividualPageAction {
 			while (m.find()) {
 				title = m.group();
 			}
-
-			title = title.replace("<title>", "");
-			title = title.replace("</title>", "");
+			
+			if(title != null){
+				title = title.replace("<title>", "");
+				title = title.replace("</title>", "");
+			}
 
 			flag = true;
 		} catch (MalformedURLException e) {
