@@ -36,9 +36,12 @@ import dto.User;
 public class FriendshipAction {
 	private RelayServer relayServer;
 	//private MessageServer msgServer;
+	
+	public FriendshipAction(){
+		MessageServer.getInstance().start();
+	}
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
-		MessageServer.getInstance().start();
 	}
 	
 	// 친구 목록 불러오기

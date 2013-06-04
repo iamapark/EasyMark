@@ -37,7 +37,6 @@ public class MembershipAction {
 	
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
-		MessageServer.getInstance().start();
 	}
 
 	@RequestMapping("/register")
@@ -211,7 +210,7 @@ public class MembershipAction {
 			Member m = new MembershipServiceImpl().getMemberInfo(userId);
 			request.setAttribute("MEMBERINFO", m);
 
-			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+			//request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
 			
 			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
 			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);

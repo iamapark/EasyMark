@@ -23,7 +23,8 @@ var socketioConnection = function(userId){ // 시작 :
 			dismissQueue : true
 		});
 		console.log('쪽지: ' + data.msg); 
-		alert('쪽지가 도착했습니다.'+data.msg);
+		alert("쪽지가 도착했습니다");
+		//alert("쪽지가 도착했습니다. \n message : "+data.msg);
 		$.noty.stopConsumeAlert();
 	});
 };

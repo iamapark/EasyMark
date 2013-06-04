@@ -86,9 +86,7 @@ public class MessageServer {
 	}
 	
 	private void register(String id, SocketIOSocket socket){
-		if(!isContains(id)){
-			sockets.put(id,  socket);
-		}
+		sockets.put(id,  socket);
 		adminServer.pushLoginMemberInfo(id);
 		adminServer.pushLoginMemberCount(getLoginMemberCount());
 		System.out.println("(등록)id:" + id);

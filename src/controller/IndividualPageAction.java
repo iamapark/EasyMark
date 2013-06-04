@@ -45,7 +45,6 @@ public class IndividualPageAction {
 	
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
-		MessageServer.getInstance().start();
 	}
 
 	@RequestMapping("/addMark")
