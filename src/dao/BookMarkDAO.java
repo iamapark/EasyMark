@@ -7,6 +7,7 @@ import java.util.HashMap;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import dto.BookMark;
+import dto.ForBookMarkList;
 
 public class BookMarkDAO {
 	private static BookMarkDAO instance = null;
@@ -31,10 +32,11 @@ public class BookMarkDAO {
 		}
 		return maxBookmarkId;
 	}
-	public ArrayList<BookMark> bookMarkList(String userId){
-		ArrayList<BookMark> bookMarkList=null;
+	public ArrayList<BookMark> bookMarkList(ForBookMarkList forListData){
+		ArrayList<BookMark> bookMarkList = null;
+
 		try {
-			bookMarkList=(ArrayList<BookMark>)sqlMapper.queryForList("bookMarkList",userId);
+			bookMarkList = (ArrayList<BookMark>)sqlMapper.queryForList("bookMarkList", forListData);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

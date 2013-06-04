@@ -20,6 +20,11 @@
 	<link rel="stylesheet" href="css/bookmark/jquery.contextmenu.css" type="text/css" >
 	<link href="css/dataTables/jquery.dataTables_themeroller.css" rel="stylesheet">
 	<link href="css/dataTables/jquery.dataTables.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/smoothness/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="elfinder.min.css" /> -->
+	
+	<link href="css/bookmark/treeStyle.css" rel="stylesheet">
+	
 	<link href="css/main.css" rel="stylesheet">
 	
 	<!-- design:main -->
@@ -66,8 +71,9 @@
 		<li>
 			<div id="gridster${status.count}" class="gridster">
 				<ul>
+					<!-- 북마크 아이콘 -->
 					<c:forEach items="${requestScope.bookMarkList}"	var="bookMark" begin="${(status.count-1)*24}" end="${(status.count-1)*24 + 23}">
-					<li style="" data-id="${bookMark.bookMarkId}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
+					<li style="" data-id="${bookMark.bookMarkId}" data-categoryId="${bookMark.category}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
 		            	<img id="img" href="${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
 		            	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
 		            </li> 
@@ -116,11 +122,14 @@
 	<script src="js/bootstrap/bootstrap-modal.js"></script>
 	<script src="js/bookmark/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/bookmark/bookmark.js"></script>
+	<script src="js/bookmark/category.js"></script>
 	<script src="js/membership/membership.js"></script>
 	<script src="js/friendship/friendship.js"></script>
 	<script src="js/bookmark/jquery.contextmenu.js"></script>
+	<!-- <script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.nightly.js"></script> -->
 	
-	<script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.nightly.js"></script>
+	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
+	<script src="js/elfinder/elfinder.min.js"></script> -->
 	
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
@@ -135,7 +144,7 @@
 			}
 		};
 	
-		setInterval("timer()", 1000);
+		setInterval("timer()", 1);
 	
 		$(document).mousemove(function(e){
 			sleepTime = 0;

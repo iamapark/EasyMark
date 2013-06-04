@@ -34,6 +34,7 @@ import util.FileWriter;
 import dto.BookMark;
 import dto.Category;
 import dto.Design;
+import dto.ForBookMarkList;
 import dto.Friendship;
 import dto.Img;
 import dto.Member;
@@ -92,7 +93,7 @@ public class IndividualPageAction {
 		}
 
 		// 사용자ID 가져오기
-		String status = "false";
+		String status = "bookmark";
 		int posx = 0;
 		int posy = 0;
 
@@ -110,7 +111,7 @@ public class IndividualPageAction {
 			posy = 1;
 		} else {// //////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
 			posx = new IndividualPageServiceImpl().bookMarkPosx(userId);
-			System.out.println("x=" + posx);
+
 			// ParameterClass 2개라서 HashMap 이용 맞나?
 			HashMap<String, Object> pos = new HashMap<String, Object>();
 			pos.put("userId", userId);
@@ -118,9 +119,7 @@ public class IndividualPageAction {
 			posy = new IndividualPageServiceImpl().bookMarkPosy(pos); // x줄에 제일
 																		// 마지막
 																		// y값
-			System.out.println("by=" + posy);
 			posy++; // +1해서 다음에 놓을 곳 배치
-			System.out.println("ay=" + posy);
 
 			if (posy == 9) {// 다음줄로 넘기기
 				posx++;
@@ -480,70 +479,7 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 
-	//카테고리 추가
-	@RequestMapping("/addCategory")
-	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
-															   @RequestParam(value="userId",required=false)String userId,
-															   @RequestParam(value="categorySelect") String categorySelect) throws UnsupportedEncodingException{
-		System.out.println("addCategory()!!");
-		ModelAndView nextPage = new ModelAndView();
-		if(userId == null)
-			userId = (String)request.getSession().getAttribute("MEMBERID");
-		String imgUrl = "images/folder.png";
-		System.out.println("userID :"+userId);
-		System.out.println("categoryName: " + URLDecoder.decode(categoryName, "utf-8"));
-		String status="false";
-		int posx=0;
-		int posy=0;
-		ArrayList<BookMark> bookMarkList = null;
-		//사용자의 현재 해당하는 카테고리 북마크 리스트 가져오기
-		HashMap<String, Object> bookMarkInfo = new HashMap<>();
-		bookMarkInfo.put("userId", userId);
-		bookMarkInfo.put("category", categorySelect);
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);
-		
-		//만약 처음 북마크 추가이면 1,1 위치 삽입
-		if(bookMarkList.size()==0){
-			posx=1;
-			posy=1;
-		}else{////////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
-			posx=new IndividualPageServiceImpl().bookMarkPosx(userId);
-			System.out.println("x="+posx);
-			//ParameterClass 2개라서 HashMap 이용 맞나?
-			HashMap<String, Object> pos=new HashMap<String, Object>();
-			pos.put("userId", userId);
-			pos.put("posX", posx);
-			posy=new IndividualPageServiceImpl().bookMarkPosy(pos); //x줄에 제일 마지막 y값
-			System.out.println("by="+posy);
-			posy++; //+1해서 다음에 놓을 곳 배치
-			System.out.println("ay="+posy);
-			if(posy==9){//다음줄로 넘기기
-				posx++;
-				posy=1;
-			}
-			
-		}
-		
-
-		BookMark bookMark = new BookMark(0,URLDecoder.decode(categoryName, "utf-8"), "", "", userId, status, posx, posy, imgUrl, 0,categorySelect);
-		Category category=new Category(0, URLDecoder.decode(categoryName, "utf-8"), userId);
-		//category폴더 bookmark Table에 저장
-		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
-		//User에 대한 category 내용 category Table에 저장
-		new IndividualPageServiceImpl().addCategory(category);
-		JSONObject jobj = new JSONObject();
-		jobj.put("x", posx);
-		jobj.put("y", posy);
-		jobj.put("id", maxBookmarkId);
-		jobj.put("imgUrl", imgUrl);
-		jobj.put("categoryName", categoryName);
-		
-		request.setAttribute("result", jobj);
-		nextPage.setViewName("result");
-		
-		traffic();
-		return nextPage;
-	}
+	
 	
 	// 사용자가 북마크 아이콘을 더블 클릭하여 즐겨찾기 URL 페이지에 접속할 경우 해당 북마크 frequency를 +1 한다.
 	@RequestMapping("/increaseFrequency")
@@ -586,25 +522,24 @@ public class IndividualPageAction {
 	@RequestMapping("/categoryOptionUpdate")
 	public ModelAndView categoryUpdate(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView nextPage = new ModelAndView();
-		String userId=(String)request.getSession().getAttribute("MEMBERID");
+		/*String userId=(String)request.getSession().getAttribute("MEMBERID");
 		ArrayList<Category> categoryList=new ArrayList<>();
 		categoryList=new IndividualPageServiceImpl().categoryList(userId);
 		JSONArray dataJ = JSONArray.fromObject(categoryList);
 		request.setAttribute("result",dataJ);
-		nextPage.setViewName("result");
+		nextPage.setViewName("result");*/
 		return nextPage;
 	}
+	
 	//카테고리 더블클릭시 해당하는 북마크 리스트 가져오기
 	@RequestMapping("/viewCategory")
-	public ModelAndView viewCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName){
+	public ModelAndView viewCategory(HttpServletRequest request,@RequestParam(value="categoryId") int categoryId){
 		ModelAndView nextPage = new ModelAndView();
 		ArrayList<BookMark> list=null;
 		String userId=(String)request.getSession().getAttribute("MEMBERID");
-		HashMap<String, Object> category=new HashMap<String, Object>();
-		category.put("userId", userId);
-		category.put("categoryName", categoryName);
-		list=new IndividualPageServiceImpl().listByCategory(category);
-		System.out.println(list.size());
+		
+		list = new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, categoryId));
+
 		JSONArray dataJ = JSONArray.fromObject(list);
 		request.setAttribute("result", dataJ);
 		nextPage.setViewName("result");

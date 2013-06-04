@@ -25,7 +25,9 @@ public class CategoryDAO {
 	public int addCategory(Category category){
 		int maxCategoryId = 0;
 		try {
-			sqlMapper.insert("addCategory", category);
+			maxCategoryId = (Integer)sqlMapper.insert("addCategory", category);
+			category.setCategoryId(maxCategoryId);
+			sqlMapper.insert("addBookmark", category);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +55,7 @@ public class CategoryDAO {
 		return flag;
 	}
 	public ArrayList<Category> categoryList(String userId){
-		ArrayList<Category> categoryList=new ArrayList<>();
+		ArrayList<Category> categoryList = new ArrayList<>();
 		try {
 			categoryList=(ArrayList<Category>)sqlMapper.queryForList("categoryList", userId);
 			System.out.println("categoryList.size() :"+categoryList.size());
@@ -67,6 +69,27 @@ public class CategoryDAO {
 	public void deleteCategory(HashMap<String, Object> category){
 		try {
 			sqlMapper.delete("deleteCategory",category);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Category> getCategoryList(String userId) {
+		ArrayList<Category> categoryList = new ArrayList<>();
+		
+		try{
+			categoryList = (ArrayList<Category>)sqlMapper.queryForList("getCategoryList", userId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return categoryList;
+	}
+
+	public void deleteCategory(int categoryId) {
+		try {
+			sqlMapper.delete("deleteBookmarkCategory",categoryId);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

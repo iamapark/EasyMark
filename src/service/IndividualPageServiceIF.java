@@ -3,10 +3,10 @@ package service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import dao.CategoryDAO;
 import dto.BookMark;
 import dto.Category;
 import dto.Design;
+import dto.ForBookMarkList;
 
 /**
  * 개인페이지 서비스
@@ -57,5 +57,6 @@ public interface IndividualPageServiceIF {
 	public ArrayList<Category> categoryList(String userId);
 	public boolean isExistCategory(HashMap<String, Object> categoryInfo);
 	public ArrayList<BookMark> listByCategory(HashMap<String, Object> category);
+	ArrayList<BookMark> bookMarkList(ForBookMarkList forListData);
 	
 }
