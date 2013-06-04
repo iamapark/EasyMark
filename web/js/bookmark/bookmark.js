@@ -424,34 +424,15 @@ $('#categoryName').keyup(function(){
 //bookmark add 버튼 눌렀을 시 북마크 옵션 업데이트
 $('#mark_button').click(function(){
 	console.log("categoryOPtion");
+	$('#addCategoryOl').empty();
+	
 	$.ajax({
-		url:'categoryOptionUpdate',
-		dataType:'json'	
+		url:'getCategoryTree',
+		dataType:'json'
 	}).done(function(data){
-		$('option').remove();
-		$('<option value="none">none</option>').appendTo('#addBookMarkCategory');
-		for(var i=0;i<data.length;i++){
-			$('<option value="'+data[i].categoryName+'">' + data[i].categoryName + '</option>').appendTo('#addBookMarkCategory');
-		}
+		kaka = data;
+		var ol = makeChildren(data);
 		
+		$('#addCategoryOl').append($(ol));
 	});
-});
-
-
-
-//setting 설정에 categorySelect 옵션 업데이트
-$('#setting_button').click(function(){
-	console.log("categorySelect option");
-	$.ajax({
-		url:'categoryOptionUpdate',
-		dataType:'json'	
-	}).done(function(data){
-		$('option').remove();
-		$('<option value="none">none</option>').appendTo('#categorySelect');
-		for(var i=0;i<data.length;i++){
-			$('<option value="'+data[i].categoryName+'">' + data[i].categoryName + '</option>').appendTo('#categorySelect');
-		}
-		
-	});
-
 });
