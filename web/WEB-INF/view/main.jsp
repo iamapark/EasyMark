@@ -48,8 +48,8 @@
 			numOfSlides++;
 		if(numOfSlides==0)
 			numOfSlides = 1;
+		
 	%>
-
 </head>
 <body style="background:url(${MEMBERINFO.bgImgUrl}) no-repeat center center fixed;
              -webkit-background-size:cover; background-size:cover">

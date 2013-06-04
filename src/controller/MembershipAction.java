@@ -216,7 +216,7 @@ public class MembershipAction {
 			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
 			int newMessageCount = newMessage.size();
 			request.getSession().setAttribute("newMessageCount", newMessageCount);
-	
+			System.out.println("새 메시지 수 : "+newMessageCount);
 			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
 			mav.setViewName("main");
 		} else {

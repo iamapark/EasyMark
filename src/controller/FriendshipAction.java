@@ -34,12 +34,11 @@ import dto.User;
 
 @Controller
 public class FriendshipAction {
-	private RelayServer relayServer;
-	//private MessageServer msgServer;
-	
+
 	public FriendshipAction(){
 		MessageServer.getInstance().start();
 	}
+
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
 	}
@@ -401,6 +400,9 @@ public class FriendshipAction {
 		// boolean flag = true;
 		if (flag) { // 메시지 DB 등록 성공
 			
+			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
+			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+			
 			traffic();
 			//MessageServer.getInstance().start();
 			//MessageServer.getInstance().sendMessage(friendId, contents);
@@ -409,6 +411,7 @@ public class FriendshipAction {
 			JSONObject jobj = new JSONObject();
 			jobj.put("friendId", friendId);
 			jobj.put("contents", contents);
+			jobj.put("num", newMessage.size());
 			request.setAttribute("result", jobj);
 			mav.setViewName("result");	
 		} else { // 메시지 DB 등록 실패
@@ -605,8 +608,25 @@ public class FriendshipAction {
 		
 		return mav;
 	}	
+	
+	
+	@RequestMapping("/messageCount")
+	public ModelAndView messageCount(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+
+		String loginId = (String)request.getSession().getAttribute("MEMBERID");
+		Message message = new Message(0, loginId, "", null, "", new Date(), "", 0, "take");
+		ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+		int newMessageCount = newMessage.size();
 		
+		request.setAttribute("result", newMessageCount);
+		mav.setViewName("result");
 		
+		traffic();
+		return mav;
+	}
+	
 	// 메시지 상세 보기
 	@RequestMapping("/messageView")
 	public ModelAndView messageView(HttpServletRequest request,
@@ -624,6 +644,7 @@ public class FriendshipAction {
 					  message.getFriendId(), message.getTitle(),
 					  message.getContents(), message.getMessageDate(), dateTime, message.getReadNum()+1, message.getType());
 		} else {
+			
 			message = new Message(message.getMessageId(), message.getUserId(),
 					  message.getFriendId(), message.getTitle(),
 					  message.getContents(), message.getMessageDate(), dateTime, message.getReadNum(), message.getType());
@@ -633,8 +654,11 @@ public class FriendshipAction {
 
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(message);
+		JSONObject data = new JSONObject();
+		data.put("num", 2);
+		dataJ.add(data);
 		System.out.println(dataJ);
-		request.setAttribute("result", dataJ);
+		request.setAttribute("result", dataJ.toString());
 		mav.setViewName("result");
 		
 		traffic();
