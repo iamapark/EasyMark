@@ -31,6 +31,7 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
 import util.FileWriter;
+import util.MessageServer;
 import dto.BookMark;
 import dto.Category;
 import dto.Design;

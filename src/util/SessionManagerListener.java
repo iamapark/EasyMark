@@ -20,9 +20,9 @@ public class SessionManagerListener implements HttpSessionListener {
 		
 		new MembershipServiceImpl().logoutCount(userId); // 로그인 카운트를 1 증가시킨다.
 		
-		AdminServer.getInstance().pushLoginMemberCount(SessionManager.getInstance().count());
+		//AdminServer.getInstance().pushLoginMemberCount(SessionManager.getInstance().count());
 		
-		AdminServer.getInstance().refreshLogoutMember(userId);
+		//AdminServer.getInstance().refreshLogoutMember(userId);
 	}
 
 }

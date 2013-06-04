@@ -24,6 +24,8 @@
 		<result property="title" column="title" />
 		<result property="contents" column="contents" />
 		<result property="messageDate" column="message_date" />
+		<result property="readNum" column="read_num" />
+		<result property="type" column="type" />
 	</resultMap>
 
 	<resultMap id="statusList" class="FriendStatus">
@@ -76,6 +78,12 @@
     	where friend_id=#userId#
   	</select>
   	
+  	<select id="newMessageNum" parameterClass="Message" resultClass="Message">
+    	select *
+    	from message 
+    	WHERE type=#type# AND read_num=#readNum# AND friend_id=#userId#
+  	</select>
+  	
   	<select id="getKey" parameterClass="String" resultClass="Member">
     	select me2day_key me2DayKey 
     	from member_info
@@ -94,23 +102,35 @@
 		WHERE
 		user_id=#userId# AND friend_id=#friendId# AND bookmark_url=#bookMarkUrl#;
 	</select>
-	
-	<select id="outBox" parameterClass="String" resultClass="Message">
+
+  	<select id="outBox" parameterClass="Message" resultClass="Message">
+    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
+    	from message
+    	where user_id=#userId# AND type=#type#
+  	</select>
+  	
+  	<select id="inBox" parameterClass="Message" resultClass="Message">
+    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
+    	from message
+    	where friend_id=#userId# AND type=#type#
+  	</select>
+  	
+  	<!-- <select id="outBox" parameterClass="String" resultClass="Message">
     	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
     	from message
     	where user_id=#userId#
-  	</select>
+  	</select> -->
   	
-  	<select id="inBox" parameterClass="String" resultClass="Message">
+  	<!-- <select id="inBox" parameterClass="String" resultClass="Message">
     	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
     	from message
     	where friend_id=#userId#
-  	</select>
-  	
+  	</select> -->
+  	 	
   	<insert id="sendMessage" parameterClass="Message">
 		INSERT INTO message
-		(user_id, friend_id, title, contents, message_date)
-		VALUES (#userId#, #friendId#, #title#, #contents#, #messageDate#)
+		(user_id, friend_id, title, contents, message_date, type)
+		VALUES (#userId#, #friendId#, #title#, #contents#, #messageDate#, #type#)
 	</insert>
 	
 	<delete id="deleteFriend" parameterClass="Friendship">
@@ -174,10 +194,17 @@
 	</delete>
 	
 	<select id="getMessage" parameterClass="String" resultClass="Message">
-    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
+    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate, read_num readNum
     	from message
     	where message_id=#messageId#
   	</select>
+  	
+  	<update id="updateMessage" parameterClass="Message">
+		update message
+		set
+		read_num=#readNum#
+		where message_id=#messageId#
+	</update>
    	
    	<select id="me2dayFriend" parameterClass="String" resultClass="Member">
     	select user_id userId, name name

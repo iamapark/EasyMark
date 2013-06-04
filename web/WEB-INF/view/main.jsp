@@ -131,10 +131,17 @@
 	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
 	<script src="js/elfinder/elfinder.min.js"></script> -->
 	
+	
+	<script src="js/socket.io.js"></script>
+	<script src="js/noty/jquery.noty.js"></script>
+  	<script src="js/noty/layouts/topRight.js"></script>
+  	<script src="js/noty/themes/default.js"></script>
+	
 	<!-- design:main -->
 	<script type="text/javascript" src="js/main/MacOS.js" id="designSelectedJs"></script>
 	<script src="tipJS/tipJS-MVC.js"></script>
 	<script>
+		
 		var sleepTime = 0;
 	
 		var timer = function(){
@@ -149,6 +156,7 @@
 		$(document).mousemove(function(e){
 			sleepTime = 0;
 		});
+		
 	</script>
 </body>
 </html>

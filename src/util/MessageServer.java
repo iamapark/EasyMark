@@ -19,7 +19,7 @@ import dto.Member;
 public class MessageServer {
 	private Vertx vt;
 	private SocketIOServer io;
-	private HashMap<String, SocketIOSocket> sockets;
+	private HashMap<String, SocketIOSocket> sockets; // a(사용자), socket 생기는 것 담기
 	public static MessageServer server = null;
 	private AdminServer adminServer = null;
 	
@@ -44,15 +44,19 @@ public class MessageServer {
 		message.onConnection(new Handler<SocketIOSocket>(){
 			@Override
 			public void handle(final SocketIOSocket socket) {
-				socket.on("userId", new Handler<JsonObject>(){
+				socket.on("userId", new Handler<JsonObject>(){ // userId 값이 넘어온다
 					@Override
 					public void handle(JsonObject data) {
+						System.out.println(data);
+						System.out.println("id는"+data.getString("id"));
 						register(data.getString("id"), socket);
 					}
 				});
 				
 				socket.on("send", new Handler<JsonObject>(){
 					public void handle(JsonObject data){
+						System.out.println("socket.on?");
+						System.out.println("message"+data.getString("message"));
 						sendMessage(data.getString("friendId"), data.getString("message"));
 					}
 				});
@@ -82,19 +86,29 @@ public class MessageServer {
 	}
 	
 	private void register(String id, SocketIOSocket socket){
-		if(!isContains(id)){
+		//if(!isContains(id)){
 			sockets.put(id,  socket);
-		}
+		//}
 		adminServer.pushLoginMemberInfo(id);
 		adminServer.pushLoginMemberCount(getLoginMemberCount());
 		System.out.println("(등록)id:" + id);
 		System.out.println("접속 회원 수: " + sockets.size());
+		System.out.println("등록된 socket: " + socket);
 	}
 	
 	public void sendMessage(String id, String msg){
 		System.out.println("(전송)id: " + id + ", msg: " + msg);
 		JsonObject data = new JsonObject();
+		
 		data.putString("msg", msg);
+		data.putString("friend", id);
+		
+		System.out.println(data.getString("msg"));
+		System.out.println(data);
+		System.out.println(sockets.size());
+		System.out.println(sockets.get(id));
+		
+		System.out.println("보내는 socket: " + sockets.get(id));
 		sockets.get(id).emit("message", data);
 	}
 
@@ -119,4 +133,5 @@ public class MessageServer {
 		
 		return loginMemberIdArray;
 	}
+	
 }

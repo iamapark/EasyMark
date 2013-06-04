@@ -24,7 +24,7 @@ public class MessageDAO {
 	}
 		
 
-	public ArrayList<Message> outBox(String userId){
+	/*public ArrayList<Message> outBox(String userId){
 		ArrayList<Message> outBoxList = null;
 		try {
 			outBoxList = (ArrayList<Message>) sqlMapper.queryForList("outBox", userId);
@@ -38,6 +38,26 @@ public class MessageDAO {
 		ArrayList<Message> inBoxList = null;
 		try {
 			inBoxList = (ArrayList<Message>) sqlMapper.queryForList("inBox", userId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return inBoxList;
+	}*/
+	
+	public ArrayList<Message> outBox(Message message){
+		ArrayList<Message> outBoxList = null;
+		try {
+			outBoxList = (ArrayList<Message>) sqlMapper.queryForList("outBox", message);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return outBoxList;
+	}
+	
+	public ArrayList<Message> inBox(Message message){
+		ArrayList<Message> inBoxList = null;
+		try {
+			inBoxList = (ArrayList<Message>) sqlMapper.queryForList("inBox", message);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,5 +94,23 @@ public class MessageDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateMessage(Message message){
+		try {
+			sqlMapper.update("updateMessage", message);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Message> newMessageCount(Message message){
+		ArrayList<Message> newMessage = new ArrayList<Message>();
+		try {
+			newMessage = (ArrayList<Message>) sqlMapper.queryForList("newMessageNum", message);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return newMessage; 
 	}
 }
