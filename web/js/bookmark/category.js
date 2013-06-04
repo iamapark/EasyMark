@@ -174,13 +174,16 @@ var viewCategory = function(category){
 		gridster.remove_all_widgets();
 		
 		// 상위 카테고리로 올라가는 아이콘 추가할 것!!
-		/*newLi = '<li data-id="' + bookMark.bookMarkId + '" data-categoryId="' + bookMark.category + '" data-toggle="tooltip" title="'+bookMark.bookMarkName+'" data-row="'+bookMark.posX+'" data-col="'+bookMark.posY+'" data-sizex="1" data-sizey="1" class="bookmarkIcon">';
-			newLi += '<img id="img" href="'+ bookMark.bookMarkUrl +'" src="'+ bookMark.imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
-			newLi += '<div class="bookmarkIconInfo">' + bookMark.bookMarkName +'</div>';
-		newLi += '</li>';*/
+		if(data.parentId != null){
+			newLi = '<li data-id="" data-categoryId="' + data.parentId + '" data-toggle="tooltip" title="상위 카테고리로" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon">';
+				newLi += '<img id="img" href="" src="images/folder.png" style="width:100%; height:100%;border-radius:20px;">';
+				newLi += '<div class="bookmarkIconInfo">상위 카테고리로</div>';
+			newLi += '</li>';
+			gridster.add_widget(newLi, 1, 1);
+		}
 		
-		for(var i=0;i<data.length;i++){
-			var bookMark=data[i];
+		for(var i=0;i<data.list.length;i++){
+			var bookMark = data.list[i];
 			newLi = '<li data-id="' + bookMark.bookMarkId + '" data-categoryId="' + bookMark.category + '" data-toggle="tooltip" title="'+bookMark.bookMarkName+'" data-row="'+bookMark.posX+'" data-col="'+bookMark.posY+'" data-sizex="1" data-sizey="1" class="bookmarkIcon">';
 				newLi += '<img id="img" href="'+ bookMark.bookMarkUrl +'" src="'+ bookMark.imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">' + bookMark.bookMarkName +'</div>';

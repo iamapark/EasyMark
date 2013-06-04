@@ -538,9 +538,17 @@ public class IndividualPageAction {
 		ArrayList<BookMark> list=null;
 		String userId=(String)request.getSession().getAttribute("MEMBERID");
 		
+		JSONObject dataJ = new JSONObject();
 		list = new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, categoryId));
-
-		JSONArray dataJ = JSONArray.fromObject(list);
+		JSONArray listJ = JSONArray.fromObject(list);
+		
+		dataJ.put("list", listJ);
+		
+		if(categoryId != 0){
+			int parentId = new IndividualPageServiceImpl().getParentId(categoryId);
+			dataJ.put("parentId", parentId);
+		}
+		
 		request.setAttribute("result", dataJ);
 		nextPage.setViewName("result");
 		return nextPage;

@@ -386,7 +386,8 @@ public class MembershipAction {
 			request.setAttribute("designType",
 					new MembershipServiceImpl().getDesignType(userId));
 			request.setAttribute("MEMBERINFO", m);
-			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+			
+			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
 			//bookMar add 할때 categoryList option 가져오기
 			request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
 			

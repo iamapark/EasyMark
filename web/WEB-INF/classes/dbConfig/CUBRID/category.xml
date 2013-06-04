@@ -71,4 +71,14 @@
 		WHERE
 			category_id = #categoryId# or parent_category_id=#categoryId#
 	</delete>
+	
+	<!-- 추가 6/4 -->
+	<select id="getParentId" parameterClass="Integer" resultClass="Integer">
+		SELECT 
+			parent_category_id parentId
+		FROM 
+			bookmark_category
+		WHERE 
+			category_id = #categoryId#;
+	</select>
 </sqlMap>

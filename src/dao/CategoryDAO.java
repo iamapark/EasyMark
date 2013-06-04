@@ -95,5 +95,17 @@ public class CategoryDAO {
 			e.printStackTrace();
 		}
 	}
+
+	public int getParentId(int categoryId) {
+		int result = 0;
+		
+		try{
+			result = (Integer) sqlMapper.queryForObject("getParentId", categoryId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 	
 }

@@ -127,6 +127,10 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public int getParentId(int categoryId) {
+		return CategoryDAO.getInstance().getParentId(categoryId);
+	}
 	
 
 
