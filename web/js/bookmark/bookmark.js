@@ -23,7 +23,7 @@ var init = function() {
 			}
 		});
 		if($(this).attr('href')==""){ // url이 없다면 카테고리로 인식
-			viewCategory($(this).parent().attr('title'));
+			viewCategory(this);
 		}else{ //url이 있다면 북마크로 인식
 			var openwindow = window.open('about:blank');
 			openwindow.location.href = $(this).attr('href');
@@ -216,10 +216,6 @@ $('#add').bind('click',function(e){
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
 			init();
-			kaka = this;
-			keke = $(this);
-			kiki = newLi;
-			
 		});
 	}else{
 		$("#addMarkForm").ajaxSubmit({
@@ -323,9 +319,6 @@ var bookmarkRecommand = function() {
 	$('#bookMarkRecommand').modal('show');
 };
 
-
-
-
 // 그리드 스터 아이콘 초기화
 var gridsterInitial = function() {
 	gridster = $(".gridster > ul").gridster({
@@ -371,100 +364,37 @@ var bookmarkUrlFocusOut = function() {
 	}
 };
 
-//category add 버튼 클릭
-$('#category').click(function(){
 
-	var categoryName=$('#categoryName').val();
-	var categorySelect=$('#categorySelect').val();
-		$.ajax({
-			url: 'addCategory',
-			dataType:'json',
-			data:{
-
-				categoryName:categoryName,
-				categorySelect:categorySelect
-			}
-		}).done(function(data){
-			id = data.id; x = data.x; y = data.y; imgUrl = data.imgUrl, categoryName=data.categoryName;
-			$('#setting').modal('hide');
-			alert('카테고리가 추가되었습니다!!');
-			newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+ categoryName +'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-				newLi += '<img id="img" href="" src="'+ imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
-				newLi += '<div class="bookmarkIconInfo">' + categoryName +'</div>';
-			newLi += '</li>';
-			gridster.add_widget(newLi, 1, 1);
-			init();
-			
-				
-		});
-});
-
-
-
-// category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
-//$('#category').click(function() {
-
-// category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
-
-// category add 버튼 클릭(아직 구현 못함-카테고리 폴더 눌렀을 때 안에 북마크 보여줄 예정)
-// category 버튼 클릭
-/*$('#category').click(function() {
-
-
-	var i;
-	var category;
-
-	$.ajax({
-		url : 'viewCategory',
-		dataType : 'json',
-	}).done(function(data) {
-		// 모든 아이콘 제거
-		gridster.remove_widget($('li.bookmarkIcon'));
-		console.log(data.length);
-		// category 마다 아이콘 만들기
-		for (i = 0; i < data.length; i++) {
-			category = data[i];
-			newLi = '<li data-id="#" data-toggle="tooltip" title="'+ category+'" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-			newLi += '<img id="img" href="#" src="#" style="width:100%; height:100%;border-radius:20px;">';
-			newLi += '<div class="bookmarkIconInfo">'+category+'</div>';
-			newLi += '</li>';
-			gridster.add_widget(newLi, 1, 1);
-			}
-			$('#setting').modal('hide');
-			init();
-	
-			});
-});*/
 
 
 $('#sendButton').click(function(){
 		
-		var recommend_friendId = $('#recommend_friendId').val();
-		var recommend_url = $('#recommend_url').val();
-		var recommend_name = $('#recommend_name').val();
-		var recommend_descript = $('#recommend_descript').val();
+	var recommend_friendId = $('#recommend_friendId').val();
+	var recommend_url = $('#recommend_url').val();
+	var recommend_name = $('#recommend_name').val();
+	var recommend_descript = $('#recommend_descript').val();
+	
+	$.ajax({
+		url:'recommend',
+		dataType : 'json',
+		type:'POST',
+		data:{
+			recommend_friendId:recommend_friendId,
+			recommend_url: recommend_url,
+			recommend_name: recommend_name,
+			recommend_descript: recommend_descript
+		}
+	}).done(function(data){
+		console.log("data :"+data);
 		
-		$.ajax({
-			url:'recommend',
-			dataType : 'json',
-			type:'POST',
-			data:{
-				recommend_friendId:recommend_friendId,
-				recommend_url: recommend_url,
-				recommend_name: recommend_name,
-				recommend_descript: recommend_descript
-			}
-		}).done(function(data){
-			console.log("data :"+data);
-			
-			if(data.toString() == "false"){
-				alert('친구와의 북마크 추천을 확인하세요.');
-			}
-			else {
-				alert('즐겨찾기를 친구에게 추천했습니다.');
-				$('#bookMarkRecommand').modal('hide');
-			}
-		});
+		if(data.toString() == "false"){
+			alert('친구와의 북마크 추천을 확인하세요.');
+		}
+		else {
+			alert('즐겨찾기를 친구에게 추천했습니다.');
+			$('#bookMarkRecommand').modal('hide');
+		}
+	});
 });
 
 
@@ -475,26 +405,23 @@ $('#categoryName').keyup(function(){
 	var categoryName=$('#categoryName').val();
 		
 	$.ajax({
-				url:'isExistCategory',
-				dataType:'json',
-				data:{
-					categoryName: categoryName
-				}
-		}).done(function(data){
-			if(data.flag==true){//카터고리 겹치면 비활성화
-				alert('카테고리 이름 겹쳐용');
-				$('#category').attr('disabled','disabled');
-			}else{//카터고리 추가 가능하면
-				$('#category').removeAttr('disabled');
-			}
-			
-		});
-	
-
+		url:'isExistCategory',
+		dataType:'json',
+		data:{
+			categoryName: categoryName
+		}
+	}).done(function(data){
+		if(data.flag==true){//카터고리 겹치면 비활성화
+			alert('카테고리 이름 겹쳐용');
+			$('#category').attr('disabled','disabled');
+		}else{//카터고리 추가 가능하면
+			$('#category').removeAttr('disabled');
+		}
+		
+	});
 });
 
 //bookmark add 버튼 눌렀을 시 북마크 옵션 업데이트
-
 $('#mark_button').click(function(){
 	console.log("categoryOPtion");
 	$.ajax({
@@ -509,31 +436,8 @@ $('#mark_button').click(function(){
 		
 	});
 });
-//카테고리 더블클릭 시 해당하는 북마크 목록 보여준다
-var viewCategory = function(categoryName){
-	var newLi;
-	console.log("카테고리 눌렀넹");
-	console.log("카테고리네임 :"+categoryName);
-	$.ajax({
-		url:'viewCategory',
-		dataType:'json',
-		data:{
-			categoryName:categoryName,
-		}
-	}).done(function(data){
-		gridster.remove_widget($('li.bookmarkIcon'));
-		for(var i=0;i<data.length;i++){
-			var bookMark=data[i];
-			newLi = '<li data-id="' + bookMark.bookMarkId + '" data-toggle="tooltip" title="'+bookMark.bookMarkName+'" data-row="'+bookMark.posX+'" data-col="'+bookMark.posY+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-			newLi += '<img id="img" href="'+ bookMark.bookMarkUrl +'" src="'+ bookMark.imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
-			newLi += '<div class="bookmarkIconInfo">' + bookMark.bookMarkName +'</div>';
-			newLi += '</li>';
-			gridster.add_widget(newLi, 1, 1);
-			init();
-		}
-		
-	});
-};
+
+
 
 //setting 설정에 categorySelect 옵션 업데이트
 $('#setting_button').click(function(){

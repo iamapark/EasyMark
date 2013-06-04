@@ -25,6 +25,7 @@
 	<typeAlias alias="Count" type="dto.Count"/>
 	<typeAlias alias="DashboardCount" type="dto.DashboardCount"/>
 
+	<typeAlias alias="ForBookMarkList" type="dto.ForBookMarkList"/>
 
   <!-- Configure a built-in transaction manager.  If you're using an 
        app server, you probably want to use its transaction manager 

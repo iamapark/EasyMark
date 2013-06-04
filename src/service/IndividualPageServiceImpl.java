@@ -14,6 +14,7 @@ import dao.CategoryDAO;
 import dto.BookMark;
 import dto.Category;
 import dto.Design;
+import dto.ForBookMarkList;
 
 public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 
@@ -24,9 +25,9 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	}
 	
 	@Override
-	public ArrayList<BookMark> bookMarkList(String userId) {
+	public ArrayList<BookMark> bookMarkList(ForBookMarkList forListData) {
 		ArrayList<BookMark> bookMarkList=null;
-		bookMarkList=BookMarkDAO.getInstance().bookMarkList(userId);
+		bookMarkList=BookMarkDAO.getInstance().bookMarkList(forListData);
 		return bookMarkList;
 	}
 	@Override
@@ -111,6 +112,24 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		ArrayList<BookMark> categoryList=null;
 		categoryList=BookMarkListDAO.getInstance().listByCategory(category);
 		return categoryList;
+	}
+
+	public ArrayList<Category> getCategoryList(String userId) {
+		return CategoryDAO.getInstance().getCategoryList(userId);
+	}
+
+	public void deleteCategory(int categoryId) {
+		CategoryDAO.getInstance().deleteCategory(categoryId);
+	}
+
+	@Override
+	public ArrayList<BookMark> bookMarkList(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getParentId(int categoryId) {
+		return CategoryDAO.getInstance().getParentId(categoryId);
 	}
 	
 

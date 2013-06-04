@@ -2100,6 +2100,8 @@
     *  returns the row number, else returns false.
     */
     fn.can_go_widget_up = function(widget_grid_data) {
+    	console.log(widget_grid_data);
+    	keke = widget_grid_data;
         var p_bottom_row = widget_grid_data.row + widget_grid_data.size_y - 1;
         var result = true;
         var upper_rows = [];
