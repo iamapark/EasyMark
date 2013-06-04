@@ -1,33 +1,29 @@
 /*document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
 */
-/*$(document).ready(function(){
-	var userId = 'bdbd';
-	console.log("loginId:"+userId);
-	socketioConnection(userId);
+$(document).ready(function(){
 	$.ajax({
 		url: 'isContains',
 		dataType:'json',
-		data:{
-		//	userId:userId,
-		}
 	}).done(function(data){
-		console.log("loginId:"+data);
-		//socketioConnection(userId);
+		userId = data.user;
+		console.log("loginId:"+userId);
+		socketioConnection(userId);
 	});
 	
-});*/
+});
 var socketioConnection = function(userId){ // 시작 : 
 	socket = io.connect('http://localhost:9090/message', {'sync disconnect on unload' : true}); // 이 주소로 커넥션 맺기
-	socket.emit('userId', {id:userId}); // emit으로 보내고
-	socket.on('message', function(data){ // on으로 받는것
-		console.log('쪽지: ' + data.msg); // 쪽지 내용만 보낸 것 / 누가 보냈는지도 포함
+	
+	socket.emit("userId", {id:userId}); // emit으로 보내고
+	socket.on("message", function(data){ // on으로 받는것
+		// 쪽지 내용만 보낸 것 / 누가 보냈는지도 포함
 		$.noty.consumeAlert({
 			layout : 'topRight', 
 			type : 'success',
 			dismissQueue : true
 		});
-		
-		alert('쪽지가 도착했습니다.');
+		console.log('쪽지: ' + data.msg); 
+		alert('쪽지가 도착했습니다.'+data.msg);
 		$.noty.stopConsumeAlert();
 	});
 };
@@ -678,6 +674,7 @@ $('#messageSendButton').click(function(e){
 	}
 	
 	else {
+		alert("메시지를 전송하였습니다.");
 		$.ajax({
 			url: 'sendMessage',
 			dataType:'json',
@@ -686,7 +683,11 @@ $('#messageSendButton').click(function(e){
 					messageContents:messageContents
 		   		  }
 		}).done(function(data){
+			
 			console.log(data);
+			
+			friendId = data.friendId; message = data.contents;
+			socket.emit("send", {friendId:friendId,message:message});
 			$('#messageSendingButton').hide();
 			$(this).show();
 		});
@@ -696,11 +697,11 @@ $('#messageSendButton').click(function(e){
 
 var socket;
 
-$(window).load(function(){
+/*$(window).load(function(){
 	var userId = $('li[id="memberId"]').text().trim();
 	if(userId){
-		/**
-		사용자는 로그인할때만 메시지 서버에 등록한다.*/
+		*//**
+		사용자는 로그인할때만 메시지 서버에 등록한다.*//*
 		$.ajax({
 			url: 'isContains',
 			dataType:'json',
@@ -737,7 +738,7 @@ var socketioConnection = function(userId){
 		alert('쪽지가 도착했습니다.');
 		$.noty.stopConsumeAlert();
 	});
-};
+};*/
 /**
 <!-- 메시지 전송 종료 -->*/
 

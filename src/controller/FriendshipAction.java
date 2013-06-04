@@ -38,6 +38,7 @@ public class FriendshipAction {
 	//private MessageServer msgServer;
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
+		MessageServer.getInstance().start();
 	}
 	
 	// 친구 목록 불러오기
@@ -49,8 +50,6 @@ public class FriendshipAction {
 		System.out.println(userId);
 		
 		Member memberKey = new FriendshipServiceImpl().getKey(userId);
-		
-		System.out.println(memberKey.getMe2DayKey());
 		
 		String me2dayKey = memberKey.getMe2DayKey();
 		
@@ -322,8 +321,10 @@ public class FriendshipAction {
 		System.out.println(userId);
 
 		ArrayList<Message> inMessage = null;
+		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
 
-		inMessage = new FriendshipServiceImpl().getInBox(userId);
+		//inMessage = new FriendshipServiceImpl().getInBox(userId);
+		inMessage = new FriendshipServiceImpl().getInBox(message);
 		for (int i = 0; i < inMessage.size(); i++) {
 			System.out.println(inMessage.get(i).getMessageDate());
 			String dateTime = StringFromCalendar(inMessage.get(i).getMessageDate());
@@ -349,7 +350,8 @@ public class FriendshipAction {
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		System.out.println(userId);
 		ArrayList<Message> outMessage = null;
-		outMessage = new FriendshipServiceImpl().getOutBox(userId);
+		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "send");
+		outMessage = new FriendshipServiceImpl().getOutBox(message);
 		for (int i = 0; i < outMessage.size(); i++) {
 			System.out.println(outMessage.get(i).getMessageDate());
 			String dateTime = StringFromCalendar(outMessage.get(i).getMessageDate());
@@ -377,31 +379,40 @@ public class FriendshipAction {
 	
 	// 메시지 보내기
 	@RequestMapping("/sendMessage")
-	public void sendMessage(HttpServletRequest request,
+	public ModelAndView sendMessage(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam(value="messageFriendId")String friendId,
 			  							  @RequestParam(value="messageContents")String contents) {
-		System.out.println("sendMessage() 호출!!");
 			
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 			
 		int messageNum = 0;
 
-		Message msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "");
-
-		System.out.println(new Date());
+		Message msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "", 0, "send");
 
 		boolean flag = new FriendshipServiceImpl().sendMessage(msg);
+		
+		msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "", 0, "take");
+		new FriendshipServiceImpl().sendMessage(msg);
+		
+		ModelAndView mav = new ModelAndView();
 		// boolean flag = true;
 		if (flag) { // 메시지 DB 등록 성공
 			
-			MessageServer.getInstance().sendMessage(friendId, contents);
+			traffic();
+			//MessageServer.getInstance().start();
+			//MessageServer.getInstance().sendMessage(friendId, contents);
 			// msgServer.sendMessage(friendId, message);
-
-			//relayServer.sendMessage(friendId, contents);  X
-
+			
+			JSONObject jobj = new JSONObject();
+			jobj.put("friendId", friendId);
+			jobj.put("contents", contents);
+			request.setAttribute("result", jobj);
+			mav.setViewName("result");	
 		} else { // 메시지 DB 등록 실패
 				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
 		}
+		//traffic();
+		return mav;
 	}
 		
 	@RequestMapping("/isContains")
@@ -413,12 +424,19 @@ public class FriendshipAction {
 		nextPage.setViewName("/views/result.jsp");
 			
 		return nextPage;*/
-		ModelAndView mav = new ModelAndView();
+		/*
 		
 		request.setAttribute("result", userId);
+		mav.setViewName("result");*/
+		ModelAndView mav = new ModelAndView();
+		JSONObject jobj = new JSONObject();
+		jobj.put("user", userId);
+		
+		request.setAttribute("result", jobj);
 		mav.setViewName("result");
-			
-		traffic();
+		
+		
+//		traffic();
 		return mav;
 	}
 
@@ -595,11 +613,20 @@ public class FriendshipAction {
 		Message message = new Message();
 	
 		message = new FriendshipServiceImpl().getMessage(messageId);
-
+		
 		String dateTime = StringFromCalendar(message.getMessageDate());
-		message = new Message(message.getMessageId(), message.getUserId(),
-							  message.getFriendId(), message.getTitle(),
-							  message.getContents(), message.getMessageDate(), dateTime);
+		String loginId = (String)request.getSession().getAttribute("MEMBERID");
+		if(message.getFriendId().equals(loginId)){
+			message = new Message(message.getMessageId(), message.getUserId(),
+					  message.getFriendId(), message.getTitle(),
+					  message.getContents(), message.getMessageDate(), dateTime, message.getReadNum()+1, message.getType());
+		} else {
+			message = new Message(message.getMessageId(), message.getUserId(),
+					  message.getFriendId(), message.getTitle(),
+					  message.getContents(), message.getMessageDate(), dateTime, message.getReadNum(), message.getType());
+		}
+		
+		new FriendshipServiceImpl().updateMessage(message);
 
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(message);

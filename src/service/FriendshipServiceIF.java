@@ -22,18 +22,19 @@ public interface FriendshipServiceIF {
 	 * @param Me2DayMember 미투데이 계정에 관한 정보가 담겨있는 변수
 	 * @return ArrayList<Member> 검색 결과 데이터가 담겨 있다.
 	 */
+	public ArrayList<Member> searchFriend(User searchUser);
+	
+	//public ArrayList<Member> getMemberById(User searchUser);
+	
+	
 	public Member getKey(String userId);
 	public ArrayList<Member> getFriendList(Friendship friend);
-	public ArrayList<Member> getFriendListBar(Friendship friend);
-	
-	public ArrayList<Member> searchFriend(User searchUser);
-
+//	public ArrayList<Member> getFriendListBar(Friendship friend);
 	
 	public ArrayList<FriendStatus> getFriendStatus(FriendStatus friendStatus);
-	//public FriendStatus getFriendStatus(FriendStatus friendStatus);
-	
 
-	public ArrayList<String> getNameList(String keyword);
+	
+//	public ArrayList<String> getNameList(String keyword);
 	/**
 	 * 특정 사용자에게 친구 요청을 보낸다.
 	 * @param String 친구 요청을 보내는 아이디
@@ -41,6 +42,7 @@ public interface FriendshipServiceIF {
 	 * @return void
 	 */
 	public Member me2Friend(String me2FriendId);
+	
 	public void requestFriend(Friendship friendship);
 	/**
 	 * 사용자의 미투데이 계정에 친구로 등록되어 있는 리스트를 받아온 뒤, 
@@ -68,23 +70,25 @@ public interface FriendshipServiceIF {
 	
 	public ArrayList<Member> sendFriendReqList(Friendship friendship);
 	
-	public void deleteMessage(String messageId);
-	public Message getMessage(String contents);
 	
-	public ArrayList<Message> getOutBox(String userId);
-
+	public void deleteMessage(String messageId);
+	public Message getMessage(String messageId);
+	public void updateMessage(Message message);
+	//public ArrayList<Message> getOutBox(String userId);
+	public ArrayList<Message> getOutBox(Message message);
 	/**
 	 * 받은 쪽지 리스트
 	 * @param String 사용자 아이디
 	 * @return ArrayList<Message> 쪽지 리스트
 	 */
-	public ArrayList<Message> getInBox(String userId);
-
+	//public ArrayList<Message> getInBox(String userId);
+	public ArrayList<Message> getInBox(Message message);
 	/**
 	 * 특정 사용자에게 쪽지를 보낸다.
 	 * @param Message 보내는 쪽지에 대한 정보가 담겨 있는 변수
 	 * @return int
 	 */
+	public ArrayList<Message> newMessageCount(Message message);
 	public boolean sendMessage(Message message);
 	//public void sendMessage(Message message);
 	/**
@@ -116,6 +120,7 @@ public interface FriendshipServiceIF {
 	// 추천 한 웹페이지 목록 가져오기
 	public ArrayList<BookMarkShip> outWeb(String userId);
 	
+
 	public void accept(Friendship friendship);
 	public void reject(Friendship friendship);
 	public void cancel(Friendship friendship);
@@ -126,10 +131,6 @@ public interface FriendshipServiceIF {
 	
 	public void bookmarkCancel(String bookMarkId);
 	
-	//남기윤이 대충 만들고 있음( 신보미가 시킨 거)
-	public ArrayList<Member> getMemberById(User searchUser);
-	
-	/*public void bookMarkRecommand(BookMarkShip bookmarkship);*/
 	
 	public BookMark selectBookMark(int bookMarkId);
 	

@@ -47,12 +47,16 @@ public class MessageServer {
 				socket.on("userId", new Handler<JsonObject>(){ // userId 값이 넘어온다
 					@Override
 					public void handle(JsonObject data) {
+						System.out.println(data);
+						System.out.println("id는"+data.getString("id"));
 						register(data.getString("id"), socket);
 					}
 				});
 				
 				socket.on("send", new Handler<JsonObject>(){
 					public void handle(JsonObject data){
+						System.out.println("socket.on?");
+						System.out.println("message"+data.getString("message"));
 						sendMessage(data.getString("friendId"), data.getString("message"));
 					}
 				});
@@ -94,9 +98,16 @@ public class MessageServer {
 	public void sendMessage(String id, String msg){
 		System.out.println("(전송)id: " + id + ", msg: " + msg);
 		JsonObject data = new JsonObject();
+		
 		data.putString("msg", msg);
+		data.putString("friend", id);
+		
+		System.out.println(data.getString("msg"));
+		System.out.println(data);
+		System.out.println(sockets.size());
 		System.out.println(sockets.get(id));
-		//sockets.get(id).emit("message", data);
+		
+		sockets.get(id).emit("message", data);
 	}
 
 	public boolean isContains(String userId) {

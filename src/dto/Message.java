@@ -10,12 +10,14 @@ public class Message {
 	private String contents;
 	private Date messageDate;
 	private String messageDate2;
+	private int readNum;
+	private String type;
 	
 	public Message() {
 		super();
 	}
 	public Message(int messageId, String userId, String friendId, String title,
-			String contents, Date messageDate, String messageDate2) {
+			String contents, Date messageDate, String messageDate2, int readNum, String type) {
 		super();
 		this.messageId = messageId;
 		this.userId = userId;
@@ -24,7 +26,10 @@ public class Message {
 		this.contents = contents;
 		this.messageDate = messageDate;
 		this.messageDate2 = messageDate2;
+		this.readNum = readNum;
+		this.type = type;
 	}
+	
 	public int getMessageId() {
 		return messageId;
 	}
@@ -66,5 +71,17 @@ public class Message {
 	}
 	public void setMessageDate2(String messageDate2) {
 		this.messageDate2 = messageDate2;
+	}
+	public int getReadNum() {
+		return readNum;
+	}
+	public void setReadNum(int readNum) {
+		this.readNum = readNum;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 }
