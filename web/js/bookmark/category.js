@@ -176,7 +176,7 @@ var viewCategory = function(category){
 		// 상위 카테고리로 올라가는 아이콘 추가할 것!!
 		if(data.parentId != null){
 			newLi = '<li data-id="" data-categoryId="' + data.parentId + '" data-toggle="tooltip" title="상위 카테고리로" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon">';
-				newLi += '<img id="img" href="" src="images/folder.png" style="width:100%; height:100%;border-radius:20px;">';
+				newLi += '<img id="img" href="" src="images/uparrow.png" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">상위 카테고리로</div>';
 			newLi += '</li>';
 			gridster.add_widget(newLi, 1, 1);
