@@ -321,15 +321,18 @@ var bookmarkRecommand = function() {
 
 // 그리드 스터 아이콘 초기화
 var gridsterInitial = function() {
+	
 	gridster = $(".gridster > ul").gridster({
 		widget_margins : [ 10, 10 ],
 		widget_base_dimensions : [ 140, 140 ],
 		min_cols : 8,
 		avoid_overlapped_widgets : true,
 		serialize_params : function($w, wgd) {
+			keke = $w;
+			kaka = wgd;
 			return {
-				col : wgd.col,
-				row : wgd.row,
+				col : wgd.col, //$w.data('col'),
+				row : wgd.row, //$w.data('row'),
 				id : $w.data('id')
 			};
 		}

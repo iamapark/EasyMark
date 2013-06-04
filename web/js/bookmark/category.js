@@ -157,7 +157,7 @@ $('#deleteCategoryButton').click(function(e){
 
 //카테고리 더블클릭 시 해당하는 북마크 목록 보여준다
 var viewCategory = function(category){
-	var newLi;
+	newLi = '';
 	console.log(category);
 	kaka = category;
 	
@@ -173,9 +173,9 @@ var viewCategory = function(category){
 		kaka = data;
 		gridster.remove_all_widgets();
 		
-		// 상위 카테고리로 올라가는 아이콘 추가할 것!!
+		// 상위 카테고리로 올라가는 아이콘, 부모 카테고리 아이디가 있을 경우에만 화면에 띄운다.
 		if(data.parentId != null){
-			newLi = '<li data-id="" data-categoryId="' + data.parentId + '" data-toggle="tooltip" title="상위 카테고리로" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon">';
+			newLi = '<li data-id="0" data-categoryId="' + data.parentId + '" data-toggle="tooltip" title="상위 카테고리로" data-row="1" data-col="1" data-sizex="1" data-sizey="1" class="bookmarkIcon">';
 				newLi += '<img id="img" href="" src="images/uparrow.png" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">상위 카테고리로</div>';
 			newLi += '</li>';
@@ -188,7 +188,7 @@ var viewCategory = function(category){
 				newLi += '<img id="img" href="'+ bookMark.bookMarkUrl +'" src="'+ bookMark.imgUrl +'" style="width:100%; height:100%;border-radius:20px;">';
 				newLi += '<div class="bookmarkIconInfo">' + bookMark.bookMarkName +'</div>';
 			newLi += '</li>';
-			gridster.add_widget(newLi, 1, 1);
+			gridster.add_widget(newLi, 1, 1, bookMark.posY, bookMark.posX);
 		
 		}/**/
 		init();

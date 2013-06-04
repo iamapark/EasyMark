@@ -716,6 +716,7 @@
         autogenerate_stylesheet: true,
         avoid_overlapped_widgets: true,
         serialize_params: function($w, wgd) {
+        	console.log('719');
             return {
             	col: wgd.col,
                 row: wgd.row,
@@ -1216,7 +1217,17 @@
     *  the serialize_params option.
     */
     fn.serialize_changed = function() {
-        return this.serialize(this.$changed);
+    	console.log(this);
+    	papa = this;
+    	if(this.$changed.length>1){
+    		console.log('2이상');
+    		return this.serialize($([this.$changed[0]]));
+    		
+    	}else{
+    		console.log('1이하');
+    		return this.serialize(this.$changed);
+    	}
+        
     };
 
 
