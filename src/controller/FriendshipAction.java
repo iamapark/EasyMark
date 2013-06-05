@@ -334,7 +334,6 @@ public class FriendshipAction {
 		}
 
 		ModelAndView mav = new ModelAndView();
-			
 		JSONArray dataJ = JSONArray.fromObject(inMessage);
 		System.out.println(dataJ);
 		request.setAttribute("result", dataJ);
@@ -383,17 +382,24 @@ public class FriendshipAction {
 	@RequestMapping("/sendMessage")
 	public ModelAndView sendMessage(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam(value="messageFriendId")String friendId,
-			  							  @RequestParam(value="messageContents")String contents) {
+			  							  @RequestParam(value="messageContents")String contents) throws UnsupportedEncodingException {
 			
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-			
+		
 		int messageNum = 0;
 
-		Message msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "", 0, "send");
+		Message msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "send");
 
 		boolean flag = new FriendshipServiceImpl().sendMessage(msg);
 		
-		msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "", 0, "take");
+		msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "take");
+		
+		try {
+			contents = URLDecoder.decode(contents, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+
+		}
+		
 		new FriendshipServiceImpl().sendMessage(msg);
 		
 		ModelAndView mav = new ModelAndView();
@@ -404,20 +410,16 @@ public class FriendshipAction {
 			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
 			
 			traffic();
-			//MessageServer.getInstance().start();
-			//MessageServer.getInstance().sendMessage(friendId, contents);
-			// msgServer.sendMessage(friendId, message);
 			
 			JSONObject jobj = new JSONObject();
 			jobj.put("friendId", friendId);
-			jobj.put("contents", contents);
+			jobj.put("contents",  URLDecoder.decode(contents, "utf-8"));
 			jobj.put("num", newMessage.size());
 			request.setAttribute("result", jobj);
 			mav.setViewName("result");	
 		} else { // 메시지 DB 등록 실패
 				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
 		}
-		//traffic();
 		return mav;
 	}
 		
@@ -425,15 +427,7 @@ public class FriendshipAction {
 	public ModelAndView isContains(HttpServletRequest request, HttpServletResponse response){
 	
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		//boolean flag = relayServer.isContains(userId);
-		/*request.setAttribute("result", Boolean.toString(flag));
-		nextPage.setViewName("/views/result.jsp");
-			
-		return nextPage;*/
-		/*
 		
-		request.setAttribute("result", userId);
-		mav.setViewName("result");*/
 		ModelAndView mav = new ModelAndView();
 		JSONObject jobj = new JSONObject();
 		jobj.put("user", userId);
@@ -441,8 +435,6 @@ public class FriendshipAction {
 		request.setAttribute("result", jobj);
 		mav.setViewName("result");
 		
-		
-//		traffic();
 		return mav;
 	}
 

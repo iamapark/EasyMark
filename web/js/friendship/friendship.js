@@ -605,7 +605,13 @@ $('a[href="#messages"]').click(function(){
 		
 		for(var i=0; i<memberData.length; i++){
 			select = "<input type='checkbox' onchange='messageSelect(this)' name='selector' value='" + memberData[i].messageId + "'></input>";
-			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+			action = "<img src='images/new_image.GIF' />";
+			if(memberData[i].readNum==0){
+				$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+action+"</a>", memberData[i].messageDate2]);
+			}else{
+				$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+			}
+			
 		}
 	});
 });
@@ -623,8 +629,14 @@ $('#messageTab li:eq(0) a').click(function (e){
 		
 		var memberData = JSON.parse(data);
 		for(var i=0; i<memberData.length; i++){
+			console.log(memberData[i].readNum);
 			select = "<input type='checkbox' name='selector' onchange='messageSelect(this)' value='" + memberData[i].messageId + "'></input>";
-			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+			action = "<img src='images/new_image.GIF' />";
+			if(memberData[i].readNum==0){
+				$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+action+"</a>", memberData[i].messageDate2]);
+			}else{
+				$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+			}
 		}
 	});
 	
@@ -663,8 +675,34 @@ function takeMessageDetail(messageId){
 		}
 	}).done(function(data){
 		fillTakeMessageDetail(data);
-		console.log(data);
 		$('#contents').remove();
+		
+		$.ajax({
+			url:'messageCount',
+			dataType : 'json',
+			type:'POST'
+		}).done(function(data){
+			console.log("data :"+data.toString());
+			$('#messageCount').text(data.toString());		
+		});
+		
+		
+		$.ajax({
+			url: 'inBox'
+		}).done(function(data){
+			$('.takemessagetable').dataTable().fnClearTable();
+			var memberData = JSON.parse(data);
+			for(var i=0; i<memberData.length; i++){
+				console.log(memberData[i].readNum);
+				select = "<input type='checkbox' name='selector' onchange='messageSelect(this)' value='" + memberData[i].messageId + "'></input>";
+				action = "<img src='images/new_image.GIF' />";
+				if(memberData[i].readNum==0){
+					$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+action+"</a>", memberData[i].messageDate2]);
+				}else{
+					$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+				}
+			}
+		});
 	});
 };
 
@@ -774,6 +812,15 @@ $('#takeMessageDelete').click(function(e){
 			for(var i=0; i<selectedRow.length; i++){
 				$('.takemessagetable').dataTable().fnDeleteRow(selectedRow[i]);
 			}
+		});
+		
+		$.ajax({
+			url:'messageCount',
+			dataType : 'json',
+			type:'POST'
+		}).done(function(data){
+			console.log("data :"+data.toString());
+			$('#messageCount').text(data.toString());		
 		});
 	}
 });

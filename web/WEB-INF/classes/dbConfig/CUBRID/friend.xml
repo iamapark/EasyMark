@@ -115,7 +115,7 @@
   	</select>
   	
   	<select id="inBox" parameterClass="Message" resultClass="Message">
-    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
+    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate, read_num readNum
     	from message
     	where friend_id=#userId# AND message_type=#type# 
   	</select>
