@@ -347,15 +347,18 @@ public class IndividualPageAction {
 		JSONObject json = (JSONObject) JSONSerializer.toJSON(location);
 
 		JSONObject result = null;
-
+		
 		for (int i = 0; i < json.size(); i++) {
 			result = (JSONObject) json.get(String.valueOf(i));
-
+			
+			System.out.println("id: " + result.get("id") + ", row: " + result.get("row") + ", col: " + result.get("col"));
+			
 			int bookMarkId = Integer.parseInt(result.get("id").toString());
 			int posX = Integer.parseInt(result.get("row").toString());
 			int posY = Integer.parseInt(result.get("col").toString());
 			BookMark bookMark = new BookMark(bookMarkId, "", "", "", "", "",
 					posX, posY);
+			
 			new IndividualPageServiceImpl().arrangeIcon(bookMark);
 		}
 
@@ -408,9 +411,11 @@ public class IndividualPageAction {
 			while (m.find()) {
 				title = m.group();
 			}
-
-			title = title.replace("<title>", "");
-			title = title.replace("</title>", "");
+			
+			if(title != null){
+				title = title.replace("<title>", "");
+				title = title.replace("</title>", "");
+			}
 
 			flag = true;
 		} catch (MalformedURLException e) {

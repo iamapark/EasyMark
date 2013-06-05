@@ -131,10 +131,7 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	public int getParentId(int categoryId) {
 		return CategoryDAO.getInstance().getParentId(categoryId);
 	}
-	
 
 
-
-	
 
 }

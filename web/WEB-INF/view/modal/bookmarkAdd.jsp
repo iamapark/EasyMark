@@ -33,9 +33,8 @@
 		<div class="control-group">
         	<label class="control-label" for="addBookMarkCategory">Category</label>
          	<div class="controls">
-              	<select name="category" id="addBookMarkCategory">
-             	<!-- 이 위치에 옵션이 appendTO 된다 -->
-              	</select>
+              	<div id="addCategoryOl"></div>
+              	<input type="hidden" id="hiddenBookmarkAddCategory" name="category" />
             </div>
         </div>
         <div class="control-group">

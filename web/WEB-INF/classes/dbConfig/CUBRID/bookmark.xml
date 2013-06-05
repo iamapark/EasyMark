@@ -206,4 +206,5 @@
 	<select id="listByCategory" parameterClass="java.util.HashMap" resultMap="BookMarkList">
 		SELECT * FROM bookmark WHERE user_id=#userId# AND category=#categoryName#
 	</select>
+
 </sqlMap>

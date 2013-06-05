@@ -716,6 +716,7 @@
         autogenerate_stylesheet: true,
         avoid_overlapped_widgets: true,
         serialize_params: function($w, wgd) {
+        	console.log('719');
             return {
             	col: wgd.col,
                 row: wgd.row,
@@ -1202,8 +1203,12 @@
             result.push(this.options.serialize_params(
                 $(widget), $(widget).coords().grid ) );
         }, this));
-
+        
         return result;
+    };
+    
+    fn.remove_change = function(){
+    	this.$changed = $([]);
     };
 
 
@@ -1216,7 +1221,21 @@
     *  the serialize_params option.
     */
     fn.serialize_changed = function() {
-        return this.serialize(this.$changed);
+    	papa = this;
+    	
+    	//return this.serialize(this.$changed);
+    	
+    	if($([papa.$changed[0]]).data('id') == 0){
+    		return this.serialize(this.$changed);
+    	}
+    	
+    	if(this.$changed.length>1){
+    		return this.serialize(this.$changed);
+    		
+    	}else{
+    		return this.serialize(this.$changed);
+    	}
+        
     };
 
 
@@ -1230,6 +1249,7 @@
     fn.register_widget = function($el) {
 
         var wgd = {
+        	'id' : parseInt($el.attr('data-id'), 10),
             'col': parseInt($el.attr('data-col'), 10),
             'row': parseInt($el.attr('data-row'), 10),
             'size_x': parseInt($el.attr('data-sizex'), 10),
