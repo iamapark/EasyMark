@@ -1,5 +1,7 @@
 package util;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -9,12 +11,15 @@ import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.json.JsonObject;
 
+import service.FriendshipServiceImpl;
+
 import com.nhncorp.mods.socket.io.SocketIOServer;
 import com.nhncorp.mods.socket.io.SocketIOSocket;
 import com.nhncorp.mods.socket.io.impl.DefaultSocketIOServer;
 import com.nhncorp.mods.socket.io.impl.Namespace;
 
 import dto.Member;
+import dto.Message;
 
 public class MessageServer {
 	private Vertx vt;
@@ -57,7 +62,7 @@ public class MessageServer {
 					public void handle(JsonObject data){
 						System.out.println("socket.on?");
 						System.out.println("message"+data.getString("message"));
-						sendMessage(data.getString("friendId"), data.getString("message"));
+						sendMessage(data.getString("friendId"), data.getString("message"), data.getInteger("num"));
 					}
 				});
 				
@@ -86,9 +91,9 @@ public class MessageServer {
 	}
 	
 	private void register(String id, SocketIOSocket socket){
-		//if(!isContains(id)){
-			sockets.put(id,  socket);
-		//}
+
+		sockets.put(id,  socket);
+
 		adminServer.pushLoginMemberInfo(id);
 		adminServer.pushLoginMemberCount(getLoginMemberCount());
 		System.out.println("(등록)id:" + id);
@@ -96,17 +101,16 @@ public class MessageServer {
 		System.out.println("등록된 socket: " + socket);
 	}
 	
-	public void sendMessage(String id, String msg){
+	public void sendMessage(String id, String msg, int num){
 		System.out.println("(전송)id: " + id + ", msg: " + msg);
 		JsonObject data = new JsonObject();
 		
 		data.putString("msg", msg);
 		data.putString("friend", id);
+		data.putNumber("num", num);
 		
 		System.out.println(data.getString("msg"));
 		System.out.println(data);
-		System.out.println(sockets.size());
-		System.out.println(sockets.get(id));
 		
 		System.out.println("보내는 socket: " + sockets.get(id));
 		sockets.get(id).emit("message", data);

@@ -34,11 +34,11 @@ import dto.User;
 
 @Controller
 public class FriendshipAction {
-	
+
 	public FriendshipAction(){
 		//MessageServer.getInstance().start();
 	}
-	
+
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
 	}
@@ -334,7 +334,6 @@ public class FriendshipAction {
 		}
 
 		ModelAndView mav = new ModelAndView();
-			
 		JSONArray dataJ = JSONArray.fromObject(inMessage);
 		System.out.println(dataJ);
 		request.setAttribute("result", dataJ);
@@ -383,37 +382,44 @@ public class FriendshipAction {
 	@RequestMapping("/sendMessage")
 	public ModelAndView sendMessage(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam(value="messageFriendId")String friendId,
-			  							  @RequestParam(value="messageContents")String contents) {
+			  							  @RequestParam(value="messageContents")String contents) throws UnsupportedEncodingException {
 			
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-			
+		
 		int messageNum = 0;
 
-		Message msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "", 0, "send");
+		Message msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "send");
 
 		boolean flag = new FriendshipServiceImpl().sendMessage(msg);
 		
-		msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "", 0, "take");
+		msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "take");
+		
+		try {
+			contents = URLDecoder.decode(contents, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+
+		}
+		
 		new FriendshipServiceImpl().sendMessage(msg);
 		
 		ModelAndView mav = new ModelAndView();
 		// boolean flag = true;
 		if (flag) { // 메시지 DB 등록 성공
 			
+			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
+			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+			
 			traffic();
-			//MessageServer.getInstance().start();
-			//MessageServer.getInstance().sendMessage(friendId, contents);
-			// msgServer.sendMessage(friendId, message);
 			
 			JSONObject jobj = new JSONObject();
 			jobj.put("friendId", friendId);
-			jobj.put("contents", contents);
+			jobj.put("contents",  URLDecoder.decode(contents, "utf-8"));
+			jobj.put("num", newMessage.size());
 			request.setAttribute("result", jobj);
 			mav.setViewName("result");	
 		} else { // 메시지 DB 등록 실패
 				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
 		}
-		//traffic();
 		return mav;
 	}
 		
@@ -421,15 +427,7 @@ public class FriendshipAction {
 	public ModelAndView isContains(HttpServletRequest request, HttpServletResponse response){
 	
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		//boolean flag = relayServer.isContains(userId);
-		/*request.setAttribute("result", Boolean.toString(flag));
-		nextPage.setViewName("/views/result.jsp");
-			
-		return nextPage;*/
-		/*
 		
-		request.setAttribute("result", userId);
-		mav.setViewName("result");*/
 		ModelAndView mav = new ModelAndView();
 		JSONObject jobj = new JSONObject();
 		jobj.put("user", userId);
@@ -437,8 +435,6 @@ public class FriendshipAction {
 		request.setAttribute("result", jobj);
 		mav.setViewName("result");
 		
-		
-//		traffic();
 		return mav;
 	}
 
@@ -604,8 +600,25 @@ public class FriendshipAction {
 		
 		return mav;
 	}	
+	
+	
+	@RequestMapping("/messageCount")
+	public ModelAndView messageCount(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+
+		String loginId = (String)request.getSession().getAttribute("MEMBERID");
+		Message message = new Message(0, loginId, "", null, "", new Date(), "", 0, "take");
+		ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+		int newMessageCount = newMessage.size();
 		
+		request.setAttribute("result", newMessageCount);
+		mav.setViewName("result");
 		
+		traffic();
+		return mav;
+	}
+	
 	// 메시지 상세 보기
 	@RequestMapping("/messageView")
 	public ModelAndView messageView(HttpServletRequest request,
@@ -623,6 +636,7 @@ public class FriendshipAction {
 					  message.getFriendId(), message.getTitle(),
 					  message.getContents(), message.getMessageDate(), dateTime, message.getReadNum()+1, message.getType());
 		} else {
+			
 			message = new Message(message.getMessageId(), message.getUserId(),
 					  message.getFriendId(), message.getTitle(),
 					  message.getContents(), message.getMessageDate(), dateTime, message.getReadNum(), message.getType());
@@ -632,8 +646,11 @@ public class FriendshipAction {
 
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(message);
+		JSONObject data = new JSONObject();
+		data.put("num", 2);
+		dataJ.add(data);
 		System.out.println(dataJ);
-		request.setAttribute("result", dataJ);
+		request.setAttribute("result", dataJ.toString());
 		mav.setViewName("result");
 		
 		traffic();

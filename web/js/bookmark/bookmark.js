@@ -398,40 +398,6 @@ var bookmarkUrlFocusOut = function() {
 };
 
 
-
-
-$('#sendButton').click(function(){
-		
-	var recommend_friendId = $('#recommend_friendId').val();
-	var recommend_url = $('#recommend_url').val();
-	var recommend_name = $('#recommend_name').val();
-	var recommend_descript = $('#recommend_descript').val();
-	
-	$.ajax({
-		url:'recommend',
-		dataType : 'json',
-		type:'POST',
-		data:{
-			recommend_friendId:recommend_friendId,
-			recommend_url: recommend_url,
-			recommend_name: recommend_name,
-			recommend_descript: recommend_descript
-		}
-	}).done(function(data){
-		console.log("data :"+data);
-		
-		if(data.toString() == "false"){
-			alert('친구와의 북마크 추천을 확인하세요.');
-		}
-		else {
-			alert('즐겨찾기를 친구에게 추천했습니다.');
-			$('#bookMarkRecommand').modal('hide');
-		}
-	});
-});
-
-
-
 //카테고리 추가 할때 실시간 카테고리 중복체크 중복이면 버튼없어진다
 $('#categoryName').keyup(function(){
 	console.log("isExistCategoryName");

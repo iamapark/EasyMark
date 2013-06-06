@@ -1,5 +1,9 @@
 /*document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
 */
+var socket;
+
+/**
+<!-- login id 가져오기 -->*/
 $(document).ready(function(){
 	$.ajax({
 		url: 'isContains',
@@ -14,18 +18,24 @@ $(document).ready(function(){
 var socketioConnection = function(userId){ // 시작 : 
 	socket = io.connect('http://localhost:9090/message', {'sync disconnect on unload' : true}); // 이 주소로 커넥션 맺기
 	
-	socket.emit("userId", {id:userId}); // emit으로 보내고
-	socket.on("message", function(data){ // on으로 받는것
-		// 쪽지 내용만 보낸 것 / 누가 보냈는지도 포함
+	/* 사용자가 로그인 할 때마다
+	 * 로그인 한 아이디를 받아서 userId 로 보낸다. */
+	socket.emit("userId", {id:userId}); 
+	
+	/* 사용자가 받은 메시지를 "message"로 받아 상단에 메시지 알림을 뿌려준다.
+	 * 로그인 한 아이디를 받아서 userId 로 보낸다. */
+	socket.on("message", function(data){ 
 		$.noty.consumeAlert({
 			layout : 'topRight', 
 			type : 'success',
 			dismissQueue : true
 		});
-		console.log('쪽지: ' + data.msg); 
-		alert('쪽지가 도착했습니다.'+data.msg);
+		alert("쪽지가 도착했습니다. message : "+data.msg);
 		$.noty.stopConsumeAlert();
+		
+		$('#messageCount').text(data.num); // messageCount에 읽지 않은 새 메시지의 갯수를 출력		
 	});
+	
 };
 
 $('a[data-toggle="modal"]').click(function(){
@@ -107,7 +117,7 @@ $('#friendTab li:eq(1) a').click(function (e){
 <!-- friend MODAL의 세번째 tab : 친구 요청 받은 목록 -->*/
 $('#friendTab li:eq(2) a').click(function (e){	
 	$('.takefriendtable').dataTable().fnClearTable();
-	
+
 	$.ajax({
 		url: 'takeFriendReq',
 	}).done(function(data){
@@ -133,7 +143,7 @@ $('#friendTab li:eq(2) a').click(function (e){
 <!-- friend MODAL의 네번째 tab(첫번째 tab) : 북마크 추천 받은 목록 -->*/
 $('#friendTab li:eq(3) a').click(function (e){	
 	$('.inwebtable').dataTable().fnClearTable();
-	console.log("받은");
+	
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
@@ -158,10 +168,8 @@ $('#friendTab li:eq(3) a').click(function (e){
 /**
 <!-- friend MODAL의 네번째 tab(첫번째 tab) : 북마크 추천 받은 목록 -->*/
 $('#webSiteTab li:eq(0) a').click(function (e){	
-	console.log("받은");
-	//$('.outwebtable').dataTable().fnClearTable();
 	$('.inwebtable').dataTable().fnClearTable();
-	$(this).tab('show');
+	
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
@@ -295,7 +303,6 @@ var addFriend = function(e){
 	var friendId = $(e).data('id');
 	var count = $(e).data('count');
 	
-	
 	$.ajax({
 		url: 'requestFriend',
 		data: {
@@ -306,6 +313,40 @@ var addFriend = function(e){
 		$('.friendtable').dataTable().fnDeleteRow(count);
 	}); 
 };
+
+
+/**
+<!-- 북마크 추천 전송 -->*/
+$('#sendButton').click(function(){
+	
+	var recommend_friendId = $('#recommend_friendId').val();
+	var recommend_url = $('#recommend_url').val();
+	var recommend_name = $('#recommend_name').val();
+	var recommend_descript = $('#recommend_descript').val();
+	
+	$.ajax({
+		url:'recommend',
+		dataType : 'json',
+		type:'POST',
+		data:{
+			recommend_friendId:recommend_friendId,
+			recommend_url: recommend_url,
+			recommend_name: recommend_name,
+			recommend_descript: recommend_descript
+		}
+	}).done(function(data){
+		console.log("data :"+data);
+		
+		if(data.toString() == "false"){
+			alert('친구와의 북마크 추천을 확인하세요.');
+		}
+		else {
+			alert('즐겨찾기를 친구에게 추천했습니다.');
+			$('#bookMarkRecommand').modal('hide');
+		}
+	});
+});
+
 
 /**
 <!-- 북마크 추천 취소 -->*/
@@ -372,7 +413,6 @@ var recommendAccept = function(e){
 	}).done(function(data){
 		$('.inwebtable').dataTable().fnDeleteRow(count);
 		console.log(data);
-		// 바탕화면에 북마크 아이콘을 생성하는 부분이 들어가야 함.
 		id = data.id; x = data.x; y = data.y; url = data.url;
 		alert('북마크가 추가되었습니다!!');
 		newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
@@ -383,6 +423,7 @@ var recommendAccept = function(e){
 		init();
 	}); 
 };
+
 
 
 /**
@@ -449,6 +490,7 @@ function searchMember(userId) {
 		}
 	}); 
 };
+
 
 
 /**
@@ -547,13 +589,13 @@ function me2dayConnect(me2dayId){
 
 /********************  <!-- 메세지 modal --> ********************/
 
-
 /**
 <!-- message 메뉴를 클릭했을 때 MODAL을 채울 정보를 가져온다. 
 	 첫번째 tab : 받은 메시지 목록 -->*/
 
 $('a[href="#messages"]').click(function(){
 	$('.takemessagetable').dataTable().fnClearTable();
+	
 	$.ajax({
 		url: 'inBox'
 	}).done(function(data){
@@ -563,7 +605,13 @@ $('a[href="#messages"]').click(function(){
 		
 		for(var i=0; i<memberData.length; i++){
 			select = "<input type='checkbox' onchange='messageSelect(this)' name='selector' value='" + memberData[i].messageId + "'></input>";
-			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+			action = "<img src='images/new_image.GIF' />";
+			if(memberData[i].readNum==0){
+				$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+action+"</a>", memberData[i].messageDate2]);
+			}else{
+				$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+			}
+			
 		}
 	});
 });
@@ -573,6 +621,7 @@ $('a[href="#messages"]').click(function(){
 <!-- friend MODAL의 첫번째 tab : 받은 메시지 목록 -->*/
 $('#messageTab li:eq(0) a').click(function (e){	
 	$('.takemessagetable').dataTable().fnClearTable();
+
 	$.ajax({
 		url: 'inBox'
 	}).done(function(data){
@@ -580,16 +629,19 @@ $('#messageTab li:eq(0) a').click(function (e){
 		
 		var memberData = JSON.parse(data);
 		for(var i=0; i<memberData.length; i++){
+			console.log(memberData[i].readNum);
 			select = "<input type='checkbox' name='selector' onchange='messageSelect(this)' value='" + memberData[i].messageId + "'></input>";
-			$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='sendMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+			action = "<img src='images/new_image.GIF' />";
+			if(memberData[i].readNum==0){
+				$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+action+"</a>", memberData[i].messageDate2]);
+			}else{
+				$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+			}
 		}
 	});
 	
 	
 });
-
-//<a onclick="sendMessageDetail(2);" href="#messageView" data-toggle="modal">aaaa</a>
-//<a onclick="sendMessageDetail(3);" href="#messageView" data-toggle="modal">asdfasdf</a>
 
 
 /**
@@ -624,6 +676,33 @@ function takeMessageDetail(messageId){
 	}).done(function(data){
 		fillTakeMessageDetail(data);
 		$('#contents').remove();
+		
+		$.ajax({
+			url:'messageCount',
+			dataType : 'json',
+			type:'POST'
+		}).done(function(data){
+			console.log("data :"+data.toString());
+			$('#messageCount').text(data.toString());		
+		});
+		
+		
+		$.ajax({
+			url: 'inBox'
+		}).done(function(data){
+			$('.takemessagetable').dataTable().fnClearTable();
+			var memberData = JSON.parse(data);
+			for(var i=0; i<memberData.length; i++){
+				console.log(memberData[i].readNum);
+				select = "<input type='checkbox' name='selector' onchange='messageSelect(this)' value='" + memberData[i].messageId + "'></input>";
+				action = "<img src='images/new_image.GIF' />";
+				if(memberData[i].readNum==0){
+					$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+action+"</a>", memberData[i].messageDate2]);
+				}else{
+					$('.takemessagetable').dataTable().fnAddData([select, memberData[i].userId, "<a onclick='takeMessageDetail("+memberData[i].messageId+");' href='#messageView' data-toggle='modal'>"+memberData[i].contents+"</a>", memberData[i].messageDate2]);
+				}
+			}
+		});
 	});
 };
 
@@ -686,63 +765,16 @@ $('#messageSendButton').click(function(e){
 			
 			console.log(data);
 			
-			friendId = data.friendId; message = data.contents;
-			socket.emit("send", {friendId:friendId,message:message});
+			friendId = data.friendId; message = data.contents; num = data.num;
+			/* 전송하는 메시지를 보낸사람, 메시지 내용, 받는 사람의 새 메시지 갯수를 
+			 * "send"로 보낸다. */
+			socket.emit("send", {friendId:friendId,message:message,num:num});
 			$('#messageSendingButton').hide();
 			$(this).show();
 		});
 	}
 	
 });
-
-var socket;
-
-/*$(window).load(function(){
-	var userId = $('li[id="memberId"]').text().trim();
-	if(userId){
-		*//**
-		사용자는 로그인할때만 메시지 서버에 등록한다.*//*
-		$.ajax({
-			url: 'isContains',
-			dataType:'json',
-			data:{
-				userId:userId,
-			}
-		}).done(function(data){
-			if(data == false){ // 로그인 시
-				socketioConnection(userId);
-			}
-		});
-	}
-	
-	window.onbeforeunload = goodbye;
-
-	function goodbye() {
-	    socket.emit('exit', {id:userId});
-	}
-	
-});	
-
-
-var socketioConnection = function(userId){
-	socket = io.connect('http://localhost:9090/message', {'sync disconnect on unload' : true});
-	socket.emit('userId', {id:userId});
-	socket.on('message', function(data){
-		console.log('쪽지: ' + data.msg);
-		$.noty.consumeAlert({
-			layout : 'topRight',
-			type : 'success',
-			dismissQueue : true
-		});
-		
-		alert('쪽지가 도착했습니다.');
-		$.noty.stopConsumeAlert();
-	});
-};*/
-/**
-<!-- 메시지 전송 종료 -->*/
-
-
 
 
 /**
@@ -780,6 +812,15 @@ $('#takeMessageDelete').click(function(e){
 			for(var i=0; i<selectedRow.length; i++){
 				$('.takemessagetable').dataTable().fnDeleteRow(selectedRow[i]);
 			}
+		});
+		
+		$.ajax({
+			url:'messageCount',
+			dataType : 'json',
+			type:'POST'
+		}).done(function(data){
+			console.log("data :"+data.toString());
+			$('#messageCount').text(data.toString());		
 		});
 	}
 });
@@ -821,7 +862,9 @@ $('#sendMessageDelete').click(function(e){
 		});
 	}
 });
-	
+
+/**
+<!-- 메시지 체크박스 선택 -->*/
 var messageSelect = function(selected){
 	console.log('selec');
 	if ( $(selected).parent().parent().hasClass('row_selected_message') ) {

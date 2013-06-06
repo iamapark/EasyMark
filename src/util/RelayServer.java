@@ -52,8 +52,8 @@ public class RelayServer {
 		return msgServer.getLoginMemberCount();
 	}
 
-	public void sendMessage(String friendId, String message) {
-		msgServer.sendMessage(friendId, message);
+	public void sendMessage(String friendId, String message, int count) {
+		msgServer.sendMessage(friendId, message, count);
 	}
 
 	public String[] getLoginMemberList() {
