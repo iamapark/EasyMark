@@ -102,7 +102,7 @@ public class IndividualPageAction {
 		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);  
 		
 		ArrayList<Position> currentPosition = new ArrayList<Position>();
-		if(!category.equals("0")){
+		if(!category.equals("0")){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
 			currentPosition.add(new Position(1, 1));
 		}
 
@@ -112,8 +112,6 @@ public class IndividualPageAction {
 
 		// 아이콘이 추가될 x,y 좌표를 받아온다.
 		Position newPosition = getPosition(currentPosition, 8, 4);
-		System.out.println("newPosition");
-		System.out.println(newPosition);
 		
 		BookMark bookMark = new BookMark(0, URLDecoder.decode(name, "utf-8"), url, description, userId,
 				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, category);
@@ -143,6 +141,7 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 	
+	//아이콘을 배치할 x, y 좌표를  결정한다.
 	private Position getPosition(ArrayList<Position> currentPosition, int rowLength, int colLength){
 		Position newPosition = new Position();
 		ArrayList<Integer> posYList = new ArrayList<Integer>();
