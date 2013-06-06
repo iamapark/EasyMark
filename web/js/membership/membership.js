@@ -45,8 +45,9 @@ $('#updateMemberButton').click(function(e) {
 		$("#updateMemberInfoForm").ajaxSubmit({
 			dataType : 'html',
 			success : function(data, rst) {
+				kaka = data;
 				var imgUrl = JSON.parse(data).imgUrl;
-				$('#settingImg').attr('src', imgUrl);
+				$('#setting_button').attr('src', imgUrl);
 				$('#inputPersonalImg').attr('src', imgUrl);
 				alert('회원 정보를 수정하였습니다.');
 			}
