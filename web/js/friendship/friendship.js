@@ -33,7 +33,7 @@ var socketioConnection = function(userId){ // 시작 :
 		alert("쪽지가 도착했습니다. message : "+data.msg);
 		$.noty.stopConsumeAlert();
 		
-		$('#messageCount').text(data.num); // messageCount에 읽지 않은 새 메시지의 갯수를 출력		
+		$('#messageCount').text("쪽지("+data.num+")"); // messageCount에 읽지 않은 새 메시지의 갯수를 출력		
 	});
 	
 };
@@ -208,7 +208,7 @@ $('#webSiteTab li:eq(1) a').click(function (e){
 		var action = null;
 		for(var i=0; i<memberData.length; i++){
 			action = "<a id='cancel' onclick='recommendCancel(this)' class='btn btn-small btn btn-warning' data-id='"+ memberData[i].bookMarkId + "' data-count='"+ i + "'>"+
-	 		 		 "북마크 추천 취소"+
+	 		 		 "추천 취소"+
 	 		 		 "</a>";
 			$('.outwebtable').dataTable().fnAddData([memberData[i].friendId, memberData[i].bookMarkUrl, memberData[i].bookMarkName, action]);
 		}
@@ -683,7 +683,8 @@ function takeMessageDetail(messageId){
 			type:'POST'
 		}).done(function(data){
 			console.log("data :"+data.toString());
-			$('#messageCount').text(data.toString());		
+			$('#messageCount').text("쪽지("+data.toString()+")");		
+			
 		});
 		
 		
@@ -812,15 +813,15 @@ $('#takeMessageDelete').click(function(e){
 			for(var i=0; i<selectedRow.length; i++){
 				$('.takemessagetable').dataTable().fnDeleteRow(selectedRow[i]);
 			}
-		});
-		
-		$.ajax({
-			url:'messageCount',
-			dataType : 'json',
-			type:'POST'
-		}).done(function(data){
-			console.log("data :"+data.toString());
-			$('#messageCount').text(data.toString());		
+			
+			$.ajax({
+				url:'messageCount',
+				dataType : 'json',
+				type:'POST'
+			}).done(function(data){
+				console.log("data :"+data.toString());
+				$('#messageCount').text("쪽지("+data.toString()+")");		
+			});
 		});
 	}
 });
