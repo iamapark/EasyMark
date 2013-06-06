@@ -211,12 +211,14 @@ public class TestController {
 
 		Category category = new Category(categoryName, userId, posx, posy, imgUrl, status, parentId);
 		int maxCategoryId = new IndividualPageServiceImpl().addCategory(category);
-		
+		category.setCategoryId(maxCategoryId);
+		int maxBookmarkId = new IndividualPageServiceImpl().addMark(category);
 		
 		JSONObject jobj = new JSONObject();
 		jobj.put("x", posx);
 		jobj.put("y", posy);
 		jobj.put("categoryId", maxCategoryId);
+		jobj.put("bookmarkId", maxBookmarkId);
 		jobj.put("imgUrl", imgUrl);
 		jobj.put("categoryName", categoryName);
 		
@@ -226,17 +228,5 @@ public class TestController {
 		return nextPage;
 	}
 	
-	@RequestMapping("/deleteCategory")
-	public ModelAndView deleteCategory(HttpServletRequest request,
-			HttpServletResponse response,
-			@RequestParam(value = "categoryId") int categoryId) {
-		ModelAndView mav = new ModelAndView();
-		
-		new IndividualPageServiceImpl().deleteCategory(categoryId);
-		
-		request.setAttribute("result", "true");
-		mav.setViewName("result");
-		return mav;
-	}
 	
 }

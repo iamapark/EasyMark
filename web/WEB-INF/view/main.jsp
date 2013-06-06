@@ -73,10 +73,17 @@
 				<ul>
 					<!-- 북마크 아이콘 -->
 					<c:forEach items="${requestScope.bookMarkList}"	var="bookMark" begin="${(status.count-1)*24}" end="${(status.count-1)*24 + 23}">
-					<li style="" data-id="${bookMark.bookMarkId}" data-categoryId="${bookMark.category}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="bookmarkIcon">
+					<c:if test="${bookMark.status=='category'}">
+						<c:set var="className" value="categoryIcon"></c:set>
+					</c:if>
+					<c:if test="${bookMark.status=='bookmark'}">
+						<c:set var="className" value="bookmarkIcon"></c:set>
+					</c:if>
+					<li style="" data-id="${bookMark.bookMarkId}" data-categoryId="${bookMark.category}" data-toggle="tooltip" title="${bookMark.bookMarkName}" data-row="${bookMark.posX}" data-col="${bookMark.posY}" data-id="${bookMark.bookMarkId}" data-sizex="1" data-sizey="1" data-bookmarkId="${bookMark.bookMarkId}" class="${className}">
 		            	<img id="img" href="${bookMark.bookMarkUrl}" src="${bookMark.imgUrl}" style="width:100%; height:100%;border-radius:20px;">
 		            	<div class="bookmarkIconInfo">${bookMark.bookMarkName}</div>
 		            </li> 
+		            <c:remove var="className"/>
 					</c:forEach>
 				</ul>
 			</div>
@@ -107,7 +114,9 @@
 	<!-- 북마크 아이콘 위에서 오른쪽 클릭 후 북마크  추천했을 때  MODAL -->
 		<jsp:include page="modal/bookmarkRecommand.jsp"></jsp:include>
 	<!-- 메세지 아이콘을 클릭했을 때 MODAL -->	
-		<jsp:include page="modal/message.jsp"></jsp:include>		
+		<jsp:include page="modal/message.jsp"></jsp:include>
+	<!-- 카테고리 아이콘에서 카테고리 변경 탭을 클릭했을 때 MODAL -->		
+		<jsp:include page="modal/categoryInfo.jsp"></jsp:include>
 		
  	<!-- MODAL END -->
 		

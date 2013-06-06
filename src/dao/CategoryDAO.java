@@ -1,9 +1,9 @@
 package dao;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
@@ -26,8 +26,7 @@ public class CategoryDAO {
 		int maxCategoryId = 0;
 		try {
 			maxCategoryId = (Integer)sqlMapper.insert("addCategory", category);
-			category.setCategoryId(maxCategoryId);
-			sqlMapper.insert("addBookmark", category);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,9 +86,9 @@ public class CategoryDAO {
 		return categoryList;
 	}
 
-	public void deleteCategory(int categoryId) {
+	public void deleteCategory(List target) {
 		try {
-			sqlMapper.delete("deleteBookmarkCategory",categoryId);
+			sqlMapper.delete("deleteBookmarkCategory",target);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,6 +100,26 @@ public class CategoryDAO {
 		
 		try{
 			result = (Integer) sqlMapper.queryForObject("getParentId", categoryId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	public void modifyCategory(Category category) {
+		try{
+			sqlMapper.update("modifyCategory", category);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<Integer> getDeleteTargetListCategory(int categoryId) {
+		ArrayList<Integer> result = null;
+		
+		try{
+			result = (ArrayList<Integer>)sqlMapper.queryForList("getDeleteTargetListCategory", categoryId);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
