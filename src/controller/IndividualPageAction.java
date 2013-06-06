@@ -112,6 +112,8 @@ public class IndividualPageAction {
 
 		// 아이콘이 추가될 x,y 좌표를 받아온다.
 		Position newPosition = getPosition(currentPosition, 8, 4);
+		System.out.println("newPosition");
+		System.out.println(newPosition);
 		
 		BookMark bookMark = new BookMark(0, URLDecoder.decode(name, "utf-8"), url, description, userId,
 				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, category);
@@ -611,6 +613,60 @@ public class IndividualPageAction {
 		
 		request.setAttribute("result", dataJ);
 		nextPage.setViewName("result");
+		return nextPage;
+	}
+	
+	//카테고리 추가
+	@RequestMapping("/addCategory")
+	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
+															   @RequestParam(value="userId",required=false)String userId,
+															   @RequestParam(value="parentId") int parentId) throws UnsupportedEncodingException{
+		ModelAndView nextPage = new ModelAndView();
+		if(userId == null)
+			userId = (String)request.getSession().getAttribute("MEMBERID");
+		
+		String imgUrl = "images/folder.png";
+		String status = "category";
+		
+
+		ArrayList<BookMark> bookMarkList = null;
+		//사용자의 현재 해당하는 카테고리 북마크 리스트 가져오기
+		HashMap<String, Object> bookMarkInfo = new HashMap<>();
+		bookMarkInfo.put("userId", userId);
+		bookMarkInfo.put("parentId", parentId);
+		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);
+		
+		ArrayList<Position> currentPosition = new ArrayList<Position>();
+		if(parentId != 0){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
+			currentPosition.add(new Position(1, 1));
+		}
+
+		ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(String.valueOf(parentId));
+		
+		currentPosition.addAll(d);
+
+		// 아이콘이 추가될 x,y 좌표를 받아온다.
+		Position newPosition = getPosition(currentPosition, 8, 4);
+		System.out.println("newPosition");
+		System.out.println(newPosition);
+		
+
+		Category category = new Category(categoryName, userId, newPosition.getPosX(), newPosition.getPosY(), imgUrl, status, parentId);
+		int maxCategoryId = new IndividualPageServiceImpl().addCategory(category);
+		category.setCategoryId(maxCategoryId);
+		int maxBookmarkId = new IndividualPageServiceImpl().addMark(category);
+		
+		JSONObject jobj = new JSONObject();
+		jobj.put("x", newPosition.getPosX());
+		jobj.put("y", newPosition.getPosY());
+		jobj.put("categoryId", maxCategoryId);
+		jobj.put("bookmarkId", maxBookmarkId);
+		jobj.put("imgUrl", imgUrl);
+		jobj.put("categoryName", categoryName);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+		
 		return nextPage;
 	}
 }

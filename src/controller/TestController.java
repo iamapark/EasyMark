@@ -165,68 +165,7 @@ public class TestController {
 	}
 	
 	
-	//카테고리 추가
-	@RequestMapping("/addCategory")
-	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
-															   @RequestParam(value="userId",required=false)String userId,
-															   @RequestParam(value="parentId") int parentId) throws UnsupportedEncodingException{
-		ModelAndView nextPage = new ModelAndView();
-		if(userId == null)
-			userId = (String)request.getSession().getAttribute("MEMBERID");
-		
-		String imgUrl = "images/folder.png";
-		String status = "category";
-		
-		int posx=0;
-		int posy=0;
-		ArrayList<BookMark> bookMarkList = null;
-		//사용자의 현재 해당하는 카테고리 북마크 리스트 가져오기
-		HashMap<String, Object> bookMarkInfo = new HashMap<>();
-		bookMarkInfo.put("userId", userId);
-		bookMarkInfo.put("parentId", parentId);
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);
-		
-		//만약 처음 북마크 추가이면 1,1 위치 삽입
-		if(bookMarkList.size()==0){
-			posx=1;
-			posy=1;
-		}else{////////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
-			posx=new IndividualPageServiceImpl().bookMarkPosx(userId);
-			System.out.println("x="+posx);
-			//ParameterClass 2개라서 HashMap 이용 맞나?
-			HashMap<String, Object> pos=new HashMap<String, Object>();
-			pos.put("userId", userId);
-			pos.put("posX", posx);
-			posy=new IndividualPageServiceImpl().bookMarkPosy(pos); //x줄에 제일 마지막 y값
-			System.out.println("by="+posy);
-			posy++; //+1해서 다음에 놓을 곳 배치
-			System.out.println("ay="+posy);
-			if(posy==9){//다음줄로 넘기기
-				posx++;
-				posy=1;
-			}
-			
-		}
-		
-
-		Category category = new Category(categoryName, userId, posx, posy, imgUrl, status, parentId);
-		int maxCategoryId = new IndividualPageServiceImpl().addCategory(category);
-		category.setCategoryId(maxCategoryId);
-		int maxBookmarkId = new IndividualPageServiceImpl().addMark(category);
-		
-		JSONObject jobj = new JSONObject();
-		jobj.put("x", posx);
-		jobj.put("y", posy);
-		jobj.put("categoryId", maxCategoryId);
-		jobj.put("bookmarkId", maxBookmarkId);
-		jobj.put("imgUrl", imgUrl);
-		jobj.put("categoryName", categoryName);
-		
-		request.setAttribute("result", jobj);
-		nextPage.setViewName("result");
-		
-		return nextPage;
-	}
+	
 	
 	
 }

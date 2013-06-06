@@ -57,7 +57,7 @@
 		(category IN (SELECT category_id FROM bookmark_category WHERE parent_category_id=#parentId# 
 					AND user_id=#userId#) 
 					AND status='category') 
-		OR (category = #parentId# AND status='bookmark') ;
+		OR (category = #parentId# AND status='bookmark' AND user_id=#userId#) ;
 	</select>
 	
 	<!-- 추가 6/4 bookMarkList에 필요함 -->
