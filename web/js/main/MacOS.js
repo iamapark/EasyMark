@@ -25,6 +25,6 @@ $(document).ready(function(){
 		type:'POST'
 	}).done(function(data){
 		console.log("data :"+data.toString());
-		$('#messageCount').text(data.toString());		
+		$('#messageCount').text("쪽지("+data.toString()+")");		
 	});
 });

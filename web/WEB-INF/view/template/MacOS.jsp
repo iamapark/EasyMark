@@ -31,7 +31,7 @@
 				<li>
 				
 					<span style="color:white;">Messages</span><a href="#messages" role="button" data-toggle="modal">
-					<img src="images/Message_Icon.png" /><div id="messageCount"></div>
+					<img src="images/Message_Icon.png" /><B><font color=blue size=2 face=돋움><div id="messageCount"></div></font></B>
 					</a>
 				</li>
 				
