@@ -30,6 +30,10 @@
 			(bookmark_name, bookmark_url, bookmark_descript, user_id, status, pos_x, pos_y, img_url, frequency, category)
 		VALUES
 			(#categoryName#, '', '', #userId#, #status#, #posX#, #posY#, #imgUrl#, 0, #categoryId#);
+		
+		<selectKey keyProperty="categoryId" resultClass="int">
+			select LAST_INSERT_ID()
+		</selectKey>
 	</insert>
 	
 	<!-- 수정 6/4 -->
@@ -65,11 +69,15 @@
 	</select>
 	
 	<!-- 추가 -->
-	<delete id="deleteBookmarkCategory" parameterClass="Integer">
+	<delete id="deleteBookmarkCategory" parameterClass="List">
 		DELETE FROM
 			bookmark_category
-		WHERE
-			category_id = #categoryId# or parent_category_id=#categoryId#
+
+		<dynamic prepend="WHERE category_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
 	</delete>
 	
 	<!-- 추가 6/4 -->
@@ -80,5 +88,20 @@
 			bookmark_category
 		WHERE 
 			category_id = #categoryId#;
+	</select>
+	
+	<!-- 추가 6/5 -->
+	<update id="modifyCategory" parameterClass="Category">
+		UPDATE bookmark_category
+		SET
+		category_name = #categoryName#
+		WHERE category_id = #categoryId#
+	</update>
+	
+	<!-- 추가 6/6 -->
+	<select id="getDeleteTargetListCategory" parameterClass="Integer" resultClass="Integer">
+		select category_id categoryId
+		from bookmark_category
+		where parent_category_id = #categoryId#
 	</select>
 </sqlMap>

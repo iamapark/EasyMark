@@ -147,7 +147,7 @@
 		WHERE bookmark_id=#bookMarkId#
 	</update>
 
-	<!--남기윤 viewBookMarkList 셀렉트 구문 -->
+	<!-- 수정 6/5 -->
 
 	<select id="viewBookMarkList" parameterClass="String" resultMap="BookMarkList">
 		SELECT
@@ -164,11 +164,10 @@
 		category
 		category
 		FROM bookmark
-		WHERE user_id=#userId#
+		WHERE user_id=#userId# and status='bookmark'
 
 	</select>
 
-	<!--남기윤 updateBookMarkList 셀렉트 구문 -->
 	<update id="updateBookMarkList" parameterClass="BookMark">
 
 		update bookmark
@@ -207,4 +206,20 @@
 		SELECT * FROM bookmark WHERE user_id=#userId# AND category=#categoryName#
 	</select>
 
+	<!-- 추가 6/5 , 수정 6/6-->
+	<delete id="deleteBookMarkCategory" parameterClass="List">
+		DELETE FROM bookmark
+		
+		<dynamic prepend="WHERE category IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<!-- 추가 6/5 -->
+	<delete id="deleteCategoryStatus" parameterClass="Integer">
+		DELETE FROM bookmark
+		WHERE category = #categoryId# and status = 'category'
+	</delete>
 </sqlMap>

@@ -7,6 +7,7 @@ package service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import dao.BookMarkDAO;
 import dao.BookMarkListDAO;
@@ -119,7 +120,7 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	}
 
 	public void deleteCategory(int categoryId) {
-		CategoryDAO.getInstance().deleteCategory(categoryId);
+		//CategoryDAO.getInstance().deleteCategory(categoryId);
 	}
 
 	@Override
@@ -132,6 +133,29 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		return CategoryDAO.getInstance().getParentId(categoryId);
 	}
 
+	public void modifyCategory(Category category) {
+		CategoryDAO.getInstance().modifyCategory(category);
+	}
 
+	public void deleteBookMarkCategory(List target) {
+
+		// 또는 bookmark 테이블에서 category가 categoryId인 데이터를 지운다.
+		BookMarkDAO.getInstance().deleteBookMarkCategory(target);
+
+		// bookmark_category 테이블에서 category_id가 categoryId인 데이터를 지운다.
+		CategoryDAO.getInstance().deleteCategory(target);
+	}
+
+	public int addMark(Category category) {
+		return BookMarkDAO.getInstance().addMark(category);
+	}
+
+	public ArrayList<Integer> getDeleteTargetList(String table, int categoryId) {
+		if(table.equals("bookmarkCategory")){
+			return CategoryDAO.getInstance().getDeleteTargetListCategory(categoryId);
+		}else{
+			return BookMarkDAO.getInstance().getDeleteTargetListBookmark(categoryId);
+		}
+	}
 
 }

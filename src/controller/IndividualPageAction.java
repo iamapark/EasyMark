@@ -28,13 +28,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
-import service.MembershipServiceImpl;
 import util.AdminServer;
 import util.FileWriter;
-import util.MessageServer;
 import dto.BookMark;
 import dto.Category;
-import dto.Design;
 import dto.ForBookMarkList;
 import dto.Friendship;
 import dto.Img;
@@ -57,10 +54,8 @@ public class IndividualPageAction {
 			@RequestParam(value = "description") String description,
 			@RequestParam(value = "category") String category,
 			@RequestParam(value = "userId", required = false) String userId) throws UnsupportedEncodingException {
+
 		System.out.println("addMark()!!");
-
-
-		System.out.println("userId: " + userId);
 
 		ModelAndView nextPage = new ModelAndView();
 		if (userId == null)
@@ -141,12 +136,6 @@ public class IndividualPageAction {
 
 		int maxBookmarkId = new IndividualPageServiceImpl()
 				.addBookMark(bookMark);
-		//수정전
-		//bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
-		//request.getSession().setAttribute("bookMarkList", bookMarkList);
-
-		Member m = new MembershipServiceImpl().getMemberInfo(userId);
-		request.getSession().setAttribute("MEMBERINFO", m);
 
 		JSONObject jobj = new JSONObject();
 		jobj.put("x", posx);
@@ -240,8 +229,8 @@ public class IndividualPageAction {
 			Img img,
 			@RequestParam(value = "modifyBookmarkImage", required = false) MultipartFile file,
 			@RequestParam(value = "modifyBookmarkName") String name,
-			@RequestParam(value = "modifyBookmarkUrl") String url,
-			@RequestParam(value = "modifyBookmarkDescription") String desc,
+			@RequestParam(value = "modifyBookmarkUrl", required = false) String url,
+			@RequestParam(value = "modifyBookmarkDescription", required = false) String desc,
 			@RequestParam(value = "bookmarkId") int bookMarkId) {
 
 		System.out.println("name: " + name);
@@ -277,24 +266,31 @@ public class IndividualPageAction {
 		traffic();
 		return nextPage;
 	}
+	
+	@RequestMapping("/modifyCategory")
+	public ModelAndView modifyCategory(
+			HttpServletRequest request,
+			@RequestParam(value = "modifyBookmarkName") String name,
+			@RequestParam(value = "bookmarkId") int bookMarkId,
+			@RequestParam(value = "categoryId") int categoryId) {
+		
+		ModelAndView nextPage = new ModelAndView();
+		
+		BookMark bookMark = new BookMark(bookMarkId, name);
+		new IndividualPageServiceImpl().modifyMark(bookMark);
+		Category category = new Category(categoryId, name);
+		new IndividualPageServiceImpl().modifyCategory(category);
+		
+		request.setAttribute("result", "true");
+		nextPage.setViewName("result");
+		return nextPage;
+	}
 
 	@RequestMapping("/deleteMark")
 	public ModelAndView deleteMark(HttpServletRequest request,
 			HttpServletResponse response, Img img,
 			@RequestParam(value = "bookmarkId") int bookMarkId) {
 		ModelAndView nextPage = new ModelAndView();
-
-		BookMark bookmark=null;
-		//만약 category 삭제하는 거면 category Table에서도 제거
-		bookmark=new IndividualPageServiceImpl().getBookMark(bookMarkId);
-		if(bookmark.getBookMarkUrl().equals("")){// bookmark에 url이 없으면 -> 카테고리라면
-			HashMap<String, Object> category=new HashMap<>();
-			category.put("categoryName",bookmark.getBookMarkName());
-			category.put("userId",bookmark.getUserId());
-			//category 삭제
-			System.out.println("category삭제()");
-			new IndividualPageServiceImpl().deleteCategory(category);
-		}
 
 		new IndividualPageServiceImpl().deleteIcon(bookMarkId);
 
@@ -305,6 +301,46 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 	
+	@RequestMapping("/deleteCategory")
+	public ModelAndView deleteCategory(HttpServletRequest request,
+			HttpServletResponse response, Img img,
+			@RequestParam(value = "categoryId") int categoryId) {
+		ModelAndView nextPage = new ModelAndView();
+		ArrayList<Integer> deleteTargetList = new ArrayList<Integer>();
+		
+		
+		
+		System.out.println("categoryId: " + categoryId);
+		
+		deleteTargetList.add(categoryId);
+		getDeleteTargetList(categoryId, deleteTargetList, "bookmarkCategory");
+		// bookmark_category에서 리스트에 있는 아이디가 category_id와 일치하는 데이터 지운다.
+		// bookmark에서 리스트에 있는 아이디가 category와 일치하는 데이터를 지운다.
+		new IndividualPageServiceImpl().deleteBookMarkCategory(deleteTargetList);
+		
+		for(int i: deleteTargetList){
+			System.out.println(i);
+		}
+		
+		request.setAttribute("result", Boolean.toString(true));
+		nextPage.setViewName("result");
+		
+		traffic();
+		return nextPage;
+	}
+	
+	private void getDeleteTargetList(int categoryId,
+			ArrayList<Integer> deleteTargetList, String target) {
+		
+		ArrayList<Integer> targetList = new IndividualPageServiceImpl().getDeleteTargetList(target, categoryId);
+		
+		for(int i=0; i<targetList.size(); i++){
+			getDeleteTargetList(targetList.get(i), deleteTargetList, target);
+			deleteTargetList.add(targetList.get(i));
+		}
+
+	}
+
 	// 북마크 한 번에 여러 개 지울 때
 	@RequestMapping("/deleteBookMarks")
 	public ModelAndView deleteMarks(HttpServletRequest request,

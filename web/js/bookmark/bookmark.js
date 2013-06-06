@@ -1,4 +1,5 @@
-var $id;
+var $bookmarkId;
+var $categoryId;
 var gridster;
 
 $(document).ready(function() {
@@ -8,6 +9,9 @@ $(document).ready(function() {
 var init = function() {
 	// 북마크 아이콘에 마우스를 올릴 때와 벗어날 때 이벤트 핸들러 등록
 	$('.bookmarkIcon').mouseover(mouseOverBookmarkInfo).mouseout(bookMarkOut);
+	
+	// 카테고리 아이콘에 마우스를 올릴 때와 벗어날 때 이벤트 핸들러 등록
+	$('.categoryIcon').mouseover(mouseOverBookmarkInfo).mouseout(bookMarkOut);
 
 	// 그리드스터 초기화
 	gridsterInitial();
@@ -58,6 +62,26 @@ var init = function() {
 			}
 		} ]
 	});
+	
+	$('.categoryIcon').contextPopup({
+		title : '카테고리',
+		items : [ {
+			label : '카테고리 변경',
+			icon : 'images/change.png',
+			action : function() {
+				$('.contextMenuPlugin').remove();
+				categoryUpdate();
+			}
+		}, {
+			label : '카테고리 삭제',
+			icon : 'images/delete.png',
+			action : function() {
+				$('.contextMenuPlugin').remove();
+				$('#invisibleDiv').remove();
+				categoryDelete();
+			}
+		} ]
+	});
 
 	$('#addBookMarkUrl').focusout(bookmarkUrlFocusOut);
 };
@@ -97,33 +121,16 @@ var bookMarkArrange = function(e) {
 	});
 };
 
-var bookMarkOver = function(e) {
-
-	var $li = $(this);
-	// var $firstNode = $li.contents().first();
-	// var $modify=$("<button id='x' type='button' class='close'
-	// data-dismiss='modal' aria-hidden='true'><img id='wheel'
-	// src='img/wheel.png'></button>");
-	// $modify.insertBefore($firstNode);
-	// $('.close').click(bookMarkInform);
-	// 아이콘 아래 북마크 이름 출력
-	// var $lastNode = $li.contents().last();
-	// var $desc=$("<p id='desc'>${bookMark.bookMarkName}</p>");
-	// $desc.insertAfter($lastNode);
-
-};
 var bookMarkOut = function(e) {
 	$('#x').remove();
 	// $('#desc').remove();
 	$(this).find('.bookmarkIconInfo').hide();
 
 };
-var bookMarkInfor = function(e) {
-	alert('좋아');
 
-};
 var mouseOverBookmarkInfo = function(e) {
 	$id = $(this).attr('data-id');
+	$categoryId = $(this).data('categoryid');
 	$(this).find('.bookmarkIconInfo').show();
 };
 
@@ -153,8 +160,7 @@ $('#modify').click(
 						modifyBookmarkDescription : desc,
 						bookmarkId : bookmarkId
 					}
-				}).done(
-						function(data) {
+				}).done(function(data) {
 							$('li[data-id="' + bookmarkId + '"]').find(
 									'.bookmarkIconInfo').text(
 									$('#modifyBookmarkName').val());
@@ -165,20 +171,20 @@ $('#modify').click(
 						});
 			} else {
 				$("#modifyBookMarkForm").ajaxSubmit(
-						{
-							dataType : 'html',
-							success : function(data, rst) {
-								$('li[data-id="' + bookmarkId + '"]').find(
-										'.bookmarkIconInfo').text(name);
-								$('li[data-id="' + bookmarkId + '"]').find(
-										'img').attr('src',
-										JSON.parse(data).imgUrl);
-								$('li[data-id="' + bookmarkId + '"]').find(
-										'img').attr('href', url);
-								alert('북마크 정보를 변경하였습니다.');
-								$('#bookMarkInfo').modal('hide');
-							}
-						});
+					{
+						dataType : 'html',
+						success : function(data, rst) {
+							$('li[data-id="' + bookmarkId + '"]').find(
+									'.bookmarkIconInfo').text(name);
+							$('li[data-id="' + bookmarkId + '"]').find(
+									'img').attr('src',
+									JSON.parse(data).imgUrl);
+							$('li[data-id="' + bookmarkId + '"]').find(
+									'img').attr('href', url);
+							alert('북마크 정보를 변경하였습니다.');
+							$('#bookMarkInfo').modal('hide');
+						}
+					});
 			}
 		});
 
@@ -201,15 +207,16 @@ $('#add').bind('click',function(e){
 	};
 	
 	var addWidget = function(data){
+		kaka = data;
 		if(!data.id){
 			data = JSON.parse(data);
 		}
-		
+		console.log('추가');
 		id = data.id; x = data.x; y = data.y; imgUrl = data.imgUrl;
 		alert('북마크가 추가되었습니다.');
 		$('#bookmarkAdd').modal('hide');
 		newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
-			newLi += '<img id="img" href="'+dataInfo.url+'" src="'+imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
+			newLi += '<img id="img" href="'+data.url+'" src="'+imgUrl+'" style="width:100%; height:100%;border-radius:20px;">';
 			newLi += '<div class="bookmarkIconInfo">' + dataInfo.name +'</div>';
 		newLi += '</li>';
 		gridster.add_widget(newLi, 1, 1);
@@ -217,6 +224,11 @@ $('#add').bind('click',function(e){
 		init();
 		
 		selectedCategoryId = 0;
+		
+		/*<li style="position: absolute;" data-id="109" data-categoryid="0" data-toggle="tooltip" title="네이버 :: 나의 경쟁력, 네이버" data-row="1" data-col="2" data-sizex="1" data-sizey="1" data-bookmarkid="109" class="bookmarkIcon gs_w">
+    	<img id="img" href="http://naver.com" src="images/Bookmark.png" style="width: 100%; height: 100%; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; -webkit-backface-visibility: hidden; left: 0px; top: -489px; z-index: -1;">
+    	<div class="bookmarkIconInfo" style="display: none;">네이버 :: 나의 경쟁력, 네이버</div>
+    	</li>*/
 	};
 	
 	if(filename == ''){
@@ -229,6 +241,9 @@ $('#add').bind('click',function(e){
 		}).done(function(data){
 			if(currentPageCategoryId == selectedCategoryId){
 				addWidget(data);
+			}else{
+				alert('북마크가 추가되었습니다.');
+				$('#bookmarkAdd').modal('hide');
 			}
 		});
 	}else{
@@ -237,6 +252,9 @@ $('#add').bind('click',function(e){
         	success:function(data,rst){
         		if(currentPageCategoryId == selectedCategoryId){
     				addWidget(data);
+    			}else{
+    				alert('북마크가 추가되었습니다.');
+    				$('#bookmarkAdd').modal('hide');
     			}
 			}
     	});
@@ -274,7 +292,7 @@ var bookmarkDelete = function(id) {
 		$bookId = $(this).attr('$id');
 	else
 		$bookId = id;
-
+	
 	var flag = confirm('정말 삭제하시겠습니까??');
 	if (flag == true) {
 		$.ajax({
@@ -338,7 +356,7 @@ var gridsterInitial = function() {
 		serialize_params : function($w, wgd) {
 			keke = $w;
 			kaka = wgd;
-			if(wgd){
+			if(wgd.id){
 				return {
 					col : wgd.col, //$w.data('col'),
 					row : wgd.row, //$w.data('row'),
@@ -409,16 +427,26 @@ $('#categoryName').keyup(function(){
 
 //bookmark add 버튼 눌렀을 시 북마크 옵션 업데이트
 $('#mark_button').click(function(){
-	$('#addCategoryOl').empty();
 	
 	$.ajax({
 		url:'getCategoryTree',
 		dataType:'json'
 	}).done(function(data){
 		kaka = data;
-		var ol = makeChildren(data);
+		var ol = makeChildren(data, 'addBookmarkCategoryClick');
 		
 		$('#addCategoryOl').empty();
 		$('#addCategoryOl').append($(ol));
 	});
 });
+
+// bookmark add 모달에서 카테고리 목록을 클릭할 때 목록 업데이트
+//카테고리 폴더 목록에서 디렉토리 하나를 클릭했을 때
+var addBookmarkCategoryClick = function(li){
+	
+	$('#addCategoryOl .tree li label').removeClass('selectedLabel2');
+	$(li).addClass('selectedLabel2');
+
+	var categoryName = $(li).text();
+	selectedCategoryId = $(li).attr('for').split('category-')[1];
+};

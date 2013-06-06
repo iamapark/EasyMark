@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <div id="setting" class="modal hide fade" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
-	style="width: 70%; left: 15%; right: 15%; margin-left: 0;">
+	style="margin-left: 0;">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">X</button>
@@ -114,7 +114,7 @@
 					</div>
 					</div>
 					</div>	
-					<a onclick='bookmarkListAllSelection(this)' class='btn btn-primary' href='#bookmarkSelectionButton'>
+					<a id="bookmarkListSelectAllButton" onclick='bookmarkListAllSelection()' class='btn btn-primary' href='#bookmarkSelectionButton'>
 						전체 선택
 					</a> 
 					<a onclick='bookmarkListDelete(this)' class='btn btn-danger' href='#bookmarkDeleteButton'>

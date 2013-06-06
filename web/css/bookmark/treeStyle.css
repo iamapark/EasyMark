@@ -113,3 +113,11 @@ ol.tree {
 	display: block;
 	padding-left: 37px;
 }
+
+.selectedLabel2 {
+	background: url(folder-open.png) 15px 1px no-repeat !important;
+	cursor: pointer;
+	color:red;
+	display: block;
+	padding-left: 37px;
+}

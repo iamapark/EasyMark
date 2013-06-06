@@ -8,6 +8,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import dto.BookMark;
+import dto.Category;
 import dto.ForBookMarkList;
 
 public class BookMarkDAO {
@@ -135,6 +136,38 @@ public class BookMarkDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void deleteBookMarkCategory(List target) {
+		try {
+			sqlMapper.delete("deleteBookMarkCategory", target);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public int addMark(Category category) {
+		int maxBookmarkId = 0;
+		try{
+			maxBookmarkId = (Integer) sqlMapper.insert("addBookmark", category);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return maxBookmarkId;
+	}
+
+	public ArrayList<Integer> getDeleteTargetListBookmark(int categoryId) {
+		ArrayList<Integer> result = null;
+		
+		try{
+			result = (ArrayList<Integer>)sqlMapper.queryForList("getDeleteTargetListBookmark", categoryId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 }
