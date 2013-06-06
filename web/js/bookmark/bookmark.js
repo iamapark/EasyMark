@@ -224,6 +224,11 @@ $('#add').bind('click',function(e){
 		init();
 		
 		selectedCategoryId = 0;
+		
+		/*<li style="position: absolute;" data-id="109" data-categoryid="0" data-toggle="tooltip" title="네이버 :: 나의 경쟁력, 네이버" data-row="1" data-col="2" data-sizex="1" data-sizey="1" data-bookmarkid="109" class="bookmarkIcon gs_w">
+    	<img id="img" href="http://naver.com" src="images/Bookmark.png" style="width: 100%; height: 100%; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; -webkit-backface-visibility: hidden; left: 0px; top: -489px; z-index: -1;">
+    	<div class="bookmarkIconInfo" style="display: none;">네이버 :: 나의 경쟁력, 네이버</div>
+    	</li>*/
 	};
 	
 	if(filename == ''){
@@ -351,7 +356,7 @@ var gridsterInitial = function() {
 		serialize_params : function($w, wgd) {
 			keke = $w;
 			kaka = wgd;
-			if(wgd){
+			if(wgd.id){
 				return {
 					col : wgd.col, //$w.data('col'),
 					row : wgd.row, //$w.data('row'),
