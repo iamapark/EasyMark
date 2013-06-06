@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- bookmarkAdd -->  
 <div id="bookmarkAdd" class="modal hide fade" tabindex="-1" aria-hidden="true" style="width:90%; margin-left:0;">	
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
