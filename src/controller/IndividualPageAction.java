@@ -36,6 +36,7 @@ import dto.ForBookMarkList;
 import dto.Friendship;
 import dto.Img;
 import dto.Member;
+import dto.Position;
 
 @Controller
 public class IndividualPageAction {
@@ -100,32 +101,22 @@ public class IndividualPageAction {
 		bookMarkInfo.put("category", category);
 		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);  
 		
-
-		// 만약 처음 북마크 추가이면 1,1 위치 삽입
-		if (bookMarkList.size() == 0) {
-			posx = 1;
-			posy = 1;
-		} else {// //////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
-			posx = new IndividualPageServiceImpl().bookMarkPosx(userId);
-
-			// ParameterClass 2개라서 HashMap 이용 맞나?
-			HashMap<String, Object> pos = new HashMap<String, Object>();
-			pos.put("userId", userId);
-			pos.put("posX", posx);
-			posy = new IndividualPageServiceImpl().bookMarkPosy(pos); // x줄에 제일
-																		// 마지막
-																		// y값
-			posy++; // +1해서 다음에 놓을 곳 배치
-
-			if (posy == 9) {// 다음줄로 넘기기
-				posx++;
-				posy = 1;
-			}
-
+		ArrayList<Position> currentPosition = new ArrayList<Position>();
+		if(!category.equals("0")){
+			currentPosition.add(new Position(1, 1));
 		}
 
+		ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(category);
+		
+		currentPosition.addAll(d);
+
+		// 아이콘이 추가될 x,y 좌표를 받아온다.
+		Position newPosition = getPosition(currentPosition, 8, 4);
+		System.out.println("newPosition");
+		System.out.println(newPosition);
+		
 		BookMark bookMark = new BookMark(0, URLDecoder.decode(name, "utf-8"), url, description, userId,
-				status, posx, posy, imgUrl, 0, category);
+				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, category);
 
 		try {
 			name = URLDecoder.decode(name, "utf-8");
@@ -138,8 +129,8 @@ public class IndividualPageAction {
 				.addBookMark(bookMark);
 
 		JSONObject jobj = new JSONObject();
-		jobj.put("x", posx);
-		jobj.put("y", posy);
+		jobj.put("x", newPosition.getPosX());
+		jobj.put("y", newPosition.getPosY());
 		jobj.put("id", maxBookmarkId);
 		jobj.put("imgUrl", imgUrl);
 		jobj.put("url", url);
@@ -147,8 +138,36 @@ public class IndividualPageAction {
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
 
+
 		traffic();
 		return nextPage;
+	}
+	
+	private Position getPosition(ArrayList<Position> currentPosition, int rowLength, int colLength){
+		Position newPosition = new Position();
+		ArrayList<Integer> posYList = new ArrayList<Integer>();
+		
+		for(int col=1; col<=colLength; col++){
+			for(int i=0; i<currentPosition.size(); i++){
+				if(currentPosition.get(i).getPosX() == col)
+					posYList.add(currentPosition.get(i).getPosY());
+			}
+		
+			for(int row=1; row<=rowLength; row++){
+				if(!posYList.contains(row)){
+
+					newPosition.setPosX(col);
+					newPosition.setPosY(row);
+					return newPosition;
+				}
+					
+			}
+			
+			posYList.clear();
+		}
+		
+		
+		return newPosition;
 	}
 /*
 	@RequestMapping("/getBookMarkList")

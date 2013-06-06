@@ -10,6 +10,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import dto.BookMark;
 import dto.Category;
 import dto.ForBookMarkList;
+import dto.Position;
 
 public class BookMarkDAO {
 	private static BookMarkDAO instance = null;
@@ -168,6 +169,18 @@ public class BookMarkDAO {
 		}
 		
 		return result;
+	}
+
+	public ArrayList<Position> bookMarkPos(String category) {
+		ArrayList<Position> list = null;
+		
+		try{
+			list = (ArrayList<Position>)sqlMapper.queryForList("bookMarkPos", category);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 	
 }

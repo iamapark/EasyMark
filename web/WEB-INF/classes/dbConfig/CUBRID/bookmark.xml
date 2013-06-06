@@ -16,6 +16,11 @@
 		<result property="frequency" column="frequency" />
 		<result property="category" column="category" />
 	</resultMap>
+	
+	<resultMap id="PositionList" class="Position">
+		<result property="posX" column="pos_x" />
+		<result property="posY" column="pos_y" />
+	</resultMap>
 
 
 	<insert id="addBookMark" parameterClass="BookMark">
@@ -222,4 +227,17 @@
 		DELETE FROM bookmark
 		WHERE category = #categoryId# and status = 'category'
 	</delete>
+	
+	<!-- 추가 6/6 -->
+	<select id="bookMarkPos" parameterClass="String" resultMap="PositionList">
+		SELECT 
+			pos_x, pos_y 
+		from 
+			bookmark 
+		WHERE  
+			(category IN(SELECT category_id FROM bookmark_category 
+						 WHERE parent_category_id=#category#) 
+				     OR (category=#category# AND status='bookmark'))
+		ORDER BY pos_x, pos_y				     
+	</select>
 </sqlMap>

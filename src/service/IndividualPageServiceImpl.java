@@ -16,6 +16,7 @@ import dto.BookMark;
 import dto.Category;
 import dto.Design;
 import dto.ForBookMarkList;
+import dto.Position;
 
 public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 
@@ -156,6 +157,10 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		}else{
 			return BookMarkDAO.getInstance().getDeleteTargetListBookmark(categoryId);
 		}
+	}
+
+	public ArrayList<Position> bookMarkPos(String category) {
+		return BookMarkDAO.getInstance().bookMarkPos(category);
 	}
 
 }

@@ -222,13 +222,7 @@ $('#add').bind('click',function(e){
 		gridster.add_widget(newLi, 1, 1);
 		
 		init();
-		
 		selectedCategoryId = 0;
-		
-		/*<li style="position: absolute;" data-id="109" data-categoryid="0" data-toggle="tooltip" title="네이버 :: 나의 경쟁력, 네이버" data-row="1" data-col="2" data-sizex="1" data-sizey="1" data-bookmarkid="109" class="bookmarkIcon gs_w">
-    	<img id="img" href="http://naver.com" src="images/Bookmark.png" style="width: 100%; height: 100%; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; -webkit-backface-visibility: hidden; left: 0px; top: -489px; z-index: -1;">
-    	<div class="bookmarkIconInfo" style="display: none;">네이버 :: 나의 경쟁력, 네이버</div>
-    	</li>*/
 	};
 	
 	if(filename == ''){
@@ -239,6 +233,7 @@ $('#add').bind('click',function(e){
 			data: dataInfo
 			
 		}).done(function(data){
+			kaka = data;
 			if(currentPageCategoryId == selectedCategoryId){
 				addWidget(data);
 			}else{
@@ -348,10 +343,23 @@ var bookmarkRecommand = function() {
 // 그리드 스터 아이콘 초기화
 var gridsterInitial = function() {
 	
+	var width = window.document.body.clientWidth;
+	var height = window.document.body.clientHeight;
+	
+	var widget_icon_width = width / 8;
+	var widget_icon_height = height / 4;
+	
+	var widget_icon_width_margin = widget_icon_width / 17;
+	var widget_icon_height_margin = widget_icon_height / 17;
+	
+	widget_icon_width = widget_icon_width - (widget_icon_width_margin*2);
+	widget_icon_height = widget_icon_height - (widget_icon_height_margin*2);
+	
 	gridster = $(".gridster > ul").gridster({
-		widget_margins : [ 10, 10 ],
-		widget_base_dimensions : [ 140, 140 ],
+		widget_margins : [ widget_icon_width_margin, widget_icon_height_margin ],
+		widget_base_dimensions : [ widget_icon_width, widget_icon_height ],
 		min_cols : 8,
+		max_cols: 8,
 		avoid_overlapped_widgets : true,
 		serialize_params : function($w, wgd) {
 			keke = $w;
