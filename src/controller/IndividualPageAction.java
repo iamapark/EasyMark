@@ -91,15 +91,6 @@ public class IndividualPageAction {
 
 		// 사용자ID 가져오기
 		String status = "bookmark";
-		int posx = 0;
-		int posy = 0;
-
-		ArrayList<BookMark> bookMarkList = null;
-		// 사용자의 현재 카테고리 북마크 리스트 가져오기
-		HashMap<String, Object> bookMarkInfo = new HashMap<>();
-		bookMarkInfo.put("userId", userId);
-		bookMarkInfo.put("category", category);
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);  
 		
 		ArrayList<Position> currentPosition = new ArrayList<Position>();
 		if(!category.equals("0")){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
@@ -138,13 +129,12 @@ public class IndividualPageAction {
 		request.setAttribute("result", jobj);
 		nextPage.setViewName("result");
 
-
 		traffic();
 		return nextPage;
 	}
 	
 	//아이콘을 배치할 x, y 좌표를  결정한다.
-	private Position getPosition(ArrayList<Position> currentPosition, int rowLength, int colLength){
+	public static Position getPosition(ArrayList<Position> currentPosition, int rowLength, int colLength){
 		Position newPosition = new Position();
 		ArrayList<Integer> posYList = new ArrayList<Integer>();
 		

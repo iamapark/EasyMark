@@ -11,7 +11,7 @@
 	</div>
 	<div class="modal-body">
 		
-		 <form action="modifyMark" name="modifyBookMarkForm" id="modifyBookMarkForm" method="post" enctype="multipart/form-data">
+		 <form action="modifyCategory" name="modifyCategoryForm" id="modifyCategoryForm" method="post" enctype="multipart/form-data">
 		 <input type="hidden" id="modifyBookmarkId" name="modifyBookmarkId"/>
 		 <input type="hidden" id="modifyCategoryId" name="modifyCategoryId"/>
          <div class="control-group">

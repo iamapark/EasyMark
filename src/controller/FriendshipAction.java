@@ -29,6 +29,7 @@ import dto.FriendStatus;
 import dto.Friendship;
 import dto.Member;
 import dto.Message;
+import dto.Position;
 import dto.User;
 
 
@@ -462,54 +463,26 @@ public class FriendshipAction {
 			@RequestParam(value="bookMarkDescript")String bookMarkDescript) throws UnsupportedEncodingException {
 		
 		String friendId = (String)request.getSession().getAttribute("MEMBERID");
-		String status = "false";
-		int posx = 0;
-		int posy = 0;
-		ArrayList<BookMark> bookMarkList = null;
-		// 현재 사용자의 북마크 리스트 가져오기
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(friendId);
-
-		// 만약 처음 북마크 추가이면 1,1 위치 삽입
-		if (bookMarkList.size() == 0) {
-			posx = 1;
-			posy = 1;
-		} else {// //////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
-			posx = new IndividualPageServiceImpl().bookMarkPosx(friendId);
-			System.out.println("x=" + posx);
-			// ParameterClass 2개라서 HashMap 이용 맞나?
-			HashMap<String, Object> pos = new HashMap<String, Object>();
-			pos.put("userId", friendId);
-			pos.put("posX", posx);
-			posy = new IndividualPageServiceImpl().bookMarkPosy(pos); // x 줄에 제일
-																		// 마지막
-																		// y 값
-			System.out.println("by=" + posy);
-			posy++; // +1해서 다음에 놓을 곳 배치
-			System.out.println("ay=" + posy);
-			if (posy == 7) {// 다음줄로 넘기기
-				posx++;
-				posy = 1;
-			}
-
-		}
+		String status = "bookmark";
+		
+		ArrayList<Position> currentPosition = new IndividualPageServiceImpl().bookMarkPos("0");
+		
+		// 아이콘이 추가될 x,y 좌표를 받아온다.
+		Position newPosition = IndividualPageAction.getPosition(currentPosition, 8, 4);
+		
 		String imgUrl = null;
 		imgUrl = "images/Bookmark.png";
-		//BookMark bookMark = new BookMark(0, bookMarkName, bookMarkUrl, bookMarkDescript, friendId, status, posx, posy);
+
 		BookMark bookMark = new BookMark(0, URLDecoder.decode(bookMarkName, "utf-8"), bookMarkUrl, bookMarkDescript, friendId,
-				status, posx, posy, imgUrl, 0, "");
-		//new IndividualPageServiceImpl().addBookMark(bookMark);
+				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, "");
+
 		new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
-		/*ModelAndView mav = new ModelAndView();
-		
-		request.setAttribute("result", "true");
-		mav.setViewName("result");
-		*/
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		
 		ModelAndView mav = new ModelAndView();
 		JSONObject jobj = new JSONObject();
-		jobj.put("x", posx);
-		jobj.put("y", posy);
+		jobj.put("x", newPosition.getPosX());
+		jobj.put("y", newPosition.getPosY());
 		jobj.put("id", maxBookmarkId);
 		jobj.put("imgUrl", imgUrl);
 		jobj.put("url", bookMarkUrl);

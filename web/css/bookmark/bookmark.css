@@ -449,7 +449,6 @@ article:not(:last-child),
 	bottom: 0px;
 	-webkit-border-bottom-right-radius: 20px;
 	-webkit-border-bottom-left-radius:20px;
-	display:none;
 }
 
 .gridster li{

@@ -124,25 +124,26 @@ var bookMarkArrange = function(e) {
 var bookMarkOut = function(e) {
 	$('#x').remove();
 	// $('#desc').remove();
-	$(this).find('.bookmarkIconInfo').hide();
+	/*$(this).find('.bookmarkIconInfo').hide();*/
 
 };
 
 var mouseOverBookmarkInfo = function(e) {
 	$id = $(this).attr('data-id');
 	$categoryId = $(this).data('categoryid');
-	$(this).find('.bookmarkIconInfo').show();
+	/*$(this).find('.bookmarkIconInfo').show();*/
 };
 
 // modify 눌렀을 때 북마크 정보 수정
 $('#modify').click(
 		function(e) {
 			e.preventDefault();
-			var filename = $('#bookmarkIconImageFile').val();
-			var name = $('#modifyBookmarkName').val();
-			var url = $('#modifyBookmarkUrl').val();
-			var desc = $('#modifyBookmarkDescription').val();
-			var bookmarkId = $('#modifyBookMarkId').val();
+			 filename = $('#bookmarkIconImageFile').val();
+			 name = $('#modifyBookmarkName').val();
+			 url = $('#modifyBookmarkUrl').val();
+			 desc = $('#modifyBookmarkDescription').val();
+			 bookmarkId = $('#modifyBookMarkId').val();
+			
 
 			/*
 			 * 변경한 url의 앞부분이 http://로 시작할 경우 그 부분을 삭제한다.
@@ -161,30 +162,31 @@ $('#modify').click(
 						bookmarkId : bookmarkId
 					}
 				}).done(function(data) {
-							$('li[data-id="' + bookmarkId + '"]').find(
-									'.bookmarkIconInfo').text(
-									$('#modifyBookmarkName').val());
-							$('li[data-id="' + bookmarkId + '"]').find('img')
-									.attr('href', url);
-							alert('북마크 정보를 변경하였습니다.');
-							$('#bookMarkInfo').modal('hide');
-						});
-			} else {
-				$("#modifyBookMarkForm").ajaxSubmit(
-					{
-						dataType : 'html',
-						success : function(data, rst) {
-							$('li[data-id="' + bookmarkId + '"]').find(
-									'.bookmarkIconInfo').text(name);
-							$('li[data-id="' + bookmarkId + '"]').find(
-									'img').attr('src',
-									JSON.parse(data).imgUrl);
-							$('li[data-id="' + bookmarkId + '"]').find(
-									'img').attr('href', url);
-							alert('북마크 정보를 변경하였습니다.');
-							$('#bookMarkInfo').modal('hide');
-						}
+						$('li[data-id="' + bookmarkId + '"]').find(
+								'.bookmarkIconInfo').text(
+								$('#modifyBookmarkName').val());
+						$('li[data-id="' + bookmarkId + '"]').find('img')
+								.attr('href', url);
+						alert('북마크 정보를 변경하였습니다.');
+						$('#bookMarkInfo').modal('hide');
 					});
+			} else {
+				console.log('이미지 변경');
+				$("#modifyBookMarkForm").ajaxSubmit({
+					
+					dataType : 'html',
+					success : function(data, rst) {
+						$('li[data-id="' + bookmarkId + '"]').find(
+								'.bookmarkIconInfo').text(name);
+						$('li[data-id="' + bookmarkId + '"]').find(
+								'img').attr('src',
+								JSON.parse(data).imgUrl);
+						$('li[data-id="' + bookmarkId + '"]').find(
+								'img').attr('href', url);
+						alert('북마크 정보를 변경하였습니다.');
+						$('#bookMarkInfo').modal('hide');
+					}
+				});
 			}
 		});
 
