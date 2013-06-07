@@ -22,27 +22,6 @@ public class MessageDAO {
 	private MessageDAO(){
 		sqlMapper = DAOParser.getParser();
 	}
-		
-
-	/*public ArrayList<Message> outBox(String userId){
-		ArrayList<Message> outBoxList = null;
-		try {
-			outBoxList = (ArrayList<Message>) sqlMapper.queryForList("outBox", userId);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return outBoxList;
-	}
-	
-	public ArrayList<Message> inBox(String userId){
-		ArrayList<Message> inBoxList = null;
-		try {
-			inBoxList = (ArrayList<Message>) sqlMapper.queryForList("inBox", userId);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return inBoxList;
-	}*/
 	
 	public ArrayList<Message> outBox(Message message){
 		ArrayList<Message> outBoxList = null;

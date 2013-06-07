@@ -24,12 +24,8 @@ public interface FriendshipServiceIF {
 	 */
 	public ArrayList<Member> searchFriend(User searchUser);
 	
-	//public ArrayList<Member> getMemberById(User searchUser);
-	
-	
 	public Member getKey(String userId);
 	public ArrayList<Member> getFriendList(Friendship friend);
-//	public ArrayList<Member> getFriendListBar(Friendship friend);
 	
 	public ArrayList<FriendStatus> getFriendStatus(FriendStatus friendStatus);
 
@@ -74,14 +70,12 @@ public interface FriendshipServiceIF {
 	public void deleteMessage(String messageId);
 	public Message getMessage(String messageId);
 	public void updateMessage(Message message);
-	//public ArrayList<Message> getOutBox(String userId);
 	public ArrayList<Message> getOutBox(Message message);
 	/**
 	 * 받은 쪽지 리스트
 	 * @param String 사용자 아이디
 	 * @return ArrayList<Message> 쪽지 리스트
 	 */
-	//public ArrayList<Message> getInBox(String userId);
 	public ArrayList<Message> getInBox(Message message);
 	/**
 	 * 특정 사용자에게 쪽지를 보낸다.
