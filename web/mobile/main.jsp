@@ -18,7 +18,7 @@
 <body>
 <div data-role="page" id="bookmarkListPage" >
 	<div data-role="header" data-theme="b">
-	<button data-icon="gear">설정</button>
+		<a href="#myInfo" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
 		<h1>${MEMBERID}님 환영합니다</h1>
 	</div>
 	
@@ -26,13 +26,13 @@
 		<ul data-role="listview" data-inset="true">
 			<c:forEach var="bookmark" items="${bookMarkList}">
 				<li data-role="list-driver" data-theme="b">
-					${bookmark.bookMarkUrl}
+					${bookmark.bookMarkName}
 					<span class="ui-li-count">${bookmark.frequency}</span>
 				</li>
 				<li>
 					<a href="${bookmark.bookMarkUrl}">
 						<img src="../${bookmark.imgUrl}">
-						<h3>${bookmark.bookMarkName}</h3>
+						<h3>${bookmark.bookMarkUrl}</h3>
 						<p>
 							${bookmark.bookMarkDescript}
 						</p>
@@ -54,6 +54,7 @@
 			</ul>
 		</div>
 	</div>
+
 </div>
 
 </body>
@@ -61,3 +62,34 @@
 <script src="../js/mobile/index.js"></script>
 
 </html>
+
+	<div data-role="panel" id="myInfo" data-theme="b">
+		<div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+       	 	<label for="myInfo_password" class="ui-input-text">ID:</label>
+        	<input readonly type="text" value="${MEMBERINFO.userId}" id="myInfo_userId" name="userId" class="ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c">
+		</div>
+		
+       <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+         <label for="myInfo_userName" class="ui-input-text">Username:</label>
+         <input type="text" value="${MEMBERINFO.name}" id="myInfo_userName" name="userName" class="ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c">
+		</div>
+		
+		<div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+         <label for="myInfo_email" class="ui-input-text">email:</label>
+         <input type="text" value="${MEMBERINFO.email}" id="myInfo_email" name="email" class="ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c">
+		</div>
+
+		<div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+         <label for="myInfo_password" class="ui-input-text">개인 이미지</label>
+         <img style="width:75%; " src="../${MEMBERINFO.imgUrl}" id="myInfo_img">
+		</div>
+
+		<fieldset class="ui-grid-a">
+			<div class="ui-block-a"><button id="loginButton" data-theme="b" type="button" class="ui-btn-hidden" aria-disabled="false">수정</button></div>
+	    </fieldset>
+   </div><!-- /panel -->
+</div>
+
+
+ 
+

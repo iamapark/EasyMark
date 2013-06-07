@@ -145,7 +145,7 @@
 								          	<th>Friend ID</th>
 											<th>BookMark URL</th>
 											<th>BookMark NAME</th>
-											<th>Recommend Action</th>                                        
+											<th>Action　　</th>                                        
 								     	</tr>
 									</thead>
 									<tbody>
@@ -165,7 +165,7 @@
 								          	<th>Friend ID</th>
 											<th>BookMark URL</th>
 											<th>BookMark NAME</th>
-											<th>Recommend Action</th>                                        
+											<th>Action　　</th>                                        
 								     	</tr>
 									</thead>
 									<tbody>

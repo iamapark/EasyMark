@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="dto.Member" %>
+<%@ page import="dto.Member, java.lang.*" %>
 <% 
 	Member m = (Member)request.getAttribute("MEMBERINFO");
 	String imgUrl = m.getImgUrl(); 
@@ -28,7 +28,13 @@
 				<li><span style="color:white;">${sessionScope.MEMBERID}</span><a href="#setting" role="button" data-toggle="modal"><img id="setting_button" src="<%=imgUrl%>" id="settingImg" style="border-radius: 20px;"/></a></li>
 				<li><span style="color:white;">북마크 추가</span><a href="#bookmarkAdd" role="button" data-toggle="modal"><img id="mark_button" src="images/Bookmark.png"/></a></li>
 				<li><span style="color:white;">Friends</span><a href="#friendInfo" role="button" data-toggle="modal"><img src="images/Users.png"/></a></li>
-				<li><span style="color:white;">Messages</span><a href="#messages" role="button" data-toggle="modal"><img src="images/Message_Icon.png"/></a></li>
+				<li>
+				
+					<span style="color:white;">Messages</span><a href="#messages" role="button" data-toggle="modal">
+					<img src="images/Message_Icon.png" /><B><font color=blue size=2 face=돋움><div id="messageCount"></div></font></B>
+					</a>
+				</li>
+				
 			</ul>
 			<div class="base"></div>
 			</div>

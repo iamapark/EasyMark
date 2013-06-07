@@ -7,6 +7,7 @@ package service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import dao.BookMarkDAO;
 import dao.BookMarkListDAO;
@@ -14,6 +15,8 @@ import dao.CategoryDAO;
 import dto.BookMark;
 import dto.Category;
 import dto.Design;
+import dto.ForBookMarkList;
+import dto.Position;
 
 public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 
@@ -24,9 +27,9 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 	}
 	
 	@Override
-	public ArrayList<BookMark> bookMarkList(String userId) {
+	public ArrayList<BookMark> bookMarkList(ForBookMarkList forListData) {
 		ArrayList<BookMark> bookMarkList=null;
-		bookMarkList=BookMarkDAO.getInstance().bookMarkList(userId);
+		bookMarkList=BookMarkDAO.getInstance().bookMarkList(forListData);
 		return bookMarkList;
 	}
 	@Override
@@ -112,10 +115,52 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		categoryList=BookMarkListDAO.getInstance().listByCategory(category);
 		return categoryList;
 	}
-	
 
+	public ArrayList<Category> getCategoryList(String userId) {
+		return CategoryDAO.getInstance().getCategoryList(userId);
+	}
 
+	public void deleteCategory(int categoryId) {
+		//CategoryDAO.getInstance().deleteCategory(categoryId);
+	}
 
-	
+	@Override
+	public ArrayList<BookMark> bookMarkList(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getParentId(int categoryId) {
+		return CategoryDAO.getInstance().getParentId(categoryId);
+	}
+
+	public void modifyCategory(Category category) {
+		CategoryDAO.getInstance().modifyCategory(category);
+	}
+
+	public void deleteBookMarkCategory(List target) {
+
+		// 또는 bookmark 테이블에서 category가 categoryId인 데이터를 지운다.
+		BookMarkDAO.getInstance().deleteBookMarkCategory(target);
+
+		// bookmark_category 테이블에서 category_id가 categoryId인 데이터를 지운다.
+		CategoryDAO.getInstance().deleteCategory(target);
+	}
+
+	public int addMark(Category category) {
+		return BookMarkDAO.getInstance().addMark(category);
+	}
+
+	public ArrayList<Integer> getDeleteTargetList(String table, int categoryId) {
+		if(table.equals("bookmarkCategory")){
+			return CategoryDAO.getInstance().getDeleteTargetListCategory(categoryId);
+		}else{
+			return BookMarkDAO.getInstance().getDeleteTargetListBookmark(categoryId);
+		}
+	}
+
+	public ArrayList<Position> bookMarkPos(String category) {
+		return BookMarkDAO.getInstance().bookMarkPos(category);
+	}
 
 }

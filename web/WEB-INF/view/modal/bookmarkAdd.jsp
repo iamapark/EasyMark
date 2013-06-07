@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- bookmarkAdd -->  
 <div id="bookmarkAdd" class="modal hide fade" tabindex="-1" aria-hidden="true" style="width:90%; margin-left:0;">	
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
@@ -33,9 +34,8 @@
 		<div class="control-group">
         	<label class="control-label" for="addBookMarkCategory">Category</label>
          	<div class="controls">
-              	<select name="category" id="addBookMarkCategory">
-             	<!-- 이 위치에 옵션이 appendTO 된다 -->
-              	</select>
+              	<div id="addCategoryOl"></div>
+              	<input type="hidden" id="hiddenBookmarkAddCategory" name="category" />
             </div>
         </div>
         <div class="control-group">

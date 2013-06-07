@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import util.AdminServer;
+import util.MessageServer;
 import util.RelayServer;
 import dto.BookMark;
 import dto.BookMarkShip;
@@ -28,13 +29,17 @@ import dto.FriendStatus;
 import dto.Friendship;
 import dto.Member;
 import dto.Message;
+import dto.Position;
 import dto.User;
 
 
 @Controller
 public class FriendshipAction {
-	private RelayServer relayServer;
-	
+
+	public FriendshipAction(){
+		//MessageServer.getInstance().start();
+	}
+
 	private void traffic(){
 		AdminServer.getInstance().trafficCount();
 	}
@@ -48,8 +53,6 @@ public class FriendshipAction {
 		System.out.println(userId);
 		
 		Member memberKey = new FriendshipServiceImpl().getKey(userId);
-		
-		System.out.println(memberKey.getMe2DayKey());
 		
 		String me2dayKey = memberKey.getMe2DayKey();
 		
@@ -321,8 +324,10 @@ public class FriendshipAction {
 		System.out.println(userId);
 
 		ArrayList<Message> inMessage = null;
+		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
 
-		inMessage = new FriendshipServiceImpl().getInBox(userId);
+		//inMessage = new FriendshipServiceImpl().getInBox(userId);
+		inMessage = new FriendshipServiceImpl().getInBox(message);
 		for (int i = 0; i < inMessage.size(); i++) {
 			System.out.println(inMessage.get(i).getMessageDate());
 			String dateTime = StringFromCalendar(inMessage.get(i).getMessageDate());
@@ -330,7 +335,6 @@ public class FriendshipAction {
 		}
 
 		ModelAndView mav = new ModelAndView();
-			
 		JSONArray dataJ = JSONArray.fromObject(inMessage);
 		System.out.println(dataJ);
 		request.setAttribute("result", dataJ);
@@ -348,7 +352,8 @@ public class FriendshipAction {
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		System.out.println(userId);
 		ArrayList<Message> outMessage = null;
-		outMessage = new FriendshipServiceImpl().getOutBox(userId);
+		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "send");
+		outMessage = new FriendshipServiceImpl().getOutBox(message);
 		for (int i = 0; i < outMessage.size(); i++) {
 			System.out.println(outMessage.get(i).getMessageDate());
 			String dateTime = StringFromCalendar(outMessage.get(i).getMessageDate());
@@ -376,47 +381,61 @@ public class FriendshipAction {
 	
 	// 메시지 보내기
 	@RequestMapping("/sendMessage")
-	public void sendMessage(HttpServletRequest request,
+	public ModelAndView sendMessage(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam(value="messageFriendId")String friendId,
-			  							  @RequestParam(value="messageContents")String contents) {
-		System.out.println("sendMessage() 호출!!");
+			  							  @RequestParam(value="messageContents")String contents) throws UnsupportedEncodingException {
 			
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-			
+		
 		int messageNum = 0;
 
-		Message msg = new Message(messageNum, userId, friendId, null, contents, new Date(), "");
-
-		System.out.println(new Date());
+		Message msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "send");
 
 		boolean flag = new FriendshipServiceImpl().sendMessage(msg);
+		
+		msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "take");
+		
+		try {
+			contents = URLDecoder.decode(contents, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+
+		}
+		
+		new FriendshipServiceImpl().sendMessage(msg);
+		
+		ModelAndView mav = new ModelAndView();
 		// boolean flag = true;
 		if (flag) { // 메시지 DB 등록 성공
-
-			// msgServer.sendMessage(friendId, message);
-
-			//relayServer.sendMessage(friendId, contents);
-
+			
+			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
+			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+			
+			traffic();
+			
+			JSONObject jobj = new JSONObject();
+			jobj.put("friendId", friendId);
+			jobj.put("contents",  URLDecoder.decode(contents, "utf-8"));
+			jobj.put("num", newMessage.size());
+			request.setAttribute("result", jobj);
+			mav.setViewName("result");	
 		} else { // 메시지 DB 등록 실패
 				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
 		}
+		return mav;
 	}
 		
 	@RequestMapping("/isContains")
 	public ModelAndView isContains(HttpServletRequest request, HttpServletResponse response){
 	
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		boolean flag = relayServer.isContains(userId);
-		/*request.setAttribute("result", Boolean.toString(flag));
-		nextPage.setViewName("/views/result.jsp");
-			
-		return nextPage;*/
-		ModelAndView mav = new ModelAndView();
 		
-		request.setAttribute("result", Boolean.toString(flag));
+		ModelAndView mav = new ModelAndView();
+		JSONObject jobj = new JSONObject();
+		jobj.put("user", userId);
+		
+		request.setAttribute("result", jobj);
 		mav.setViewName("result");
-			
-		traffic();
+		
 		return mav;
 	}
 
@@ -444,54 +463,26 @@ public class FriendshipAction {
 			@RequestParam(value="bookMarkDescript")String bookMarkDescript) throws UnsupportedEncodingException {
 		
 		String friendId = (String)request.getSession().getAttribute("MEMBERID");
-		String status = "false";
-		int posx = 0;
-		int posy = 0;
-		ArrayList<BookMark> bookMarkList = null;
-		// 현재 사용자의 북마크 리스트 가져오기
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(friendId);
-
-		// 만약 처음 북마크 추가이면 1,1 위치 삽입
-		if (bookMarkList.size() == 0) {
-			posx = 1;
-			posy = 1;
-		} else {// //////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
-			posx = new IndividualPageServiceImpl().bookMarkPosx(friendId);
-			System.out.println("x=" + posx);
-			// ParameterClass 2개라서 HashMap 이용 맞나?
-			HashMap<String, Object> pos = new HashMap<String, Object>();
-			pos.put("userId", friendId);
-			pos.put("posX", posx);
-			posy = new IndividualPageServiceImpl().bookMarkPosy(pos); // x 줄에 제일
-																		// 마지막
-																		// y 값
-			System.out.println("by=" + posy);
-			posy++; // +1해서 다음에 놓을 곳 배치
-			System.out.println("ay=" + posy);
-			if (posy == 7) {// 다음줄로 넘기기
-				posx++;
-				posy = 1;
-			}
-
-		}
+		String status = "bookmark";
+		
+		ArrayList<Position> currentPosition = new IndividualPageServiceImpl().bookMarkPos("0");
+		
+		// 아이콘이 추가될 x,y 좌표를 받아온다.
+		Position newPosition = IndividualPageAction.getPosition(currentPosition, 8, 4);
+		
 		String imgUrl = null;
 		imgUrl = "images/Bookmark.png";
-		//BookMark bookMark = new BookMark(0, bookMarkName, bookMarkUrl, bookMarkDescript, friendId, status, posx, posy);
+
 		BookMark bookMark = new BookMark(0, URLDecoder.decode(bookMarkName, "utf-8"), bookMarkUrl, bookMarkDescript, friendId,
-				status, posx, posy, imgUrl, 0, "");
-		//new IndividualPageServiceImpl().addBookMark(bookMark);
+				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, "");
+
 		new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
-		/*ModelAndView mav = new ModelAndView();
-		
-		request.setAttribute("result", "true");
-		mav.setViewName("result");
-		*/
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		
 		ModelAndView mav = new ModelAndView();
 		JSONObject jobj = new JSONObject();
-		jobj.put("x", posx);
-		jobj.put("y", posy);
+		jobj.put("x", newPosition.getPosX());
+		jobj.put("y", newPosition.getPosY());
 		jobj.put("id", maxBookmarkId);
 		jobj.put("imgUrl", imgUrl);
 		jobj.put("url", bookMarkUrl);
@@ -582,8 +573,25 @@ public class FriendshipAction {
 		
 		return mav;
 	}	
+	
+	
+	@RequestMapping("/messageCount")
+	public ModelAndView messageCount(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+
+		String loginId = (String)request.getSession().getAttribute("MEMBERID");
+		Message message = new Message(0, loginId, "", null, "", new Date(), "", 0, "take");
+		ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+		int newMessageCount = newMessage.size();
 		
+		request.setAttribute("result", newMessageCount);
+		mav.setViewName("result");
 		
+		traffic();
+		return mav;
+	}
+	
 	// 메시지 상세 보기
 	@RequestMapping("/messageView")
 	public ModelAndView messageView(HttpServletRequest request,
@@ -593,16 +601,29 @@ public class FriendshipAction {
 		Message message = new Message();
 	
 		message = new FriendshipServiceImpl().getMessage(messageId);
-
+		
 		String dateTime = StringFromCalendar(message.getMessageDate());
-		message = new Message(message.getMessageId(), message.getUserId(),
-							  message.getFriendId(), message.getTitle(),
-							  message.getContents(), message.getMessageDate(), dateTime);
+		String loginId = (String)request.getSession().getAttribute("MEMBERID");
+		if(message.getFriendId().equals(loginId)){
+			message = new Message(message.getMessageId(), message.getUserId(),
+					  message.getFriendId(), message.getTitle(),
+					  message.getContents(), message.getMessageDate(), dateTime, message.getReadNum()+1, message.getType());
+		} else {
+			
+			message = new Message(message.getMessageId(), message.getUserId(),
+					  message.getFriendId(), message.getTitle(),
+					  message.getContents(), message.getMessageDate(), dateTime, message.getReadNum(), message.getType());
+		}
+		
+		new FriendshipServiceImpl().updateMessage(message);
 
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(message);
+		JSONObject data = new JSONObject();
+		data.put("num", 2);
+		dataJ.add(data);
 		System.out.println(dataJ);
-		request.setAttribute("result", dataJ);
+		request.setAttribute("result", dataJ.toString());
 		mav.setViewName("result");
 		
 		traffic();

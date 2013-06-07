@@ -1,7 +1,3 @@
-$(document).ready(function(){
-	
-});
-
 $('.bookmarktable').dataTable({
 	"sPaginationType": "full_numbers",
 	"bJQueryUI": true
@@ -49,8 +45,9 @@ $('#updateMemberButton').click(function(e) {
 		$("#updateMemberInfoForm").ajaxSubmit({
 			dataType : 'html',
 			success : function(data, rst) {
+				kaka = data;
 				var imgUrl = JSON.parse(data).imgUrl;
-				$('#settingImg').attr('src', imgUrl);
+				$('#setting_button').attr('src', imgUrl);
 				$('#inputPersonalImg').attr('src', imgUrl);
 				alert('회원 정보를 수정하였습니다.');
 			}
@@ -136,7 +133,7 @@ $('a[href="#setting_bookmarkInfo"]').click(function() {
 	}).done(function(data) {
 		for(var i=0; i<data.length; i++){
 			bm = data[i];
-			var select = "<input type='checkbox' onchange='bookmarkSelect(this)' name='bookmarkSelector' value='" + bm.bookMarkId + "'></input>";
+			var select = "<input type='checkbox' onchange='bookmarkSelect(this)' name='bookmarkSelector' data-category='"+bm.category+"' value='" + bm.bookMarkId + "'></input>";
 			$('.bookmarktable').dataTable().fnAddData([select, bm.bookMarkId, bm.bookMarkName, bm.bookMarkUrl, bm.bookMarkDescript, bm.frequency]);
 		}
 		
@@ -176,10 +173,18 @@ var bookmarkListDelete = function(e){
 	
 	// 선택된 row를 읽어온다.
 	selectedRow = $('.bookmarktable').dataTable().$('tr.row_selected');
-	console.log("select:"+selectedRow[0]);
 	var data = $('input[name=bookmarkSelector]').serialize();
 
-	/*$.ajax({
+	for(var i=0; i<selectedRow.length; i++){
+		// 북마크 리스트에서 해당 row를 삭제한다.
+		$('.bookmarktable').dataTable().fnDeleteRow(selectedRow[i]);
+		
+		if($(selectedRow[i]).find('input').data('category') == currentPageCategoryId)
+			//바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
+			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('input').attr('value') + '"]'));
+	}
+	
+	$.ajax({
 		url:'deleteBookMarks',
 		dataType:'json',
 		data:{
@@ -193,7 +198,10 @@ var bookmarkListDelete = function(e){
 			// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
 			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('input').attr('value') + '"]'));
 		}
-	});*/
+	});
+	
+	if(selectedRow.length>0)
+		bookmarkListAllSelection(true);
 };
 
 // 배경화면 파일을 선택했을 때 호출
@@ -227,13 +235,24 @@ $('#logoutButton').click(function(e){
 
 //북마크 테이블에서 전체 선택을 클릭했을 때
 var bookmarkListAllSelection = function(e){
-	if($(e).text().trim() == '전체 선택'){
-		$('input[name=bookmarkSelector]').attr('checked', true);
-		$('input[name=bookmarkSelector]').parent().parent().addClass('row_selected');
-		$(e).text('선택 해제');
+
+	var $selectButton =  $('#bookmarkListSelectAllButton');
+	if(e == null){
+		if($selectButton.text().trim() == '전체 선택'){
+			$('input[name=bookmarkSelector]').prop('checked', true);
+			$('input[name=bookmarkSelector]').parent().parent().addClass('row_selected');
+			$selectButton.text('선택 해제');
+		}else{
+			$('input[name=bookmarkSelector]').prop('checked', false);
+			$('input[name=bookmarkSelector]').parent().parent().removeClass('row_selected');
+			$selectButton.text('전체 선택');
+		}
 	}else{
-		$('input[name=bookmarkSelector]').attr('checked', false);
-		$('input[name=bookmarkSelector]').parent().parent().removeClass('row_selected');
-		$(e).text('전체 선택');
+		if(e){
+			$('input[name=bookmarkSelector]').prop('checked', false);
+			$('input[name=bookmarkSelector]').parent().parent().removeClass('row_selected');
+			$selectButton.text('전체 선택');
+		}
 	}
+	
 };

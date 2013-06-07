@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.vertx.java.core.json.JsonObject;
 
 import service.AdminServiceImpl;
 import service.FriendshipServiceImpl;
@@ -22,12 +22,15 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
 import util.FileWriter;
+import util.MessageServer;
 import dto.BookMark;
 import dto.DashboardCount;
 import dto.Design;
+import dto.ForBookMarkList;
 import dto.Img;
 import dto.Login;
 import dto.Member;
+import dto.Message;
 
 @Controller
 public class MembershipAction {
@@ -150,6 +153,11 @@ public class MembershipAction {
 				//bookMar add 할때 categoryList option 가져오기
 				request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId + "@me2day"));
 
+				Message message = new Message(0, login.getUserId(), "", null, "", new Date(), "", 0, "take");
+				ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+				int newMessageCount = newMessage.size();
+				request.getSession().setAttribute("newMessageCount", newMessageCount);
+				
 				nextPage.setViewName("main");
 
 			} else { // 로그인 실패
@@ -193,16 +201,22 @@ public class MembershipAction {
 		flag = new MembershipServiceImpl().login(login);
 		
 		 if (flag) {
-		 	Member m = new MembershipServiceImpl().getMemberInfo(userId);
-			
 	 		HttpSession session = request.getSession();
 	 		session.setAttribute("MEMBERID", userId);
 	 		
 			request.setAttribute("designType",
 					new MembershipServiceImpl().getDesignType(userId));
+			
+			Member m = new MembershipServiceImpl().getMemberInfo(userId);
 			request.setAttribute("MEMBERINFO", m);
 
-			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
+			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+			int newMessageCount = newMessage.size();
+			request.getSession().setAttribute("newMessageCount", newMessageCount);
+			System.out.println("새 메시지 수 : "+newMessageCount);
+			
+			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
 			mav.setViewName("main");
 		} else {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");
@@ -386,7 +400,8 @@ public class MembershipAction {
 			request.setAttribute("designType",
 					new MembershipServiceImpl().getDesignType(userId));
 			request.setAttribute("MEMBERINFO", m);
-			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+			
+			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
 			//bookMar add 할때 categoryList option 가져오기
 			request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId));
 			

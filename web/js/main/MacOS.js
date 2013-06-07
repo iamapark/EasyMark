@@ -17,3 +17,14 @@ function addPrevClass (e) {
 if (window.addEventListener) {
 	//document.getElementById('dock').addEventListener('mouseover', addPrevClass, false);
 }
+
+$(document).ready(function(){
+	$.ajax({
+		url:'messageCount',
+		dataType : 'json',
+		type:'POST'
+	}).done(function(data){
+		console.log("data :"+data.toString());
+		$('#messageCount').text("쪽지("+data.toString()+")");		
+	});
+});

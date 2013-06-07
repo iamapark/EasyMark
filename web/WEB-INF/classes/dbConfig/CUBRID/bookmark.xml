@@ -16,6 +16,11 @@
 		<result property="frequency" column="frequency" />
 		<result property="category" column="category" />
 	</resultMap>
+	
+	<resultMap id="PositionList" class="Position">
+		<result property="posX" column="pos_x" />
+		<result property="posY" column="pos_y" />
+	</resultMap>
 
 
 	<insert id="addBookMark" parameterClass="BookMark">
@@ -31,7 +36,7 @@
 	</insert>
 
 	<!-- Select with no parameters using the result map for Account class. -->
-	<select id="bookMarkList" parameterClass="String" resultMap="BookMarkList">
+	<select id="bookMarkList" parameterClass="ForBookMarkList" resultMap="BookMarkList">
 		SELECT
 		bookmark_id,
 		bookmark_name,
@@ -46,7 +51,23 @@
 		category
 		category
 		FROM bookmark
-		WHERE user_id=#userId#
+		WHERE 
+			user_id=#userId# 
+		AND 
+		(category IN (SELECT category_id FROM bookmark_category WHERE parent_category_id=#parentId# 
+					AND user_id=#userId#) 
+					AND status='category') 
+		OR (category = #parentId# AND status='bookmark' AND user_id=#userId#) ;
+	</select>
+	
+	<!-- 추가 6/4 bookMarkList에 필요함 -->
+	<select id="getParenIdList" parameterClass="Integer" resultClass="ArrayList">
+		SELECT 
+			category_id 
+		FROM 
+			bookmark_category 
+		WHERE 
+			parent_category_id=#parentId#
 	</select>
 	
 	<!-- Select with no parameters using the result map for Account class. -->
@@ -131,7 +152,7 @@
 		WHERE bookmark_id=#bookMarkId#
 	</update>
 
-	<!--남기윤 viewBookMarkList 셀렉트 구문 -->
+	<!-- 수정 6/5 -->
 
 	<select id="viewBookMarkList" parameterClass="String" resultMap="BookMarkList">
 		SELECT
@@ -148,11 +169,10 @@
 		category
 		category
 		FROM bookmark
-		WHERE user_id=#userId#
+		WHERE user_id=#userId# and status='bookmark'
 
 	</select>
 
-	<!--남기윤 updateBookMarkList 셀렉트 구문 -->
 	<update id="updateBookMarkList" parameterClass="BookMark">
 
 		update bookmark
@@ -189,5 +209,35 @@
 	
 	<select id="listByCategory" parameterClass="java.util.HashMap" resultMap="BookMarkList">
 		SELECT * FROM bookmark WHERE user_id=#userId# AND category=#categoryName#
+	</select>
+
+	<!-- 추가 6/5 , 수정 6/6-->
+	<delete id="deleteBookMarkCategory" parameterClass="List">
+		DELETE FROM bookmark
+		
+		<dynamic prepend="WHERE category IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<!-- 추가 6/5 -->
+	<delete id="deleteCategoryStatus" parameterClass="Integer">
+		DELETE FROM bookmark
+		WHERE category = #categoryId# and status = 'category'
+	</delete>
+	
+	<!-- 추가 6/6 -->
+	<select id="bookMarkPos" parameterClass="String" resultMap="PositionList">
+		SELECT 
+			pos_x, pos_y 
+		from 
+			bookmark 
+		WHERE  
+			(category IN(SELECT category_id FROM bookmark_category 
+						 WHERE parent_category_id=#category#) 
+				     OR (category=#category# AND status='bookmark'))
+		ORDER BY pos_x, pos_y				     
 	</select>
 </sqlMap>

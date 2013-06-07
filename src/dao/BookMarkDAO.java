@@ -3,10 +3,14 @@ package dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import dto.BookMark;
+import dto.Category;
+import dto.ForBookMarkList;
+import dto.Position;
 
 public class BookMarkDAO {
 	private static BookMarkDAO instance = null;
@@ -31,10 +35,11 @@ public class BookMarkDAO {
 		}
 		return maxBookmarkId;
 	}
-	public ArrayList<BookMark> bookMarkList(String userId){
-		ArrayList<BookMark> bookMarkList=null;
+	public ArrayList<BookMark> bookMarkList(ForBookMarkList forListData){
+		ArrayList<BookMark> bookMarkList = null;
+
 		try {
-			bookMarkList=(ArrayList<BookMark>)sqlMapper.queryForList("bookMarkList",userId);
+			bookMarkList = (ArrayList<BookMark>)sqlMapper.queryForList("bookMarkList", forListData);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,6 +81,7 @@ public class BookMarkDAO {
 	}
 	
 	public void arrangeIcon(BookMark bookMark){
+		System.out.println("arrangeIcon");
 		try {
 			sqlMapper.update("arrangeIcon",bookMark);
 		} catch (SQLException e) {
@@ -131,6 +137,50 @@ public class BookMarkDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void deleteBookMarkCategory(List target) {
+		try {
+			sqlMapper.delete("deleteBookMarkCategory", target);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public int addMark(Category category) {
+		int maxBookmarkId = 0;
+		try{
+			maxBookmarkId = (Integer) sqlMapper.insert("addBookmark", category);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return maxBookmarkId;
+	}
+
+	public ArrayList<Integer> getDeleteTargetListBookmark(int categoryId) {
+		ArrayList<Integer> result = null;
+		
+		try{
+			result = (ArrayList<Integer>)sqlMapper.queryForList("getDeleteTargetListBookmark", categoryId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	public ArrayList<Position> bookMarkPos(String category) {
+		ArrayList<Position> list = null;
+		
+		try{
+			list = (ArrayList<Position>)sqlMapper.queryForList("bookMarkPos", category);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 	
 }

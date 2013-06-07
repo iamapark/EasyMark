@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <div id="setting" class="modal hide fade" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
-	style="width: 70%; left: 15%; right: 15%; margin-left: 0;">
+	style="margin-left: 0;">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">X</button>
@@ -13,9 +13,8 @@
 			<ul class="nav nav-tabs nav-stacked">
 				<li><a href="#setting_memberInfo" data-toggle="tab">회원정보</a></li>
 				<li><a href="#setting_bookmarkInfo" data-toggle="tab">북마크</a></li>
+				<li><a href="#setting_categories" data-toggle="tab">카테고리</a></li>
 				<li><a href="#setting_settings" data-toggle="tab">설정</a></li>
-			
-
 			</ul>
 		</div>
 		<div class="setting_content">
@@ -70,14 +69,6 @@
 				<div class="tab-pane" id="setting_settings">
 					<!-- 비밀번호 변경, 디자인 변경 -->
 					<div>
-						<!-- 디자인 변경 -->
-						<h5>디자인 변경</h5>
-						<select id="designSelect" name="style">
-							<option value="MacOS">디자인 1: MacOS</option>
-							<option value="WindowsOS">디자인 2: WindowsOS</option>
-						</select> <span id="designSelectNoti"></span>
-					</div>
-					<div>
 						<!-- 배경화면 변경 -->
 						<h5>배경화면 변경</h5>
 						<img id="bgImg" src="images/calendar.png" style="width: 15%;" /><br>
@@ -94,7 +85,7 @@
 							<!-- categorySelect option appendTo -->
 							</select>
 				  			<input type="text" id="categoryName" name="categoryName">
-					  		<input type="button" id="category" name="category" value="add">
+					  		<input type="button" id="categoryAddButton" name="category" value="add">
 					  	</form>
 				  	</div>
 		  	  	</div>
@@ -123,7 +114,7 @@
 					</div>
 					</div>
 					</div>	
-					<a onclick='bookmarkListAllSelection(this)' class='btn btn-primary' href='#bookmarkSelectionButton'>
+					<a id="bookmarkListSelectAllButton" onclick='bookmarkListAllSelection()' class='btn btn-primary' href='#bookmarkSelectionButton'>
 						전체 선택
 					</a> 
 					<a onclick='bookmarkListDelete(this)' class='btn btn-danger' href='#bookmarkDeleteButton'>
@@ -131,7 +122,24 @@
 					</a> 
 
 				</div>
-				
+				<div class="tab-pane" id="setting_categories">
+				  	<!-- 북마크 리스트 -->
+				  	<h1>카테고리</h1>
+				  	<div class="row-fluid sortable">		
+					<div class="box span12">
+					<div class="box-content">
+						<div id="categoryOl"></div>
+						
+						<div>
+							선택된 카테고리: <span style="background-color:rgb(206, 67, 55); color:white;" id="selectedCategory"></span><br>
+							<input style="height:30px;" type="text" id="newCategory">
+							<button class="btn btn-primary" id="newCategoryButton">카테고리 생성</button><br>
+							<button class="btn btn-danger" id="deleteCategoryButton">카테고리 삭제</button>
+						</div>
+					</div>
+					</div>
+					</div>	
+				</div>
 			</div>
 		</div>
 

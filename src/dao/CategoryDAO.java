@@ -1,9 +1,9 @@
 package dao;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
@@ -25,7 +25,8 @@ public class CategoryDAO {
 	public int addCategory(Category category){
 		int maxCategoryId = 0;
 		try {
-			sqlMapper.insert("addCategory", category);
+			maxCategoryId = (Integer)sqlMapper.insert("addCategory", category);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +54,7 @@ public class CategoryDAO {
 		return flag;
 	}
 	public ArrayList<Category> categoryList(String userId){
-		ArrayList<Category> categoryList=new ArrayList<>();
+		ArrayList<Category> categoryList = new ArrayList<>();
 		try {
 			categoryList=(ArrayList<Category>)sqlMapper.queryForList("categoryList", userId);
 			System.out.println("categoryList.size() :"+categoryList.size());
@@ -71,6 +72,59 @@ public class CategoryDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Category> getCategoryList(String userId) {
+		ArrayList<Category> categoryList = new ArrayList<>();
+		
+		try{
+			categoryList = (ArrayList<Category>)sqlMapper.queryForList("getCategoryList", userId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return categoryList;
+	}
+
+	public void deleteCategory(List target) {
+		try {
+			sqlMapper.delete("deleteBookmarkCategory",target);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public int getParentId(int categoryId) {
+		int result = 0;
+		
+		try{
+			result = (Integer) sqlMapper.queryForObject("getParentId", categoryId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	public void modifyCategory(Category category) {
+		try{
+			sqlMapper.update("modifyCategory", category);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<Integer> getDeleteTargetListCategory(int categoryId) {
+		ArrayList<Integer> result = null;
+		
+		try{
+			result = (ArrayList<Integer>)sqlMapper.queryForList("getDeleteTargetListCategory", categoryId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 }

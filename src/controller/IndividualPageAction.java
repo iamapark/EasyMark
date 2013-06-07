@@ -28,15 +28,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
-import service.MembershipServiceImpl;
 import util.AdminServer;
 import util.FileWriter;
 import dto.BookMark;
 import dto.Category;
-import dto.Design;
+import dto.ForBookMarkList;
 import dto.Friendship;
 import dto.Img;
 import dto.Member;
+import dto.Position;
 
 @Controller
 public class IndividualPageAction {
@@ -55,10 +55,8 @@ public class IndividualPageAction {
 			@RequestParam(value = "description") String description,
 			@RequestParam(value = "category") String category,
 			@RequestParam(value = "userId", required = false) String userId) throws UnsupportedEncodingException {
+
 		System.out.println("addMark()!!");
-
-
-		System.out.println("userId: " + userId);
 
 		ModelAndView nextPage = new ModelAndView();
 		if (userId == null)
@@ -92,45 +90,24 @@ public class IndividualPageAction {
 		}
 
 		// 사용자ID 가져오기
-		String status = "false";
-		int posx = 0;
-		int posy = 0;
-
-		ArrayList<BookMark> bookMarkList = null;
-		// 사용자의 현재 카테고리 북마크 리스트 가져오기
-		HashMap<String, Object> bookMarkInfo = new HashMap<>();
-		bookMarkInfo.put("userId", userId);
-		bookMarkInfo.put("category", category);
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);  
+		String status = "bookmark";
 		
-
-		// 만약 처음 북마크 추가이면 1,1 위치 삽입
-		if (bookMarkList.size() == 0) {
-			posx = 1;
-			posy = 1;
-		} else {// //////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
-			posx = new IndividualPageServiceImpl().bookMarkPosx(userId);
-			System.out.println("x=" + posx);
-			// ParameterClass 2개라서 HashMap 이용 맞나?
-			HashMap<String, Object> pos = new HashMap<String, Object>();
-			pos.put("userId", userId);
-			pos.put("posX", posx);
-			posy = new IndividualPageServiceImpl().bookMarkPosy(pos); // x줄에 제일
-																		// 마지막
-																		// y값
-			System.out.println("by=" + posy);
-			posy++; // +1해서 다음에 놓을 곳 배치
-			System.out.println("ay=" + posy);
-
-			if (posy == 9) {// 다음줄로 넘기기
-				posx++;
-				posy = 1;
-			}
-
+		ArrayList<Position> currentPosition = new ArrayList<Position>();
+		if(!category.equals("0")){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
+			currentPosition.add(new Position(1, 1));
 		}
 
+		ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(category);
+		
+		currentPosition.addAll(d);
+
+		// 아이콘이 추가될 x,y 좌표를 받아온다.
+		Position newPosition = getPosition(currentPosition, 8, 4);
+		System.out.println("newPosition");
+		System.out.println(newPosition);
+		
 		BookMark bookMark = new BookMark(0, URLDecoder.decode(name, "utf-8"), url, description, userId,
-				status, posx, posy, imgUrl, 0, category);
+				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, category);
 
 		try {
 			name = URLDecoder.decode(name, "utf-8");
@@ -141,16 +118,10 @@ public class IndividualPageAction {
 
 		int maxBookmarkId = new IndividualPageServiceImpl()
 				.addBookMark(bookMark);
-		//수정전
-		//bookMarkList = new IndividualPageServiceImpl().bookMarkList(userId);
-		//request.getSession().setAttribute("bookMarkList", bookMarkList);
-
-		Member m = new MembershipServiceImpl().getMemberInfo(userId);
-		request.getSession().setAttribute("MEMBERINFO", m);
 
 		JSONObject jobj = new JSONObject();
-		jobj.put("x", posx);
-		jobj.put("y", posy);
+		jobj.put("x", newPosition.getPosX());
+		jobj.put("y", newPosition.getPosY());
 		jobj.put("id", maxBookmarkId);
 		jobj.put("imgUrl", imgUrl);
 		jobj.put("url", url);
@@ -160,6 +131,34 @@ public class IndividualPageAction {
 
 		traffic();
 		return nextPage;
+	}
+	
+	//아이콘을 배치할 x, y 좌표를  결정한다.
+	public static Position getPosition(ArrayList<Position> currentPosition, int rowLength, int colLength){
+		Position newPosition = new Position();
+		ArrayList<Integer> posYList = new ArrayList<Integer>();
+		
+		for(int col=1; col<=colLength; col++){
+			for(int i=0; i<currentPosition.size(); i++){
+				if(currentPosition.get(i).getPosX() == col)
+					posYList.add(currentPosition.get(i).getPosY());
+			}
+		
+			for(int row=1; row<=rowLength; row++){
+				if(!posYList.contains(row)){
+
+					newPosition.setPosX(col);
+					newPosition.setPosY(row);
+					return newPosition;
+				}
+					
+			}
+			
+			posYList.clear();
+		}
+		
+		
+		return newPosition;
 	}
 /*
 	@RequestMapping("/getBookMarkList")
@@ -240,8 +239,8 @@ public class IndividualPageAction {
 			Img img,
 			@RequestParam(value = "modifyBookmarkImage", required = false) MultipartFile file,
 			@RequestParam(value = "modifyBookmarkName") String name,
-			@RequestParam(value = "modifyBookmarkUrl") String url,
-			@RequestParam(value = "modifyBookmarkDescription") String desc,
+			@RequestParam(value = "modifyBookmarkUrl", required = false) String url,
+			@RequestParam(value = "modifyBookmarkDescription", required = false) String desc,
 			@RequestParam(value = "bookmarkId") int bookMarkId) {
 
 		System.out.println("name: " + name);
@@ -277,24 +276,31 @@ public class IndividualPageAction {
 		traffic();
 		return nextPage;
 	}
+	
+	@RequestMapping("/modifyCategory")
+	public ModelAndView modifyCategory(
+			HttpServletRequest request,
+			@RequestParam(value = "modifyBookmarkName") String name,
+			@RequestParam(value = "bookmarkId") int bookMarkId,
+			@RequestParam(value = "categoryId") int categoryId) {
+		
+		ModelAndView nextPage = new ModelAndView();
+		
+		BookMark bookMark = new BookMark(bookMarkId, name);
+		new IndividualPageServiceImpl().modifyMark(bookMark);
+		Category category = new Category(categoryId, name);
+		new IndividualPageServiceImpl().modifyCategory(category);
+		
+		request.setAttribute("result", "true");
+		nextPage.setViewName("result");
+		return nextPage;
+	}
 
 	@RequestMapping("/deleteMark")
 	public ModelAndView deleteMark(HttpServletRequest request,
 			HttpServletResponse response, Img img,
 			@RequestParam(value = "bookmarkId") int bookMarkId) {
 		ModelAndView nextPage = new ModelAndView();
-
-		BookMark bookmark=null;
-		//만약 category 삭제하는 거면 category Table에서도 제거
-		bookmark=new IndividualPageServiceImpl().getBookMark(bookMarkId);
-		if(bookmark.getBookMarkUrl().equals("")){// bookmark에 url이 없으면 -> 카테고리라면
-			HashMap<String, Object> category=new HashMap<>();
-			category.put("categoryName",bookmark.getBookMarkName());
-			category.put("userId",bookmark.getUserId());
-			//category 삭제
-			System.out.println("category삭제()");
-			new IndividualPageServiceImpl().deleteCategory(category);
-		}
 
 		new IndividualPageServiceImpl().deleteIcon(bookMarkId);
 
@@ -305,6 +311,46 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 	
+	@RequestMapping("/deleteCategory")
+	public ModelAndView deleteCategory(HttpServletRequest request,
+			HttpServletResponse response, Img img,
+			@RequestParam(value = "categoryId") int categoryId) {
+		ModelAndView nextPage = new ModelAndView();
+		ArrayList<Integer> deleteTargetList = new ArrayList<Integer>();
+		
+		
+		
+		System.out.println("categoryId: " + categoryId);
+		
+		deleteTargetList.add(categoryId);
+		getDeleteTargetList(categoryId, deleteTargetList, "bookmarkCategory");
+		// bookmark_category에서 리스트에 있는 아이디가 category_id와 일치하는 데이터 지운다.
+		// bookmark에서 리스트에 있는 아이디가 category와 일치하는 데이터를 지운다.
+		new IndividualPageServiceImpl().deleteBookMarkCategory(deleteTargetList);
+		
+		for(int i: deleteTargetList){
+			System.out.println(i);
+		}
+		
+		request.setAttribute("result", Boolean.toString(true));
+		nextPage.setViewName("result");
+		
+		traffic();
+		return nextPage;
+	}
+	
+	private void getDeleteTargetList(int categoryId,
+			ArrayList<Integer> deleteTargetList, String target) {
+		
+		ArrayList<Integer> targetList = new IndividualPageServiceImpl().getDeleteTargetList(target, categoryId);
+		
+		for(int i=0; i<targetList.size(); i++){
+			getDeleteTargetList(targetList.get(i), deleteTargetList, target);
+			deleteTargetList.add(targetList.get(i));
+		}
+
+	}
+
 	// 북마크 한 번에 여러 개 지울 때
 	@RequestMapping("/deleteBookMarks")
 	public ModelAndView deleteMarks(HttpServletRequest request,
@@ -347,15 +393,18 @@ public class IndividualPageAction {
 		JSONObject json = (JSONObject) JSONSerializer.toJSON(location);
 
 		JSONObject result = null;
-
+		
 		for (int i = 0; i < json.size(); i++) {
 			result = (JSONObject) json.get(String.valueOf(i));
-
+			
+			System.out.println("id: " + result.get("id") + ", row: " + result.get("row") + ", col: " + result.get("col"));
+			
 			int bookMarkId = Integer.parseInt(result.get("id").toString());
 			int posX = Integer.parseInt(result.get("row").toString());
 			int posY = Integer.parseInt(result.get("col").toString());
 			BookMark bookMark = new BookMark(bookMarkId, "", "", "", "", "",
 					posX, posY);
+			
 			new IndividualPageServiceImpl().arrangeIcon(bookMark);
 		}
 
@@ -408,9 +457,11 @@ public class IndividualPageAction {
 			while (m.find()) {
 				title = m.group();
 			}
-
-			title = title.replace("<title>", "");
-			title = title.replace("</title>", "");
+			
+			if(title != null){
+				title = title.replace("<title>", "");
+				title = title.replace("</title>", "");
+			}
 
 			flag = true;
 		} catch (MalformedURLException e) {
@@ -480,70 +531,7 @@ public class IndividualPageAction {
 		return nextPage;
 	}
 
-	//카테고리 추가
-	@RequestMapping("/addCategory")
-	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
-															   @RequestParam(value="userId",required=false)String userId,
-															   @RequestParam(value="categorySelect") String categorySelect) throws UnsupportedEncodingException{
-		System.out.println("addCategory()!!");
-		ModelAndView nextPage = new ModelAndView();
-		if(userId == null)
-			userId = (String)request.getSession().getAttribute("MEMBERID");
-		String imgUrl = "images/folder.png";
-		System.out.println("userID :"+userId);
-		System.out.println("categoryName: " + URLDecoder.decode(categoryName, "utf-8"));
-		String status="false";
-		int posx=0;
-		int posy=0;
-		ArrayList<BookMark> bookMarkList = null;
-		//사용자의 현재 해당하는 카테고리 북마크 리스트 가져오기
-		HashMap<String, Object> bookMarkInfo = new HashMap<>();
-		bookMarkInfo.put("userId", userId);
-		bookMarkInfo.put("category", categorySelect);
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);
-		
-		//만약 처음 북마크 추가이면 1,1 위치 삽입
-		if(bookMarkList.size()==0){
-			posx=1;
-			posy=1;
-		}else{////////////추가한 아이콘 제일 마지막 아이콘 옆에 배치!!
-			posx=new IndividualPageServiceImpl().bookMarkPosx(userId);
-			System.out.println("x="+posx);
-			//ParameterClass 2개라서 HashMap 이용 맞나?
-			HashMap<String, Object> pos=new HashMap<String, Object>();
-			pos.put("userId", userId);
-			pos.put("posX", posx);
-			posy=new IndividualPageServiceImpl().bookMarkPosy(pos); //x줄에 제일 마지막 y값
-			System.out.println("by="+posy);
-			posy++; //+1해서 다음에 놓을 곳 배치
-			System.out.println("ay="+posy);
-			if(posy==9){//다음줄로 넘기기
-				posx++;
-				posy=1;
-			}
-			
-		}
-		
-
-		BookMark bookMark = new BookMark(0,URLDecoder.decode(categoryName, "utf-8"), "", "", userId, status, posx, posy, imgUrl, 0,categorySelect);
-		Category category=new Category(0, URLDecoder.decode(categoryName, "utf-8"), userId);
-		//category폴더 bookmark Table에 저장
-		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
-		//User에 대한 category 내용 category Table에 저장
-		new IndividualPageServiceImpl().addCategory(category);
-		JSONObject jobj = new JSONObject();
-		jobj.put("x", posx);
-		jobj.put("y", posy);
-		jobj.put("id", maxBookmarkId);
-		jobj.put("imgUrl", imgUrl);
-		jobj.put("categoryName", categoryName);
-		
-		request.setAttribute("result", jobj);
-		nextPage.setViewName("result");
-		
-		traffic();
-		return nextPage;
-	}
+	
 	
 	// 사용자가 북마크 아이콘을 더블 클릭하여 즐겨찾기 URL 페이지에 접속할 경우 해당 북마크 frequency를 +1 한다.
 	@RequestMapping("/increaseFrequency")
@@ -586,28 +574,89 @@ public class IndividualPageAction {
 	@RequestMapping("/categoryOptionUpdate")
 	public ModelAndView categoryUpdate(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView nextPage = new ModelAndView();
-		String userId=(String)request.getSession().getAttribute("MEMBERID");
+		/*String userId=(String)request.getSession().getAttribute("MEMBERID");
 		ArrayList<Category> categoryList=new ArrayList<>();
 		categoryList=new IndividualPageServiceImpl().categoryList(userId);
 		JSONArray dataJ = JSONArray.fromObject(categoryList);
 		request.setAttribute("result",dataJ);
-		nextPage.setViewName("result");
+		nextPage.setViewName("result");*/
 		return nextPage;
 	}
+	
 	//카테고리 더블클릭시 해당하는 북마크 리스트 가져오기
 	@RequestMapping("/viewCategory")
-	public ModelAndView viewCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName){
+	public ModelAndView viewCategory(HttpServletRequest request,@RequestParam(value="categoryId") int categoryId){
 		ModelAndView nextPage = new ModelAndView();
 		ArrayList<BookMark> list=null;
 		String userId=(String)request.getSession().getAttribute("MEMBERID");
-		HashMap<String, Object> category=new HashMap<String, Object>();
-		category.put("userId", userId);
-		category.put("categoryName", categoryName);
-		list=new IndividualPageServiceImpl().listByCategory(category);
-		System.out.println(list.size());
-		JSONArray dataJ = JSONArray.fromObject(list);
+		
+		JSONObject dataJ = new JSONObject();
+		list = new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, categoryId));
+		JSONArray listJ = JSONArray.fromObject(list);
+		
+		dataJ.put("list", listJ);
+		
+		if(categoryId != 0){
+			int parentId = new IndividualPageServiceImpl().getParentId(categoryId);
+			dataJ.put("parentId", parentId);
+		}
+		
 		request.setAttribute("result", dataJ);
 		nextPage.setViewName("result");
+		return nextPage;
+	}
+	
+	//카테고리 추가
+	@RequestMapping("/addCategory")
+	public ModelAndView addCategory(HttpServletRequest request,@RequestParam(value="categoryName") String categoryName, 
+															   @RequestParam(value="userId",required=false)String userId,
+															   @RequestParam(value="parentId") int parentId) throws UnsupportedEncodingException{
+		ModelAndView nextPage = new ModelAndView();
+		if(userId == null)
+			userId = (String)request.getSession().getAttribute("MEMBERID");
+		
+		String imgUrl = "images/folder.png";
+		String status = "category";
+		
+
+		ArrayList<BookMark> bookMarkList = null;
+		//사용자의 현재 해당하는 카테고리 북마크 리스트 가져오기
+		HashMap<String, Object> bookMarkInfo = new HashMap<>();
+		bookMarkInfo.put("userId", userId);
+		bookMarkInfo.put("parentId", parentId);
+		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);
+		
+		ArrayList<Position> currentPosition = new ArrayList<Position>();
+		if(parentId != 0){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
+			currentPosition.add(new Position(1, 1));
+		}
+
+		ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(String.valueOf(parentId));
+		
+		currentPosition.addAll(d);
+
+		// 아이콘이 추가될 x,y 좌표를 받아온다.
+		Position newPosition = getPosition(currentPosition, 8, 4);
+		System.out.println("newPosition");
+		System.out.println(newPosition);
+		
+
+		Category category = new Category(categoryName, userId, newPosition.getPosX(), newPosition.getPosY(), imgUrl, status, parentId);
+		int maxCategoryId = new IndividualPageServiceImpl().addCategory(category);
+		category.setCategoryId(maxCategoryId);
+		int maxBookmarkId = new IndividualPageServiceImpl().addMark(category);
+		
+		JSONObject jobj = new JSONObject();
+		jobj.put("x", newPosition.getPosX());
+		jobj.put("y", newPosition.getPosY());
+		jobj.put("categoryId", maxCategoryId);
+		jobj.put("bookmarkId", maxBookmarkId);
+		jobj.put("imgUrl", imgUrl);
+		jobj.put("categoryName", categoryName);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+		
 		return nextPage;
 	}
 }
