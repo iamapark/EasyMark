@@ -40,8 +40,8 @@
 				<fieldset class="ui-grid-a">
 						<div class="ui-block-a"><button id="loginButton" data-theme="b" type="button" class="ui-btn-hidden" aria-disabled="false">Login</button></div>
 						<div class="ui-block-b"><button data-theme="b" type="reset" class="ui-btn-hidden" aria-disabled="false">Clear</button></div>
-		
 			    </fieldset>
+			    
 
 			</form>
 			<!-- /Login form end-->
@@ -49,6 +49,7 @@
 		계정이 없으신가요? <a data-rel="dialog" data-transition="pop" href="#registerPage">가입하기</a>
 	<!--Content end-->
 	</div>
+	
 
 	<!-- /page -->
 	</div>

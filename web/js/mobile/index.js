@@ -1,10 +1,14 @@
+
 var init = function(){
 	$('#loginButton').click(login);
 	$('#registerButton').click(register);
 	
 	$('#userId').focusout(idCheck);
+	$('#friends').click(friends);
+	$('#message').click(message);
+	
 };
-
+    
 var idCheck = function(){
 	console.log('idCheck');
 	
@@ -127,6 +131,29 @@ var login = function(){
 		console.log(data);
 		keke = data;
 	});
+};
+
+
+var friends=function(){
+	console.log('친구 눌럿당!');
+	$.ajax({
+		url:'../friends',
+		dataType:'json',
+			type:'Post',			
+	});//.done(function(data){
+		$.mobile.changePage('friends.jsp');
+	//});
+};
+
+var message=function(){
+	console.log('메세지 눌럿당!');
+	$.ajax({
+		url:'../message',
+		dataType:'json',
+			type:'Post',			
+	});//.done(function(data){
+		$.mobile.changePage('message.jsp');
+	//});
 };
 
 

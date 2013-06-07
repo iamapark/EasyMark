@@ -1,7 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<script src="../js/jquery.js"></script>
+<script src="../js/mobile/jquery.mobile-1.3.1.js"></script>
+<link href="../css/mobile/jquery.mobile-1.3.1.css" rel="stylesheet" media="screen">
+<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/knockout/2.2.1/knockout-2.2.1.js"></script>
+ -->
+
+
+</head>
+<body>
 <div data-role="page" id="bookmarkListPage" >
 	<div data-role="header" data-theme="b">
 	<button data-icon="gear">설정</button>
@@ -32,12 +46,18 @@
 		<div data-role="navbar">
 			<ul>
 				<li>
-					<a href="#friend">친구</a>
+					<a href="#friends" id="friends">친구</a>
 				</li>
 				<li>
-					<a href="#message">쪽지</a>
+					<a href="#message" id="message">쪽지</a>
 				</li>
 			</ul>
 		</div>
 	</div>
 </div>
+
+</body>
+
+<script src="../js/mobile/index.js"></script>
+
+</html>

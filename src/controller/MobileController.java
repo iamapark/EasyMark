@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import service.AdminServiceImpl;
+import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
 import dto.DashboardCount;
+import dto.Friendship;
 import dto.Login;
 import dto.Member;
+import dto.Message;
 
 @Controller
 public class MobileController {
@@ -151,6 +157,46 @@ public class MobileController {
 		
 		mav.setViewName("result"); 
 		return mav;
+	}
+	@RequestMapping("/friends")
+	public ModelAndView friends(HttpServletRequest request,
+			HttpServletResponse response){
+		
+		ModelAndView mav = new ModelAndView();
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!friends");
+		HttpSession session=request.getSession();
+		String userId=(String)session.getAttribute("MEMBERID");
+		ArrayList<Member> friendList=null;
+		Friendship friend= new Friendship(userId, "", "친구");
+		friendList=new FriendshipServiceImpl().getFriendList(friend);
+		for(int i=0;i<friendList.size();i++){
+			if(friendList.get(i).getImgUrl()==null)
+				friendList.get(i).setImgUrl("images/defaultProfile.jpg");
+		}
+		session.setAttribute("friendList", friendList);
+		//JSONArray dataJ = JSONArray.fromObject(friendList);
+		//System.out.println("mobile getFriendList : "+friendList.toString());
+		//System.out.println("friends 11 : "+dataJ.toString());
+		//request.setAttribute("result", "true");
+		mav.setViewName("result");
+		
+		return mav;
+		
+	}
+	@RequestMapping("/message")
+	public ModelAndView message(HttpServletRequest request,
+			HttpServletResponse response){
+		ModelAndView mav = new ModelAndView();
+		ArrayList<Message> messageList=null;
+		HttpSession session=request.getSession();
+		String userId=(String)session.getAttribute("MEMBERID");
+		messageList=new FriendshipServiceImpl().getInBox(userId);
+		session.setAttribute("messageList", messageList);
+		JSONArray dataJ = JSONArray.fromObject(messageList);
+		System.out.println("messageLIst : "+dataJ.toString());
+		mav.setViewName("result");
+		return mav;
+	
 	}
 
 }
