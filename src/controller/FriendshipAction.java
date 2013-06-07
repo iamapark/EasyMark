@@ -25,6 +25,7 @@ import util.MessageServer;
 import util.RelayServer;
 import dto.BookMark;
 import dto.BookMarkShip;
+import dto.Category;
 import dto.FriendStatus;
 import dto.Friendship;
 import dto.Member;
@@ -464,8 +465,12 @@ public class FriendshipAction {
 		
 		String friendId = (String)request.getSession().getAttribute("MEMBERID");
 		String status = "bookmark";
+		String userId = (String) request.getSession().getAttribute("MEMBERID");
 		
-		ArrayList<Position> currentPosition = new IndividualPageServiceImpl().bookMarkPos("0");
+		Category category = new Category();
+		category.setCategoryId(0);
+		category.setUserId(userId);
+		ArrayList<Position> currentPosition = new IndividualPageServiceImpl().bookMarkPos(category);
 		
 		// 아이콘이 추가될 x,y 좌표를 받아온다.
 		Position newPosition = IndividualPageAction.getPosition(currentPosition, 8, 4);

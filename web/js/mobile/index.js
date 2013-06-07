@@ -117,8 +117,7 @@ var login = function(){
 	}).done(function(data){
 		
 		if(data[0].flag == true){
-			console.log('로그인 성공');
-			$.mobile.changePage('main.jsp');
+			$.mobile.changePage('list.jsp');
 		}
 			
 		else
@@ -128,7 +127,6 @@ var login = function(){
 		keke = data;
 	});
 };
-
 
 // 초기화 함수
 init();

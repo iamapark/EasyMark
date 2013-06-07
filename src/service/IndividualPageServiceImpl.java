@@ -159,7 +159,7 @@ public class IndividualPageServiceImpl implements IndividualPageServiceIF {
 		}
 	}
 
-	public ArrayList<Position> bookMarkPos(String category) {
+	public ArrayList<Position> bookMarkPos(Category category) {
 		return BookMarkDAO.getInstance().bookMarkPos(category);
 	}
 

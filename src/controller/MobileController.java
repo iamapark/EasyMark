@@ -17,6 +17,7 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
 import dto.DashboardCount;
+import dto.ForBookMarkList;
 import dto.Login;
 import dto.Member;
 
@@ -67,10 +68,10 @@ public class MobileController {
 	 		session.setAttribute("MEMBERID", userId);
 	 		session.setAttribute("MEMBERINFO", m);
 
-	 		session.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId));
+	 		session.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
 			
 			JSONObject memberInfoJ = JSONObject.fromObject(new MembershipServiceImpl().getMemberInfo(userId));
-			JSONArray bookmarkListJ = JSONArray.fromObject(new IndividualPageServiceImpl().bookMarkList(userId));
+			JSONArray bookmarkListJ = JSONArray.fromObject(new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
 			JSONObject flagJ = JSONObject.fromObject("{flag: true}");
 			
 			dataJ.add(flagJ);

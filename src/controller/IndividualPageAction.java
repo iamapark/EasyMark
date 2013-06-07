@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -53,7 +54,7 @@ public class IndividualPageAction {
 			@RequestParam(value = "name") String name,
 			@RequestParam(value = "url") String url,
 			@RequestParam(value = "description") String description,
-			@RequestParam(value = "category") String category,
+			@RequestParam(value = "category") int categoryId,
 			@RequestParam(value = "userId", required = false) String userId) throws UnsupportedEncodingException {
 
 		System.out.println("addMark()!!");
@@ -93,11 +94,14 @@ public class IndividualPageAction {
 		String status = "bookmark";
 		
 		ArrayList<Position> currentPosition = new ArrayList<Position>();
-		if(!category.equals("0")){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
+		if(!(categoryId == 0)){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
 			currentPosition.add(new Position(1, 1));
 		}
 
-		ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(category);
+		Category categoryPos = new Category();
+		categoryPos.setCategoryId(categoryId);
+		categoryPos.setUserId(userId);
+		ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(categoryPos);
 		
 		currentPosition.addAll(d);
 
@@ -107,7 +111,7 @@ public class IndividualPageAction {
 		System.out.println(newPosition);
 		
 		BookMark bookMark = new BookMark(0, URLDecoder.decode(name, "utf-8"), url, description, userId,
-				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, category);
+				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, String.valueOf(categoryId));
 
 		try {
 			name = URLDecoder.decode(name, "utf-8");
@@ -193,8 +197,14 @@ public class IndividualPageAction {
 		int bookMarkId = Integer.parseInt(request.getParameter("bookMarkId"));
 
 		bookMark = new IndividualPageServiceImpl().getBookMark(bookMarkId);
-
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("MEMBERID");
+		
+		ArrayList<Category> categoryList = new IndividualPageServiceImpl().getCategoryList(userId);
+		
 		JSONArray bookMarkJ = JSONArray.fromObject(bookMark);
+		bookMarkJ.add(MembershipAction.getCategoryTree(categoryList).toString());
+		
 		request.setAttribute("result", bookMarkJ.toString());
 		nextPage.setViewName("result");
 
@@ -241,14 +251,13 @@ public class IndividualPageAction {
 			@RequestParam(value = "modifyBookmarkName") String name,
 			@RequestParam(value = "modifyBookmarkUrl", required = false) String url,
 			@RequestParam(value = "modifyBookmarkDescription", required = false) String desc,
-			@RequestParam(value = "bookmarkId") int bookMarkId) {
-
-		System.out.println("name: " + name);
-		System.out.println("url: " + url);
-		System.out.println("desc: " + desc);
+			@RequestParam(value = "bookmarkId") int bookMarkId,
+			@RequestParam(value = "categoryId") int categoryId,
+			@RequestParam(value = "flag") boolean flag) {
 
 		ModelAndView nextPage = new ModelAndView();
-
+		Position newPosition = new Position();
+		
 		String userId = (String) request.getSession().getAttribute("MEMBERID");
 		String imgUrl = null;
 
@@ -263,9 +272,33 @@ public class IndividualPageAction {
 						+ file.getOriginalFilename();
 			}
 		}
+		
+		// flag=true, 북마크의 현재 카테고리와 선택된 카테고리가 같을 때, 좌표를 수정해서는 안됨
+		if(!flag){
+			
+			ArrayList<Position> currentPosition = new ArrayList<Position>();
+			if(categoryId != 0){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
+				currentPosition.add(new Position(1, 1));
+			}
+			
+			Category category = new Category();
+			category.setCategoryId(categoryId);
+			category.setUserId(userId);
 
+			ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(category);
+			
+			currentPosition.addAll(d);
+
+			// 아이콘이 추가될 x,y 좌표를 받아온다.
+			newPosition = getPosition(currentPosition, 8, 4);
+
+		}else{
+			newPosition.setPosX(0);
+			newPosition.setPosY(0);
+		}
+		
 		BookMark bookMark = new BookMark(bookMarkId, name, url, desc, "", "",
-				0, 0, imgUrl, 0, "");
+				newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, String.valueOf(categoryId));
 		new IndividualPageServiceImpl().modifyMark(bookMark);
 
 		JSONObject jobj = new JSONObject();
@@ -618,30 +651,23 @@ public class IndividualPageAction {
 		String imgUrl = "images/folder.png";
 		String status = "category";
 		
-
-		ArrayList<BookMark> bookMarkList = null;
-		//사용자의 현재 해당하는 카테고리 북마크 리스트 가져오기
-		HashMap<String, Object> bookMarkInfo = new HashMap<>();
-		bookMarkInfo.put("userId", userId);
-		bookMarkInfo.put("parentId", parentId);
-		bookMarkList = new IndividualPageServiceImpl().bookMarkList(bookMarkInfo);
-		
 		ArrayList<Position> currentPosition = new ArrayList<Position>();
 		if(parentId != 0){ // 바탕화면이 아닐 경우 1,1 좌표는 비워둔다. 상위 카테고리로 올라가는 아이콘을 배치해야하기 때문임.
 			currentPosition.add(new Position(1, 1));
 		}
 
-		ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(String.valueOf(parentId));
+		Category category = new Category();
+		category.setCategoryId(parentId);
+		category.setUserId(userId);
+		
+		ArrayList<Position> d = new IndividualPageServiceImpl().bookMarkPos(category);
 		
 		currentPosition.addAll(d);
 
 		// 아이콘이 추가될 x,y 좌표를 받아온다.
 		Position newPosition = getPosition(currentPosition, 8, 4);
-		System.out.println("newPosition");
-		System.out.println(newPosition);
-		
 
-		Category category = new Category(categoryName, userId, newPosition.getPosX(), newPosition.getPosY(), imgUrl, status, parentId);
+		category = new Category(categoryName, userId, newPosition.getPosX(), newPosition.getPosY(), imgUrl, status, parentId);
 		int maxCategoryId = new IndividualPageServiceImpl().addCategory(category);
 		category.setCategoryId(maxCategoryId);
 		int maxBookmarkId = new IndividualPageServiceImpl().addMark(category);

@@ -89,6 +89,7 @@ var bookMarkInit = function(newEntry) {
 	$(newEntry).mouseover(mouseOverBookmarkInfo).mouseout(bookMarkOut);
 };
 
+// 화면에서 아이콘을 드래그하여 위치를 옮겼을 때 옮겨진 위치를 DB에 저장
 var bookMarkArrange = function(e) {
 
 	var wgd = gridster.serialize_changed();
@@ -138,13 +139,18 @@ var mouseOverBookmarkInfo = function(e) {
 $('#modify').click(
 		function(e) {
 			e.preventDefault();
-			 filename = $('#bookmarkIconImageFile').val();
-			 name = $('#modifyBookmarkName').val();
-			 url = $('#modifyBookmarkUrl').val();
-			 desc = $('#modifyBookmarkDescription').val();
-			 bookmarkId = $('#modifyBookMarkId').val();
-			
-
+			 var filename = $('#bookmarkIconImageFile').val();
+			 var name = $('#modifyBookmarkName').val();
+			 var url = $('#modifyBookmarkUrl').val();
+			 var desc = $('#modifyBookmarkDescription').val();
+			 var bookmarkId = $('#modifyBookMarkId').val();
+			 var categoryId = selectedCategoryId;
+			 var flag = false;
+			 
+			 if(currentPageCategoryId == categoryId){
+				 flag = true;
+			 }
+			 
 			/*
 			 * 변경한 url의 앞부분이 http://로 시작할 경우 그 부분을 삭제한다.
 			 * if(url.match('^http://')){ url = url.replace('http://', ''); }
@@ -159,30 +165,46 @@ $('#modify').click(
 						modifyBookmarkName : name,
 						modifyBookmarkUrl : url,
 						modifyBookmarkDescription : desc,
-						bookmarkId : bookmarkId
+						bookmarkId : bookmarkId,
+						categoryId: categoryId,
+						flag: flag
 					}
 				}).done(function(data) {
-						$('li[data-id="' + bookmarkId + '"]').find(
-								'.bookmarkIconInfo').text(
-								$('#modifyBookmarkName').val());
-						$('li[data-id="' + bookmarkId + '"]').find('img')
-								.attr('href', url);
+						if(flag){
+							$('li[data-id="' + bookmarkId + '"]').find(
+									'.bookmarkIconInfo').text(
+									$('#modifyBookmarkName').val());
+							$('li[data-id="' + bookmarkId + '"]').find('img')
+									.attr('href', url);
+							
+						}else{
+							gridster.remove_widget($('li[data-id="' + bookmarkId + '"]'));
+						}
+						
 						alert('북마크 정보를 변경하였습니다.');
 						$('#bookMarkInfo').modal('hide');
 					});
 			} else {
 				console.log('이미지 변경');
+				$('#hiddenBookmarkModifyCategory').val(categoryId);
+				$('#hiddenBookmarkModifyFlag').val(flag);
+				
 				$("#modifyBookMarkForm").ajaxSubmit({
 					
 					dataType : 'html',
 					success : function(data, rst) {
-						$('li[data-id="' + bookmarkId + '"]').find(
-								'.bookmarkIconInfo').text(name);
-						$('li[data-id="' + bookmarkId + '"]').find(
-								'img').attr('src',
-								JSON.parse(data).imgUrl);
-						$('li[data-id="' + bookmarkId + '"]').find(
-								'img').attr('href', url);
+						if(flag){
+							$('li[data-id="' + bookmarkId + '"]').find(
+							'.bookmarkIconInfo').text(name);
+							$('li[data-id="' + bookmarkId + '"]').find(
+									'img').attr('src',
+									JSON.parse(data).imgUrl);
+							$('li[data-id="' + bookmarkId + '"]').find(
+									'img').attr('href', url);
+						}else{
+							gridster.remove_widget($('li[data-id="' + bookmarkId + '"]'));
+						}
+						
 						alert('북마크 정보를 변경하였습니다.');
 						$('#bookMarkInfo').modal('hide');
 					}
@@ -272,13 +294,31 @@ var bookmarkUpdate = function() {
 		}
 	}).done(function(data) {
 		kaka = data;
-		$('#modifyBookmarkName').val($(data).attr('bookMarkName'));
-		$('#modifyBookmarkUrl').val($(data).attr('bookMarkUrl'));
-		$('#modifyBookmarkDescription').val($(data).attr('bookMarkDescript'));
-		$('#bookmarkIconImage').attr('src', $(data).attr('imgUrl'));
+		$('#modifyBookmarkName').val($(data[0]).attr('bookMarkName'));
+		$('#modifyBookmarkUrl').val($(data[0]).attr('bookMarkUrl'));
+		$('#modifyBookmarkDescription').val($(data[0]).attr('bookMarkDescript'));
+		$('#bookmarkIconImage').attr('src', $(data[0]).attr('imgUrl'));
 		$('#modifyBookMarkId').val($bookid);
+		
+		var ol = makeChildren(data[1], 'modifyBookmarkClick');
+		
+		$('#modifyCategoryOl').empty();
+		$('#modifyCategoryOl').append($(ol));
+		
 	});
+	
+	$('input:file').val("");
+	selectedCategoryId = 0;
 	$('#bookMarkInfo').modal('show');
+};
+
+var modifyBookmarkClick = function(li){
+	
+	$('#modifyCategoryOl .tree li label').removeClass('selectedLabel2');
+	$(li).addClass('selectedLabel2');
+
+	var categoryName = $(li).text();
+	selectedCategoryId = $(li).attr('for').split('category-')[1];
 };
 
 // 북마크에서 마우스 오른쪽 버튼을 누르고 북마크 삭제 탭을 클릭했을 때

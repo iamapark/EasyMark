@@ -134,5 +134,8 @@ public class Category {
 	}
 
 	
-	
+	@Override
+	public String toString(){
+		return "categoryId: " + getCategoryId() + ", userId: " + getUserId();
+	}
 }

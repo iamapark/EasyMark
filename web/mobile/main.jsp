@@ -6,6 +6,7 @@
 	<div data-role="header" data-theme="b">
 		<a href="#myInfo" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
 		<h1>${MEMBERID}님 환영합니다</h1>
+		<a href="#indexPage" id="logoutButton">로그아웃</a>
 	</div>
 	
 	<div data-role="content">
@@ -16,13 +17,25 @@
 					<span class="ui-li-count">${bookmark.frequency}</span>
 				</li>
 				<li>
-					<a href="${bookmark.bookMarkUrl}">
-						<img src="../${bookmark.imgUrl}">
-						<h3>${bookmark.bookMarkUrl}</h3>
-						<p>
-							${bookmark.bookMarkDescript}
-						</p>
-					</a>
+					<c:if test="${bookmark.status=='category'}">
+						<a href="category_page.html" data-categoryid="${bookmark.category}">
+							<img src="../${bookmark.imgUrl}">
+							<h3>${bookmark.bookMarkUrl}</h3>
+							<p>
+								${bookmark.bookMarkDescript}
+							</p>
+						</a>
+					</c:if>
+					
+					<c:if test="${bookmark.status=='bookmark'}">
+						<a target="_blank" href="${bookmark.bookMarkUrl}">
+							<img src="../${bookmark.imgUrl}">
+							<h3>${bookmark.bookMarkUrl}</h3>
+							<p>
+								${bookmark.bookMarkDescript}
+							</p>
+						</a>
+					</c:if>
 				</li>
 			</c:forEach>
 		</ul>
@@ -65,7 +78,20 @@
 			<div class="ui-block-a"><button id="loginButton" data-theme="b" type="button" class="ui-btn-hidden" aria-disabled="false">수정</button></div>
 	    </fieldset>
    </div><!-- /panel -->
+   
+   
+	<div data-role="page" id="categoryPage">
+		<div data-role="header" data-theme="b">
+			카테고리 상세보기 페이지
+		</div>
+		
+		<div data-role="content" data-theme="b">
+			카테고리 안에 있는 카테고리 및 북마크 아이콘 리스트가 들어갈 공간입니다.
+		</div>
+	</div>
+   
 </div>
 
 
- 
+
+ <script src="../js/mobile/main.js"></script>
