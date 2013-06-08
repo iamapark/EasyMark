@@ -85,9 +85,17 @@
 			  		<h3>쪽지 보내기</h3>
 			  			<div class = "box-content">
 			  				
-							<div class="input-prepend">
+							<!-- <div class="input-prepend">
 								<span class="add-on" style="padding:14px">받는 사람</span>
 								<input class="span2" id="messageFriendId" style="padding:14px" type="text" name="searchName" placeholder="친구 아이디">
+							</div> -->
+							<div class="control-group">
+								<label class="control-label" for="inputId">Friend ID</label>
+									<div class="controls">
+										<select id="messageFriendId">
+												
+										</select>
+									</div>
 							</div>
 							<div>
 								<textarea id="messageContents" style="width:90%;" rows="4" cols="20"></textarea>

@@ -17,6 +17,17 @@ import dto.User;
 
 public interface FriendshipServiceIF {
 	
+	
+	public ArrayList<Member> getFriendList(Friendship friend);
+	
+	public Member getKey(String userId);
+	
+	public ArrayList<FriendStatus> getFriendStatus(FriendStatus friendStatus);
+	
+	public ArrayList<Member> takeFriendReqList(Friendship friendship);
+	
+	public ArrayList<Member> sendFriendReqList(Friendship friendship);
+	
 	/**
 	 * 사용자가 아이디로 검색하여 결과 리스트를 불러오는 메소드
 	 * @param Me2DayMember 미투데이 계정에 관한 정보가 담겨있는 변수
@@ -24,10 +35,12 @@ public interface FriendshipServiceIF {
 	 */
 	public ArrayList<Member> searchFriend(User searchUser);
 	
-	public Member getKey(String userId);
-	public ArrayList<Member> getFriendList(Friendship friend);
 	
-	public ArrayList<FriendStatus> getFriendStatus(FriendStatus friendStatus);
+	
+	
+	
+	
+	
 
 	
 //	public ArrayList<String> getNameList(String keyword);
@@ -37,7 +50,7 @@ public interface FriendshipServiceIF {
 	 * @param String 친구 요처을 받는 아이디
 	 * @return void
 	 */
-	public Member me2Friend(String me2FriendId);
+	public Member me2dayFriend(String me2FriendId);
 	
 	public void requestFriend(Friendship friendship);
 	/**
@@ -62,27 +75,24 @@ public interface FriendshipServiceIF {
 	 * @param String 사용자 아이디
 	 * @return ArrayList<Message> 쪽지 리스트
 	 */
-	public ArrayList<Member> takeFriendReqList(Friendship friendship);
-	
-	public ArrayList<Member> sendFriendReqList(Friendship friendship);
 	
 	
 	public void deleteMessage(String messageId);
 	public Message getMessage(String messageId);
 	public void updateMessage(Message message);
-	public ArrayList<Message> getOutBox(Message message);
+	public ArrayList<Message> outBox(Message message);
 	/**
 	 * 받은 쪽지 리스트
 	 * @param String 사용자 아이디
 	 * @return ArrayList<Message> 쪽지 리스트
 	 */
-	public ArrayList<Message> getInBox(Message message);
+	public ArrayList<Message> inBox(Message message);
 	/**
 	 * 특정 사용자에게 쪽지를 보낸다.
 	 * @param Message 보내는 쪽지에 대한 정보가 담겨 있는 변수
 	 * @return int
 	 */
-	public ArrayList<Message> newMessageCount(Message message);
+	public ArrayList<Message> messageCount(Message message);
 	public boolean sendMessage(Message message);
 	//public void sendMessage(Message message);
 	/**
@@ -109,10 +119,10 @@ public interface FriendshipServiceIF {
 	 * @return void
 	 */
 	// 추천받은 웹페이지 목록 가져오기
-	public ArrayList<BookMarkShip> inWeb(String userId);
+	public ArrayList<BookMarkShip> recommendInWeb(String userId);
 	
 	// 추천 한 웹페이지 목록 가져오기
-	public ArrayList<BookMarkShip> outWeb(String userId);
+	public ArrayList<BookMarkShip> recommendOutWeb(String userId);
 	
 
 	public void accept(Friendship friendship);
@@ -120,10 +130,9 @@ public interface FriendshipServiceIF {
 	public void cancel(Friendship friendship);
 
 	
+	public void recommend(BookMarkShip bookmarkship);
 	
-	public void recommendSite(BookMarkShip bookmarkship);
-	
-	public void bookmarkCancel(String bookMarkId);
+	public void recommendCancel(String bookMarkId);
 	
 	
 	public BookMark selectBookMark(int bookMarkId);

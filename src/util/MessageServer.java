@@ -62,7 +62,14 @@ public class MessageServer {
 					public void handle(JsonObject data){
 						System.out.println("socket.on?");
 						System.out.println("message"+data.getString("message"));
+						System.out.println("friendId:"+data.getString("friendId"));
+						
 						sendMessage(data.getString("friendId"), data.getString("message"), data.getInteger("num"));
+						/*for(int i=0; i<messageFriend.length; i++){
+							
+							messageFriend[i] = messageFriend[i].trim();	
+							sendMessage(messageFriend[i], data.getString("message"), data.getInteger("num"));
+						}*/
 					}
 				});
 				
@@ -104,16 +111,29 @@ public class MessageServer {
 	public void sendMessage(String id, String msg, int num){
 		System.out.println("(전송)id: " + id + ", msg: " + msg);
 		JsonObject data = new JsonObject();
-		
+	
 		data.putString("msg", msg);
 		data.putString("friend", id);
 		data.putNumber("num", num);
 		
-		System.out.println(data.getString("msg"));
-		System.out.println(data);
+		if(sockets.get(id) != null){
+			sockets.get(id).emit("message", data);
+		} else { }
 		
-		System.out.println("보내는 socket: " + sockets.get(id));
-		sockets.get(id).emit("message", data);
+		/*String []messageId = id.split(",");
+		
+		for(int i=0; i<messageId.length; i++){	
+			data.putString("msg", msg);
+			data.putString("friend", messageId[i]);
+			data.putNumber("num", num);
+			System.out.println(messageId[i]);
+			System.out.println(sockets.get(messageId[i].trim()));
+			
+			if(sockets.get(messageId[i].trim()) != null){
+				System.out.println("dddd");
+				sockets.get(messageId[i].trim()).emit("message", data);
+			} else { }
+		}*/
 	}
 
 	public boolean isContains(String userId) {

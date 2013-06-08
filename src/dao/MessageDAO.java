@@ -83,7 +83,7 @@ public class MessageDAO {
 		}
 	}
 	
-	public ArrayList<Message> newMessageCount(Message message){
+	public ArrayList<Message> messageCount(Message message){
 		ArrayList<Message> newMessage = new ArrayList<Message>();
 		try {
 			newMessage = (ArrayList<Message>) sqlMapper.queryForList("newMessageNum", message);

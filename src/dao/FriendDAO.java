@@ -64,7 +64,7 @@ public class FriendDAO {
 		return friendListBar;
 	}
 
-	public Member me2Friend(String me2FriendId) {
+	public Member me2dayFriend(String me2FriendId) {
 		Member me2friend = null;
 
 		try {
@@ -123,7 +123,7 @@ public class FriendDAO {
 		return resultList;
 	}
 
-	public void insertFriend(Friendship friendship) {
+	public void requestFriend(Friendship friendship) {
 		try {
 			sqlMapper.insert("insertFriend", friendship);
 		} catch (SQLException e) {
@@ -218,7 +218,7 @@ public class FriendDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<BookMarkShip> outWebList(String userId) {
+	public ArrayList<BookMarkShip> recommendOutWeb(String userId) {
 		ArrayList<BookMarkShip> outWebList = null;
 		try {
 			outWebList = (ArrayList<BookMarkShip>) sqlMapper.queryForList(
@@ -230,7 +230,7 @@ public class FriendDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<BookMarkShip> inWebList(String userId) {
+	public ArrayList<BookMarkShip> recommendInWeb(String userId) {
 		ArrayList<BookMarkShip> inWebList = null;
 		try {
 			inWebList = (ArrayList<BookMarkShip>) sqlMapper.queryForList(
@@ -241,7 +241,7 @@ public class FriendDAO {
 		return inWebList;
 	}
 
-	public void bookMarkCancel(String bookMarkId) {
+	public void recommendCancel(String bookMarkId) {
 		try {
 			sqlMapper.delete("bookMarkCancel", bookMarkId);
 		} catch (SQLException e) {

@@ -154,7 +154,7 @@ public class MembershipAction {
 				request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId + "@me2day"));
 
 				Message message = new Message(0, login.getUserId(), "", null, "", new Date(), "", 0, "take");
-				ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+				ArrayList<Message> newMessage = new FriendshipServiceImpl().messageCount(message);
 				int newMessageCount = newMessage.size();
 				request.getSession().setAttribute("newMessageCount", newMessageCount);
 				
@@ -211,10 +211,9 @@ public class MembershipAction {
 			request.setAttribute("MEMBERINFO", m);
 
 			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
-			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+			ArrayList<Message> newMessage = new FriendshipServiceImpl().messageCount(message);
 			int newMessageCount = newMessage.size();
 			request.getSession().setAttribute("newMessageCount", newMessageCount);
-			System.out.println("새 메시지 수 : "+newMessageCount);
 			
 			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
 			mav.setViewName("main");
