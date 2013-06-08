@@ -145,7 +145,15 @@
 		SET
 		bookmark_name=#bookMarkName#,
 		bookmark_url=#bookMarkUrl#,
-		bookmark_descript=#bookMarkDescript#
+		bookmark_descript=#bookMarkDescript#,
+		category=#category#
+		<isNotEqual property="posX" compareValue="0">
+			,pos_x=#posX#	
+		</isNotEqual>
+		<isNotEqual property="posY" compareValue="0">
+			,pos_y=#posY#	
+		</isNotEqual>
+		
 		<isNotNull property="imgUrl">
 			, img_url=#imgUrl#
 		</isNotNull>
@@ -228,16 +236,16 @@
 		WHERE category = #categoryId# and status = 'category'
 	</delete>
 	
-	<!-- 추가 6/6 -->
-	<select id="bookMarkPos" parameterClass="String" resultMap="PositionList">
+	<!-- 추가 6/6  수정 6/7-->
+	<select id="bookMarkPos" parameterClass="Category" resultMap="PositionList">
 		SELECT 
 			pos_x, pos_y 
 		from 
 			bookmark 
 		WHERE  
-			(category IN(SELECT category_id FROM bookmark_category 
-						 WHERE parent_category_id=#category#) 
-				     OR (category=#category# AND status='bookmark'))
+			((category IN(SELECT category_id FROM bookmark_category 
+						 WHERE parent_category_id=#categoryId# and user_id=#userId#) and status='category') 
+				     OR (category=#categoryId# AND status='bookmark' and user_id=#userId#))
 		ORDER BY pos_x, pos_y				     
 	</select>
 </sqlMap>

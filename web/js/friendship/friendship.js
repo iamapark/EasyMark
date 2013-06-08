@@ -759,6 +759,10 @@ var fillSendMessageDetail = function(data){
 $('#messageSendButton').click(function(e){
 	var messageFriendId = $('#messageFriendId').val();
 	var messageContents = $('#messageContents').val();
+<<<<<<< HEAD
+=======
+	messageContents = encodeURI(messageContents);
+>>>>>>> 89241af2339ee60312316a600e2a9688606224d8
 	
 	console.log('받는 사람: ' + messageFriendId);
 	console.log('내용: ' + messageContents);

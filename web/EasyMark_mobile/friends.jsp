@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, dto.Member, controller.MobileController" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	String userId = (String) session.getAttribute("MEMBERID");
+	ArrayList<Member> friendList = new MobileController().getFriendList(userId);
+	
+	pageContext.setAttribute("friendList", friendList);
+			
+%>
 <!DOCTYPE html> 
 <html> 
     <head> 
@@ -14,19 +22,25 @@
 <!-- Start of second page -->
 <div data-role="page" id="bar">
  
-    <div data-role="header">
-        <h1>FriendList</h1>
+    <div data-role="header" data-theme="b">
+    	<a href="#" data-icon="bars"  data-shadow="false" data-iconshadow="false" data-rel="back" data-transition="slide" data-direction="reverse">뒤로</a>
+        <h1>친구 목록</h1>
     </div><!-- /header -->
  
     <div data-role="content"> 
    <ul data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Search friend">
    <c:forEach var="friendList" items="${friendList}">
-    <li><a href="#">
-        <img src="../${friendList.imgUrl}" id="${friendList.userId }">
-        <h2>${friendList.name}</h2></a>
-    </li>
-    
-    </c:forEach>
+	   <li data-role="list-driver" data-theme="b">
+			${friendList.userId}
+	   </li>
+	   <li>
+		   <img src="../${friendList.imgUrl}">
+		   <h3>${friendList.name}</h3>
+		   <p>
+		   	  ${friendList.email}
+		   </p>
+	   </li>
+   </c:forEach>
 </ul>
 
     </div><!-- /content -->
@@ -35,15 +49,14 @@
 		<div data-role="navbar">
 			<ul>
 				<li>
-					<a href="#friends" id="friends">친구</a>
+					<a href="main.jsp?currentCategory=0">북마크</a>
 				</li>
 				<li>
-					<a href="#message" id="message">쪽지</a>
+					<a href="message.jsp?userId=${MEMBERID}">쪽지</a>
 				</li>
 			</ul>
 		</div>
 	</div><!-- /footer -->
 </div><!-- /page -->
 </body>
-<script src="../js/mobile/index.js"></script>
 </html>

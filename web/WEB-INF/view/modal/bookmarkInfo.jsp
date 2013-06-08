@@ -91,7 +91,8 @@
         	<label class="control-label" for="addBookMarkCategory">Category</label>
          	<div class="controls">
               	<div id="modifyCategoryOl"></div>
-              	<input type="hidden" id="hiddenBookmarkModifyCategory" name="modifyBookMarkCategory" />
+              	<input type="hidden" id="hiddenBookmarkModifyCategory" name="categoryId" />
+              	<input type="hidden" id="hiddenBookmarkModifyFlag" name="flag" />
             </div>
         </div>
 	</div>

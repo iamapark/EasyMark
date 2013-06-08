@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, dto.Message, controller.MobileController" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-
+<%
+	String userId = request.getParameter("userId");
+	ArrayList<Message> messageList = new MobileController().getMessageList(userId);
+	
+	pageContext.setAttribute("messageList", messageList);
+%>
 <!DOCTYPE html> 
 <html> 
     <head> 
@@ -17,21 +22,22 @@
 <!-- Start of second page -->
 <div data-role="page" id="bar">
  
-    <div data-role="header">
-        <h1>MessageList</h1>
+    <div data-role="header" data-theme="b">
+    	<a href="#" data-icon="bars"  data-shadow="false" data-iconshadow="false" data-rel="back" data-transition="slide" data-direction="reverse">뒤로</a>
+        <h1>받은 쪽지함</h1>
     </div><!-- /header -->
  
     <div data-role="content"> 
   <ul data-role="listview" data-inset="true">
   <c:forEach var="message" items="${messageList}" >
  
-    <li data-role="list-divider"> <fmt:formatDate value="${message.messageDate}" pattern="yyyy-MM-dd"/> </li>
-    <li><a href="index.html">
+    <li data-theme="b"data-role="list-divider"> <fmt:formatDate value="${message.messageDate}" pattern="yyyy-MM-dd"/> </li>
+    <li>
         <h2>${message.title}</h2>
          <p><strong>보낸사람 : ${message.userId}</strong></p>
         <p>${message.contents}</p>
         <p class="ui-li-aside"></p>
-    </a></li>
+    </li>
     </c:forEach>
 </ul>
 
@@ -41,10 +47,10 @@
 		<div data-role="navbar">
 			<ul>
 				<li>
-					<a href="#friends" id="friends">친구</a>
+					<a href="main.jsp?currentCategory=0" id="friends">북마크</a>
 				</li>
 				<li>
-					<a href="#message" id="message">메세지</a>
+					<a href="friends.jsp?userId=${MEMBERINFO.userId}">친구</a>
 				</li>
 			</ul>
 		</div>

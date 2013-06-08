@@ -104,6 +104,7 @@ var loginButtonClicked = function(){
  * '미투데이 계정으로 등록하기' 링크를 눌렀을 경우 호출되는 함수
  * */
 var me2dayRegister = function(){
+	console.log('me2dayRegister');
 	// jQuery Ajax Call
 	$.ajax({
 		url: 'Proxy/proxy.jsp', // javascript same origin policy를 해결하기 위한 프록시

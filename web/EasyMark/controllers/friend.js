@@ -27,3 +27,18 @@ tipJS.controller({
 		this.renderTemplate(_templateConfig); // renderTo 에 넣는것..
 	}
 });
+
+tipJS.controller({
+	name : "EasyMark.hello",
+	invoke:function(params){
+		console.log('EasyMark.hello');
+		var _templateConfig = {
+				url:"EasyMark/templates/sendRequestTable.tpl",
+				renderTo:"sendRequestTable", // tag id (div id=friendDataTable)
+				data:{
+					array:params // ["", "", ""]
+				}
+		};
+		this.renderTemplate(_templateConfig); // renderTo 에 넣는것..
+	}
+});

@@ -1,6 +1,7 @@
 tipJS.define({
 	name:'EasyMark',
 	controllers:[
-	      "friend.js"
+	      "friend.js",
+	      "list.js"
 	]
 });

@@ -3,8 +3,8 @@ tipJS.config({
 	coCacheVersion:"1.000",
 	noCacheAuto:true,
 	noCacheParam:"noCacheVersion",
-	
+		
 	applicationPath:{
-		EasyMark : 'EasyMark'
+		EasyMark : '../EasyMark'
 	}
 });

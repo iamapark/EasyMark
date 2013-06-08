@@ -171,7 +171,7 @@ public class BookMarkDAO {
 		return result;
 	}
 
-	public ArrayList<Position> bookMarkPos(String category) {
+	public ArrayList<Position> bookMarkPos(Category category) {
 		ArrayList<Position> list = null;
 		
 		try{

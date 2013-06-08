@@ -127,4 +127,16 @@ public class CategoryDAO {
 		return result;
 	}
 	
+	public String getCategoryName(int categoryId){
+		String name = "";
+		
+		try{
+			name = (String) sqlMapper.queryForObject("getCategoryName", categoryId);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		return name;
+	}
+	
 }
