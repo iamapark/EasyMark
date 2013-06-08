@@ -741,7 +741,8 @@ var fillSendMessageDetail = function(data){
 $('#messageSendButton').click(function(e){
 	var messageFriendId = $('#messageFriendId').val();
 	var messageContents = $('#messageContents').val();
-
+	messageContents = encodeURI(messageContents);
+	
 	console.log('받는 사람: ' + messageFriendId);
 	console.log('내용: ' + messageContents);
 	

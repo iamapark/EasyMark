@@ -402,6 +402,8 @@ public class FriendshipAction {
 
 		}
 		
+		System.out.println("contents: " + contents);
+		
 		new FriendshipServiceImpl().sendMessage(msg);
 		
 		ModelAndView mav = new ModelAndView();

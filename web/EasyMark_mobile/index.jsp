@@ -6,18 +6,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
-<script src="../js/jquery.js"></script>
-<script src="../js/mobile/jquery.mobile-1.3.1.js"></script>
-<link href="../css/mobile/jquery.mobile-1.3.1.css" rel="stylesheet" media="screen">
-<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/knockout/2.2.1/knockout-2.2.1.js"></script> -->
-
-
+<script src="js/jquery.js"></script>
+<script src="js/jquery.form.js"></script>
+<link href="css/mobile/jquery.mobile-1.3.1.css" rel="stylesheet" media="screen">
+<script src="Easymark_mobile/js/index.js"></script>
+<script src="js/mobile/jquery.mobile-1.3.1.js"></script>
 </head>
 <body>
 	<div data-role="page" data-theme="b" id="indexPage">
 
 		<div data-role="header" data-theme="b" data-icon="home">
 			<h1>EasyMark 로그인</h1>
+			<a href="list.html">kaka</a>
 		</div><!-- /header -->
 
 
@@ -40,20 +40,23 @@
 				<fieldset class="ui-grid-a">
 						<div class="ui-block-a"><button id="loginButton" data-theme="b" type="button" class="ui-btn-hidden" aria-disabled="false">Login</button></div>
 						<div class="ui-block-b"><button data-theme="b" type="reset" class="ui-btn-hidden" aria-disabled="false">Clear</button></div>
-		
 			    </fieldset>
+			    
 
 			</form>
 			<!-- /Login form end-->
 		<hr>
 		계정이 없으신가요? <a data-rel="dialog" data-transition="pop" href="#registerPage">가입하기</a>
+		
+		<div id="sendRequestTable"></div>
 	<!--Content end-->
 	</div>
+	
 
 	<!-- /page -->
 	</div>
 	
-	
+	<!-- 회원가입 페이지 -->
 	<div data-role="page" data-theme="b" id="registerPage">
 	<div data-role="header" data-theme="b">
 		<h1>EasyMark 회원가입</h1>
@@ -97,8 +100,21 @@
 			<!-- /Register form end-->
 		</div>
 	</div>
+	<!-- 회원가입 페이지 종료 -->
+	
+	<div data-role="page" id="bookmarkListPage">
+		<div data-role="header" data-theme="b">
+			<a href="#myInfo" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+			<h1><span id="headerUserId"></span>님 환영합니다</h1>
+			<a href="#indexPage" id="logoutButton">로그아웃</a>
+		</div>
+		
+		<div data-role="content" id="bookmarkListContent">
+			<ul data-role="listview" data-inset="true" id="bookmarkListView">
 
+			</ul>
+		</div>
+	</div>	
 </body>
 
-<script src="../js/mobile/index.js"></script>
 </html>

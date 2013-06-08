@@ -29,10 +29,10 @@
 		<div id="content">
 			<!-- 회원가입 양식 -->
 			<div class="content-2">
-				<p>
+				<!-- <p>
 					<a href="#" class="media tw">Twitter</a>
 					<a href="#" class="media me" onclick="me2dayRegister(); return false;">me2day</a>
-				</p>	
+				</p>	 -->
 				<form action="register" autocomplete="on" name="registerForm" method="POST">
 				  <p>
 					<label for="usernamesignup" class="uname" data-icon="i">Your ID</label> <label id="userIdCheck" style="float:right"></label>
@@ -55,7 +55,8 @@
 					<input class="field" name="passwordsignup_confirm" id="confirmPassword" required="required" type="password" placeholder="비밀번호 확인"/>
 				  </p>
 				  <p class="signin button">
-					<input type="checkbox" value="registerCheck" required="required" name="registerCheck"/> 회원가입에 동의합니다.
+					<input type="checkbox" value="registerCheck" required="required" name="registerCheck"/> 회원가입에 동의합니다.<br><br>
+					<input type="button" onclick="me2dayRegister(); return false;" value="미투데이 계정으로 가입" style="float:left; margin-left: 25%;">
 					<input type="button" value="Sign up" id="registerButton" />
 				  </p>
 				</form>
@@ -63,10 +64,10 @@
 			
 			<!-- 로그인 양식 -->
 			<div class="content-1">
-				<p>
+				<!-- <p>
 					<a href="#" class="media tw">Twitter</a>
 					<a href="#" class="media me" onclick="me2dayLogin(); return false;">me2day</a>
-				</p>
+				</p> -->
 				<form  action="login" autocomplete="on" method="POST" name="loginForm">
 				  <p>
 					<label for="username" class="uname" data-icon="u" > Your email or user name </label>
@@ -77,7 +78,8 @@
 					<input class="field" name="loginPassword" required="required" type="password" placeholder="비밀번호" id="loginPassword" />
 				  </p>
 				  <p class="keeplogin">
-					<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> Keep me logged in
+					<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> Keep me logged in <br><br>	
+					<input type="button" onclick="me2dayLogin(); return false;" value="미투데이 계정으로 로그인" style="float:left; margin-left: 25%;"> 
 					<input type="button" value="Login" id="loginButton" />
 				  </p>
 				</form>

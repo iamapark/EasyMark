@@ -104,4 +104,14 @@
 		from bookmark_category
 		where parent_category_id = #categoryId#
 	</select>
+	
+	<!-- 추가 6/8 -->
+	<select id="getCategoryName" parameterClass="Integer" resultClass="String">
+		SELECT 
+			category_name
+		FROM 
+			bookmark_category
+		WHERE 
+			category_id = #categoryId#
+	</select>
 </sqlMap>

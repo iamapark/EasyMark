@@ -1,3 +1,6 @@
+$(document).ready(function(){
+	init();
+});
 
 var init = function(){
 	$('#loginButton').click(login);
@@ -6,9 +9,8 @@ var init = function(){
 	$('#userId').focusout(idCheck);
 	$('#friends').click(friends);
 	$('#message').click(message);
-	
 };
-    
+
 var idCheck = function(){
 	console.log('idCheck');
 	
@@ -21,7 +23,7 @@ var idCheck = function(){
 		$('#idCheckResult').empty();
 		
 		$.ajax({
-			url: '../idCheck',
+			url: 'idCheck',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -74,7 +76,7 @@ var register = function(){
 	}
 	
 	$.ajax({
-		url: '../mobile_register',
+		url: 'mobile_register',
 		dataType: 'json',
 		type: 'POST',
 		data: {
@@ -111,7 +113,7 @@ var login = function(){
 	}
 	
 	$.ajax({
-		url: '../mobile_login',
+		url: 'mobile_login',
 		dataType: 'json',
 		type: 'POST',
 		data:{
@@ -121,14 +123,19 @@ var login = function(){
 	}).done(function(data){
 		
 		if(data[0].flag == true){
-			$.mobile.changePage('main.jsp');
+			
+			//tipJS.action('EasyMark.fillMemberInfo',data[1]);
+			$.mobile.changePage('Easymark_mobile/main.jsp',{
+				transition:'slideup',
+				reverse:true
+			});
+			/*tipJS.action('EasyMark.fillBookmarkList',data[2]);
+			$('#bookmarkListView').listview("refresh");*/
 		}
 			
 		else
-			console.log('로그인 실패');
-		
-		console.log(data);
-		keke = data;
+			alert('아이디와 비밀번호를 확인하세요.');
+
 	});
 };
 
@@ -154,6 +161,46 @@ var message=function(){
 	//});
 };
 
+// 회원정보 수정 버튼을 클릭했을 때 호출
+var memberInfoModify = function(){
+	var userId = $('#myInfo_userId').val();
+	var name = $('#myInfo_userName').val();
+	var email = $('#myInfo_email').val();
+	var img = $('#myInfo_imgFile').val();
+	
+	if (img == '') {
+		$.ajax({
+			url : 'updateMemberInfo',
+			dataType : 'json',
+			type : 'POST',
+			data : {
+				userId : userId,
+				setting_name : name,
+				setting_email : email
+			}
+		}).done(function(data) {
+			alert('회원 정보를 수정하였습니다.');
+		});
+	} else {
+		console.log('submit');
+		$("#updateMemberInfoForm").ajaxSubmit({
+			dataType : 'html',
+			success : function(data, rst) {
+				var imgUrl = JSON.parse(data).imgUrl;
+				$('#myInfo_img').attr('src', '../'+imgUrl);
+				alert('회원 정보를 수정하였습니다.');
+			}
+		});
+	}
+};
 
-// 초기화 함수
-init();
+var logout = function(userId){
+	console.log('logout: ' + userId);
+	// 로그아웃하는 코드를 넣는다.
+	
+	$.ajax({
+		url:'mobile_logout'
+	}).done(function(data){
+		$.mobile.changePage('index.html');
+	});
+};
