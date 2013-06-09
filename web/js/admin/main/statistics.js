@@ -59,7 +59,21 @@ var fillTotalStatistics = function(){
 		kaka = count;
 		$('#avgBookMarkCount').text(count.avgBookMarkCount);
 		$('#totalBookMarkCount').text(count.totalBookMarkCount);
-		$('#avgConnection').text(count.avgConnection);
-		$('#totalConnection').text(count.totalConnection);
+		$('#avgConnection').text(getHMS(count.avgConnection));
+		$('#totalConnection').text(getHMS(count.totalConnection));
+		
+		
 	});
+};
+
+var getHMS = function(seconds){
+	var sec = seconds;
+	
+	var hour = Math.floor(sec / 3600);
+	sec = sec - (hour * 3600);
+	
+	var minute = Math.floor(seconds / 60);
+	sec = sec - minute * 60;
+	
+	return hour + '시간 ' + minute + '분 ' + sec + '초';
 };

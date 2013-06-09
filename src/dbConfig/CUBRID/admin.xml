@@ -204,4 +204,14 @@
 			user_id = #userId#
 	</select>
 	
+	<!-- 추가  6/9 -->
+	<delete id="deleteMemberCategory" parameterClass="List">
+		delete from bookmark_category
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
 </sqlMap>

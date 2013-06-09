@@ -54,9 +54,10 @@ public class MembershipDAO {
 			sqlMapper.delete("deleteMemberInfo", idList);
 			sqlMapper.delete("deleteBookMark", idList);
 			sqlMapper.delete("deleteDesign", idList);
-			sqlMapper.delete("deleteMember", idList);
 			sqlMapper.update("leaveMember", idList);
 			sqlMapper.update("deleteLoginInfo", idList);
+			sqlMapper.delete("deleteMemberCategory", idList);
+			sqlMapper.delete("deleteMember", idList);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -69,10 +70,10 @@ public class MembershipDAO {
 			sqlMapper.delete("deleteMemberInfo", idList);
 			sqlMapper.delete("deleteBookMark", idList);
 			sqlMapper.delete("deleteDesign", idList);
-			sqlMapper.delete("deleteMember", idList);
 			sqlMapper.update("leaveMember", idList);
 			sqlMapper.update("deleteLoginInfo", idList);
-			
+			sqlMapper.delete("deleteMemberCategory", idList);
+			sqlMapper.delete("deleteMember", idList);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}

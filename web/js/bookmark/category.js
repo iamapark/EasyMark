@@ -1,5 +1,6 @@
 var currentPageCategoryId = 0; // 시작은 무조건 바탕화면에서부터
 var selectedCategoryId = 0;
+var currentPageBookMarkIdArray = new Array();
 
 // setting 모달에서 카테고리 탭을 클릭했을 때
 $('a[href="#setting_categories"]').click(function(e){
@@ -143,6 +144,7 @@ $('#deleteCategoryButton').click(function(e){
 	
 	var label = $("label[for='category-"+selectedCategoryId+"']").parent();
 	var flag = false;
+	var categoryId = selectedCategoryId;
 	
 	if(label.find('ol').length > 0){ // 지우려는 카테고리에 자식 카테고리가 있을 때
 		flag = confirm('해당 카테고리를 지우면 자식 카테고리까지 지워집니다. 정말 지우시겠습니까?');
@@ -151,16 +153,30 @@ $('#deleteCategoryButton').click(function(e){
 		flag = true;
 	}
 	
+	var li = $('#gridster1 ul li');
+	dataArray = new Array();
+	
+	for(var ii=0; ii<li.length; ii++){
+		dataArray.push($(li[ii]).data('id'));
+	}
+	
 	if(flag){
 		$.ajax({
 			url:'deleteCategory',
 			dataType:'json',
 			type:'POST',
 			data:{
-				categoryId: selectedCategoryId
+				categoryId: categoryId
 			}
 		}).done(function(data){
-			$("label[for='category-"+selectedCategoryId+"']").parent().parent().remove();
+			// 카테고리 트리에서 지운 카테고리 아이콘을 지운다.
+			$("label[for='category-"+categoryId+"']").parent().parent().remove();
+			
+			// 현재 화면에 지운 카테고리 아이콘이 있을 경우 지운다.
+			if(dataArray.indexOf(categoryId) >= 0){
+				// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
+				gridster.remove_widget($('li[data-id="' + categoryId + '"]'));
+			}
 		});
 	}else{
 		return false;

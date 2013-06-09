@@ -59,6 +59,12 @@ public class BookMark implements Serializable {
 		this.bookMarkName = bookMarkName;
 	}
 	
+	public BookMark(int bookMarkId, String bookMarkName, String category){
+		this.bookMarkId = bookMarkId;
+		this.bookMarkName = bookMarkName;
+		this.category = category; 
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

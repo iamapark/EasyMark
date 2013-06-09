@@ -319,8 +319,11 @@ public class IndividualPageAction {
 		
 		ModelAndView nextPage = new ModelAndView();
 		
-		BookMark bookMark = new BookMark(bookMarkId, name);
+		// bookmark 테이블 수정
+		BookMark bookMark = new BookMark(bookMarkId, name, String.valueOf(categoryId));
 		new IndividualPageServiceImpl().modifyMark(bookMark);
+		
+		// bookmark_category 테이블 수정
 		Category category = new Category(categoryId, name);
 		new IndividualPageServiceImpl().modifyCategory(category);
 		

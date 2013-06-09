@@ -66,7 +66,7 @@ public class SpeechAction {
 		}
 		
 		/**
-		r: 기능 구분=> 1-즐겨찾기 추가, 2-웹 페이지 접속, 3-검색
+		r: 기능 구분=> 1-즐겨찾기 추가, 2-웹 페이지 접속, 3-검색, 4-북마크 추가 후 확인이라고 말했을 때
 		q: 웹 페이지 접속 시 url*/
 		data = callback + "({\"result\" : \"" + Boolean.toString(flag) + "\", \"r\": \"" + result +  "\", \"q\": \"" + q +  "\", \"w\": \"" + w +  "\"})";
 		

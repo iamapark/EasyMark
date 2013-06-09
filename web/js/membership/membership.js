@@ -175,13 +175,13 @@ var bookmarkListDelete = function(e){
 	selectedRow = $('.bookmarktable').dataTable().$('tr.row_selected');
 	var data = $('input[name=bookmarkSelector]').serialize();
 
-	for(var i=0; i<selectedRow.length; i++){
-		// 북마크 리스트에서 해당 row를 삭제한다.
-		$('.bookmarktable').dataTable().fnDeleteRow(selectedRow[i]);
-		
-		if($(selectedRow[i]).find('input').data('category') == currentPageCategoryId)
-			//바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
-			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('input').attr('value') + '"]'));
+	// 현재 사용자가 보고 있는 화면에 어떤 북마크가 있는지 dataArray 배열 변수에 북마크 아이디를 집어넣는다.
+	// 배열에 북마크 아이디를 집어넣는 이유는 지우려는 북마크가 현재 화면에 있을 경우 화면에서 지워야 하기 때문임
+	var li = $('#gridster1 ul li');
+	dataArray = new Array();
+	
+	for(var ii=0; ii<li.length; ii++){
+		dataArray.push($(li[ii]).data('id'));
 	}
 	
 	$.ajax({
@@ -195,8 +195,13 @@ var bookmarkListDelete = function(e){
 			// 북마크 리스트에서 해당 row를 삭제한다.
 			$('.bookmarktable').dataTable().fnDeleteRow(selectedRow[i]);
 			
-			// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
-			gridster.remove_widget($('li[data-id="' + $(selectedRow[i]).find('input').attr('value') + '"]'));
+			// 지우려는 대상 북마크 아이디
+			var deleteBookmarkId = $(selectedRow[i]).find('input').attr('value');
+			
+			if(dataArray.indexOf(Number(deleteBookmarkId)) >= 0){
+				// 바탕화면의 북마크 아이콘 리스트에서 해당 아이콘을 삭제한다.
+				gridster.remove_widget($('li[data-id="' + deleteBookmarkId + '"]'));
+			}
 		}
 	});
 	
