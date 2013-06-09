@@ -20,9 +20,9 @@ public class SessionAttributeListener implements HttpSessionAttributeListener {
 			
 			SessionManager.getInstance().add(sessionBindingEvent.getSession());
 			
-			//AdminServer.getInstance().pushLoginMemberCount(SessionManager.getInstance().count());
+			AdminServer.getInstance().pushLoginMemberCount(SessionManager.getInstance().count());
 			
-			//AdminServer.getInstance().pushLoginMemberInfo(userId);
+			AdminServer.getInstance().pushLoginMemberInfo(userId);
 			
 		}
 	}
