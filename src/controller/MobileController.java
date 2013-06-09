@@ -205,7 +205,9 @@ public class MobileController {
 		ArrayList<Message> messageList=null;
 		HttpSession session=request.getSession();
 		String userId=(String)session.getAttribute("MEMBERID");
+
 		//messageList=new FriendshipServiceImpl().getInBox(userId);
+
 		session.setAttribute("messageList", messageList);
 		JSONArray dataJ = JSONArray.fromObject(messageList);
 		System.out.println("messageLIst : "+dataJ.toString());
@@ -240,7 +242,7 @@ public class MobileController {
 		
 		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
 
-		messageList = new FriendshipServiceImpl().getInBox(message);
+		//messageList = new FriendshipServiceImpl().getInBox(message);
 		
 		System.out.println("size: " + messageList.size());
 

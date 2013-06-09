@@ -38,7 +38,7 @@ import dto.User;
 public class FriendshipAction {
 
 	public FriendshipAction(){
-		//MessageServer.getInstance().start();
+		MessageServer.getInstance().start();
 	}
 
 	private void traffic(){
@@ -46,8 +46,8 @@ public class FriendshipAction {
 	}
 	
 	// 친구 목록 불러오기
-	@RequestMapping("/friend")
-	public ModelAndView friend(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/getFriendList")
+	public ModelAndView getFriendList(HttpServletRequest request, HttpServletResponse response) {
 	
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		
@@ -83,8 +83,8 @@ public class FriendshipAction {
 	}
 	
 	// 친구 요청 보낸 사용자 목록
-	@RequestMapping("/sendFriendReq")
-	public ModelAndView sendFriendReq(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/sendFriendReqList")
+	public ModelAndView sendFriendReqList(HttpServletRequest request, HttpServletResponse response) {
 
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		String friendId = null;
@@ -106,8 +106,8 @@ public class FriendshipAction {
 	}
 	
 	// 친구 요청 받은 사용자 목록
-	@RequestMapping("/takeFriendReq")
-	public ModelAndView takeFriendReq(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/takeFriendReqList")
+	public ModelAndView takeFriendReqList(HttpServletRequest request, HttpServletResponse response) {
 
 		String userId = null;
 		String friendId = (String)request.getSession().getAttribute("MEMBERID");
@@ -136,7 +136,7 @@ public class FriendshipAction {
 		
 		System.out.println("추천받은사이트");
 		ArrayList<BookMarkShip> recommendedWeb = new ArrayList<BookMarkShip>();
-		recommendedWeb = new FriendshipServiceImpl().inWeb(userId);
+		recommendedWeb = new FriendshipServiceImpl().recommendInWeb(userId);
 		
 		ModelAndView mav = new ModelAndView();
 	
@@ -158,7 +158,7 @@ public class FriendshipAction {
 		System.out.println("넘어온 ID : " + userId);
 
 		ArrayList<BookMarkShip> recommendWeb = new ArrayList<BookMarkShip>();
-		recommendWeb = new FriendshipServiceImpl().outWeb(userId);
+		recommendWeb = new FriendshipServiceImpl().recommendOutWeb(userId);
 
 		for (int i = 0; i < recommendWeb.size(); i++) {
 			System.out.println(recommendWeb.get(i).getBookMarkName());
@@ -188,31 +188,22 @@ public class FriendshipAction {
 		String status = "추천";
 		
 		BookMarkShip bookmarkship = new BookMarkShip();
-		String[] selectFriend = friendId.split(",");
 		boolean flag = false;
 		ModelAndView mav = new ModelAndView();
-		
-		for (int i = 0; i < selectFriend.length; i++) {
-			selectFriend[i] = selectFriend[i].trim();
-			bookmarkship = new BookMarkShip(0, name, url, descript, userId, selectFriend[i], status);
-			
-			flag = new FriendshipServiceImpl().bookMarkExist(bookmarkship);
-			System.out.println("flag:"+flag);
-			if(flag){
-				new FriendshipServiceImpl().recommendSite(bookmarkship);
-				
-			}
-			else{
-			}
-			System.out.println(bookmarkship.toString());
-			
-			request.setAttribute("result", flag);
-			mav.setViewName("result");
-			traffic();
-			
-		}return mav;
-	}
 	
+		bookmarkship = new BookMarkShip(0, name, url, descript, userId, friendId, status);
+		
+		flag = new FriendshipServiceImpl().bookMarkExist(bookmarkship);
+		if(flag){
+			new FriendshipServiceImpl().recommend(bookmarkship);
+		}
+		else{}
+		
+		request.setAttribute("result", flag);
+		mav.setViewName("result");
+		traffic();
+		return mav;
+	}
 	
 	// 친구 삭제
 	@RequestMapping("/deleteFriend")
@@ -327,8 +318,7 @@ public class FriendshipAction {
 		ArrayList<Message> inMessage = null;
 		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
 
-		//inMessage = new FriendshipServiceImpl().getInBox(userId);
-		inMessage = new FriendshipServiceImpl().getInBox(message);
+		inMessage = new FriendshipServiceImpl().inBox(message);
 		for (int i = 0; i < inMessage.size(); i++) {
 			System.out.println(inMessage.get(i).getMessageDate());
 			String dateTime = StringFromCalendar(inMessage.get(i).getMessageDate());
@@ -354,7 +344,7 @@ public class FriendshipAction {
 		System.out.println(userId);
 		ArrayList<Message> outMessage = null;
 		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "send");
-		outMessage = new FriendshipServiceImpl().getOutBox(message);
+		outMessage = new FriendshipServiceImpl().outBox(message);
 		for (int i = 0; i < outMessage.size(); i++) {
 			System.out.println(outMessage.get(i).getMessageDate());
 			String dateTime = StringFromCalendar(outMessage.get(i).getMessageDate());
@@ -380,6 +370,30 @@ public class FriendshipAction {
 		return formatter.format(date.getTime());
 	}
 	
+	@RequestMapping("/getMessageFriendInfo")
+	public ModelAndView getMessageFriendInfo(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView nextPage = new ModelAndView();
+		
+		String userId = (String) request.getSession().getAttribute("MEMBERID");
+		
+		Friendship friend = new Friendship(userId, "", "친구");
+		ArrayList<Member> friendList = new FriendshipServiceImpl().getFriendList(friend);
+		
+		JSONArray friendListJ = JSONArray.fromObject(friendList);
+		
+		
+		String data = friendListJ.toString();
+		System.out.println(friendListJ.toString());
+		System.out.println(data);
+		
+		request.setAttribute("result", friendListJ.toString());
+		nextPage.setViewName("result");
+
+		traffic();
+		return nextPage;
+	}
+	
 	// 메시지 보내기
 	@RequestMapping("/sendMessage")
 	public ModelAndView sendMessage(HttpServletRequest request,
@@ -390,41 +404,41 @@ public class FriendshipAction {
 		
 		int messageNum = 0;
 
+		ModelAndView mav = new ModelAndView();
+		ArrayList<Message> newMessage = new ArrayList<Message>();
+		
 		Message msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "send");
-
 		boolean flag = new FriendshipServiceImpl().sendMessage(msg);
-		
-		msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "take");
-		
+			
 		try {
 			contents = URLDecoder.decode(contents, "utf-8");
 		} catch (UnsupportedEncodingException e) {
-
+	
 		}
 		
+		msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "take");
+
 		System.out.println("contents: " + contents);
-		
+
 		new FriendshipServiceImpl().sendMessage(msg);
 		
-		ModelAndView mav = new ModelAndView();
-		// boolean flag = true;
 		if (flag) { // 메시지 DB 등록 성공
 			
 			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
-			ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
-			
+			newMessage = new FriendshipServiceImpl().messageCount(message);
 			traffic();
-			
-			JSONObject jobj = new JSONObject();
-			jobj.put("friendId", friendId);
-			jobj.put("contents",  URLDecoder.decode(contents, "utf-8"));
-			jobj.put("num", newMessage.size());
-			request.setAttribute("result", jobj);
-			mav.setViewName("result");	
 		} else { // 메시지 DB 등록 실패
-				System.out.println("쪽지 보내기 실패요 ㅋㅋ");
+			System.out.println("쪽지 보내기 실패요 ㅋㅋ");
 		}
+		
+		JSONObject jobj = new JSONObject();
+		jobj.put("friendId", friendId);
+		jobj.put("contents",  URLDecoder.decode(contents, "utf-8"));
+		jobj.put("num", newMessage.size());
+		request.setAttribute("result", jobj);
+		mav.setViewName("result");
 		return mav;
+		
 	}
 		
 	@RequestMapping("/isContains")
@@ -448,7 +462,7 @@ public class FriendshipAction {
 			HttpServletResponse response,
 			@RequestParam(value="bookMarkId")String bookMarkId) {
 		
-		new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
+		new FriendshipServiceImpl().recommendCancel(bookMarkId);
 		ModelAndView mav = new ModelAndView();
 		request.setAttribute("result", "true");
 		mav.setViewName("result");
@@ -483,7 +497,7 @@ public class FriendshipAction {
 		BookMark bookMark = new BookMark(0, URLDecoder.decode(bookMarkName, "utf-8"), bookMarkUrl, bookMarkDescript, friendId,
 				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, "");
 
-		new FriendshipServiceImpl().bookmarkCancel(bookMarkId);
+		new FriendshipServiceImpl().recommendCancel(bookMarkId);
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		
 		ModelAndView mav = new ModelAndView();
@@ -548,7 +562,6 @@ public class FriendshipAction {
 		ModelAndView mav = new ModelAndView();
 		
 		JSONArray dataJ = JSONArray.fromObject(friendStatusList);
-		//System.out.println(dataJ);
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 		
@@ -589,7 +602,7 @@ public class FriendshipAction {
 
 		String loginId = (String)request.getSession().getAttribute("MEMBERID");
 		Message message = new Message(0, loginId, "", null, "", new Date(), "", 0, "take");
-		ArrayList<Message> newMessage = new FriendshipServiceImpl().newMessageCount(message);
+		ArrayList<Message> newMessage = new FriendshipServiceImpl().messageCount(message);
 		int newMessageCount = newMessage.size();
 		
 		request.setAttribute("result", newMessageCount);
@@ -657,7 +670,7 @@ public class FriendshipAction {
 			me2Friends[i] = me2Friends[i] + "@me2day";
 			String userId = me2Friends[i];
 			System.out.println("userid : "+userId);
-			member = new FriendshipServiceImpl().me2Friend(userId);
+			member = new FriendshipServiceImpl().me2dayFriend(userId);
 
 			if (member != null) {
 				System.out.println(member.getUserId());

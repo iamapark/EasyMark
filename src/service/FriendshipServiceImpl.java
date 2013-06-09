@@ -27,17 +27,10 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 		return friendList;
 	}
 
-	/*@Override
-	public ArrayList<Member> getFriendListBar(Friendship friend) {
-		ArrayList<Member> friendListBar = null;
-		friendListBar = FriendDAO.getInstance().getFriendListBar(friend);
-		return friendListBar;
-	}*/
-
 	@Override
-	public Member me2Friend(String me2FriendId) {
+	public Member me2dayFriend(String me2FriendId) {
 		Member me2FriendInfo = null;
-		me2FriendInfo = FriendDAO.getInstance().me2Friend(me2FriendId);
+		me2FriendInfo = FriendDAO.getInstance().me2dayFriend(me2FriendId);
 		return me2FriendInfo;
 	}
 
@@ -49,14 +42,7 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 	}
 
 	@Override
-	/*
-	 * public FriendStatus getFriendStatus(FriendStatus friendStatus) {
-	 * FriendStatus getFriendStatus = null; getFriendStatus =
-	 * FriendDAO.getInstance().getFriendStatus(friendStatus); return
-	 * getFriendStatus; }
-	 */
 	public ArrayList<FriendStatus> getFriendStatus(FriendStatus friendStatus) {
-		// FriendStatus getFriendStatus = null;
 		ArrayList<FriendStatus> getFriendStatus = new ArrayList<FriendStatus>();
 		getFriendStatus = FriendDAO.getInstance().getFriendStatus(friendStatus);
 		return getFriendStatus;
@@ -77,72 +63,37 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 	}
 
 	@Override
-	public ArrayList<BookMarkShip> outWeb(String userId) {
+	public ArrayList<BookMarkShip> recommendOutWeb(String userId) {
 		ArrayList<BookMarkShip> outWebList = new ArrayList<BookMarkShip>();
-		outWebList = FriendDAO.getInstance().outWebList(userId);
+		outWebList = FriendDAO.getInstance().recommendOutWeb(userId);
 		return outWebList;
 	}
 
 	@Override
-	public ArrayList<BookMarkShip> inWeb(String userId) {
+	public ArrayList<BookMarkShip> recommendInWeb(String userId) {
 		ArrayList<BookMarkShip> inWebList = new ArrayList<BookMarkShip>();
-		inWebList = FriendDAO.getInstance().inWebList(userId);
+		inWebList = FriendDAO.getInstance().recommendInWeb(userId);
 		return inWebList;
 	}
 	
-	/*public ArrayList<String> getNameList(User searchUser) {
-		return null;
-		
-		 * ArrayList<Member> memberList=null; ArrayList<String> searchList=new
-		 * ArrayList<String>(); //try {
-		 * memberList=FriendDAO.getInstance().getMemberById
-		 * (searchUser.getKeyword());
-		 * 
-		 * for(Member member : memberList) searchList.add(member.getUserId());
-		 * //} catch (RecordNotFoundException e) { //}
-		 * 
-		 * return searchList;
-		 
-	}*/
-
 	@Override
 	public void requestFriend(Friendship friendship) {
-		FriendDAO.getInstance().insertFriend(friendship);
-	}
-
-	@Override
-	public ArrayList<Member> requestFriendMe2Day(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		FriendDAO.getInstance().requestFriend(friendship);
 	}
 
 	@Override
 	public void deleteFriend(Friendship friendship) {
 		FriendDAO.getInstance().deleteFriend(friendship);
 	}
-
-	/*@Override
-	public ArrayList<Message> getOutBox(String userId) {
-		ArrayList<Message> outBoxList = null;
-		outBoxList = MessageDAO.getInstance().outBox(userId);
-		return outBoxList;
-	}
-
-	@Override
-	public ArrayList<Message> getInBox(String userId) {
-		ArrayList<Message> inBoxList = null;
-		inBoxList = MessageDAO.getInstance().inBox(userId);
-		return inBoxList;
-	}*/
 	
-	public ArrayList<Message> getOutBox(Message message) {
+	public ArrayList<Message> outBox(Message message) {
 		ArrayList<Message> outBoxList = null;
 		outBoxList = MessageDAO.getInstance().outBox(message);
 		return outBoxList;
 	}
 
 	@Override
-	public ArrayList<Message> getInBox(Message message) {
+	public ArrayList<Message> inBox(Message message) {
 		ArrayList<Message> inBoxList = null;
 		inBoxList = MessageDAO.getInstance().inBox(message);
 		return inBoxList;
@@ -153,20 +104,6 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 		return MessageDAO.getInstance().sendMessage(message);
 	}
 
-	/*	@Override
-	public Message getMessageDatail(int num) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-*/
-	/*@Override
-	public ArrayList<String> getNameList(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
 	@Override
 	public void accept(Friendship friendship) {
 		FriendDAO.getInstance().accept(friendship);
@@ -200,29 +137,16 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 		MessageDAO.getInstance().updateMessage(message);
 	}
 
-	/*@Override
-	public ArrayList<Member> getMemberById(User searchUser) {
-		ArrayList<Member> member = null;
-		member = FriendDAO.getInstance().getMemberById(searchUser);
-		return member;
-	}*/
-
 	@Override
-	public void recommendSite(BookMarkShip bookmarkship) {
+	public void recommend(BookMarkShip bookmarkship) {
 		FriendDAO.getInstance().recommendSite(bookmarkship);
 	}
 
 	@Override
-	public void bookmarkCancel(String bookMarkId) {
-		FriendDAO.getInstance().bookMarkCancel(bookMarkId);
+	public void recommendCancel(String bookMarkId) {
+		FriendDAO.getInstance().recommendCancel(bookMarkId);
 	}
 
-	/*@Override
-	public void bookMarkRecommand(BookMarkShip bookmarkship) {
-		FriendDAO.getInstance().bookMarkRecommand(bookmarkship);
-
-	}
-*/
 	@Override
 	public BookMark selectBookMark(int bookMarkId) {
 		BookMark selectBookMarkList = null;
@@ -245,10 +169,16 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 	}
 
 	@Override
-	public ArrayList<Message> newMessageCount(Message message) {
+	public ArrayList<Message> messageCount(Message message) {
 		ArrayList<Message> msg = new ArrayList<Message>();
-		msg = MessageDAO.getInstance().newMessageCount(message);
+		msg = MessageDAO.getInstance().messageCount(message);
 		return msg;
+	}
+
+	@Override
+	public ArrayList<Member> requestFriendMe2Day(String userId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
