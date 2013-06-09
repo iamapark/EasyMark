@@ -31,7 +31,7 @@
   <ul data-role="listview" data-inset="true">
   <c:forEach var="message" items="${messageList}" >
  
-    <li data-theme="b"data-role="list-divider"> <fmt:formatDate value="${message.messageDate}" pattern="yyyy-MM-dd"/> </li>
+    <li data-theme="b"data-role="list-divider"> <fmt:formatDate value="${message.messageDate}" pattern="yyyy-MM-dd HH:mm:ss"/> </li>
     <li>
         <h2>${message.title}</h2>
          <p><strong>보낸사람 : ${message.userId}</strong></p>
