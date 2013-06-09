@@ -28,7 +28,7 @@ import dto.MemberInfo;
 public class AdminAction {
 	
 	public AdminAction(){
-		AdminServer.getInstance().start();
+		//AdminServer.getInstance().start();
 	}
 	
 	@RequestMapping("/goAdmin")

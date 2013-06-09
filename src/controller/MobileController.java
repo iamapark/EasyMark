@@ -21,6 +21,7 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
 import dao.CategoryDAO;
+import dao.MessageDAO;
 import dto.BookMark;
 import dto.DashboardCount;
 import dto.ForBookMarkList;
@@ -37,7 +38,7 @@ public class MobileController {
 			HttpServletResponse response){
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("../../Easymark_mobile/index"); // /WEB-INF/view/main.jsp 페이지로 이동
+		mav.setViewName("../../mobile/index"); // /WEB-INF/view/main.jsp 페이지로 이동
 		return mav;
 	}
 	
@@ -216,6 +217,21 @@ public class MobileController {
 	
 	}
 	
+	@RequestMapping("/mobile_myInfo") 
+	public ModelAndView mobile_myInfo(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "userId") String userId){
+		ModelAndView mav = new ModelAndView();
+		Member m = new MembershipServiceImpl().getMemberInfo(userId);
+		JSONObject jObj = JSONObject.fromObject(m);
+		
+		request.setAttribute("result", jObj);
+		mav.setViewName("result");
+		
+		return mav;
+	}
+		
+	
 	public ArrayList<BookMark> getBookMarkList(int categoryId, String userId){
 		return new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, categoryId));
 	}
@@ -241,12 +257,9 @@ public class MobileController {
 		ArrayList<Message> messageList = null;
 		
 		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
-
-		//messageList = new FriendshipServiceImpl().getInBox(message);
 		
-		System.out.println("size: " + messageList.size());
+		messageList = new FriendshipServiceImpl().inBox(message);
 
-		
 		return messageList;
 	}
 }

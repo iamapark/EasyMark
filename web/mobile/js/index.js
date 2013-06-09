@@ -1,3 +1,5 @@
+var login_user_Id;
+
 $(document).ready(function(){
 	init();
 });
@@ -23,7 +25,7 @@ var idCheck = function(){
 		$('#idCheckResult').empty();
 		
 		$.ajax({
-			url: 'idCheck',
+			url: '../idCheck',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -76,7 +78,7 @@ var register = function(){
 	}
 	
 	$.ajax({
-		url: 'mobile_register',
+		url: '../mobile_register',
 		dataType: 'json',
 		type: 'POST',
 		data: {
@@ -86,13 +88,10 @@ var register = function(){
 			password: password
 		}
 	}).done(function(data){
-		console.log(data);
-		keke = data;
-		
 		if(data == true){
-			console.log('회원가입에 성공했습니다.');
+			history.go(-1);
 		}else
-			console.log('회원가입에 실패했습니다.');
+			alert('회원 가입에 실패했습니다. 다시 한 번 시도해주세요.^^');
 	});
 	
 };
@@ -113,7 +112,7 @@ var login = function(){
 	}
 	
 	$.ajax({
-		url: 'mobile_login',
+		url: '../mobile_login',
 		dataType: 'json',
 		type: 'POST',
 		data:{
@@ -123,14 +122,12 @@ var login = function(){
 	}).done(function(data){
 		
 		if(data[0].flag == true){
+			login_user_id = loginId;
 			
-			//tipJS.action('EasyMark.fillMemberInfo',data[1]);
-			$.mobile.changePage('Easymark_mobile/main.jsp',{
+			$.mobile.changePage('main.jsp',{
 				transition:'slideup',
 				reverse:true
 			});
-			/*tipJS.action('EasyMark.fillBookmarkList',data[2]);
-			$('#bookmarkListView').listview("refresh");*/
 		}
 			
 		else
@@ -194,13 +191,33 @@ var memberInfoModify = function(){
 	}
 };
 
+// 로그아웃 버튼을 눌렀을 때 호출
 var logout = function(userId){
 	console.log('logout: ' + userId);
 	// 로그아웃하는 코드를 넣는다.
 	
 	$.ajax({
-		url:'mobile_logout'
+		url:'../mobile_logout'
 	}).done(function(data){
-		$.mobile.changePage('index.html');
+		$.mobile.changePage('index.jsp');
+	});
+};
+
+// Menu 버튼을 클릭했을 때 호출
+var myInfo = function(){
+	var userId = login_user_id;
+	
+	$.ajax({
+		url:'../mobile_myInfo',
+		dataType:'json',
+		data:{
+			userId:userId
+		}
+	}).done(function(data){
+		kaka = data;
+		$('#myInfo_userId').val(data.userId);
+		$('#myInfo_userName').val(data.name);
+		$('#myInfo_email').val(data.email);
+		$('#myInfo_img').src('img', '../'+data.imgUrl);
 	});
 };

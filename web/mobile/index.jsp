@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
-<script src="js/jquery.js"></script>
-<script src="js/jquery.form.js"></script>
-<link href="css/mobile/jquery.mobile-1.3.1.css" rel="stylesheet" media="screen">
-<script src="Easymark_mobile/js/index.js"></script>
-<script src="js/mobile/jquery.mobile-1.3.1.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery.form.js"></script>
+<link href="../css/mobile/jquery.mobile-1.3.1.css" rel="stylesheet" media="screen">
+<script src="js/index.js"></script>
+<script src="../js/mobile/jquery.mobile-1.3.1.js"></script>
 </head>
 <body>
 	<div data-role="page" data-theme="b" id="indexPage">

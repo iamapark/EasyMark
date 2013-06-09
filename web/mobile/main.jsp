@@ -10,15 +10,12 @@
 <script src="../js/jquery.js"></script>
 <script src="../js/mobile/jquery.mobile-1.3.1.js"></script>
 <link href="../css/mobile/jquery.mobile-1.3.1.css" rel="stylesheet" media="screen">
-<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/knockout/2.2.1/knockout-2.2.1.js"></script>
- -->
-
 
 </head>
 <body>
 <div data-role="page">
 	<div data-role="header" data-theme="b">
-		<a href="#myInfo" data-icon="bars" data-shadow="false" data-iconshadow="false">Menu</a>
+		<a onclick="javascript:myInfo();" href="#myInfo" data-icon="bars" data-shadow="false" data-iconshadow="false">Menu</a>
 		<h1>${MEMBERID} - 메인 페이지</h1>
 		<a onclick="javascript:logout('${MEMBERID}');">로그아웃</a>
 	</div>
@@ -94,7 +91,12 @@
 	<div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
         <label for="myInfo_password" class="ui-input-text">개인 이미지</label>
         <input type="file" id="myInfo_imgFile" name="file">
-        <img style="width:75%; " src="../${MEMBERINFO.imgUrl}" id="myInfo_img">
+        <c:if test="${MEMBERINFO.imgUrl != null}">
+        	<img style="width:75%; " src="../${MEMBERINFO.imgUrl}" id="myInfo_img">
+        </c:if>
+        <c:if test="${MEMBERINFO.imgUrl == null }">
+        	<img style="width:75%; " id="myInfo_img">
+        </c:if>
 	</div>
 
 	</form>
