@@ -23,14 +23,19 @@ import dto.Login;
 import dto.Member;
 import dto.MemberInfo;
 
-
+/**
+ * 관리자 서비스
+ * @author 박진영  
+ * */
 @Controller
 public class AdminAction {
 	
 	public AdminAction(){
+		// Vert.x 서버 가동
 		//AdminServer.getInstance().start();
 	}
 	
+	// 관리자 페이지로 이동
 	@RequestMapping("/goAdmin")
 	public ModelAndView goAdmin(HttpServletRequest request){
 		ModelAndView mav = new ModelAndView();
@@ -39,6 +44,7 @@ public class AdminAction {
 		return mav;
 	}
 	
+	// 관리자 페이지에서 로그인할 때 사용
 	@RequestMapping("/adminLogin")
 	public ModelAndView login(HttpServletRequest request,
 			HttpServletResponse response,
@@ -99,7 +105,6 @@ public class AdminAction {
 		
 		for(String a:ar){
 			idList.add(a.split("=")[1]);
-			System.out.println("id: " + a.split("=")[1]);
 		}
 		
 		new AdminServiceImpl().deleteMembers(idList);
@@ -123,6 +128,7 @@ public class AdminAction {
 		return mav;
 	}
 	
+	// 월 별 가입자 수
 	@RequestMapping("/getRegisterCount")
 	public ModelAndView getRegisterCount(HttpServletRequest request, HttpServletResponse response,
 									 @RequestParam(value="month") String selectedMonth){

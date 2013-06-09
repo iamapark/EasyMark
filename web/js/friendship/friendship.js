@@ -1,5 +1,3 @@
-/*document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
-*/
 var socket;
 
 /**
@@ -758,11 +756,7 @@ var fillSendMessageDetail = function(data){
 <!-- 메시지 전송 -->*/
 $('#messageSendButton').click(function(e){
 	var messageFriendId = $('#messageFriendId').val();
-	var messageContents = $('#messageContents').val();
-<<<<<<< HEAD
-=======
-	messageContents = encodeURI(messageContents);
->>>>>>> 89241af2339ee60312316a600e2a9688606224d8
+	var messageContents = encodeURI($('#messageContents').val());
 	
 	console.log('받는 사람: ' + messageFriendId);
 	console.log('내용: ' + messageContents);
