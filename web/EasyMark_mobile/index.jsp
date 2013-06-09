@@ -17,7 +17,6 @@
 
 		<div data-role="header" data-theme="b" data-icon="home">
 			<h1>EasyMark 로그인</h1>
-			<a href="list.html">kaka</a>
 		</div><!-- /header -->
 
 
