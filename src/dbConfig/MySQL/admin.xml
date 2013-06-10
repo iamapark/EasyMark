@@ -56,24 +56,26 @@
     		member_info.user_id, member_info.name, register_time.register_time, member_info.email, COUNT(bookmark.user_id) AS bookmark_count
 		FROM 
 			member_info LEFT OUTER JOIN bookmark ON member_info.user_id = bookmark.user_id JOIN register_time ON register_time.user_id = member_info.user_id
+		WHERE 
+			register_time.leave_time IS NULL
 		GROUP BY 
 			member_info.user_id, register_time.register_id
-		HAVING 
-			register_time.leave_time IS NULL
+		
     </select>
     
     <select id="getMemberInfo_admin" parameterClass="String" resultClass="MemberInfo">
 		SELECT 
     		member_info.user_id userId, member_info.name, register_time.register_time registerDate, member_info.email, COUNT(bookmark.user_id) AS bookmarkCount,
-    		NVL((SELECT COUNT(login_id) FROM login_time GROUP BY user_id HAVING user_id=#userId#), 0)						
+    		IFNULL((SELECT COUNT(login_id) FROM login_time WHERE user_id=#userId# GROUP BY user_id), 0)						
     		AS loginCount	, 
 			member_info.img_url AS imgUrl, member_info.bg_img_url AS bgImgUrl
 		FROM 
 			member_info LEFT OUTER JOIN bookmark ON member_info.user_id = bookmark.user_id JOIN register_time ON register_time.user_id = member_info.user_id
+		WHERE 
+			member_info.user_id = #userId# AND register_time.leave_time IS NULL
 		GROUP BY 
 			member_info.user_id, register_time.register_id
-		HAVING 
-			member_info.user_id = #userId# AND register_time.leave_time IS NULL	
+			
     </select>
 	
 	<delete id="deleteMemberInfo" parameterClass="List">
@@ -129,7 +131,6 @@
 	<update id="leaveMember" parameterClass="List">
 		update register_time
 		
-		<!-- CUBRID -->
 		set leave_time = CURRENT_TIMESTAMP
 		<dynamic prepend="WHERE user_id IN">
 			<iterate open="(" conjunction="," close=")">
@@ -147,10 +148,11 @@
 			1 avg_bookMarkCount
 		FROM 
 			register_time
+		WHERE 
+			YEAR(register_time)=2013 AND MONTH(register_time)=#selectedMonth#
 		GROUP BY 
 			MONTH(register_time), YEAR(register_time), DAY(register_time)
-		HAVING 
-			YEAR(register_time)=2013 AND MONTH(register_time)=#selectedMonth#
+		
 	</select>
 	
 	<select id="getLoginCounterHourly" resultMap="CountList">
@@ -171,17 +173,17 @@
 		SELECT 
 			'' basis,
 			1 count_result,
-			NVL((SELECT ROUND(SUM(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time), 0) AS total_connection,
-			NVL((SELECT ROUND(AVG(CAST(logout_time AS TIMESTAMP)-CAST(login_time AS TIMESTAMP))) FROM login_time), 0) AS avg_connection,
+			IFNULL((SELECT ROUND(SUM(CAST(logout_time AS TIME)-CAST(login_time AS TIME))) FROM login_time), 0) AS total_connection,
+			IFNULL((SELECT ROUND(AVG(CAST(logout_time AS TIME)-CAST(login_time AS TIME))) FROM login_time), 0) AS avg_connection,
 			(SELECT COUNT(bookmark_id) FROM bookmark) AS total_bookmarkCount,
-			NVL((SELECT AVG(cnt) FROM (SELECT COUNT(bookmark_id) AS cnt FROM bookmark GROUP BY user_id) AS c), 0) AS avg_bookMarkCount
+			IFNULL((SELECT AVG(cnt) FROM (SELECT COUNT(bookmark_id) AS cnt FROM bookmark GROUP BY user_id) AS c), 0) AS avg_bookMarkCount
 	</select>
 	
 	<select id="getDashboardCount" resultClass="DashboardCount">
 		SELECT 
 			(SELECT COUNT(user_id) FROM member ) AS memberCount ,
 			(SELECT COUNT(*) FROM member m , register_time r WHERE m.user_id = r.user_id AND leave_time IS NULL AND register_time = curdate()) AS todayRegisterCount,
-			(SELECT COUNT(*) FROM message) AS messageCount
+			(SELECT COUNT(*) FROM message where message_type='send') AS messageCount
 	</select>
 	
 	<select id="getLoginMembersInfoList" parameterClass="List" resultMap="MemberList">
@@ -203,5 +205,16 @@
 		WHERE
 			user_id = #userId#
 	</select>
+	
+	<!-- 추가  6/9 -->
+	<delete id="deleteMemberCategory" parameterClass="List">
+		delete from bookmark_category
+		
+		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
 	
 </sqlMap>

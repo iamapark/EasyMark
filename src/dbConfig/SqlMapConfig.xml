@@ -15,8 +15,8 @@
 	<typeAlias alias="Category" type="dto.Category"/>
 	<typeAlias alias="Message" type="dto.Message"/>
 
-	<typeAlias alias="MemberTable" type="dto.MemberTable"/>
 	<typeAlias alias="MemberInfo" type="dto.MemberInfo"/>
+	<typeAlias alias="MemberTable" type="dto.MemberTable"/>
 	<typeAlias alias="BookMarkShip" type="dto.BookMarkShip"/>
 	<typeAlias alias="Friendship" type="dto.Friendship"/>
 	<typeAlias alias="User" type="dto.User"/>
@@ -60,7 +60,7 @@
       		<property name="JDBC.Username"      value="nhneasymark"/>
       		<property name="JDBC.Password"      value="infiniteloop44"/>
     	</dataSource>
-  	</transactionManager>  -->
+  	</transactionManager> --> 
 
   <!-- List the SQL Map XML files. They can be loaded from the 
        classpath, as they are here (com.domain.data...) -->

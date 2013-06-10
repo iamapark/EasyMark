@@ -92,19 +92,6 @@ public class FriendDAO {
 		return resultList;
 	}
 
-	/*
-	 * public FriendStatus getFriendStatus(FriendStatus friendStatus){
-	 * //ArrayList<FriendStatus> resultList = new ArrayList<FriendStatus>();
-	 * FriendStatus resultList = new FriendStatus(); try { //resultList =
-	 * (ArrayList<FriendStatus>) sqlMapper.queryForList("getFriendStatus",
-	 * friendStatus); resultList =
-	 * (FriendStatus)sqlMapper.queryForObject("getFriendStatus", friendStatus);
-	 * } catch (SQLException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); }
-	 * 
-	 * return resultList; }
-	 */
-
 	@SuppressWarnings("unchecked")
 	public ArrayList<FriendStatus> getFriendStatus(FriendStatus friendStatus) {
 		ArrayList<FriendStatus> resultList = new ArrayList<FriendStatus>();
@@ -190,17 +177,6 @@ public class FriendDAO {
 
 		return resultList;
 	}
-
-	
-	/*public void bookMarkRecommand(BookMarkShip bookmarkship) {
-
-		try {
-			sqlMapper.insert("bookMarkRecommand", bookmarkship);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
 
 	// 북마크 셀렉트해서 친구한테 넘겨주기 전에 받으려고 하는 것
 	public BookMark selectBookMark(int bookMarkId) {

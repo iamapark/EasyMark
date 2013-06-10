@@ -69,35 +69,6 @@
 		WHERE 
 			parent_category_id=#parentId#
 	</select>
-	
-	<!-- Select with no parameters using the result map for Account class. -->
-	<select id="bookMarkListByCategory" parameterClass="java.util.HashMap" resultMap="BookMarkList">
-		SELECT
-		bookmark_id,
-		bookmark_name,
-		bookmark_url,
-		bookmark_descript,
-		user_id,
-		status,
-		pos_x,
-		pos_y,
-		img_url,
-		frequency frequency,
-		category
-		category
-		FROM bookmark
-		WHERE user_id=#userId# AND category=#category#
-	</select>
-
-	<select id="bookMarkPosx" parameterClass="String" resultClass="Integer">
-		SELECT MAX(pos_x) from bookmark WHERE user_id=#userId#
-	</select>
-
-	<select id="bookMarkPosy" parameterClass="java.util.HashMap"
-		resultClass="Integer">
-		SELECT MAX(pos_y) from bookmark WHERE user_id=#userId# AND
-		pos_x=#posX#
-	</select>
 
 	<update id="arrangeIcon" parameterClass="BookMark">
 		UPDATE bookmark
@@ -161,7 +132,6 @@
 	</update>
 
 	<!-- 수정 6/5 -->
-
 	<select id="viewBookMarkList" parameterClass="String" resultMap="BookMarkList">
 		SELECT
 		bookmark_id,

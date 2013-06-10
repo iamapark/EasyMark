@@ -21,7 +21,6 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
 import dao.CategoryDAO;
-import dao.MessageDAO;
 import dto.BookMark;
 import dto.DashboardCount;
 import dto.ForBookMarkList;
@@ -33,16 +32,17 @@ import dto.Message;
 @Controller
 public class MobileController {
 	
+	// 모바일 페이지로 이동
 	@RequestMapping("/mobile")
-	public ModelAndView go(HttpServletRequest request,
+	public ModelAndView goMobile(HttpServletRequest request,
 			HttpServletResponse response){
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("../../mobile/index"); // /WEB-INF/view/main.jsp 페이지로 이동
 		return mav;
-	}
+	} 
 	
-	
+	// 모바일 등록 페이지로 이동
 	@RequestMapping("/mobile_registerForm")
 	public ModelAndView mobile_registerForm(HttpServletRequest request,
 			HttpServletResponse response){
@@ -52,6 +52,7 @@ public class MobileController {
 		return mav;
 	}
 	
+	// 모바일 페이지에서 로그인 시도
 	@RequestMapping("/mobile_login")
 	public ModelAndView mobile_login(HttpServletRequest request,
 			HttpServletResponse response,
@@ -102,6 +103,7 @@ public class MobileController {
 		 return mav;
 	}
 
+	// 모바일 페이지에서 로그아웃
 	@RequestMapping("/mobile_logout")
 	public ModelAndView mobile_logout(HttpServletRequest request,
 			HttpServletResponse response){
@@ -115,7 +117,7 @@ public class MobileController {
 		return mav;
 	}
 
-
+	// 모바일 페이지에서 계정 생성
 	@RequestMapping("/mobile_register")
 	public ModelAndView mobile_register(HttpServletRequest request,
 			HttpServletResponse response,
@@ -156,7 +158,7 @@ public class MobileController {
 		return mav;
 	}
 	
-	
+	// 모바일 페이지에서 계정 생성할 때 아이디 체크
 	@RequestMapping("/idCheck")
 	public ModelAndView idCheck(HttpServletRequest request,
 			HttpServletResponse response,
@@ -174,49 +176,8 @@ public class MobileController {
 		mav.setViewName("result"); 
 		return mav;
 	}
-	@RequestMapping("/friends")
-	public ModelAndView friends(HttpServletRequest request,
-			HttpServletResponse response){
-		
-		ModelAndView mav = new ModelAndView();
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!friends");
-		HttpSession session=request.getSession();
-		String userId=(String)session.getAttribute("MEMBERID");
-		ArrayList<Member> friendList=null;
-		Friendship friend= new Friendship(userId, "", "친구");
-		friendList=new FriendshipServiceImpl().getFriendList(friend);
-		for(int i=0;i<friendList.size();i++){
-			if(friendList.get(i).getImgUrl()==null)
-				friendList.get(i).setImgUrl("images/defaultProfile.jpg");
-		}
-		session.setAttribute("friendList", friendList);
-		//JSONArray dataJ = JSONArray.fromObject(friendList);
-		//System.out.println("mobile getFriendList : "+friendList.toString());
-		//System.out.println("friends 11 : "+dataJ.toString());
-		//request.setAttribute("result", "true");
-		mav.setViewName("result");
-		
-		return mav;
-		
-	}
-	@RequestMapping("/message")
-	public ModelAndView message(HttpServletRequest request,
-			HttpServletResponse response){
-		ModelAndView mav = new ModelAndView();
-		ArrayList<Message> messageList=null;
-		HttpSession session=request.getSession();
-		String userId=(String)session.getAttribute("MEMBERID");
-
-		//messageList=new FriendshipServiceImpl().getInBox(userId);
-
-		session.setAttribute("messageList", messageList);
-		JSONArray dataJ = JSONArray.fromObject(messageList);
-		System.out.println("messageLIst : "+dataJ.toString());
-		mav.setViewName("result");
-		return mav;
 	
-	}
-	
+	// 모바일 페이지에서 사용자 회원 정보 조회
 	@RequestMapping("/mobile_myInfo") 
 	public ModelAndView mobile_myInfo(HttpServletRequest request,
 			HttpServletResponse response,
@@ -231,16 +192,18 @@ public class MobileController {
 		return mav;
 	}
 		
-	
+	// 북마크 리스트
 	public ArrayList<BookMark> getBookMarkList(int categoryId, String userId){
 		return new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, categoryId));
 	}
 
+	// 카테고리 이름
 	public String getCategoryName(int categoryId){
 		String categoryName = CategoryDAO.getInstance().getCategoryName(categoryId);
 		return categoryName;
 	}
 	
+	// 친구 리스트
 	public ArrayList<Member> getFriendList(String userId){
 		ArrayList<Member> friendList = null;
 		Friendship friend = new Friendship(userId, "", "친구");
@@ -249,10 +212,12 @@ public class MobileController {
 		return friendList;
 	}
 	
+	// 부모 카테고리의 아이디
 	public int getParentId(int categoryId){
 		return new IndividualPageServiceImpl().getParentId(categoryId);
 	}
 	
+	// 쪽지 리스트
 	public ArrayList<Message> getMessageList(String userId){
 		ArrayList<Message> messageList = null;
 		

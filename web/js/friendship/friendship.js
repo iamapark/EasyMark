@@ -1,3 +1,6 @@
+// 서버용 'http://easymark.pe.kr:9090/message';
+// 로컬용 'http://localhost:9090/message';
+var socketUrl = 'http://localhost:9090/message';
 var socket;
 
 /**
@@ -13,7 +16,7 @@ $(document).ready(function(){
 	
 });
 var socketioConnection = function(userId){ // 시작 : 
-	socket = io.connect('http://localhost:9090/message', {'sync disconnect on unload' : true}); // 이 주소로 커넥션 맺기
+	socket = io.connect(socketUrl, {'sync disconnect on unload' : true}); // 이 주소로 커넥션 맺기
 	
 	/* 사용자가 로그인 할 때마다
 	 * 로그인 한 아이디를 받아서 userId 로 보낸다. */
@@ -22,12 +25,13 @@ var socketioConnection = function(userId){ // 시작 :
 	/* 사용자가 받은 메시지를 "message"로 받아 상단에 메시지 알림을 뿌려준다.
 	 * 로그인 한 아이디를 받아서 userId 로 보낸다. */
 	socket.on("message", function(data){ 
+		kaka = data;
 		$.noty.consumeAlert({
 			layout : 'topRight', 
 			type : 'success',
 			dismissQueue : true
 		});
-		alert("쪽지가 도착했습니다. \n friendId"+data.friend+"message : "+data.msg+"");
+		alert("쪽지가 도착했습니다. \n 친구 아이디: "+data.friend+", message : "+data.msg+"");
 		$.noty.stopConsumeAlert();
 		
 		$('#messageCount').text("쪽지("+data.num+")"); // messageCount에 읽지 않은 새 메시지의 갯수를 출력		
@@ -737,6 +741,7 @@ $('#messageSendButton').click(function(e){
 					messageContents:messageContents
 		   		  }
 		}).done(function(data){
+			kaka = data;
 			friendId = data.friendId; message = data.contents; num = data.num;
 			/** 전송하는 메시지를 보낸사람, 메시지 내용, 받는 사람의 새 메시지 갯수를 
 			  "send"로 보낸다. */

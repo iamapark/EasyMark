@@ -181,7 +181,7 @@
 		SELECT 
 			(SELECT COUNT(user_id) FROM member ) AS memberCount ,
 			(SELECT COUNT(*) FROM member m , register_time r WHERE m.user_id = r.user_id AND leave_time IS NULL AND register_time = SYSDATE) AS todayRegisterCount,
-			(SELECT COUNT(*) FROM message) AS messageCount
+			(SELECT COUNT(*) FROM message where message_type='send') AS messageCount
 	</select>
 	
 	<select id="getLoginMembersInfoList" parameterClass="List" resultMap="MemberList">

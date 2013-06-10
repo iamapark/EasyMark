@@ -97,17 +97,6 @@
 		user_id=#userId# AND friend_id=#friendId# AND bookmark_url=#bookMarkUrl#;
 	</select>
 	
-	<!-- <select id="outBox" parameterClass="String" resultClass="Message">
-    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
-    	from message
-    	where user_id=#userId#
-  	</select>
-  	
-  	<select id="inBox" parameterClass="String" resultClass="Message">
-    	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
-    	from message
-    	where friend_id=#userId#
-  	</select> -->
   	<select id="outBox" parameterClass="Message" resultClass="Message">
     	select message_id messageId, user_id userId, friend_id friendId, title title, contents contents, message_date messageDate
     	from message
@@ -210,13 +199,4 @@
     	from member_info
     	where user_id=#userId#
   	</select>
-  	<!-- <select id="getFriendBar" parameterClass="Friendship" resultClass="Member">
-    	select m.user_id userId, m.name firstName, m.email email
-    	from member_info m, friendship f
-    	where (f.user_id=#userId# AND m.user_id=f.friend_id AND f.status=#status#) OR (f.friend_id=#userId# AND m.user_id=f.user_id AND f.status=#status#) 
-  	</select>
-  	
-  	
-  
-	 -->
-</sqlMap>
+ </sqlMap>

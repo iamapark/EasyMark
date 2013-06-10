@@ -16,6 +16,11 @@
 		<result property="frequency" column="frequency" />
 		<result property="category" column="category" />
 	</resultMap>
+	
+	<resultMap id="PositionList" class="Position">
+		<result property="posX" column="pos_x" />
+		<result property="posY" column="pos_y" />
+	</resultMap>
 
 
 	<insert id="addBookMark" parameterClass="BookMark">
@@ -31,7 +36,7 @@
 	</insert>
 
 	<!-- Select with no parameters using the result map for Account class. -->
-	<select id="bookMarkList" parameterClass="String" resultMap="BookMarkList">
+	<select id="bookMarkList" parameterClass="ForBookMarkList" resultMap="BookMarkList">
 		SELECT
 		bookmark_id,
 		bookmark_name,
@@ -46,17 +51,23 @@
 		category
 		category
 		FROM bookmark
-		WHERE user_id=#userId#
+		WHERE 
+			user_id=#userId# 
+		AND 
+		(category IN (SELECT category_id FROM bookmark_category WHERE parent_category_id=#parentId# 
+					AND user_id=#userId#) 
+					AND status='category') 
+		OR (category = #parentId# AND status='bookmark' AND user_id=#userId#) ;
 	</select>
-
-	<select id="bookMarkPosx" parameterClass="String" resultClass="Integer">
-		SELECT MAX(pos_x) from bookmark WHERE user_id=#userId#
-	</select>
-
-	<select id="bookMarkPosy" parameterClass="java.util.HashMap"
-		resultClass="Integer">
-		SELECT MAX(pos_y) from bookmark WHERE user_id=#userId# AND
-		pos_x=#posX#
+	
+	<!-- 추가 6/4 bookMarkList에 필요함 -->
+	<select id="getParenIdList" parameterClass="Integer" resultClass="ArrayList">
+		SELECT 
+			category_id 
+		FROM 
+			bookmark_category 
+		WHERE 
+			parent_category_id=#parentId#
 	</select>
 
 	<update id="arrangeIcon" parameterClass="BookMark">
@@ -105,15 +116,22 @@
 		SET
 		bookmark_name=#bookMarkName#,
 		bookmark_url=#bookMarkUrl#,
-		bookmark_descript=#bookMarkDescript#
+		bookmark_descript=#bookMarkDescript#,
+		category=#category#
+		<isNotEqual property="posX" compareValue="0">
+			,pos_x=#posX#	
+		</isNotEqual>
+		<isNotEqual property="posY" compareValue="0">
+			,pos_y=#posY#	
+		</isNotEqual>
+		
 		<isNotNull property="imgUrl">
 			, img_url=#imgUrl#
 		</isNotNull>
 		WHERE bookmark_id=#bookMarkId#
 	</update>
 
-	<!--남기윤 viewBookMarkList 셀렉트 구문 -->
-
+	<!-- 수정 6/5 -->
 	<select id="viewBookMarkList" parameterClass="String" resultMap="BookMarkList">
 		SELECT
 		bookmark_id,
@@ -129,11 +147,10 @@
 		category
 		category
 		FROM bookmark
-		WHERE user_id=#userId#
+		WHERE user_id=#userId# and status='bookmark'
 
 	</select>
 
-	<!--남기윤 updateBookMarkList 셀렉트 구문 -->
 	<update id="updateBookMarkList" parameterClass="BookMark">
 
 		update bookmark
@@ -158,9 +175,38 @@
 	</select>
 	
 	<select id="increaseFrequency" parameterClass="String">
-		<!-- SQL문을 매니저에서 실행하면 되는데 ibatis에서는 안됨. 수정할 것!! -->
 		update bookmark
-		set frequency = 1 + frequency
-		where bookmark_id = #bookMarkId#;
+		set frequency = frequency + 1
+		where bookmark_id = #bookmarkId#;
+	</select>
+	
+	<!-- 추가 6/5 , 수정 6/6-->
+	<delete id="deleteBookMarkCategory" parameterClass="List">
+		DELETE FROM bookmark
+		
+		<dynamic prepend="WHERE category IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+	</delete>
+	
+	<!-- 추가 6/5 -->
+	<delete id="deleteCategoryStatus" parameterClass="Integer">
+		DELETE FROM bookmark
+		WHERE category = #categoryId# and status = 'category'
+	</delete>
+	
+	<!-- 추가 6/6  수정 6/7-->
+	<select id="bookMarkPos" parameterClass="Category" resultMap="PositionList">
+		SELECT 
+			pos_x, pos_y 
+		from 
+			bookmark 
+		WHERE  
+			((category IN(SELECT category_id FROM bookmark_category 
+						 WHERE parent_category_id=#categoryId# and user_id=#userId#) and status='category') 
+				     OR (category=#categoryId# AND status='bookmark' and user_id=#userId#))
+		ORDER BY pos_x, pos_y				     
 	</select>
 </sqlMap>

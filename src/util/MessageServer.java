@@ -18,14 +18,13 @@ import com.nhncorp.mods.socket.io.SocketIOSocket;
 import com.nhncorp.mods.socket.io.impl.DefaultSocketIOServer;
 import com.nhncorp.mods.socket.io.impl.Namespace;
 
-import dto.Member;
 import dto.Message;
 
 public class MessageServer {
 	private Vertx vt;
 	private SocketIOServer io;
 	private HashMap<String, SocketIOSocket> sockets; // a(사용자), socket 생기는 것 담기
-	public static MessageServer server = null;
+	private static MessageServer server = null;
 	private AdminServer adminServer = null;
 	
 	public static MessageServer getInstance(){
@@ -112,28 +111,18 @@ public class MessageServer {
 		System.out.println("(전송)id: " + id + ", msg: " + msg);
 		JsonObject data = new JsonObject();
 	
+		ArrayList<Message> newMessage = new ArrayList<Message>();
+		Message message = new Message(0, id, "", null, "", new Date(), "", 0, "take");
+		newMessage = new FriendshipServiceImpl().messageCount(message);
+		
 		data.putString("msg", msg);
 		data.putString("friend", id);
-		data.putNumber("num", num);
+		data.putNumber("num", newMessage.size());
 		
 		if(sockets.get(id) != null){
 			sockets.get(id).emit("message", data);
 		} else { }
 		
-		/*String []messageId = id.split(",");
-		
-		for(int i=0; i<messageId.length; i++){	
-			data.putString("msg", msg);
-			data.putString("friend", messageId[i]);
-			data.putNumber("num", num);
-			System.out.println(messageId[i]);
-			System.out.println(sockets.get(messageId[i].trim()));
-			
-			if(sockets.get(messageId[i].trim()) != null){
-				System.out.println("dddd");
-				sockets.get(messageId[i].trim()).emit("message", data);
-			} else { }
-		}*/
 	}
 
 	public boolean isContains(String userId) {

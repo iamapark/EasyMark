@@ -23,7 +23,6 @@ public class FriendshipServiceImpl implements FriendshipServiceIF {
 	public ArrayList<Member> getFriendList(Friendship friend) {
 		ArrayList<Member> friendList = null;
 		friendList = FriendDAO.getInstance().getFriendList(friend);
-		System.out.println("getFriendsList : "+friendList.toString());
 		return friendList;
 	}
 

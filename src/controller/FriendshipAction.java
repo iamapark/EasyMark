@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import util.AdminServer;
+import util.MessageServer;
 import dto.BookMark;
 import dto.BookMarkShip;
 import dto.Category;
@@ -35,7 +36,7 @@ import dto.User;
 public class FriendshipAction {
 
 	public FriendshipAction(){
-		//MessageServer.getInstance().start();
+		MessageServer.getInstance().start();
 	}
 
 	private void traffic(){
@@ -370,10 +371,7 @@ public class FriendshipAction {
 		
 		JSONArray friendListJ = JSONArray.fromObject(friendList);
 		
-		
 		String data = friendListJ.toString();
-		System.out.println(friendListJ.toString());
-		System.out.println(data);
 		
 		request.setAttribute("result", friendListJ.toString());
 		nextPage.setViewName("result");
@@ -406,8 +404,6 @@ public class FriendshipAction {
 		
 		msg = new Message(messageNum, userId, friendId, null, URLDecoder.decode(contents, "utf-8"), new Date(), "", 0, "take");
 
-		System.out.println("contents: " + contents);
-
 		new FriendshipServiceImpl().sendMessage(msg);
 		
 		if (flag) { // 메시지 DB 등록 성공
@@ -415,9 +411,9 @@ public class FriendshipAction {
 			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
 			newMessage = new FriendshipServiceImpl().messageCount(message);
 			traffic();
-		} else { // 메시지 DB 등록 실패
-			System.out.println("쪽지 보내기 실패요 ㅋㅋ");
 		}
+		
+		System.out.println("newMessage.size(): " + newMessage.size());
 		
 		JSONObject jobj = new JSONObject();
 		jobj.put("friendId", friendId);
@@ -532,8 +528,6 @@ public class FriendshipAction {
 			FriendStatus friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), searchList.get(i).getEmail(), "");
 				// keyword 포함 ID 1개씩 friendStatus로 넣는다.
 
-			System.out.println("**" + searchList.get(i).getUserId());
-
 			friend = new FriendshipServiceImpl().getFriendStatus(friendStatus);
 
 			if (friend.size() == 0) {
@@ -541,14 +535,11 @@ public class FriendshipAction {
 				String status = "친구아님";
 				friendStatus = new FriendStatus(loginId, searchList.get(i).getUserId(), searchList.get(i).getName(), searchList.get(i).getEmail(), status);
 				friendStatusList.add(friendStatus);
-				System.out.println(friendStatus.getUserId() + ":"
-							+ friendStatus.getFriendId() + ":"
-							+ friendStatus.getStatus());
+;
 			}
 
 			else {
 				for (int k = 0; k < friend.size(); k++) {
-					System.out.println(friend.get(k).getStatus());
 					if (friend.get(k).getUserId().equals(loginId) || friend.get(k).getFriendId().equals(loginId)) {
 						friendStatusList.add(friend.get(k));
 					}
@@ -666,7 +657,6 @@ public class FriendshipAction {
 			member = new FriendshipServiceImpl().me2dayFriend(userId);
 
 			if (member != null) {
-				System.out.println(member.getUserId());
 				me2FriendList.add(member);
 			}
 		}

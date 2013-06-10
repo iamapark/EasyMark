@@ -3,9 +3,6 @@ package util;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
-import dto.Member;
-
-import service.AdminServiceImpl;
 import service.MembershipServiceImpl;
 
 public class SessionAttributeListener implements HttpSessionAttributeListener {
@@ -15,13 +12,15 @@ public class SessionAttributeListener implements HttpSessionAttributeListener {
 		
 		if(sessionBindingEvent.getName().equals("MEMBERID")){
 			String userId = (String)sessionBindingEvent.getSession().getAttribute("MEMBERID");
-			System.out.println("로그인: " + userId);
-			new MembershipServiceImpl().loginCount(userId); // 로그인 카운트를 1 증가시킨다.
-			
 			SessionManager.getInstance().add(sessionBindingEvent.getSession());
 			
+			// login_time 테이블에 로그인 시간을 저장한다.
+			new MembershipServiceImpl().loginCount(userId); 
+			
+			// 현재 로그인 중인 사용자 수를 관리자 페이지에 푸쉬한다.
 			AdminServer.getInstance().pushLoginMemberCount(SessionManager.getInstance().count());
 			
+			// 로그인 한 사용자 정보를 관리자 페이지에 푸쉬한다.
 			AdminServer.getInstance().pushLoginMemberInfo(userId);
 			
 		}

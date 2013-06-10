@@ -69,7 +69,7 @@
         	user_id=#userId#
     </select>
     
-    <select id="getMemberInfo" parameterClass="String" resultClass="Member">
+   <select id="getMemberInfo" parameterClass="String" resultClass="Member">
 		SELECT user_id userId, email email, name name, img_url imgUrl, bg_img_url bgImgUrl
 		FROM
 			member_info
