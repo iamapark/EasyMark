@@ -1,5 +1,3 @@
-/*document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
-*/
 var socket;
 
 /**
@@ -10,7 +8,6 @@ $(document).ready(function(){
 		dataType:'json',
 	}).done(function(data){
 		userId = data.user;
-		console.log("loginId:"+userId);
 		socketioConnection(userId);
 	});
 	
@@ -30,7 +27,6 @@ var socketioConnection = function(userId){ // 시작 :
 			type : 'success',
 			dismissQueue : true
 		});
-		console.log("쪽지도착");
 		alert("쪽지가 도착했습니다. \n friendId"+data.friend+"message : "+data.msg+"");
 		$.noty.stopConsumeAlert();
 		
@@ -51,14 +47,12 @@ $('a[href="#friendInfo"]').click(function(){
 	$.ajax({
 		url: 'getFriendList'
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 		var action = null;
 		
 		for(var i=0; i<memberData.length; i++){
 			memberId = memberData[i].userId;
-			
 			
 			action = "<a id='delete' onclick='deleteFriend(this)' class='btn btn-small btn-danger' data-id='"+ memberData[i].userId + "' data-count='"+ i + "'>"+
 					 "친구 삭제"+
@@ -76,7 +70,6 @@ $('#friendTab li:eq(0) a').click(function (e){
 	$.ajax({
 		url: 'getFriendList'
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 		var action = null;
@@ -98,7 +91,6 @@ $('#friendTab li:eq(1) a').click(function (e){
 	$.ajax({
 		url: 'sendFriendReqList',
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 		var action = null;
@@ -122,7 +114,6 @@ $('#friendTab li:eq(2) a').click(function (e){
 	$.ajax({
 		url: 'takeFriendReqList',
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 		var action = null;
@@ -148,7 +139,6 @@ $('#friendTab li:eq(3) a').click(function (e){
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
-		console.log(data);
 
 		var memberData = JSON.parse(data);
 		var action = null;
@@ -156,7 +146,7 @@ $('#friendTab li:eq(3) a').click(function (e){
 			action = "<a id='accept' onclick='recommendAccept(this)' class='btn btn-small btn btn-primary' data-id='"+memberData[i].bookMarkId+"' data-url='"+memberData[i].bookMarkUrl+"' data-name='"+memberData[i].bookMarkName+"' data-descript='"+memberData[i].bookMarkDescript+"' data-friend='"+memberData[i].friendId +"' data-count='"+i+"'>"+
 			 		 "수락"+
 			 		 "</a>"+"&nbsp&nbsp&nbsp"+
-			 		 "<a id='reject' onclick='recommendReject(this)' class='btn btn-small btn btn-danger' data-id='"+ memberData[i].bookMarkId + "' data-count='"+ i + "'>"+
+			 		 "<a id='reject' onclick='recommendReject(this)' class='btn btn-small btn btn-danger' data-id='"+memberData[i].bookMarkId+"' data-count='"+ i + "'>"+
 			 		 "거절"+
 			 		 "</a>";
 			$('.inwebtable').dataTable().fnAddData([memberData[i].userId, memberData[i].bookMarkUrl, memberData[i].bookMarkName, action]);
@@ -174,7 +164,6 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 	$.ajax({
 		url: 'recommendInWeb',
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 		var action = null;
@@ -197,13 +186,11 @@ $('#webSiteTab li:eq(0) a').click(function (e){
 /**
 <!-- friend MODAL의 네번째 tab(두번째 tab) : 북마크 추천 보낸 목록 -->*/
 $('#webSiteTab li:eq(1) a').click(function (e){	
-	console.log("보낸");
 	$('.outwebtable').dataTable().fnClearTable();
-	$(this).tab('show');
+
 	$.ajax({
 		url: 'recommendOutWeb',
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 		var action = null;
@@ -228,8 +215,6 @@ var deleteFriend = function(e){
 	var friendId = $(e).data('id');
 	var count = $(e).data('count');
 	
-	console.log(friendId);
-	
 	$.ajax({
 		url: 'deleteFriend',
 		data: {
@@ -247,7 +232,6 @@ var cancel = function(e){
 	var friendId = $(e).data('id');
 	var count = $(e).data('count');
 	
-	console.log(friendId);
 	$.ajax({
 		url: 'cancel',
 		data: {
@@ -266,7 +250,6 @@ var acceptFriend = function(e){
 	var userId = $(e).data('id');
 	var count = $(e).data('count');
 	
-	console.log(userId);
 	$.ajax({
 		url: 'accept',
 		data: {
@@ -285,7 +268,6 @@ var rejectFriend = function(e){
 	var userId = $(e).data('id');
 	var count = $(e).data('count');
 	
-	console.log(userId);
 	$.ajax({
 		url: 'reject',
 		data: {
@@ -322,13 +304,11 @@ $('#sendButton').click(function(){
 	
 	var recommend_friendId = $('#recommend_friendId').val();
 	var recommend_url = $('#recommend_url').val();
-	var recommend_name = $('#recommend_name').val();
-	var recommend_descript = $('#recommend_descript').val();
+	var recommend_name = encodeURI($('#recommend_name').val());
+	var recommend_descript = encodeURI($('#recommend_descript').val());
 	
 	$.ajax({
 		url:'recommend',
-		dataType : 'json',
-		type:'POST',
 		data:{
 			recommend_friendId:recommend_friendId,
 			recommend_url: recommend_url,
@@ -336,7 +316,6 @@ $('#sendButton').click(function(){
 			recommend_descript: recommend_descript
 		}
 	}).done(function(data){
-		console.log("data :"+data);
 		
 		if(data.toString() == "false"){
 			alert('친구와의 북마크 추천을 확인하세요.');
@@ -355,7 +334,6 @@ var recommendCancel = function(e){
 	var bookMarkId = $(e).data('id');
 	var count = $(e).data('count');
 	
-	console.log(bookMarkId);
 	$.ajax({
 		url: 'recommendCancel',
 		data: {
@@ -372,7 +350,6 @@ var recommendReject = function(e){
 	var bookMarkId = $(e).data('id');
 	var count = $(e).data('count');
 	
-	console.log(bookMarkId);
 	$.ajax({
 		url: 'recommendCancel',
 		data: {
@@ -388,8 +365,8 @@ var recommendReject = function(e){
 var recommendAccept = function(e){
 	var bookMarkId = $(e).data('id');
 	var bookMarkUrl = $(e).data('url');
-	var bookMarkName = $(e).data('name');
-	var bookMarkDescript = $(e).data('descript');
+	var bookMarkName = encodeURI($(e).data('name'));
+	var bookMarkDescript = encodeURI($(e).data('descript'));
 	
 	var count = $(e).data('count');
 	var newLi;
@@ -400,7 +377,6 @@ var recommendAccept = function(e){
 		url: 		$(e).data('url'),
 		description:$(e).data('descript')
 	};
-	console.log(bookMarkId+":"+bookMarkUrl+":"+bookMarkName+":"+bookMarkDescript);
 	$.ajax({
 		url: 'recommendAccept',
 		dataType:'json',
@@ -413,7 +389,6 @@ var recommendAccept = function(e){
 		}
 	}).done(function(data){
 		$('.inwebtable').dataTable().fnDeleteRow(count);
-		console.log(data);
 		id = data.id; x = data.x; y = data.y; url = data.url;
 		alert('북마크가 추가되었습니다!!');
 		newLi = '<li data-id="' + id + '" data-toggle="tooltip" title="'+dataInfo.name+'" data-row="'+x+'" data-col="'+y+'" data-sizex="1" data-sizey="1" class="bookmarkIcon gs_w">';
@@ -432,7 +407,6 @@ var recommendAccept = function(e){
 function searchMember(userId) {
 	var keyword = $('input[name="keyword"]').val();
 	$('.friendtable').dataTable().fnClearTable();
-	console.log(userId);
 	
 	$.ajax({
 		url: 'memberList', 
@@ -442,7 +416,6 @@ function searchMember(userId) {
 	}).done(function(data){
 		var memberData = JSON.parse(data);
 		var action = null;
-		console.log(userId);
 		for(var i=0; i<memberData.length; i++){
 			
 			if(memberData[i].status == "친구"){
@@ -499,11 +472,8 @@ function searchMember(userId) {
 var friendInfo;
 
 function me2dayConnect(me2dayId){
-	console.log('me2dayConnect6');
 	var userId = me2dayId.split("@"); 
-	console.log(userId[0]);
 	
-	console.log(userId);
 	$.ajax({
 		url: 'Proxy/proxy.jsp',
 		dataType:'json',
@@ -514,13 +484,11 @@ function me2dayConnect(me2dayId){
 	}).done(function(data){
 		
 		friendInfo = data;
-		console.log(data);
 		var friendsId="";
 		for(i=0; i<data.friends.length; i++)
 		{
 			friendsId = friendsId + data.friends[i].id+",";
 		}
-		console.log(friendsId);
 		
 		$('.me2friendtable').dataTable().fnClearTable();
 		
@@ -530,7 +498,6 @@ function me2dayConnect(me2dayId){
 				friendsId:friendsId,
 			}	
 		}).done(function(data){
-			console.log("data : "+data);
 			
 			var memberData = JSON.parse(data);
 			var action = null;
@@ -600,7 +567,6 @@ $('a[href="#messages"]').click(function(){
 	$.ajax({
 		url: 'inBox'
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 		
@@ -626,11 +592,9 @@ $('#messageTab li:eq(0) a').click(function (e){
 	$.ajax({
 		url: 'inBox'
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 		for(var i=0; i<memberData.length; i++){
-			console.log(memberData[i].readNum);
 			select = "<input type='checkbox' name='selector_take' onchange='takeMessageSelect(this)' value='" + memberData[i].messageId + "'></input>";
 			action = "<img src='images/new_image.GIF' />";
 			if(memberData[i].readNum==0){
@@ -652,7 +616,6 @@ $('#messageTab li:eq(1) a').click(function (e){
 	$.ajax({
 		url: 'outBox',
 	}).done(function(data){
-		console.log(data);
 		
 		var memberData = JSON.parse(data);
 	
@@ -697,11 +660,8 @@ function takeMessageDetail(messageId){
 		$('#contents').remove();
 		
 		$.ajax({
-			url:'messageCount',
-			dataType : 'json',
-			type:'POST'
+			url:'messageCount'
 		}).done(function(data){
-			console.log("data :"+data.toString());
 			$('#messageCount').text("쪽지("+data.toString()+")");		
 			
 		});
@@ -712,7 +672,6 @@ function takeMessageDetail(messageId){
 			$('.takemessagetable').dataTable().fnClearTable();
 			var memberData = JSON.parse(data);
 			for(var i=0; i<memberData.length; i++){
-				console.log(memberData[i].readNum);
 				select = "<input type='checkbox' name='selector' onchange='messageSelect(this)' value='" + memberData[i].messageId + "'></input>";
 				action = "<img src='images/new_image.GIF' />";
 				if(memberData[i].readNum==0){
@@ -758,15 +717,8 @@ var fillSendMessageDetail = function(data){
 <!-- 메시지 전송 -->*/
 $('#messageSendButton').click(function(e){
 	var messageFriendId = $('#messageFriendId').val();
-	var messageContents = $('#messageContents').val();
-<<<<<<< HEAD
-=======
-	messageContents = encodeURI(messageContents);
->>>>>>> 89241af2339ee60312316a600e2a9688606224d8
-	
-	console.log('받는 사람: ' + messageFriendId);
-	console.log('내용: ' + messageContents);
-		
+	var messageContents = encodeURI($('#messageContents').val());
+
 	if(messageFriendId == ""){
 		alert("받는 아이디를 입력하세요.");
 	}
@@ -818,7 +770,6 @@ $('#takeMessageDelete').click(function(e){
 		alert("삭제 할 메시지를 선택하세요.");
 	}
 	else {
-		console.log(data);
 		$.ajax({
 			url:'deleteMessage',
 			data:{
@@ -831,11 +782,8 @@ $('#takeMessageDelete').click(function(e){
 			}
 			
 			$.ajax({
-				url:'messageCount',
-				dataType : 'json',
-				type:'POST'
+				url:'messageCount'
 			}).done(function(data){
-				console.log("data :"+data.toString());
 				$('#messageCount').text("쪽지("+data.toString()+")");		
 			});
 		});
@@ -845,7 +793,6 @@ $('#takeMessageDelete').click(function(e){
 /**
 <!-- 받은 메시지 체크박스 선택 -->*/
 var takeMessageSelect = function(selected){
-	console.log('selec');
 	if ( $(selected).parent().parent().hasClass('take_row_selected_message') ) {
 		$(selected).parent().parent().removeClass('take_row_selected_message');
     }
@@ -877,7 +824,6 @@ $('#sendMessageDelete').click(function(e){
 		alert("삭제 할 메시지를 선택하세요.");
 	}
 	else {
-		console.log(data);
 		$.ajax({
 			url:'deleteMessage',
 			data:{
@@ -894,7 +840,6 @@ $('#sendMessageDelete').click(function(e){
 /**
 <!-- 보낸 메시지 체크박스 선택 -->*/
 var sendMessageSelect = function(selected){
-	console.log('selec');
 	if ( $(selected).parent().parent().hasClass('send_row_selected_message') ) {
 		$(selected).parent().parent().removeClass('send_row_selected_message');
     }

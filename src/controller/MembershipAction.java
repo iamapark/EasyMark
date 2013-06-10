@@ -42,6 +42,7 @@ public class MembershipAction {
 		AdminServer.getInstance().trafficCount();
 	}
 
+	// 일반 계정으로 회원가입하는 메소드
 	@RequestMapping("/register")
 	public ModelAndView register(HttpServletRequest request,
 			HttpServletResponse response,
@@ -62,13 +63,13 @@ public class MembershipAction {
 			JSONObject dataJ = JSONObject.fromObject(c);
 			AdminServer.getInstance().pushRegisterMemberCount(dataJ);
 		}
-		System.out.println("ss");
 		mav.setViewName("index");
 		
 		traffic();
 		return mav;
 	}
 
+	// 미투데이 계정으로 회원가입하는 메소드
 	@RequestMapping("/me2dayRegister")
 	public ModelAndView me2dayRegister(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -95,6 +96,10 @@ public class MembershipAction {
 			if (!new MembershipServiceImpl().registerMe2DayMember(member)) {
 				nextPage.setViewName("error/error");
 				request.setAttribute("msg", "이미 가입되어 있는 미투데이 계정입니다.");
+			}else{
+				DashboardCount c = new AdminServiceImpl().getDashboardCount();
+				JSONObject dataJ = JSONObject.fromObject(c);
+				AdminServer.getInstance().pushRegisterMemberCount(dataJ);
 			}
 
 		} else if (result.equals("false")) { // 사용자가 '거절합니다' 버튼을 누른 경우
@@ -106,6 +111,7 @@ public class MembershipAction {
 		return nextPage;
 	}
 
+	// 미투데이 계정으로 로그인하는 메소드
 	@RequestMapping("/me2dayLogin")
 	public ModelAndView me2dayLogin(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -146,15 +152,11 @@ public class MembershipAction {
 				
 				request.getSession().setAttribute("me2dayKey", me2dayKey);
 			 	
-				
-		 		
 				request.setAttribute("designType",
 						new MembershipServiceImpl().getDesignType(userId + "@me2day"));
 				request.setAttribute("MEMBERINFO", m);
 
-				request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId + "@me2day"));
-				//bookMar add 할때 categoryList option 가져오기
-				request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId + "@me2day"));
+				request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId + "@me2day", 0)));
 
 				Message message = new Message(0, login.getUserId(), "", null, "", new Date(), "", 0, "take");
 				ArrayList<Message> newMessage = new FriendshipServiceImpl().messageCount(message);
@@ -177,6 +179,7 @@ public class MembershipAction {
 		return nextPage;
 	}
 
+	// 회원가입할 때 사용자가 입력한 아이디가 가입 가능한지 알려주는 메소드
 	@RequestMapping("/checkId")
 	public ModelAndView checkId(HttpServletRequest request,
 			HttpServletResponse response,
@@ -191,6 +194,7 @@ public class MembershipAction {
 		return mav;
 	}
 
+	// 일반 계정으로 로그인할 때 사용하는 메소드
 	@RequestMapping("/login")
 	public ModelAndView login(HttpServletRequest request,
 			HttpServletResponse response,
@@ -229,6 +233,7 @@ public class MembershipAction {
 		return mav;
 	}
 
+	// 로그인 후 '회원정보'를 클릭했을 때 회원 정보를 받아오는 메소드
 	@RequestMapping("/getMemberInfo")
 	public ModelAndView getMemberInfo(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -246,6 +251,7 @@ public class MembershipAction {
 		return mav;
 	}
 
+	// '회원정보' 탭에서 '회원정보 수정' 버튼을 클릭했을 때 실행. 회원에 관한 정보를 업데이트한다.
 	@RequestMapping("/updateMemberInfo")
 	public ModelAndView updateMemberInfo(HttpServletRequest request, Img img,
 			@RequestParam(value = "file", required = false) MultipartFile file,
@@ -280,23 +286,8 @@ public class MembershipAction {
 		traffic();
 		return mav;
 	}
-
-	@RequestMapping("/changeDesign")
-	public ModelAndView changeDesign(HttpServletRequest request,
-			@RequestParam("design") String design) {
-		ModelAndView mav = new ModelAndView();
-
-		String userId = (String) request.getSession().getAttribute("MEMBERID");
-
-		new MembershipServiceImpl().changeDesign(new Design(userId, design));
-
-		request.setAttribute("result", "true");
-		mav.setViewName("result");
-		
-		traffic();
-		return mav;
-	}
-
+	
+	// 사용자의 바탕화면 이미지를 수정할 때 사용하는 메소드
 	@RequestMapping("/updateBgImg")
 	public ModelAndView updateBgImg(HttpServletRequest request, Img img,
 			@RequestParam("backgroundImgFile") MultipartFile file) {
@@ -327,6 +318,7 @@ public class MembershipAction {
 		return mav;
 	}
 
+	//ExtensionEasyMark에서 사용하는 메소드. 로그인 시 사용됨.
 	@RequestMapping("/extensionUserCheck")
 	public ModelAndView extensionUserCheck(HttpServletRequest request,
 			@RequestParam("userId") String userId,
@@ -347,6 +339,7 @@ public class MembershipAction {
 		return mav;
 	}
 
+	// 회원이 추가한 북마크 리스트를 받아오는 메소드
 	@RequestMapping("/viewBookMarkList")
 	public ModelAndView viewBookMarkList(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -371,6 +364,7 @@ public class MembershipAction {
 
 	}
 	
+	// '로그 아웃' 버튼을 누르면 실행되는 메소드
 	@RequestMapping("/logout")
 	public ModelAndView logout(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -385,6 +379,7 @@ public class MembershipAction {
 
 	}
 	
+	// 세션이 남아있는 상태에서 사용자가 EasyMark 페이지에 접속할 때 로그인 과정을 거치지 않고 바로 메인 페이지로 이동시킨다. 
 	@RequestMapping("/loginSession")
 	public ModelAndView loginSession(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -417,8 +412,9 @@ public class MembershipAction {
 		return mav;
 	}
 	
+	// 사용자의 카테고리 리스트를 트리 구조로 가져오는 메소드
 	@RequestMapping("/getCategoryTree")
-	public ModelAndView connector(HttpServletRequest request,
+	public ModelAndView getCategoryTree(HttpServletRequest request,
 			HttpServletResponse response) {
 		
 		ModelAndView mav = new ModelAndView();
@@ -432,6 +428,8 @@ public class MembershipAction {
 		return mav;
 	}
 	
+	// getCategoryTree에서 사용
+	// ArrayList<Category> 형식의 데이터를 JsonObject(트리 구조) 형식으로 변환한다.
 	private static JsonObject getJsonObject(ArrayList<Category> categoryList, int categoryId){
 		
 		JsonObject result = new JsonObject();
@@ -452,6 +450,7 @@ public class MembershipAction {
 		return result;
 	}
 	
+	// getCategoryTree에서 사용
 	private static JsonArray getJsonArray(ArrayList<Category> categoryList, int parentId){
 		
 		JsonArray result = new JsonArray();
@@ -464,6 +463,7 @@ public class MembershipAction {
 		return result;
 	}
 	
+	// getCategoryTree에서 사용
 	private static ArrayList<Category> getParentCategoryCount(ArrayList<Category> categoryList, int parentId){
 		ArrayList<Category> result = new ArrayList<Category>();
 		
@@ -475,6 +475,7 @@ public class MembershipAction {
 		return result;
 	}
 	
+	// 카테고리 리스트 중에서 인덱스에 해당하는 카테고리를 반환하는 메소드
 	public static Category getCategory(ArrayList<Category> categoryList, int index){
 		Category result = null;
 		
@@ -486,6 +487,7 @@ public class MembershipAction {
 		return result;
 	}
 	
+	// getCategoryTree에서 사용
 	private static boolean isParentIdExist(ArrayList<Category> categoryList, int parentId){
 		boolean result = false;
 		
@@ -498,6 +500,7 @@ public class MembershipAction {
 		return result;
 	}
 	
+	// 카테고리 리스트를 트리 구조로 반환하는 메소드. 
 	public static JsonObject getCategoryTree(ArrayList<Category> categoryList){
 		JsonObject jData = getJsonObject(categoryList, 0);
 		

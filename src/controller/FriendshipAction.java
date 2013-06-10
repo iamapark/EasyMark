@@ -5,7 +5,6 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import util.AdminServer;
-import util.MessageServer;
-import util.RelayServer;
 import dto.BookMark;
 import dto.BookMarkShip;
 import dto.Category;
@@ -51,8 +48,6 @@ public class FriendshipAction {
 	
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		
-		System.out.println(userId);
-		
 		Member memberKey = new FriendshipServiceImpl().getKey(userId);
 		
 		String me2dayKey = memberKey.getMe2DayKey();
@@ -61,8 +56,6 @@ public class FriendshipAction {
 			me2dayKey = "NotMe2Login";
 		else
 			me2dayKey = "Me2Login";	
-		
-		System.out.println(me2dayKey);
 		
 		request.getSession().setAttribute("memberKey", me2dayKey);
 		
@@ -134,7 +127,6 @@ public class FriendshipAction {
 
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		
-		System.out.println("추천받은사이트");
 		ArrayList<BookMarkShip> recommendedWeb = new ArrayList<BookMarkShip>();
 		recommendedWeb = new FriendshipServiceImpl().recommendInWeb(userId);
 		
@@ -180,7 +172,7 @@ public class FriendshipAction {
 			HttpServletResponse response, @RequestParam(value="recommend_friendId")String friendId,
 										  @RequestParam(value="recommend_url")String url,
 										  @RequestParam(value="recommend_name")String name,
-			  							  @RequestParam(value="recommend_descript")String descript) {
+			  							  @RequestParam(value="recommend_descript")String descript) throws UnsupportedEncodingException {
 		// 사용자ID 가져오기
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
@@ -191,8 +183,14 @@ public class FriendshipAction {
 		boolean flag = false;
 		ModelAndView mav = new ModelAndView();
 	
-		bookmarkship = new BookMarkShip(0, name, url, descript, userId, friendId, status);
+		bookmarkship = new BookMarkShip(0, URLDecoder.decode(name, "utf-8"), url, URLDecoder.decode(descript, "utf-8"), userId, friendId, status);
 		
+		try {
+			name = URLDecoder.decode(name, "utf-8");
+			descript = URLDecoder.decode(descript, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+	
+		}
 		flag = new FriendshipServiceImpl().bookMarkExist(bookmarkship);
 		if(flag){
 			new FriendshipServiceImpl().recommend(bookmarkship);
@@ -212,8 +210,6 @@ public class FriendshipAction {
 			@RequestParam(value="friendId")String friendId) {
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		
-		System.out.println(friendId);
 		
 		Friendship friendship = new Friendship(userId, friendId, "친구");
 		new FriendshipServiceImpl().deleteFriend(friendship);
@@ -237,9 +233,6 @@ public class FriendshipAction {
 		Friendship friendship = new Friendship(userId, friendId, "친구");
 		
 		new FriendshipServiceImpl().accept(friendship);
-		System.out.println(friendship.getUserId());
-		System.out.println(friendship.getFriendId());
-		System.out.println(friendship.getStatus());
 		
 		ModelAndView mav = new ModelAndView();
 		request.setAttribute("result", "true");
@@ -274,9 +267,7 @@ public class FriendshipAction {
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 				
 		Friendship friendship = new Friendship(userId, friendId, "친구요청");
-		System.out.println(friendship.getUserId());
-		System.out.println(friendship.getFriendId());
-		System.out.println(friendship.getStatus());
+
 		new FriendshipServiceImpl().cancel(friendship);
 		
 		ModelAndView mav = new ModelAndView();
@@ -294,8 +285,6 @@ public class FriendshipAction {
 			
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
 		
-		System.out.println(userId + ";" + friendId);
-			
 		Friendship friendship = new Friendship(userId, friendId, "친구요청");
 
 		new FriendshipServiceImpl().requestFriend(friendship);
@@ -313,21 +302,19 @@ public class FriendshipAction {
 			HttpServletResponse response) {
 
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		System.out.println(userId);
 
 		ArrayList<Message> inMessage = null;
 		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
 
 		inMessage = new FriendshipServiceImpl().inBox(message);
 		for (int i = 0; i < inMessage.size(); i++) {
-			System.out.println(inMessage.get(i).getMessageDate());
 			String dateTime = StringFromCalendar(inMessage.get(i).getMessageDate());
 			inMessage.get(i).setMessageDate2(dateTime);
 		}
 
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(inMessage);
-		System.out.println(dataJ);
+
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 			
@@ -341,12 +328,12 @@ public class FriendshipAction {
 			HttpServletResponse response) {
 
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
-		System.out.println(userId);
+
 		ArrayList<Message> outMessage = null;
 		Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "send");
 		outMessage = new FriendshipServiceImpl().outBox(message);
+		
 		for (int i = 0; i < outMessage.size(); i++) {
-			System.out.println(outMessage.get(i).getMessageDate());
 			String dateTime = StringFromCalendar(outMessage.get(i).getMessageDate());
 			outMessage.get(i).setMessageDate2(dateTime);
 		}
@@ -354,7 +341,7 @@ public class FriendshipAction {
 		ModelAndView mav = new ModelAndView();
 		
 		JSONArray dataJ = JSONArray.fromObject(outMessage);
-		System.out.println(dataJ);
+
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 		
@@ -370,6 +357,7 @@ public class FriendshipAction {
 		return formatter.format(date.getTime());
 	}
 	
+	// 친구 리스트
 	@RequestMapping("/getMessageFriendInfo")
 	public ModelAndView getMessageFriendInfo(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -441,6 +429,7 @@ public class FriendshipAction {
 		
 	}
 		
+	// 현재 로그인 중인 아이디를 반환
 	@RequestMapping("/isContains")
 	public ModelAndView isContains(HttpServletRequest request, HttpServletResponse response){
 	
@@ -494,9 +483,16 @@ public class FriendshipAction {
 		String imgUrl = null;
 		imgUrl = "images/Bookmark.png";
 
-		BookMark bookMark = new BookMark(0, URLDecoder.decode(bookMarkName, "utf-8"), bookMarkUrl, bookMarkDescript, friendId,
-				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, "");
+		BookMark bookMark = new BookMark(0, URLDecoder.decode(bookMarkName, "utf-8"), bookMarkUrl, URLDecoder.decode(bookMarkDescript, "utf-8"), friendId,
+				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, "0");
 
+		try {
+			bookMarkName = URLDecoder.decode(bookMarkName, "utf-8");
+			bookMarkDescript = URLDecoder.decode(bookMarkDescript, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+	
+		}
+		
 		new FriendshipServiceImpl().recommendCancel(bookMarkId);
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		
@@ -575,7 +571,6 @@ public class FriendshipAction {
 	public ModelAndView deleteMessage(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "messageId") String messageId) {
-		System.out.println(messageId);
 			
 		String ar[] = messageId.split("&");
 		ArrayList<String> idList = new ArrayList<String>();
@@ -594,7 +589,7 @@ public class FriendshipAction {
 		return mav;
 	}	
 	
-	
+	// 읽지 않은 메시지 카운트
 	@RequestMapping("/messageCount")
 	public ModelAndView messageCount(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -617,7 +612,7 @@ public class FriendshipAction {
 	public ModelAndView messageView(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "messageId") String messageId) {
-		System.out.println(messageId);
+
 		Message message = new Message();
 	
 		message = new FriendshipServiceImpl().getMessage(messageId);
@@ -642,7 +637,7 @@ public class FriendshipAction {
 		JSONObject data = new JSONObject();
 		data.put("num", 2);
 		dataJ.add(data);
-		System.out.println(dataJ);
+
 		request.setAttribute("result", dataJ.toString());
 		mav.setViewName("result");
 		
@@ -658,26 +653,23 @@ public class FriendshipAction {
 			
 		String loginId = (String)request.getSession().getAttribute("MEMBERID");
 		
-		System.out.println("===" + loginId + "===");
-
 		String[] me2Friends = friendsId.split(",");
 		ArrayList<Member> me2FriendList = new ArrayList<Member>();
 		ArrayList<FriendStatus> friendStatusList = new ArrayList<FriendStatus>();
 		Member member = new Member();
-		System.out.println(me2Friends.length);
+
 		for (int i = 0; i < me2Friends.length; i++) {
 			
 			me2Friends[i] = me2Friends[i] + "@me2day";
 			String userId = me2Friends[i];
-			System.out.println("userid : "+userId);
+
 			member = new FriendshipServiceImpl().me2dayFriend(userId);
 
 			if (member != null) {
 				System.out.println(member.getUserId());
 				me2FriendList.add(member);
-			} else
-				System.out.println("가입 된 친구 아님!!");
 			}
+		}
 			
 		ArrayList<FriendStatus> friend = new ArrayList<FriendStatus>();
 			
@@ -685,8 +677,6 @@ public class FriendshipAction {
 
 			FriendStatus friendStatus = new FriendStatus(loginId, me2FriendList
 					.get(i).getUserId(), me2FriendList.get(i).getName(), me2FriendList.get(i).getEmail(), "");
-				
-			System.out.println(i+','+friendStatus.getFriendId()+','+friendStatus.getName());
 				
 			friend = new FriendshipServiceImpl().getFriendStatus(friendStatus);
 
@@ -696,12 +686,9 @@ public class FriendshipAction {
 						.getUserId(), me2FriendList.get(i).getName(), me2FriendList.get(i).getEmail(), status);
 				friendStatusList.add(friendStatus);
 
-				System.out.println(status);
 			}
 			
 			for (int k = 0; k < friend.size(); k++) {
-				System.out.println("id:"+friend.get(k).getUserId()+":"+friend.get(k).getStatus());
-				System.out.println(friend.get(k).getUserId()+','+friend.get(k).getFriendId());
 				
 				if (friend.get(k).getUserId().equals(loginId) || friend.get(k).getFriendId().equals(loginId)) {
 					friendStatusList.add(friend.get(k));
@@ -711,7 +698,7 @@ public class FriendshipAction {
 		
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = JSONArray.fromObject(friendStatusList);
-		System.out.println(dataJ);
+
 		request.setAttribute("result", dataJ);
 		mav.setViewName("result");
 		

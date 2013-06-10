@@ -34,25 +34,6 @@ public class CategoryDAO {
 		return maxCategoryId;
 	}
 	
-	public boolean isExistCategory(HashMap<String, Object> categoryInfo){
-		boolean flag=false;
-		Category category=new Category();
-		try {
-			category=(Category)sqlMapper.queryForObject("isExistCategory", categoryInfo);
-			if(category!=null){
-				System.out.println("categoryName 겹친다 true 떠야대");
-				flag=true;
-				//왜 겹치는 카테고리 정보가 안들어가지?
-				System.out.println("겹치는 카테고리 네임 :"+category.getCategoryName());
-				System.out.println("겹치는 카테고리 id :"+category.getCategoryId());
-				System.out.println("겹치는 카테고리 유저 네임 :"+category.getUserId());
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return flag;
-	}
 	public ArrayList<Category> categoryList(String userId){
 		ArrayList<Category> categoryList = new ArrayList<>();
 		try {
@@ -63,15 +44,6 @@ public class CategoryDAO {
 			e.printStackTrace();
 		}
 		return categoryList;
-	}
-	//카테고리 북마크 삭제
-	public void deleteCategory(HashMap<String, Object> category){
-		try {
-			sqlMapper.delete("deleteCategory",category);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@SuppressWarnings("unchecked")
