@@ -172,7 +172,7 @@ public class FriendshipAction {
 			HttpServletResponse response, @RequestParam(value="recommend_friendId")String friendId,
 										  @RequestParam(value="recommend_url")String url,
 										  @RequestParam(value="recommend_name")String name,
-			  							  @RequestParam(value="recommend_descript")String descript) {
+			  							  @RequestParam(value="recommend_descript")String descript) throws UnsupportedEncodingException {
 		// 사용자ID 가져오기
 		
 		String userId = (String)request.getSession().getAttribute("MEMBERID");
@@ -183,8 +183,14 @@ public class FriendshipAction {
 		boolean flag = false;
 		ModelAndView mav = new ModelAndView();
 	
-		bookmarkship = new BookMarkShip(0, name, url, descript, userId, friendId, status);
+		bookmarkship = new BookMarkShip(0, URLDecoder.decode(name, "utf-8"), url, URLDecoder.decode(descript, "utf-8"), userId, friendId, status);
 		
+		try {
+			name = URLDecoder.decode(name, "utf-8");
+			descript = URLDecoder.decode(descript, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+	
+		}
 		flag = new FriendshipServiceImpl().bookMarkExist(bookmarkship);
 		if(flag){
 			new FriendshipServiceImpl().recommend(bookmarkship);
@@ -477,9 +483,16 @@ public class FriendshipAction {
 		String imgUrl = null;
 		imgUrl = "images/Bookmark.png";
 
-		BookMark bookMark = new BookMark(0, URLDecoder.decode(bookMarkName, "utf-8"), bookMarkUrl, bookMarkDescript, friendId,
-				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, "");
+		BookMark bookMark = new BookMark(0, URLDecoder.decode(bookMarkName, "utf-8"), bookMarkUrl, URLDecoder.decode(bookMarkDescript, "utf-8"), friendId,
+				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, "0");
 
+		try {
+			bookMarkName = URLDecoder.decode(bookMarkName, "utf-8");
+			bookMarkDescript = URLDecoder.decode(bookMarkDescript, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+	
+		}
+		
 		new FriendshipServiceImpl().recommendCancel(bookMarkId);
 		int maxBookmarkId = new IndividualPageServiceImpl().addBookMark(bookMark);
 		
