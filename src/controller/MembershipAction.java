@@ -62,7 +62,6 @@ public class MembershipAction {
 			JSONObject dataJ = JSONObject.fromObject(c);
 			AdminServer.getInstance().pushRegisterMemberCount(dataJ);
 		}
-		System.out.println("ss");
 		mav.setViewName("index");
 		
 		traffic();
@@ -95,6 +94,10 @@ public class MembershipAction {
 			if (!new MembershipServiceImpl().registerMe2DayMember(member)) {
 				nextPage.setViewName("error/error");
 				request.setAttribute("msg", "이미 가입되어 있는 미투데이 계정입니다.");
+			}else{
+				DashboardCount c = new AdminServiceImpl().getDashboardCount();
+				JSONObject dataJ = JSONObject.fromObject(c);
+				AdminServer.getInstance().pushRegisterMemberCount(dataJ);
 			}
 
 		} else if (result.equals("false")) { // 사용자가 '거절합니다' 버튼을 누른 경우
@@ -152,9 +155,7 @@ public class MembershipAction {
 						new MembershipServiceImpl().getDesignType(userId + "@me2day"));
 				request.setAttribute("MEMBERINFO", m);
 
-				request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(userId + "@me2day"));
-				//bookMar add 할때 categoryList option 가져오기
-				request.setAttribute("categoryList", new IndividualPageServiceImpl().categoryList(userId + "@me2day"));
+				request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId + "@me2day", 0)));
 
 				Message message = new Message(0, login.getUserId(), "", null, "", new Date(), "", 0, "take");
 				ArrayList<Message> newMessage = new FriendshipServiceImpl().messageCount(message);

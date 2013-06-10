@@ -1,5 +1,3 @@
-/*document.write("<script src='js/admin/jquery-1.7.2.min.js'></script>");
-*/
 var socket;
 
 /**
@@ -306,11 +304,8 @@ $('#sendButton').click(function(){
 	
 	var recommend_friendId = $('#recommend_friendId').val();
 	var recommend_url = $('#recommend_url').val();
-	var recommend_name = $('#recommend_name').val();
-	var recommend_descript = $('#recommend_descript').val();
-	
-	recommend_name = encodeURI(recommend_name);
-	recommend_descript = encodeURI(recommend_descript);
+	var recommend_name = encodeURI($('#recommend_name').val());
+	var recommend_descript = encodeURI($('#recommend_descript').val());
 	
 	$.ajax({
 		url:'recommend',
@@ -370,11 +365,8 @@ var recommendReject = function(e){
 var recommendAccept = function(e){
 	var bookMarkId = $(e).data('id');
 	var bookMarkUrl = $(e).data('url');
-	var bookMarkName = $(e).data('name');
-	var bookMarkDescript = $(e).data('descript');
-	
-	bookMarkName = encodeURI(bookMarkName);
-	bookMarkDescript = encodeURI(bookMarkDescript);
+	var bookMarkName = encodeURI($(e).data('name'));
+	var bookMarkDescript = encodeURI($(e).data('descript'));
 	
 	var count = $(e).data('count');
 	var newLi;
@@ -725,10 +717,8 @@ var fillSendMessageDetail = function(data){
 <!-- 메시지 전송 -->*/
 $('#messageSendButton').click(function(e){
 	var messageFriendId = $('#messageFriendId').val();
-	var messageContents = $('#messageContents').val();
+	var messageContents = encodeURI($('#messageContents').val());
 
-	messageContents = encodeURI(messageContents);
-		
 	if(messageFriendId == ""){
 		alert("받는 아이디를 입력하세요.");
 	}
