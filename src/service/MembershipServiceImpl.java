@@ -41,18 +41,22 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 		return RegisterDAO.getInstance().getDesignType(userId);
 	}
 
+	@Override
 	public Member getMemberInfo(String userId) {
 		return RegisterDAO.getInstance().getMemberInfo(userId);
 	}
 
+	@Override
 	public void updateMemberInfo(Member m) {
 		RegisterDAO.getInstance().updateMemberInfo(m);
 	}
 
+	@Override
 	public void changeDesign(Design design) {
 		RegisterDAO.getInstance().changeDesign(design);
 	}
 
+	@Override
 	public void updateBgImg(Member m) {
 		RegisterDAO.getInstance().updateBgImg(m);
 	}
@@ -67,10 +71,12 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 		return RegisterDAO.getInstance().me2DayLoginCheck(login);
 	}
 
+	@Override
 	public void registerRegisterTime(Member member) {
 		RegisterDAO.getInstance().registerRegisterTime(member);
 	}
 
+	@Override
 	public void loginCount(String userId) {
 		RegisterDAO.getInstance().loginCount(userId);
 	}
@@ -82,6 +88,7 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 		return bookMarkList;
 	}
 
+	@Override
 	public void logoutCount(String userId) {
 		RegisterDAO.getInstance().logoutCount(userId);
 	}

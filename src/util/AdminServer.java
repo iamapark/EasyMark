@@ -23,7 +23,7 @@ public class AdminServer {
 	private Vertx vt;
 	private SocketIOServer io;
 	private HashMap<String, SocketIOSocket> sockets;
-	public static AdminServer server = null;
+	private static AdminServer server = null;
 	
 	public static AdminServer getInstance(){
 		if(server == null)
@@ -80,7 +80,7 @@ public class AdminServer {
 		System.out.println("(등록)adminId:" + id + ", 크기: " + sockets.size());
 	}
 
-	public boolean isContains(String adminId) {
+	private boolean isContains(String adminId) {
 		return sockets.containsKey(adminId);
 	}
 	

@@ -46,39 +46,6 @@ public class BookMarkDAO {
 		}
 		return bookMarkList;
 	}
-	public ArrayList<BookMark> bookMarkList(HashMap<String, Object> bookMarkInfo){
-		ArrayList<BookMark> bookMarkList=null;
-		try {
-			bookMarkList=(ArrayList<BookMark>)sqlMapper.queryForList("bookMarkListByCategory",bookMarkInfo);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return bookMarkList;
-	}
-	public int bookMarkPosx(String userId){
-		int posx=0;
-		try {
-			posx=(Integer)sqlMapper.queryForObject("bookMarkPosx",userId);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return posx;
-	}
-	
-	public int bookMarkPosy(HashMap<String, Object> pos){
-		int posy=0;
-		
-		try {
-			posy=(Integer)sqlMapper.queryForObject("bookMarkPosy",pos);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return posy;
-	}
 	
 	public void arrangeIcon(BookMark bookMark){
 		System.out.println("arrangeIcon");
