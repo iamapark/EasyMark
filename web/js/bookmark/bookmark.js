@@ -89,7 +89,7 @@ var bookMarkInit = function(newEntry) {
 	$(newEntry).mouseover(mouseOverBookmarkInfo).mouseout(bookMarkOut);
 };
 
-// 화면에서 아이콘을 드래그하여 위치를 옮겼을 때 옮겨진 위치를 DB에 저장
+//화면에서 아이콘을 드래그하여 위치를 옮겼을 때 옮겨진 위치를 DB에 저장
 var bookMarkArrange = function(e) {
 
 	var wgd = gridster.serialize_changed();
@@ -118,9 +118,10 @@ var bookMarkArrange = function(e) {
 			location : location
 		}
 	}).done(function(data) {
-		// console.log(data);
+		
 	});
 };
+
 
 var bookMarkOut = function(e) {
 	$('#x').remove();
@@ -340,7 +341,6 @@ var bookmarkDelete = function(id) {
 			}
 		}).done(function(data) {
 			gridster.remove_widget($('li[data-id="' + $bookId + '"]'));
-			// init();
 			return true;
 		});
 	}
@@ -466,10 +466,9 @@ $('#categoryName').keyup(function(){
 		}
 	}).done(function(data){
 		if(data.flag==true){//카터고리 겹치면 비활성화
-			alert('카테고리 이름 겹쳐용');
-			$('#category').attr('disabled','disabled');
+			$('#categoryAddButton').attr('disabled','disabled');
 		}else{//카터고리 추가 가능하면
-			$('#category').removeAttr('disabled');
+			$('#categoryAddButton').removeAttr('disabled');
 		}
 		
 	});

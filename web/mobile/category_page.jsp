@@ -20,10 +20,8 @@
 	
 	if(beforeCategoryId == 0){
 		pageName = "main.jsp";	
-		System.out.println("메인으로 페이지로");
 	}else{
 		pageName = "category_page.jsp";
-		System.out.println("카테고리 페이지로");
 	}
 %>    
 <!DOCTYPE html>
