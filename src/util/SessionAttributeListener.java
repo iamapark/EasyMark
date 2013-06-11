@@ -28,14 +28,10 @@ public class SessionAttributeListener implements HttpSessionAttributeListener {
 
 	@Override
 	public void attributeRemoved(HttpSessionBindingEvent sessionBindingEvent) {
-		
-			
 	}
 
 	@Override
 	public void attributeReplaced(HttpSessionBindingEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

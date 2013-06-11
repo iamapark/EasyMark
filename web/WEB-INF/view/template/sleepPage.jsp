@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" type="text/css" media="screen" href="css/sleepPage/style.css"/>
-<title>${MEMBERINFO.name}님 계정이 휴면 상태입니다.</title>
+<title>${MEMBERINFO.userId}님 계정이 휴면 상태입니다.</title>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/admin/jquery-ui-1.8.21.custom.js"></script>
 <script type="text/javascript" src="js/modernizr.js"></script>

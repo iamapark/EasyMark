@@ -78,16 +78,6 @@
 								name="backgroundImgFile">
 						</form>
 			  	  	</div>
-			  	  	<div class="tab-pane" id="setting_category">
-				  		<h5>카테고리 추가</h5>
-				  		<form action="addCategory" name="addCategory" id="addCategory" method="post" enctype="multipart/form-data">
-				  			<select id="categorySelect" name="style">
-							<!-- categorySelect option appendTo -->
-							</select>
-				  			<input type="text" id="categoryName" name="categoryName">
-					  		<input type="button" id="categoryAddButton" name="category" value="add">
-					  	</form>
-				  	</div>
 		  	  	</div>
 				<div class="tab-pane" id="setting_bookmarkInfo">
 				  	<!-- 북마크 리스트 -->

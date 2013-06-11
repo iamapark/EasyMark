@@ -511,4 +511,38 @@ public class MembershipAction {
 		return jData;
 	}
 
+	
+	@RequestMapping("/sleepPage")
+	public ModelAndView sleepPage(HttpServletRequest request, HttpServletResponse response){
+		
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("MEMBERID");
+		session.invalidate();
+		Member m = new MembershipServiceImpl().getMemberInfo(userId);
+
+		request.setAttribute("MEMBERINFO", m);
+		mav.setViewName("template/sleepPage");
+		return mav;
+	}
+	
+	@RequestMapping("/loginCheck")
+	public ModelAndView loginCheck(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "loginId") String userId,
+			@RequestParam(value = "loginPassword") String password) {
+		String md5Password = new DataEncrypt().encrypt(password);
+		ModelAndView mav = new ModelAndView();
+		Login login = new Login(userId, md5Password);
+		boolean flag = false;
+		
+		flag = new MembershipServiceImpl().login(login);
+		
+		System.out.println(flag);
+		
+		request.setAttribute("result", Boolean.toString(flag)); 
+		mav.setViewName("result");
+		return mav;
+	}
+	
 }

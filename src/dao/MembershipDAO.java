@@ -71,6 +71,16 @@ public class MembershipDAO {
 			sqlMapper.update("leaveMember", idList);
 			sqlMapper.update("deleteLoginInfo", idList);
 			sqlMapper.delete("deleteMemberCategory", idList);
+			
+			// friendship 테이블에서 삭제
+			sqlMapper.delete("deleteFriendship", idList);
+			
+			// message 테이블에서 삭제
+			sqlMapper.delete("deleteMessageByUserId", idList);
+			
+			// bookmarkship 테이블에서 삭제
+			sqlMapper.delete("deleteBookmarkship", idList);
+			
 			sqlMapper.delete("deleteMember", idList);
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -85,17 +95,7 @@ public class MembershipDAO {
 	public void deleteMembers(String userId) {
 		ArrayList<String> idList = new ArrayList<String>();
 		idList.add(userId);
-		try{
-			sqlMapper.delete("deleteMemberInfo", idList);
-			sqlMapper.delete("deleteBookMark", idList);
-			sqlMapper.delete("deleteDesign", idList);
-			sqlMapper.update("leaveMember", idList);
-			sqlMapper.update("deleteLoginInfo", idList);
-			sqlMapper.delete("deleteMemberCategory", idList);
-			sqlMapper.delete("deleteMember", idList);
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
+		deleteMembers(idList);
 	}
 
 	/**

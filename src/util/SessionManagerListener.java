@@ -9,7 +9,6 @@ public class SessionManagerListener implements HttpSessionListener {
 
 	@Override
 	public void sessionCreated(HttpSessionEvent paramSessionEvent) {
-		
 	}
 
 	@Override

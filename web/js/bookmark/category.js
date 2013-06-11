@@ -114,7 +114,7 @@ $('#newCategoryButton').click(function(d){
 				label += "<input type='checkbox' id='category-" + data.categoryId + "' />";
 			label += "</li>";
 		
-			li.find('ol').append(label);
+			li.find('ol:first').append(label);
 			
 		}else{ // 부모 카테고리에 자식 카테고리들이 없음.
 			label = "<ol>";

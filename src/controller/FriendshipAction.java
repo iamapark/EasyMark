@@ -36,7 +36,7 @@ import dto.User;
 public class FriendshipAction {
 
 	public FriendshipAction(){
-		MessageServer.getInstance().start();
+		//MessageServer.getInstance().start();
 	}
 
 	private void traffic(){

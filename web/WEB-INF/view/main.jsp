@@ -154,12 +154,12 @@
 	
 		var timer = function(){
 			sleepTime++;
-			if(sleepTime === 1000000){
+			if(sleepTime === 60*2){
 				location.replace('sleepPage');
 			}
 		};
 	
-		setInterval("timer()", 1);
+		setInterval("timer()", 1000);
 	
 		$(document).mousemove(function(e){
 			sleepTime = 0;
