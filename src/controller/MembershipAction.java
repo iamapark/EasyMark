@@ -24,16 +24,15 @@ import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
 import util.FileWriter;
-import util.MessageServer;
 import dto.BookMark;
 import dto.Category;
 import dto.DashboardCount;
-import dto.Design;
 import dto.ForBookMarkList;
 import dto.Img;
 import dto.Login;
 import dto.Member;
 import dto.Message;
+import exception.LoginException;
 
 @Controller
 public class MembershipAction {
@@ -199,7 +198,7 @@ public class MembershipAction {
 	public ModelAndView login(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "loginId") String userId,
-			@RequestParam(value = "loginPassword") String password) {
+			@RequestParam(value = "loginPassword") String password) throws LoginException {
 		
 		ModelAndView mav = new ModelAndView();
 		Login login = new Login(userId, password);
@@ -227,6 +226,7 @@ public class MembershipAction {
 		} else {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");
 			mav.setViewName("error/error");
+			throw new LoginException();
 		}
 		 
 		traffic();

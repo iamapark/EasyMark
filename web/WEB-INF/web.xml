@@ -39,4 +39,14 @@
   	<listener-class>util.SessionAttributeListener</listener-class>
   </listener>
   
+  <error-page>
+  	<exception-type>exception.LoginException</exception-type>
+  	<location>/WEB-INF/view/error/login_error.jsp</location>
+  </error-page>
+  
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/WEB-INF/view/error/404.html</location>
+  </error-page>
+  
 </web-app>
