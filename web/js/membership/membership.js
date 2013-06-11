@@ -261,3 +261,37 @@ var bookmarkListAllSelection = function(e){
 	}
 	
 };
+
+/**
+ * 비밀번호 수정
+ */
+$('#passwordChangeButton').click(function(){
+	$change_password = $('#setting_change_password').val();
+	$change_passwordConfirm = $('#setting_change_passwordConfirm').val();
+	
+	if($change_password == '' || $change_passwordConfirm == ''){
+		alert('비밀번호 입력란을 채워주세요.');
+		return false;
+	}
+	
+	if($change_password === $change_passwordConfirm){
+		
+		$.ajax({
+			url:'changePassword',
+			dataType:'json',
+			data:{
+				password: $change_password
+			}
+		}).done(function(data){
+			if(data == true){
+				alert('비밀번호가 변경되었습니다.');
+				$('#setting_change_password').val('');
+				$('#setting_change_passwordConfirm').val('');
+			}else{
+				alert('비밀번호 변경이 실패했습니다. 다시 한 번 시도해주세요.');
+			}
+		});
+	}else{
+		alert('비밀번호와 비밀번호 재확인 입력란을 동일하게 작성해주세요.');
+	}
+});

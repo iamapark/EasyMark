@@ -90,10 +90,10 @@
 				<form  action="password" autocomplete="on">
 				  <p>
 					<label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
-					<input class="field" name="emailsignup" required="required" type="email" placeholder="myusername@gmail.com"/>
+					<input class="field" name="emailsignup" id="emailsignup" required="required" type="email" placeholder="myusername@gmail.com"/>
 				  </p>
 				  <p class="signin button">
-					<input type="submit" value="Get New Password"/>
+					<input type="button" id="getPasswordButton" value="비밀번호 메일주소로 받기"/>
 				  </p>
 				</form>
 			</div>

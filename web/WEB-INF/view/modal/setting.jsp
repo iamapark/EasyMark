@@ -68,7 +68,7 @@
 				</div>
 				<div class="tab-pane" id="setting_settings">
 					<!-- 비밀번호 변경, 디자인 변경 -->
-					<div>
+					<div class="control-group">
 						<!-- 배경화면 변경 -->
 						<h5>배경화면 변경</h5>
 						<img id="bgImg" src="images/calendar.png" style="width: 15%;" /><br>
@@ -77,6 +77,24 @@
 							<input type="file" id="backgroundImgFile"
 								name="backgroundImgFile">
 						</form>
+			  	  	</div>
+			  	  	
+			  	  	<div class="control-group">
+			  	  		<!-- 비밀번호 변경 -->
+			  	  		<h5>비밀번호 변경</h5>
+			  	  		<div class="control-group">
+							<label class="control-label" for="changePassword" style="float: left; margin-right: 17px; margin-left: 30px;">비밀번호</label>
+							<div class="controls">
+								<input type="password" id="setting_change_password" placeholder="수정할 비밀번호">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="inputId" style="float: left; margin-right: 15px;">비밀번호 확인</label>
+							<div class="controls">
+								<input type="password" id="setting_change_passwordConfirm" placeholder="수정할 비밀번호 재입력">
+							</div>
+						</div>
+			  	  		<input type="button" class="btn" id="passwordChangeButton" value="비밀번호 변경">
 			  	  	</div>
 		  	  	</div>
 				<div class="tab-pane" id="setting_bookmarkInfo">

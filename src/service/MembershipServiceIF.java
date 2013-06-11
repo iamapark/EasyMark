@@ -114,5 +114,19 @@ public interface MembershipServiceIF {
 	 * @return ArrayList<BookMark> 북마크 정보가 담긴 리스트
 	 */
 	public ArrayList<BookMark> viewBookMarkList(String userId);
+
+	/**
+	 * 해당 이메일이 DB에 존재하는지 검사
+	 * @param String 이메일 주소
+	 * @return Member 회원 정보
+	 */
+	Member isEmail(String email);
+
+	/**
+	 * 해당 이메일이 DB에 존재하는지 검사
+	 * @param Member 회원 정보
+	 * @return boolean true-존재, false-없음
+	 */
+	public void updatePassword(Member m);
 	
 }

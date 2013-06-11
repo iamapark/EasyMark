@@ -13,6 +13,7 @@ public class DataEncrypt {
 
 	public String encrypt(String strData) { // 암호화 시킬 데이터
 		strENCData = "";
+
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5"); // "MD5 형식으로 암호화"
 			byte[] bytData = strData.getBytes();
@@ -26,5 +27,10 @@ public class DataEncrypt {
 			System.out.print("암호화 에러" + e.toString());
 		}
 		return strENCData; // 암호화된 데이터를 리턴...
+	}
+
+	public static void main(String ar[]) {
+		System.out.println(new DataEncrypt().encrypt("haha"));
+
 	}
 }

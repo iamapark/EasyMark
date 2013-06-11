@@ -183,4 +183,24 @@ public class MembershipDAO {
 		
 		return loginMemberInfoList;
 	}
+
+	public Member isEmail(String email) {
+		Member m = null;
+		
+		try{
+			m = (Member)sqlMapper.queryForObject("isEmail", email);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return m;
+	}
+
+	public void updatePassword(Member m) {
+		try{
+			sqlMapper.update("updatePassword", m);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 }

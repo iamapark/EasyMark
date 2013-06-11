@@ -3,6 +3,8 @@ $(document).ready(function(){
 	$('#registerButton').click(registerButtonClicked);
 	$('#loginButton').click(loginButtonClicked);
 	$('#userId').focusout(userIdFocusOut);
+	$('#getPasswordButton').click(getPassword);
+
 });
 
 
@@ -130,5 +132,28 @@ var me2dayLogin = function(){
 	   		  }
 	}).done(function(data){
 		location.href = data.url;
+	});
+};
+
+/**
+ * 비밀번호 찾기
+ */
+var getPassword = function(){
+	
+	$email = $('#emailsignup').val();
+	
+	if($email.indexOf('@') < 0){
+		alert('메일 주소를 입력해주세요.');
+		return false;
+	}
+	
+	$.ajax({
+		url:'getPassword',
+		dataType:'json',
+		data:{
+			email:$email
+		}
+	}).done(function(data){
+		kaka = data;
 	});
 };

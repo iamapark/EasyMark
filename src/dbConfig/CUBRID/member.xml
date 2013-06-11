@@ -126,4 +126,21 @@
 		select * from member
 		where user_id=#userId#
 	</select>
+	
+	<!-- 추가 6/12 -->
+	<select id="isEmail" parameterClass="String" resultClass="Member">
+		select user_id userId, email email, name name,  me2day_key me2DayKey, img_url imgUrl, bg_img_url bgImgUrl
+		from member_info
+		where email = #email#
+	</select>
+	
+	<!-- 추가 6/12 -->
+	<update id="updatePassword" parameterClass="Member">
+		UPDATE 
+			member
+		set
+			password = #password#
+		WHERE
+			user_id = #userId#
+	</update>
 </sqlMap>
