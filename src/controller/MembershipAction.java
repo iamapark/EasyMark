@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import service.MembershipServiceImpl;
 import util.AdminServer;
 import util.DataEncrypt;
 import util.FileWriter;
+import util.GMailSender;
 import dto.BookMark;
 import dto.Category;
 import dto.DashboardCount;
@@ -53,6 +55,7 @@ public class MembershipAction {
 		ModelAndView mav = new ModelAndView();
 		
 		String md5Password = new DataEncrypt().encrypt(password);
+		System.out.println("md5Password: " + md5Password);
 		
 		Member member = new Member(userId, email, md5Password, name);
 		if (member != null) {
@@ -510,5 +513,47 @@ public class MembershipAction {
 		
 		return jData;
 	}
+	
+	// 사용자가 '비밀번호 메일주소로 받기' 버튼을 클릭했을 때 getPassword
+	@RequestMapping("/getPassword")
+	public ModelAndView extensionUserCheck(HttpServletRequest request,
+			@RequestParam("email") String email) {
+		ModelAndView mav = new ModelAndView();
+		
+		String randomPassword = getRandomString(10);
+		
+		// 넘겨받은 이메일 주소에 해당하는 아이디가 있는지 검사
+		Member m = new MembershipServiceImpl().isEmail(email);
 
+		if(m != null){
+			
+			System.out.println(m);
+			
+			// 아이디가 있으면 DB에 넣는다.
+			m.setPassword(new DataEncrypt().encrypt(randomPassword));
+			new MembershipServiceImpl().updatePassword(m);
+			
+			// 메일 주소로 새로 생성한 randomPassword를 보낸다.
+			new GMailSender().sendMail(email, "EasyMark 비밀번호입니다.", randomPassword);
+		}
+
+		
+		
+		return mav;
+	}
+	
+	private static String getRandomString(int length)
+	{
+	  StringBuffer buffer = new StringBuffer();
+	  Random random = new Random();
+	 
+	  String chars[] = 
+	    "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z".split(",");
+	 
+	  for (int i=0 ; i<length ; i++)
+	  {
+	    buffer.append(chars[random.nextInt(chars.length)]);
+	  }
+	  return buffer.toString();
+	}
 }

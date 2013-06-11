@@ -3,6 +3,7 @@ package service;
 import java.util.ArrayList;
 
 import dao.BookMarkListDAO;
+import dao.MembershipDAO;
 import dao.RegisterDAO;
 import dto.BookMark;
 import dto.Design;
@@ -91,6 +92,16 @@ public class MembershipServiceImpl implements MembershipServiceIF {
 	@Override
 	public void logoutCount(String userId) {
 		RegisterDAO.getInstance().logoutCount(userId);
+	}
+
+	@Override
+	public Member isEmail(String email) {
+		return MembershipDAO.getInstance().isEmail(email);
+	}
+
+	@Override
+	public void updatePassword(Member m) {
+		
 	}
 
 }

@@ -25,4 +25,8 @@ public class DataEncrypt {
 	  }
 	  return strENCData;  // 암호화된 데이터를 리턴...
 	 }
+	
+	public static void main(String ar[]){
+		System.out.println(new DataEncrypt().encrypt("haha"));
+	}
 }
