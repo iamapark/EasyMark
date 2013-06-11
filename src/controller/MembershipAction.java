@@ -23,6 +23,7 @@ import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
+import util.DataEncrypt;
 import util.FileWriter;
 import dto.BookMark;
 import dto.Category;
@@ -50,8 +51,10 @@ public class MembershipAction {
 			@RequestParam(value = "email") String email,
 			@RequestParam(value = "password") String password) {
 		ModelAndView mav = new ModelAndView();
-
-		Member member = new Member(userId, email, password, name);
+		
+		String md5Password = new DataEncrypt().encrypt(password);
+		
+		Member member = new Member(userId, email, md5Password, name);
 		if (member != null) {
 			new MembershipServiceImpl().registerMember(member);
 			new MembershipServiceImpl().registerMemberInfo(member);
@@ -201,7 +204,8 @@ public class MembershipAction {
 			@RequestParam(value = "loginPassword") String password) throws LoginException {
 		
 		ModelAndView mav = new ModelAndView();
-		Login login = new Login(userId, password);
+		String md5LoginPassword = new DataEncrypt().encrypt(password);
+		Login login = new Login(userId, md5LoginPassword);
 		boolean flag = false;
 		
 		flag = new MembershipServiceImpl().login(login);
