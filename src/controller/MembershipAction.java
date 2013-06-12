@@ -527,7 +527,6 @@ public class MembershipAction {
 		Member m = new MembershipServiceImpl().isEmail(email);
 
 		if(m != null){
-			flag = true;
 			
 			// 아이디가 있으면 DB에 넣는다.
 			m.setPassword(new DataEncrypt().encrypt(randomPassword));
@@ -551,6 +550,7 @@ public class MembershipAction {
 
 	}
 	
+	// 사용자가 로그인 후 일정 시간 동안 아무런 움직임이 없을 때 휴면 페이지로 이동한다.
 	@RequestMapping("/sleepPage")
 	public ModelAndView sleepPage(HttpServletRequest request, HttpServletResponse response){
 		
@@ -565,6 +565,7 @@ public class MembershipAction {
 		return mav;
 	}
 	
+	// 휴면 페이지에서 아이디와 비밀번호를 체크하는 메소드
 	@RequestMapping("/loginCheck")
 	public ModelAndView loginCheck(HttpServletRequest request,
 			HttpServletResponse response,
@@ -584,6 +585,7 @@ public class MembershipAction {
 		return mav;
 	}
 	
+	// 비밀번호 변경 메소드
 	@RequestMapping("/changePassword")
 	public ModelAndView changePassword(HttpServletRequest request,
 			HttpServletResponse response,
@@ -607,6 +609,7 @@ public class MembershipAction {
 		return mav;
 	}
 
+	// length의 길이만큼 랜덤으로 생성한 문자열을 반환
 	private static String getRandomString(int length)
 	{
 	  StringBuffer buffer = new StringBuffer();

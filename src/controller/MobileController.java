@@ -20,6 +20,7 @@ import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
 import service.MembershipServiceImpl;
 import util.AdminServer;
+import util.DataEncrypt;
 import dao.CategoryDAO;
 import dto.BookMark;
 import dto.DashboardCount;
@@ -61,7 +62,7 @@ public class MobileController {
 		
 		ModelAndView mav = new ModelAndView();
 		JSONArray dataJ = new JSONArray();
-		Login login = new Login(userId, password);
+		Login login = new Login(userId, new DataEncrypt().encrypt(password));
 		boolean flag = false;
 		
 		if(login.getUserId().equals("") || login.getPassword().equals("")){

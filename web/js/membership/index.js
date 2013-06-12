@@ -154,6 +154,10 @@ var getPassword = function(){
 			email:$email
 		}
 	}).done(function(data){
-		kaka = data;
+		if(data == true){
+			alert('이메일 주소로 비밀번호가 발송되었습니다.');
+		}else{
+			alert('등록한 이메일 주소가 없거나 이메일 발송이 실패했습니다.');
+		}
 	});
 };
