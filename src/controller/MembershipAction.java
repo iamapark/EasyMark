@@ -334,7 +334,7 @@ public class MembershipAction {
 		ModelAndView mav = new ModelAndView();
 
 		boolean flag = new MembershipServiceImpl().login(new Login(userId,
-				password));
+				new DataEncrypt().encrypt(password)));
 
 		String data = callback + "({\"result\" : \"" + Boolean.toString(flag)
 				+ "\", \"userId\" : \"" + userId + "\"})";
