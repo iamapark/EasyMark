@@ -207,9 +207,6 @@ public class MembershipAction {
 			@RequestParam(value = "loginId") String userId,
 			@RequestParam(value = "loginPassword") String password) throws LoginException {
 		
-		System.out.println("login 호출!!");
-		
-		
 		ModelAndView mav = new ModelAndView();
 		String md5LoginPassword = new DataEncrypt().encrypt(password);
 		Login login = new Login(userId, md5LoginPassword);

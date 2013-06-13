@@ -140,15 +140,15 @@ var mouseOverBookmarkInfo = function(e) {
 $('#modify').click(
 		function(e) {
 			
-			selectedCategoryId = currentPageCategoryId;
-			
 			e.preventDefault();
 			 var filename = $('#bookmarkIconImageFile').val();
 			 var name = $('#modifyBookmarkName').val();
 			 var url = $('#modifyBookmarkUrl').val();
 			 var desc = $('#modifyBookmarkDescription').val();
 			 var bookmarkId = $('#modifyBookMarkId').val();
-			 var categoryId = selectedCategoryId;
+			 categoryId = selectedCategoryId;
+			 console.log('categoryId: ' + categoryId);
+			 
 			 var flag = false;
 			 
 			 if(currentPageCategoryId == categoryId){
@@ -289,6 +289,8 @@ $('#add').bind('click',function(e){
 var bookmarkUpdate = function() {
 	keke = $(this);
 	$bookid = $(this).attr('$id');
+	selectedCategoryId = currentPageCategoryId;
+	
 	$.ajax({
 		url : 'getBookmarkInfo',
 		dataType : 'json',

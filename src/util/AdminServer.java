@@ -38,6 +38,7 @@ public class AdminServer {
 	}
 	
 	public void start(){
+		System.out.println("Admin 서버 가동!!");
 		HttpServer server = vt.createHttpServer();
 		io = new DefaultSocketIOServer(vt, server);
 		final Namespace message = io.of("/admin");

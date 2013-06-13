@@ -248,6 +248,10 @@ public class IndividualPageAction {
 		
 		String userId = (String) request.getSession().getAttribute("MEMBERID");
 		String imgUrl = null;
+		
+		System.out.println("userId: " + userId);
+		System.out.println("categoryId: " + categoryId);
+		System.out.println("bookmarkId: " + bookMarkId);
 
 		if (file != null) {
 			if (!file.getOriginalFilename().equals("")) {

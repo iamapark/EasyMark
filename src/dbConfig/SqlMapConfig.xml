@@ -60,7 +60,7 @@
       		<property name="JDBC.Username"      value="nhneasymark"/>
       		<property name="JDBC.Password"      value="infiniteloop44"/>
     	</dataSource>
-  	</transactionManager> --> 
+  	</transactionManager>  -->
 
   <!-- List the SQL Map XML files. They can be loaded from the 
        classpath, as they are here (com.domain.data...) -->
