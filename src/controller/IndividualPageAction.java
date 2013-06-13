@@ -146,6 +146,7 @@ public class IndividualPageAction {
 		jobj.put("id", maxBookmarkId);
 		jobj.put("imgUrl", imgUrl);
 		jobj.put("url", url);
+		jobj.put("descript", description);
 		
 		return jobj;
 	}

@@ -10,8 +10,6 @@
 	String userId = (String) session.getAttribute("MEMBERID");
 	String pageName = "";
 	
-	
-	
 	ArrayList<BookMark> bookmarkList = mc.getBookMarkList(categoryId, userId);
 	String categoryName = mc.getCategoryName(categoryId);
 	
@@ -31,6 +29,7 @@
 </head>
 <body>
 	<div data-role="page">
+		<input type="hidden" id="currentPage" value="<%=categoryId%>">
 		<div data-role="header" data-theme="b">
 			<a href="#" data-icon="bars"  data-shadow="false" data-iconshadow="false" data-rel="back" data-transition="slide" data-direction="reverse">뒤로</a>
 			<h1>${categoryName}</h1>

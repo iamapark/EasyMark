@@ -164,7 +164,7 @@ var memberInfoModify = function(){
 	
 	if (img == '') {
 		$.ajax({
-			url : 'updateMemberInfo',
+			url : '../updateMemberInfo',
 			dataType : 'json',
 			type : 'POST',
 			data : {
@@ -196,7 +196,7 @@ var logout = function(userId){
 	$.ajax({
 		url:'../mobile_logout'
 	}).done(function(data){
-		$.mobile.changePage('index.jsp');
+		location.href = '/EasyMark/mobile';
 	});
 };
 
@@ -215,6 +215,47 @@ var myInfo = function(){
 		$('#myInfo_userId').val(data.userId);
 		$('#myInfo_userName').val(data.name);
 		$('#myInfo_email').val(data.email);
-		$('#myInfo_img').src('img', '../'+data.imgUrl);
+		$('#myInfo_img').attr('src', '../'+data.imgUrl);
+	});
+};
+
+// 북마크 추가
+var bookmarkAdd = function(){
+	console.log('bookmarkAdd');
+	
+	dataInfo = {
+		name:       $('#bookmark_add_name').val(),
+		url: 		$('#bookmark_add_url').val(),
+		description:$('#bookmark_add_descript').val(),
+		category:   0
+	};
+	
+	$.ajax({
+		url:'../addMark',
+		dataType:'json',
+		type:'POST',
+		data: dataInfo
+		
+	}).done(function(data){
+		kaka = data;
+		
+		li = '<li data-role="list-driver" data-theme="b">' + 
+					dataInfo.name + 
+					'<span class="ui-li-count">0</span>' + 
+				'</li>' + 
+				'<li>' +
+					'<a target="_blank" href="'+data.url+'">' + 
+						'<img src="../'+data.imgUrl+'">' + 
+						'<h3>'+data.url+'</h3>' + 
+						'<p>' + 
+							data.descript + 
+						'</p>'+
+					'</a>' + 
+				'</li>';
+		
+		$list = $('#mainList');
+		$list.append(li);
+		$list.listview("refresh");
+		console.log('refresh');
 	});
 };

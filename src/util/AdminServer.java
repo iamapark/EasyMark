@@ -98,7 +98,7 @@ public class AdminServer {
 	/**
 	 * 사용자가 로그인 할때마다 사용자 계정에 관한 정보를 Admin 페이지에 푸쉬한다.*/
 	public void pushLoginMemberInfo(String userId){
-		System.out.println("pushLoginMemberInfo");
+		/*System.out.println("pushLoginMemberInfo");*/
 		Member member = new MembershipServiceImpl().getMemberInfo(userId);
 		JsonObject data = new JsonObject();
 		data.putString("userId", member.getUserId());
@@ -115,12 +115,14 @@ public class AdminServer {
 		JsonObject data = new JsonObject();
 		data.putString("userId", id);
 		
+		/*System.out.println("refreshLogoutMember");*/
+		
 		push("refreshLogoutMember", data);
 	}
 
 	
 	public void pushRegisterMemberCount(JSONObject dataJ){
-		System.out.println("pushRegisterMemberCount");
+		/*System.out.println("pushRegisterMemberCount");*/
 		System.out.println(dataJ);
 
 		JsonObject data = new JsonObject();

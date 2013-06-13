@@ -230,6 +230,7 @@ public class MembershipAction {
 			
 			request.setAttribute("bookMarkList", new IndividualPageServiceImpl().bookMarkList(new ForBookMarkList(userId, 0)));
 			mav.setViewName("main");
+			
 		} else {
 			request.setAttribute("msg", "로그인 정보가 맞지 않습니다!!");
 			mav.setViewName("error/error");

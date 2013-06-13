@@ -32,10 +32,13 @@ var registerServer = function(){
 	
 	/*사용자가 로그인 할 때마다 해당 사용자의 정보를 push 받아서  memberInfoList에 출력한다.*/
 	socket.on('loginMemberInfo', function(data){
+		var count = 0;
 		console.log('loginMemberInfo');
-		kaka = data;
+		loginMemberInfo = data;
 		//data를 arrayList로 받아서 처리한다.
 		if(loginMemberArray.indexOf(data) == -1){
+			console.log('push: ' + count);
+			count++;
 			loginMemberArray.push(data);
 			fillLoginMemberInfoTable(); //테이블에 채우는 것은 tipJS를 사용할 것!
 		}
