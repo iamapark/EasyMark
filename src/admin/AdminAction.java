@@ -32,7 +32,7 @@ public class AdminAction {
 	
 	public AdminAction(){
 		// Vert.x 서버 가동
-		//AdminServer.getInstance().start();
+		AdminServer.getInstance().start();
 	}
 	
 	// 관리자 페이지로 이동
