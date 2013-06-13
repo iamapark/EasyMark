@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.vertx.java.core.json.JsonObject;
 
 import service.FriendshipServiceImpl;
 import service.IndividualPageServiceImpl;
@@ -60,8 +61,22 @@ public class IndividualPageAction {
 
 
 		ModelAndView nextPage = new ModelAndView();
+		HttpSession session = request.getSession();
+		
 		if (userId == null)
 			userId = (String) request.getSession().getAttribute("MEMBERID");
+		
+
+		JSONObject jobj = addMark(file, name, url, description, categoryId, userId, session);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+
+		traffic();
+		return nextPage;
+	}
+	
+	private JSONObject addMark(MultipartFile file, String name, String url, String description, int categoryId, String userId, HttpSession session) {
 		String imgUrl = null;
 
 		// 사용자가 입력한 URL 의 앞부분이 http:// or https://로 시작하지 않을 경우
@@ -70,12 +85,12 @@ public class IndividualPageAction {
 			url = "http://" + url;
 		}
 
-		// 이미지가 저장되는 경로
-		String path = request.getSession().getServletContext()
-				.getRealPath("/users/img/")
-				+ "/" + userId + "/bookmark/";
+		if(file != null){
+			// 이미지가 저장되는 경로
+			String path = session.getServletContext()
+					.getRealPath("/users/img/")
+					+ "/" + userId + "/bookmark/";
 
-		if (file != null) {
 			if (!file.getOriginalFilename().equals("")) {
 				new FileWriter().writeFile(file, path,
 						file.getOriginalFilename());
@@ -84,11 +99,11 @@ public class IndividualPageAction {
 			} else {
 				imgUrl = "images/Bookmark.png";
 			}
-		} else {
+
+		}else{
 			imgUrl = "images/Bookmark.png";
 		}
-
-		// 사용자ID 가져오기
+		
 		String status = "bookmark";
 		
 		ArrayList<Position> currentPosition = new ArrayList<Position>();
@@ -106,8 +121,14 @@ public class IndividualPageAction {
 		// 아이콘이 추가될 x,y 좌표를 받아온다.
 		Position newPosition = getPosition(currentPosition, 8, 4);
 		
-		BookMark bookMark = new BookMark(0, URLDecoder.decode(name, "utf-8"), url, description, userId,
-				status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, String.valueOf(categoryId));
+		BookMark bookMark = null;
+		try {
+			bookMark = new BookMark(0, URLDecoder.decode(name, "utf-8"), url, description, userId,
+					status, newPosition.getPosX(), newPosition.getPosY(), imgUrl, 0, String.valueOf(categoryId));
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		try {
 			name = URLDecoder.decode(name, "utf-8");
@@ -125,12 +146,8 @@ public class IndividualPageAction {
 		jobj.put("id", maxBookmarkId);
 		jobj.put("imgUrl", imgUrl);
 		jobj.put("url", url);
-
-		request.setAttribute("result", jobj);
-		nextPage.setViewName("result");
-
-		traffic();
-		return nextPage;
+		
+		return jobj;
 	}
 	
 	//아이콘을 배치할 x, y 좌표를  결정한다.
@@ -520,8 +537,19 @@ public class IndividualPageAction {
 															   @RequestParam(value="userId",required=false)String userId,
 															   @RequestParam(value="parentId") int parentId) throws UnsupportedEncodingException{
 		ModelAndView nextPage = new ModelAndView();
+		
 		if(userId == null)
 			userId = (String)request.getSession().getAttribute("MEMBERID");
+		
+		JSONObject jobj = addCategory(userId, categoryName, parentId);
+		
+		request.setAttribute("result", jobj);
+		nextPage.setViewName("result");
+		
+		return nextPage;
+	}
+	
+	private JSONObject addCategory(String userId, String categoryName, int parentId){
 		
 		String imgUrl = "images/folder.png";
 		String status = "category";
@@ -555,9 +583,88 @@ public class IndividualPageAction {
 		jobj.put("imgUrl", imgUrl);
 		jobj.put("categoryName", categoryName);
 		
-		request.setAttribute("result", jobj);
+		return jobj;
+	}
+	
+	public static HashMap<String, String> idMap = new HashMap<String, String>();
+	
+	@RequestMapping("/getBookmarkTree")
+	public ModelAndView getBookmarkTree(HttpServletRequest request, 
+			   @RequestParam(value="treeData")String tree) throws UnsupportedEncodingException{
+		ModelAndView nextPage = new ModelAndView();
+		
+		String userId = (String) request.getSession().getAttribute("MEMBERID");
+		
+		String data = URLDecoder.decode(tree, "utf-8");
+		JSONObject jObj = JSONObject.fromObject(data);
+		
+		JSONObject root = jObj.getJSONObject("0");
+		chromeBookmarkAdd(userId, root);
+		
+		request.setAttribute("result", "true");
 		nextPage.setViewName("result");
 		
 		return nextPage;
+	}
+	
+	public boolean isCategory(JSONObject jObj){
+		boolean flag = false;
+
+		if(jObj.get("url") == null)
+			flag = true;
+		
+		return flag;
+	}
+	
+	public JSONArray getChildren(JSONObject jObj){
+		return jObj.getJSONArray("children");
+	}
+	
+	public void chromeBookmarkAdd(String userId, JSONObject root){
+		objectAdd(userId, getChildren(root).getJSONObject(0));
+		objectAdd(userId, getChildren(root).getJSONObject(1));
+	}
+	
+	public void objectAdd(String userId, JSONObject jObj){
+		if(!jObj.getString("id").equals("0")){
+			// 루트가 아니기 때문에 데이터를 추가해야 함.
+
+			if(isCategory(jObj)){
+				// URL이 없으면 카테고리로 추가
+				System.out.println("category 추가: " + jObj.getString("title") + ", id: " + jObj.getString("id") + ", parentId: " + jObj.getString("parentId"));
+				//idMap.put(jObj.getString("id"), INSERT 후 반환된 아이디-추가된 카테고리 아이디);
+				
+				JSONObject resultObj = null;
+						
+				if(jObj.getString("parentId").equals("0")){
+					resultObj = addCategory(userId, jObj.getString("title"), 0);
+				}else{
+					String categoryId = idMap.get(jObj.getString("parentId"));
+					resultObj = addCategory(userId, jObj.getString("title"), Integer.parseInt(categoryId));
+				}
+				
+				idMap.put(jObj.getString("id"), resultObj.getString("categoryId"));
+				arrayAdd(userId, jObj);
+			}else{
+				JSONObject resultObj = null;
+				// URL이 있으면 북마크로 추가
+				int categoryId = Integer.parseInt(idMap.get(jObj.getString("parentId")));
+				resultObj = addMark(null, jObj.getString("title"), jObj.getString("url"), "", categoryId, userId, null);
+				
+			}
+		}else{
+			// 루트이기 때문에 데이터를 추가하면 안됨.
+			System.out.println("root");
+			
+		}
+	}
+	
+	public void arrayAdd(String userId, JSONObject jObj){
+		JSONArray arrayJ = jObj.getJSONArray("children");
+		int size = arrayJ.size();
+		
+		for(int i=0; i<size; i++){
+			objectAdd(userId, arrayJ.getJSONObject(i));
+		}
 	}
 }

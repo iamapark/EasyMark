@@ -139,6 +139,9 @@ var mouseOverBookmarkInfo = function(e) {
 // modify 눌렀을 때 북마크 정보 수정
 $('#modify').click(
 		function(e) {
+			
+			selectedCategoryId = currentPageCategoryId;
+			
 			e.preventDefault();
 			 var filename = $('#bookmarkIconImageFile').val();
 			 var name = $('#modifyBookmarkName').val();
