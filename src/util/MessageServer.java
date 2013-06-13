@@ -101,7 +101,7 @@ public class MessageServer {
 		sockets.put(id,  socket);
 
 		/*adminServer.pushLoginMemberInfo(id);*/
-		adminServer.pushLoginMemberCount(getLoginMemberCount());
+		//adminServer.pushLoginMemberCount(getLoginMemberCount());
 		System.out.println("(등록)id:" + id);
 		System.out.println("접속 회원 수: " + sockets.size());
 		System.out.println("등록된 socket: " + socket);

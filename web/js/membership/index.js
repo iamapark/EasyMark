@@ -112,7 +112,11 @@ var me2dayRegister = function(){
 		url: 'Proxy/proxy.jsp', // javascript same origin policy를 해결하기 위한 프록시
 		dataType:'json',
 		data: {
+				//localhost
 				url: 'http://me2day.net/api/get_auth_url.json?akey=415a2f7e4b506b19bc290a2061c05df5',
+				
+				//easymark.pe.kr
+				//url: 'http://me2day.net/api/get_auth_url.json?akey=acf3c1a58ff4366e4dadbe67378c7af2',
 	   		  }
 	}).done(function(data){
 		location.href = data.url;
@@ -128,7 +132,11 @@ var me2dayLogin = function(){
 		url: 'Proxy/proxy.jsp', //// javascript same origin policy를 해결하기 위한 프록시
 		dataType:'json',
 		data: {
+				//localhost
 				url: 'http://me2day.net/api/get_auth_url.json?akey=41e2b7d7b9e290113b43c2870a1373e9',
+				
+				//easymark.pe.kr
+				//url: 'http://me2day.net/api/get_auth_url.json?akey=8d41ef461f4c6e08dc8e235c2337db37',
 	   		  }
 	}).done(function(data){
 		location.href = data.url;

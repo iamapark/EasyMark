@@ -29,6 +29,7 @@ public class SessionManager {
 	}
 	
 	public void remove(HttpSession httpSession){
+		System.out.println("session remove");
 		session.remove(httpSession.getId());
 	}
 	

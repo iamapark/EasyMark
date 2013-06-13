@@ -27,6 +27,7 @@ import util.AdminServer;
 import util.DataEncrypt;
 import util.FileWriter;
 import util.MailSender;
+import util.SessionManager;
 import dto.BookMark;
 import dto.Category;
 import dto.DashboardCount;
@@ -206,6 +207,9 @@ public class MembershipAction {
 			@RequestParam(value = "loginId") String userId,
 			@RequestParam(value = "loginPassword") String password) throws LoginException {
 		
+		System.out.println("login 호출!!");
+		
+		
 		ModelAndView mav = new ModelAndView();
 		String md5LoginPassword = new DataEncrypt().encrypt(password);
 		Login login = new Login(userId, md5LoginPassword);
@@ -333,7 +337,7 @@ public class MembershipAction {
 			@RequestParam("password") String password,
 			@RequestParam("callback") String callback) {
 		ModelAndView mav = new ModelAndView();
-
+		
 		boolean flag = new MembershipServiceImpl().login(new Login(userId,
 				new DataEncrypt().encrypt(password)));
 
@@ -561,6 +565,8 @@ public class MembershipAction {
 		session.invalidate();
 		Member m = new MembershipServiceImpl().getMemberInfo(userId);
 
+		//SessionManager.getInstance().remove(session);
+		
 		request.setAttribute("MEMBERINFO", m);
 		mav.setViewName("template/sleepPage");
 		return mav;

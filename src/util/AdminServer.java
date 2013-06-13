@@ -88,7 +88,8 @@ public class AdminServer {
 	 * 사용자가 로그인 할때마다 현재 로그인 중인 사용자 수를 Admin 페이지에 푸쉬한다.*/
 	public void pushLoginMemberCount(int count){
 		System.out.println("pushLoginMemberCount");
-		System.out.println("size: " + sockets.size());
+		System.out.println("count: " + count);
+		
 		JsonObject data = new JsonObject();
 		data.putNumber("count", count);
 		
@@ -98,8 +99,11 @@ public class AdminServer {
 	/**
 	 * 사용자가 로그인 할때마다 사용자 계정에 관한 정보를 Admin 페이지에 푸쉬한다.*/
 	public void pushLoginMemberInfo(String userId){
-		/*System.out.println("pushLoginMemberInfo");*/
+		System.out.println("pushLoginMemberInfo");
 		Member member = new MembershipServiceImpl().getMemberInfo(userId);
+		System.out.println("로그인 한 사용자 정보: ");
+		System.out.println(member);
+		
 		JsonObject data = new JsonObject();
 		data.putString("userId", member.getUserId());
 		data.putString("name", member.getName());

@@ -199,4 +199,55 @@
     	from member_info
     	where user_id=#userId#
   	</select>
+  	
+  	<!-- 6/11 추가 -->
+  	<delete id="deleteFriendship" parameterClass="List">
+  		delete from friendship
+  		
+  		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+		
+  		<dynamic prepend="or friend_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+  	</delete>
+  	
+  	<!-- 6/11 추가 -->
+  	<delete id="deleteMessageByUserId" parameterClass="List">
+  		delete from message
+  		
+  		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+		
+  		<dynamic prepend="or friend_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+  	</delete>
+  	
+  	<!-- 6/11 추가 -->
+  	<delete id="deleteBookmarkship" parameterClass="List">
+  		delete from bookmarkship
+  		
+  		<dynamic prepend="WHERE user_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+		
+  		<dynamic prepend="or friend_id IN">
+			<iterate open="(" conjunction="," close=")">
+				#[]#
+			</iterate>
+		</dynamic>
+  	</delete>
 </sqlMap>

@@ -154,7 +154,7 @@
 	
 		var timer = function(){
 			sleepTime++;
-			if(sleepTime === 60*2){
+			if(sleepTime === 60*5){
 				location.replace('sleepPage');
 			}
 		};
