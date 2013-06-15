@@ -410,6 +410,9 @@ public class FriendshipAction {
 			
 			Message message = new Message(0, userId, "", null, "", new Date(), "", 0, "take");
 			newMessage = new FriendshipServiceImpl().messageCount(message);
+			
+			MessageServer.getInstance().sendMessage(friendId, userId, contents, newMessage.size());
+			
 			traffic();
 		}
 		

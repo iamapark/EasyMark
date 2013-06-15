@@ -24,6 +24,10 @@ public class SessionManagerListener implements HttpSessionListener {
 		
 		// 현재 로그인 중인 사용자 리스트를 관리자 페이지에 푸쉬한다.
 		AdminServer.getInstance().refreshLogoutMember(userId);
+		
+		// 메시지 서버에서 로그아웃한 사용자를 지운다.
+		MessageServer.getInstance().removeMember(userId);
+		
 	}
 
 }

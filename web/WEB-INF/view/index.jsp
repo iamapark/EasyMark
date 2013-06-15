@@ -11,7 +11,16 @@
 </head>
 <body>
 <div id="wrapper">
-  <h1>EasyMark</h1>
+  <h1 style="top:30px;"><img src="images/Bookmark.png" style="width: 40px;
+											margin-right: 17px;
+											vertical-align: middle;
+											padding-bottom: 7px;">
+	EasyMark
+	<img src="images/Message_Icon.png" style="width: 40px;
+											margin-left: 17px;
+											vertical-align: middle;
+											padding-bottom: 7px;">
+  </h1>
   <div id="container">
 	<section class="tabs">
 	

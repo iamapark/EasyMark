@@ -43,7 +43,7 @@
 	</div><!--/span-->
 </div><!--/row-->
 <div class="row-fluid sortable">
-	<div class="box span6">
+	<div class="box span12">
 		<div class="box-header well" data-original-title>
 			<h2><i class="icon-list"></i> 접속 中 회원</h2>
 			<div class="box-icon">

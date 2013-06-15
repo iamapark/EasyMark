@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
 import service.MembershipServiceImpl;
+import dto.Member;
 
 public class SessionAttributeListener implements HttpSessionAttributeListener {
 
@@ -21,7 +22,8 @@ public class SessionAttributeListener implements HttpSessionAttributeListener {
 			AdminServer.getInstance().pushLoginMemberCount(SessionManager.getInstance().count());
 			
 			// 로그인 한 사용자 정보를 관리자 페이지에 푸쉬한다.
-			AdminServer.getInstance().pushLoginMemberInfo(userId);
+			Member m = new MembershipServiceImpl().getMemberInfo(userId);
+			AdminServer.getInstance().pushLoginMemberInfo(m);
 			
 		}
 	}

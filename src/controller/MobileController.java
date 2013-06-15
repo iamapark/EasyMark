@@ -130,7 +130,7 @@ public class MobileController {
 		ModelAndView mav = new ModelAndView();
 		boolean flag = false;
 		
-		Member member = new Member(userId, email, password, name);
+		Member member = new Member(userId, email, new DataEncrypt().encrypt(password), name);
 		
 		if(!member.isContentEmpty())
 			flag = !new MembershipServiceImpl().checkId(userId);

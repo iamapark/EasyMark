@@ -19,7 +19,7 @@ var initRealtime = function(){
 var registerServer = function(){
 	var adminId = 'a';
 	
-	socket = io.connect('http://localhost:9091/admin', {'sync disconnect on unload' : true});
+	socket = io.connect('http://localhost:15000/admin', {'sync disconnect on unload' : true});
 	socket.emit('adminId', {id:adminId});
 	
 	
@@ -33,13 +33,23 @@ var registerServer = function(){
 	/*사용자가 로그인 할 때마다 해당 사용자의 정보를 push 받아서  memberInfoList에 출력한다.*/
 	socket.on('loginMemberInfo', function(data){
 		var count = 0;
+		var flag = true;
+		
 		console.log('loginMemberInfo');
-		loginMemberInfo = data;
+		
 		//data를 arrayList로 받아서 처리한다.
 		if(loginMemberArray.indexOf(data) == -1){
 			console.log('push: ' + count);
 			count++;
-			loginMemberArray.push(data);
+			
+			for(var i=0; i<loginMemberArray.length; i++){
+				if(loginMemberArray[i].name == data.name)
+					flag = false;
+			}
+			
+			if(flag)
+				loginMemberArray.push(data);
+			
 			fillLoginMemberInfoTable(); //테이블에 채우는 것은 tipJS를 사용할 것!
 		}
 	});
@@ -124,8 +134,8 @@ var fillLoginMemberInfoTable = function(){
 		li += '<li>';
 			li += '<a href="#">';
 				li += '<span>' + loginMemberArray[i].userId + '</span>';
-				li += '<span class="green">' + loginMemberArray[i].name + '</span>';
-				li += '<span>' + loginMemberArray[i].email + '</span>';
+				li += '<span class="green" style="width:15%;">' + loginMemberArray[i].name + '</span>';
+				li += '<span style="width:25%;">' + loginMemberArray[i].email + '</span>';
 			li += '</a>';
 		li += '</li>';
 	}

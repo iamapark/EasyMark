@@ -71,7 +71,7 @@ public class AdminServer {
 			}
 		});
 		
-		server.listen(9091);
+		server.listen(15000);
 	}
 	
 	private void register(String id, SocketIOSocket socket){
@@ -99,9 +99,9 @@ public class AdminServer {
 	
 	/**
 	 * 사용자가 로그인 할때마다 사용자 계정에 관한 정보를 Admin 페이지에 푸쉬한다.*/
-	public void pushLoginMemberInfo(String userId){
+	public void pushLoginMemberInfo(Member member){
 		System.out.println("pushLoginMemberInfo");
-		Member member = new MembershipServiceImpl().getMemberInfo(userId);
+
 		System.out.println("로그인 한 사용자 정보: ");
 		System.out.println(member);
 		
@@ -119,8 +119,6 @@ public class AdminServer {
 	public void refreshLogoutMember(String id) {
 		JsonObject data = new JsonObject();
 		data.putString("userId", id);
-		
-		/*System.out.println("refreshLogoutMember");*/
 		
 		push("refreshLogoutMember", data);
 	}

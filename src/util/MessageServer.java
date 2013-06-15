@@ -1,7 +1,5 @@
 package util;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -11,21 +9,16 @@ import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.json.JsonObject;
 
-import service.FriendshipServiceImpl;
-
 import com.nhncorp.mods.socket.io.SocketIOServer;
 import com.nhncorp.mods.socket.io.SocketIOSocket;
 import com.nhncorp.mods.socket.io.impl.DefaultSocketIOServer;
 import com.nhncorp.mods.socket.io.impl.Namespace;
-
-import dto.Message;
 
 public class MessageServer {
 	private Vertx vt;
 	private SocketIOServer io;
 	private HashMap<String, SocketIOSocket> sockets; // a(사용자), socket 생기는 것 담기
 	private static MessageServer server = null;
-	private AdminServer adminServer = null;
 	
 	public static MessageServer getInstance(){
 		if(server == null)
@@ -36,16 +29,18 @@ public class MessageServer {
 	private MessageServer(){
 		this.vt = Vertx.newVertx();
 		sockets = new HashMap<String, SocketIOSocket>();
-		adminServer = AdminServer.getInstance();
 		System.out.println("MessageServer Constructor!!");
 	}
 	
 	public void start(){
+		System.out.println("message 서버 시작!!!");
 		HttpServer server = vt.createHttpServer();
 		io = new DefaultSocketIOServer(vt, server);
 		final Namespace message = io.of("/message");
 		
-		message.onConnection(new Handler<SocketIOSocket>(){
+		
+		
+		io.sockets().onConnection(new Handler<SocketIOSocket>(){
 			@Override
 			public void handle(final SocketIOSocket socket) {
 				socket.on("userId", new Handler<JsonObject>(){ // userId 값이 넘어온다
@@ -63,12 +58,8 @@ public class MessageServer {
 						System.out.println("message"+data.getString("message"));
 						System.out.println("friendId:"+data.getString("friendId"));
 						
-						sendMessage(data.getString("friendId"), data.getString("message"), data.getInteger("num"));
-						/*for(int i=0; i<messageFriend.length; i++){
-							
-							messageFriend[i] = messageFriend[i].trim();	
-							sendMessage(messageFriend[i], data.getString("message"), data.getInteger("num"));
-						}*/
+						//sendMessage(data.getString("friendId"), data.getString("message"), data.getInteger("num"));
+
 					}
 				});
 				
@@ -79,8 +70,6 @@ public class MessageServer {
 						sockets.remove(data.getString("id"));
 						System.out.println("exit");
 						System.out.println("size: " + sockets.size());
-						adminServer.pushLoginMemberCount(getLoginMemberCount());
-						adminServer.refreshLogoutMember(data.getString("id"));
 					}
 				});
 				
@@ -93,7 +82,7 @@ public class MessageServer {
 				
 		});
 		
-		server.listen(9090);
+		server.listen(15002);
 	}
 	
 	private void register(String id, SocketIOSocket socket){
@@ -104,29 +93,29 @@ public class MessageServer {
 		//adminServer.pushLoginMemberCount(getLoginMemberCount());
 		System.out.println("(등록)id:" + id);
 		System.out.println("접속 회원 수: " + sockets.size());
-		System.out.println("등록된 socket: " + socket);
 	}
 	
-	public void sendMessage(String id, String msg, int num){
-		System.out.println("(전송)id: " + id + ", msg: " + msg);
+	public void sendMessage(String id, String friendId, String msg, int num){
+		System.out.println("전송받는 아이디: " + id + ", 메시지 내용: " + msg);
 		JsonObject data = new JsonObject();
 	
-		ArrayList<Message> newMessage = new ArrayList<Message>();
-		Message message = new Message(0, id, "", null, "", new Date(), "", 0, "take");
-		newMessage = new FriendshipServiceImpl().messageCount(message);
-		
 		data.putString("msg", msg);
-		data.putString("friend", id);
-		data.putNumber("num", newMessage.size());
+		data.putString("friend", friendId);
+		data.putNumber("num", num);
 		
 		if(sockets.get(id) != null){
+			System.out.println("보냈습니다.");
 			sockets.get(id).emit("message", data);
-		} else { }
+		}
 		
 	}
 
 	public boolean isContains(String userId) {
 		return sockets.containsKey(userId);
+	}
+	
+	public void removeMember(String userId){
+		sockets.remove(userId);
 	}
 
 	public int getLoginMemberCount() {

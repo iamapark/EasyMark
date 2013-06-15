@@ -1,6 +1,6 @@
 // 서버용 'http://easymark.pe.kr:9090/message';
 // 로컬용 'http://localhost:9090/message';
-var socketUrl = 'http://localhost:9090/message';
+var socketUrl = 'http://localhost:15002';
 var socket;
 
 /**
@@ -732,7 +732,6 @@ $('#messageSendButton').click(function(e){
 	}
 	
 	else {
-		alert("메시지를 전송하였습니다.");
 		$.ajax({
 			url: 'sendMessage',
 			dataType:'json',
@@ -745,7 +744,8 @@ $('#messageSendButton').click(function(e){
 			friendId = data.friendId; message = data.contents; num = data.num;
 			/** 전송하는 메시지를 보낸사람, 메시지 내용, 받는 사람의 새 메시지 갯수를 
 			  "send"로 보낸다. */
-			socket.emit("send", {friendId:friendId,message:message,num:num});
+			//socket.emit("send", {friendId:friendId,message:message,num:num});
+			alert('메시지 전송이 완료되었습니다....!!');
 		});
 	}
 	
